@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:GeoCoding.Styles" xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <FontFamily x:Key="FontAwesome">pack://application:,,,/GeoCoding.Resources;component/#FontAwesome</FontFamily>
+
+    <system:String x:Key="FontAwesomeError">&#xf057;</system:String>
+    <system:String x:Key="FontAwesomeOk">&#xf058;</system:String>
+    <system:String x:Key="FontAwesomeNotCheck">&#xf059;</system:String>
+    <system:String x:Key="FontAwesomeCheckNow">&#xf144;</system:String>
+    <system:String x:Key="FontAwesomePause">&#xf28b;</system:String>
+    <system:String x:Key="FontAwesomeFolderOpen">&#xf07c;</system:String>
+    <system:String x:Key="FontAwesomeFolderClose">&#xf07b;</system:String>
+    
+</ResourceDictionary>

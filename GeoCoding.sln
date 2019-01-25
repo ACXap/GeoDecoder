@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding", "GeoCoding\GeoCoding.csproj", "{081BEFF6-09AA-429D-A864-45E1F37CE9B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.FileService", "GeoCoding.FileService\GeoCoding.FileService.csproj", "{88E8217A-88BB-4123-95A1-8323F1F99478}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.GeoCodingService", "GeoCoding.GeoCodingService\GeoCoding.GeoCodingService.csproj", "{88082673-6130-433C-8FE3-E613182A80E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.Resources", "GeoCoding.Resources\GeoCoding.Resources.csproj", "{FED4D728-E13C-482C-8795-12484E8D377B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{081BEFF6-09AA-429D-A864-45E1F37CE9B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{081BEFF6-09AA-429D-A864-45E1F37CE9B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{081BEFF6-09AA-429D-A864-45E1F37CE9B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{081BEFF6-09AA-429D-A864-45E1F37CE9B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88E8217A-88BB-4123-95A1-8323F1F99478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88E8217A-88BB-4123-95A1-8323F1F99478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88E8217A-88BB-4123-95A1-8323F1F99478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88E8217A-88BB-4123-95A1-8323F1F99478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88082673-6130-433C-8FE3-E613182A80E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88082673-6130-433C-8FE3-E613182A80E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88082673-6130-433C-8FE3-E613182A80E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88082673-6130-433C-8FE3-E613182A80E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FED4D728-E13C-482C-8795-12484E8D377B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FED4D728-E13C-482C-8795-12484E8D377B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FED4D728-E13C-482C-8795-12484E8D377B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FED4D728-E13C-482C-8795-12484E8D377B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {612F98CA-8700-4A57-BD3F-3228D69D5563}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="GeoCoding.UserControls.InformationEntity"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoCoding.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Column="2" Grid.Row="0" Text="{Binding GlobalID}"/>
+        <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Address}"/>
+        <TextBlock Grid.Column="2" Grid.Row="2" Text="{Binding AddressWeb}"/>
+        <TextBlock Grid.Column="2" Grid.Row="3" Text="{Binding Longitude}"/>
+        <TextBlock Grid.Column="2" Grid.Row="4" Text="{Binding Latitude}"/>
+        <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Qcode}"/>
+        <TextBlock Grid.Column="2" Grid.Row="6" Text="{Binding Error}"/>
+        <TextBlock Grid.Column="2" Grid.Row="7" Text="{Binding Status}"/>
+        <TextBlock Grid.Column="2" Grid.Row="8" Text="{Binding Kind}"/>
+        <TextBlock Grid.Column="2" Grid.Row="9" Text="{Binding Precision}"/>
+        <TextBlock Grid.Column="2" Grid.Row="10" Text="{Binding CountResult}"/>
+
+        <TextBlock Grid.Column="0" Grid.Row="0" Text="GlobalID"/>
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="Адрес"/>
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="Адрес Web"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="Долгота"/>
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="Широта"/>
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="Качество"/>
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="Ошибка"/>
+        <TextBlock Grid.Column="0" Grid.Row="7" Text="Статус"/>
+        <TextBlock Grid.Column="0" Grid.Row="8" Text="Тип объекта"/>
+        <TextBlock Grid.Column="0" Grid.Row="9" Text="Качество"/>
+        <TextBlock Grid.Column="0" Grid.Row="10" Text="Кол.результатов"/>
+    </Grid>
+</UserControl>

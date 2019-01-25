@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="GeoCoding.UserControls.Statistics"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GeoCoding"
+             mc:Ignorable="d" Name="StatisticsControl"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+        <TextBlock Text="Cервисов всего:"/>
+        <TextBlock Text="{Binding CollectionWebServices.Count}" Margin="5,0, 20, 0"/>
+
+        <TextBlock Text="{Binding Statistics.CountOK}" Margin="10,0,5,0"/>
+        <TextBlock Tag="{x:Static local:StatusType.OK}" Style="{StaticResource TextBlockStatusTest}" />
+            
+        <TextBlock Text="{Binding Statistics.CountError}" Margin="10,0,5,0"/>
+        <TextBlock Tag="{x:Static local:StatusType.Error}" Style="{StaticResource TextBlockStatusTest}" Foreground="Red"/>
+
+        <TextBlock Text="{Binding Statistics.CountNotCheck}" Margin="10,0,5,0"/>
+        <TextBlock Tag="{x:Static local:StatusType.NotGeoCoding}" Style="{StaticResource TextBlockStatusTest}" />
+
+        <TextBlock Text="{Binding Statistics.CountCheckNow}" Margin="10,0,5,0"/>
+        <TextBlock Tag="{x:Static local:StatusType.GeoCodingNow}" Style="{StaticResource TextBlockStatusTest}"/>
+                
+    </WrapPanel>
+</UserControl>
