@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -45,13 +46,14 @@ namespace GeoCoding.FileService
         {
             Exception error = null;
             string data = string.Empty;
+            string a = Environment.CurrentDirectory;
 
-            Ookii.Dialogs.Wpf.VistaOpenFileDialog fd = new Ookii.Dialogs.Wpf.VistaOpenFileDialog()
+            OpenFileDialog fd = new OpenFileDialog()
             {
                 Multiselect = false,
                 Filter = _filterForGetFile,
-                InitialDirectory = Environment.CurrentDirectory,
-                Title = _titleFileGetDialog
+                Title = _titleFileGetDialog,
+                InitialDirectory = Environment.CurrentDirectory
             };
 
             if (fd.ShowDialog() == true)
@@ -115,7 +117,7 @@ namespace GeoCoding.FileService
                 defaultName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{_defaultNameFileForSave}";
             }
 
-            Ookii.Dialogs.Wpf.VistaSaveFileDialog fd = new Ookii.Dialogs.Wpf.VistaSaveFileDialog()
+            SaveFileDialog fd = new SaveFileDialog()
             {
                 Filter = _filterForSaveFile,
                 AddExtension = true,

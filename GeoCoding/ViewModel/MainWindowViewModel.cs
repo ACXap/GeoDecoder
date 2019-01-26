@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using MahApps.Metro.Controls.Dialogs;
 using System.Collections.ObjectModel;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace GeoCoding
 {
@@ -186,6 +187,8 @@ namespace GeoCoding
                             {
                                 // Создаем коллекцию с данными
                                 CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
+                                // Обновляем статистику
+                                UpdateStatistics();
                                 // Оповещаем о создании коллекции
                                 NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
                             }
@@ -246,14 +249,20 @@ namespace GeoCoding
                         {
                             if (e == null)
                             {
+                                // Оповещаем о завершении получении координат
                                 NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {_collectionGeoCod.Count}");
+                            }
+                            else if(e.Message == "Операция была отменена.")
+                            {
+                                NotificationPlainText("Обработка прекращена", e.Message);
                             }
                             else
                             {
-                                NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r Процеес завершен на:{i} элементе");
+                                NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r Процеес завершен на: {i} элементе");
                             }
 
                             IsStartGeoCoding = false;
+
                         }, _collectionGeoCod);
 
                     }, () => _collectionGeoCod != null && _collectionGeoCod.Count > 0));
@@ -275,15 +284,41 @@ namespace GeoCoding
                         _model.StopGet();
                     }));
 
+        private Statistics _statistics;
+        public Statistics Statistics
+        {
+            get => _statistics;
+            set => Set(ref _statistics, value);
+        }
+
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
             Files = new FilesSettings();
+
+            Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj=>
+            {
+                UpdateStatistics();
+            });
         }
 
         private async void NotificationPlainText(string header, string message)
         {
             await dialogCoordinator.ShowMessageAsync(this, header, message);
+        }
+
+        private void UpdateStatistics()
+        {
+            if(_collectionGeoCod!=null && _collectionGeoCod.Count>0)
+            {
+                _model.UpdateStatistic((s, e) =>
+                {
+                    if (e == null)
+                    {
+                        Statistics = s;
+                    }
+                }, _collectionGeoCod);
+           }
         }
     }
 }

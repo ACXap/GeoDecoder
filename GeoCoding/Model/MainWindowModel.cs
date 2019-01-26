@@ -29,9 +29,13 @@ namespace GeoCoding
         #endregion PrivateConst
 
         private readonly IFileService _fileService = new FileService.FileService();
-        private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
+
+        // private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
+        private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
+
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private CancellationTokenSource _cts;
+        private bool _isStartUpdateStatistic = false;
 
         /// <summary>
         /// Метод для получения(выбора) файла с данными
@@ -135,7 +139,8 @@ namespace GeoCoding
             _cts = new CancellationTokenSource();
             ParallelOptions po = new ParallelOptions
             {
-                CancellationToken = _cts.Token
+                CancellationToken = _cts.Token,
+                MaxDegreeOfParallelism = 5
             };
 
             await Task.Factory.StartNew(() =>
@@ -226,6 +231,40 @@ namespace GeoCoding
         public void StopGet()
         {
             _cts.Cancel();
+        }
+
+        public async void UpdateStatistic(Action<Statistics, Exception> callback, IEnumerable<EntityGeoCod> data)
+        {
+            Exception error = null;
+            Statistics statistics = null;
+
+            if(!_isStartUpdateStatistic)
+            {
+               _isStartUpdateStatistic = true;
+                await Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        statistics = new Statistics()
+                        {
+                            AllEntity = data.Count(),
+                            OK = data.Count(x => x.Status == StatusType.OK),
+                            NotGeoCoding = data.Count(x => x.Status == StatusType.NotGeoCoding),
+                            GeoCodingNow = data.Count(x => x.Status == StatusType.GeoCodingNow),
+                            Error = data.Count(x => x.Status == StatusType.Error),
+                            House = data.Count(x => x.Kind == KindType.House),
+                            Exact = data.Count(x => x.Precision == PrecisionType.Exact)
+                        };
+                    }
+                    catch (Exception ex)
+                    {
+                        error = ex;
+                    }
+
+                    _isStartUpdateStatistic = false;
+                    callback(statistics, error);
+                });
+            }
         }
 
         /// <summary>

@@ -5,7 +5,7 @@ namespace GeoCoding
     /// <summary>
     /// Класс для хранения объектов адресов
     /// </summary>
-    public class EntityGeoCod:ViewModelBase
+    public class EntityGeoCod : ViewModelBase
     {
         private int _globalId;
         /// <summary>
@@ -84,7 +84,7 @@ namespace GeoCoding
         public StatusType Status
         {
             get => _status;
-            set => Set("Status", ref _status, value);
+            set => Set("Status", ref _status, value, true);
         }
 
         private KindType _kind;
