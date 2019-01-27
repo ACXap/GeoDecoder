@@ -194,7 +194,7 @@ namespace GeoCoding
                     () =>
                     {
                         string defName = string.Empty;
-                        if (_collectionGeoCod!=null && _collectionGeoCod.Count>0)
+                        if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
                         {
                             defName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_UpLoad_{_collectionGeoCod.Count}";
                         }
@@ -340,6 +340,12 @@ namespace GeoCoding
             {
                 if (error == null)
                 {
+                    // Если колекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
+                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                    {
+                        _collectionGeoCod.Clear();
+                        _collectionGeoCod = null;
+                    }
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
                     // Обновляем статистику
