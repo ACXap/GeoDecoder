@@ -184,8 +184,11 @@
                 </TabItem>
                 
                 <!--Работа с ФТП-сервером-->
-                <TabItem Header="FTP" IsEnabled="False">
-                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" />
+                <TabItem Header="FTP">
+                    <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" >
+                        <Grid> 
+                        </Grid>
+                    </Border>
                 </TabItem>
             </TabControl>
         </Grid>

@@ -172,7 +172,7 @@ namespace GeoCoding
                                 // Сохраняем полное имя файла в свойство FilesInput
                                 Files.FileInput = f;
                                 // Если данные получать сразу, то получаем
-                                if (_canGetDataOnce)
+                                if (_canGetDataOnce && !string.IsNullOrEmpty(_files.FileInput))
                                 {
                                     // Получаем данные из файла
                                     GetDataFromFile();

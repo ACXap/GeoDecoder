@@ -18,7 +18,7 @@
                 <ResourceDictionary Source="Styles/ToolTip.xaml" />
                 <ResourceDictionary Source="Styles/DataGrid.xaml" />
                 <ResourceDictionary Source="Styles/Button.xaml" />
-                <ResourceDictionary Source="Styles/TextBox.xaml"/>
+                <ResourceDictionary Source="Styles/TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
