@@ -85,6 +85,13 @@
                                         Command="{Binding CommandGetDataFromFile}"
                                         Content="Получить данные"
                                         Style="{StaticResource ButtonMainStyle}" />
+                                    <CheckBox
+                                        Grid.Row="1"
+                                        Margin="5,2,5,2"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Content="Данные получить сразу"
+                                        IsChecked="{Binding CanGetDataOnce}" />
                                 </Grid>
                             </Border>
                             <Border

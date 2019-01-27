@@ -1,8 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using MahApps.Metro.Controls.Dialogs;
-using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls.Dialogs;
+using System;
+using System.Collections.ObjectModel;
 
 namespace GeoCoding
 {
@@ -50,7 +51,22 @@ namespace GeoCoding
         private FilesSettings _files;
 
         /// <summary>
-        /// поле для хранения ссылки на команду получения полного имени файла
+        /// Поле для хранения статистики
+        /// </summary>
+        private Statistics _statistics;
+
+        /// <summary>
+        /// Поле для хранения запущена ли процедура декодирования
+        /// </summary>
+        private bool _isStartGeoCoding = false;
+
+        /// <summary>
+        /// Поле для хранения переменной получать данные сразу
+        /// </summary>
+        private bool _canGetDataOnce = true;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду получения полного имени файла
         /// </summary>
         private RelayCommand _commandGetFile;
 
@@ -84,6 +100,11 @@ namespace GeoCoding
         /// </summary>
         private RelayCommand _commandGetAllGeoCod;
 
+        /// <summary>
+        /// Поле для хранения ссылки на команду остановки геокодирования
+        /// </summary>
+        private RelayCommand _commandStopGeoCoding;
+
         #endregion PrivateFields
 
         #region PublicPropertys
@@ -106,6 +127,33 @@ namespace GeoCoding
             set => Set("Files", ref _files, value);
         }
 
+        /// <summary>
+        /// Запущена ли процедура декодирования
+        /// </summary>
+        public bool IsStartGeoCoding
+        {
+            get => _isStartGeoCoding;
+            set => Set("IsStartGeoCoding", ref _isStartGeoCoding, value);
+        }
+
+        /// <summary>
+        /// Получать данные сразу после выбора файла
+        /// </summary>
+        public bool CanGetDataOnce
+        {
+            get => _canGetDataOnce;
+            set => Set(ref _canGetDataOnce, value);
+        }
+
+        /// <summary>
+        /// Статистика по выполненому геокодированию
+        /// </summary>
+        public Statistics Statistics
+        {
+            get => _statistics;
+            set => Set(ref _statistics, value);
+        }
+
         #endregion PublicPropertys
 
         #region PublicCommands
@@ -123,6 +171,12 @@ namespace GeoCoding
                             {
                                 // Сохраняем полное имя файла в свойство FilesInput
                                 Files.FileInput = f;
+                                // Если данные получать сразу, то получаем
+                                if (_canGetDataOnce)
+                                {
+                                    // Получаем данные из файла
+                                    GetDataFromFile();
+                                }
                             }
                             else
                             {
@@ -139,6 +193,11 @@ namespace GeoCoding
         _commandSetFileOutput ?? (_commandSetFileOutput = new RelayCommand(
                     () =>
                     {
+                        string defName = string.Empty;
+                        if (_collectionGeoCod!=null && _collectionGeoCod.Count>0)
+                        {
+                            defName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_UpLoad_{_collectionGeoCod.Count}";
+                        }
                         _model.SetFileForSave((file, error) =>
                         {
                             if (error == null)
@@ -151,7 +210,7 @@ namespace GeoCoding
                                 // Оповещаем, если были ошибки
                                 NotificationPlainText(_headerNotificationError, error.Message);
                             }
-                        });
+                        }, defName);
                     }));
 
         /// <summary>
@@ -181,23 +240,8 @@ namespace GeoCoding
         _commandGetDataFromFile ?? (_commandGetDataFromFile = new RelayCommand(
                     () =>
                     {
-                        _model.GetDataFromFile((list, error) =>
-                        {
-                            if (error == null)
-                            {
-                                // Создаем коллекцию с данными
-                                CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
-                                // Обновляем статистику
-                                UpdateStatistics();
-                                // Оповещаем о создании коллекции
-                                NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
-                            }
-                            else
-                            {
-                                // Оповещаем если были ошибки
-                                NotificationPlainText(_headerNotificationError, error.Message);
-                            }
-                        }, _files.FileInput);
+                        // Получаем данные из файла
+                        GetDataFromFile();
                     }, () => !string.IsNullOrEmpty(_files.FileInput)));
 
         /// <summary>
@@ -252,7 +296,7 @@ namespace GeoCoding
                                 // Оповещаем о завершении получении координат
                                 NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {_collectionGeoCod.Count}");
                             }
-                            else if(e.Message == "Операция была отменена.")
+                            else if (e.Message == "Операция была отменена.")
                             {
                                 NotificationPlainText("Обработка прекращена", e.Message);
                             }
@@ -267,16 +311,9 @@ namespace GeoCoding
 
                     }, () => _collectionGeoCod != null && _collectionGeoCod.Count > 0));
 
-        #endregion PublicCommands
-
-        private bool _isStartGeoCoding = false;
-        public bool IsStartGeoCoding
-        {
-            get => _isStartGeoCoding;
-            set => Set("IsStartGeoCoding", ref _isStartGeoCoding, value);
-        }
-
-        private RelayCommand _commandStopGeoCoding;
+        /// <summary>
+        /// Команда остановки геокодирования
+        /// </summary>
         public RelayCommand CommandStopGeoCoding =>
         _commandStopGeoCoding ?? (_commandStopGeoCoding = new RelayCommand(
                     () =>
@@ -284,22 +321,38 @@ namespace GeoCoding
                         _model.StopGet();
                     }));
 
-        private Statistics _statistics;
-        public Statistics Statistics
-        {
-            get => _statistics;
-            set => Set(ref _statistics, value);
-        }
+        #endregion PublicCommands
 
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
             Files = new FilesSettings();
 
-            Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj=>
+            Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
             {
                 UpdateStatistics();
             });
+        }
+
+        private void GetDataFromFile()
+        {
+            _model.GetDataFromFile((list, error) =>
+            {
+                if (error == null)
+                {
+                    // Создаем коллекцию с данными
+                    CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
+                    // Обновляем статистику
+                    UpdateStatistics();
+                    // Оповещаем о создании коллекции
+                    NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
+                }
+                else
+                {
+                    // Оповещаем если были ошибки
+                    NotificationPlainText(_headerNotificationError, error.Message);
+                }
+            }, _files.FileInput);
         }
 
         private async void NotificationPlainText(string header, string message)
@@ -309,7 +362,7 @@ namespace GeoCoding
 
         private void UpdateStatistics()
         {
-            if(_collectionGeoCod!=null && _collectionGeoCod.Count>0)
+            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
             {
                 _model.UpdateStatistic((s, e) =>
                 {
@@ -318,7 +371,7 @@ namespace GeoCoding
                         Statistics = s;
                     }
                 }, _collectionGeoCod);
-           }
+            }
         }
     }
 }

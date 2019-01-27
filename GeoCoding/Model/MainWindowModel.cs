@@ -59,7 +59,7 @@ namespace GeoCoding
         /// Метод для получения(выбора) файла для сохранения данных
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: полное имя файла и ошибка</param>
-        public void SetFileForSave(Action<string, Exception> callback)
+        public void SetFileForSave(Action<string, Exception> callback, string defaultName = "")
         {
             Exception error = null;
             string file = string.Empty;
@@ -68,7 +68,7 @@ namespace GeoCoding
             {
                 file = f;
                 error = e;
-            });
+            }, defaultName);
 
             callback(file, error);
         }
