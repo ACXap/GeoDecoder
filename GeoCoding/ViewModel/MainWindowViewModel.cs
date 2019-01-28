@@ -18,9 +18,33 @@ namespace GeoCoding
         /// </summary>
         private const string _headerNotificationError = "Ошибка";
         /// <summary>
+        /// Заголовок оповещения с отмененной операцией
+        /// </summary>
+        private const string _headerNotificationCancel = "Обработка прекращена";
+        /// <summary>
         /// Заголовок оповещения по завершению обработки данных
         /// </summary>
         private const string _headerNotificationDataProcessed = "Данные обработаны";
+        /// <summary>
+        /// Заголовок оповещения по завершению обработки данных
+        /// </summary>
+        private const string _headerNotificationSaveData = "Сохранение файла";
+        /// <summary>
+        /// Сообщение об отмене опрерации
+        /// </summary>
+        private const string _errorCancel = "Операция была отменена.";
+        /// <summary>
+        /// Сообщение об успешности записи в файл
+        /// </summary>
+        private const string _messageSaveData ="Сохранение данных в файл завершено успешно";
+        /// <summary>
+        /// Сообщение об отмене опрерации
+        /// </summary>
+        private const string _messageCancel = "Процеес завершен на:";
+        /// <summary>
+        /// Сообщение об отмене опрерации
+        /// </summary>
+        private const string _messageCancelEntity = "элементе";
         /// <summary>
         /// Всего адресов
         /// </summary>
@@ -229,7 +253,7 @@ namespace GeoCoding
                             if (error == null)
                             {
                               // Оповещаем о успешности записи
-                                NotificationPlainText("Сохранение файла", "Сохранение данных в файл завершено успешно");
+                                NotificationPlainText(_headerNotificationSaveData, _messageSaveData);
                             }
                             else
                             {
@@ -305,15 +329,15 @@ namespace GeoCoding
                                 // Оповещаем о завершении получении координат
                                 NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {_collectionGeoCod.Count}");
                             }
-                            else if (e.Message == "Операция была отменена.")
+                            else if (e.Message == _errorCancel)
                             {
                               // Оповещаем если сами отменили
-                                NotificationPlainText("Обработка прекращена", e.Message);
+                                NotificationPlainText(_headerNotificationCancel, e.Message);
                             }
                             else
                             {
                                 // Оповещаем если были ошибки и номер на котором была остановка
-                                NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r Процеес завершен на: {i} элементе");
+                                NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r {_messageCancel} {i} {_messageCancelEntity}");
                             }
 
                             // Прекращаем отображение
