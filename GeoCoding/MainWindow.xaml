@@ -15,15 +15,15 @@
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
     mc:Ignorable="d">
-<!--Ресурсы окна, в основном конверторы-->
+    <!--  Ресурсы окна, в основном конверторы  -->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Controls:MetroWindow.Resources>
-<!--Датаконтекст/ViewModel окна -->
+    <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />
     </Controls:MetroWindow.DataContext>
-<!--Иконка приложения с конткст меню-->
+    <!--  Иконка приложения с конткст меню  -->
     <Controls:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Source="geo.ico">
@@ -36,7 +36,7 @@
         </DataTemplate>
     </Controls:MetroWindow.IconTemplate>
 
-    <!--Основная панель контролов-->
+    <!--  Основная панель контролов  -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -50,10 +50,10 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <!--  Вкладки Файл, БД -->
+            <!--  Вкладки Файл, БД  -->
             <TabControl Grid.Column="0" Controls:TabControlHelper.Underlined="SelectedTabItem">
 
-                <!--Работа с файлами-->
+                <!--  Работа с файлами  -->
                 <TabItem Header="Файлы">
                     <Border>
                         <Grid Margin="5">
@@ -63,7 +63,7 @@
                                 <ColumnDefinition Width="3*" />
                             </Grid.ColumnDefinitions>
 
-                            <!--Панель работы с входным файлом-->
+                            <!--  Панель работы с входным файлом  -->
                             <Border
                                 Grid.Column="0"
                                 Padding="5"
@@ -75,7 +75,7 @@
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
-                                    <!-- Имя входного файла с данными-->
+                                    <!--  Имя входного файла с данными  -->
                                     <TextBox
                                         Grid.Row="0"
                                         Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
@@ -84,41 +84,39 @@
                                         Template="{StaticResource TextBoxWithControl}"
                                         Text="{Binding Files.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                                        <!--Управление входным файлом-->
-                                      <Grid Grid.Row="1">
+                                    <!--  Управление входным файлом  -->
+                                    <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
-                                          <ColumnDefinition Width="auto"/>
-                                          <ColumnDefinition Width="*"/>
-                                          <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <!--Кнопка получения данных-->
-                                          <Button
-                                              Grid.Column="0"
-                                              HorizontalAlignment="Left"
-                                              Command="{Binding CommandGetDataFromFile}"
-                                              Content="Получить данные"
-                                              Style="{StaticResource ButtonMainStyle}" />
+                                        <!--  Кнопка получения данных  -->
+                                        <Button
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Left"
+                                            Command="{Binding CommandGetDataFromFile}"
+                                            Content="Получить данные"
+                                            Style="{StaticResource ButtonMainStyle}" />
 
-                                      <!--Настройки для получения данных-->
-                                      <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <!--  Настройки для получения данных  -->
+                                        <StackPanel Grid.Column="1" Orientation="Vertical">
 
-                                        <!-- Выбор входного файла на ФТП-сервере-->
-                                        <CheckBox
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
-                                            Content="Файл на FTP сервере"
-                                            IsChecked="{Binding Files.IsFileInputOnFTP}" />
+                                            <!--  Выбор входного файла на ФТП-сервере  -->
+                                            <CheckBox
+                                                Margin="5"
+                                                Content="Файл на FTP сервере"
+                                                IsChecked="{Binding Files.IsFileInputOnFTP}" />
 
-                                            <!-- После выбора файла с данными, данные получаем сразу-->
-                                        <CheckBox
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
-                                            Content="Данные получить сразу"
-                                            IsChecked="{Binding CanGetDataOnce}" />
-                                      </StackPanel>
+                                            <!--  После выбора файла с данными, данные получаем сразу  -->
+                                            <CheckBox
+                                                Margin="5,0,5,0"
+                                                Content="Данные получить сразу"
+                                                IsChecked="{Binding CanGetDataOnce}" />
+                                        </StackPanel>
 
-                                      <!-- Выбор файла с данными, открываем проводник-->
+                                        <!--  Выбор файла с данными, открываем проводник  -->
                                         <Button
                                             Grid.Column="2"
                                             HorizontalAlignment="Right"
@@ -126,25 +124,25 @@
                                             Command="{Binding CommandGetFile}"
                                             Content="Выбрать файл с данными"
                                             Style="{StaticResource ButtonMainStyle}" />
-                                      </Grid>
+                                    </Grid>
                                 </Grid>
                             </Border>
 
-                            <!--Панель работы с выходным файлом-->
+                            <!--  Панель работы с выходным файлом  -->
                             <Border
                                 Grid.Column="2"
                                 Padding="5"
                                 BorderBrush="{DynamicResource AccentColorBrush}"
                                 BorderThickness="1">
 
-                                <!--Панель работы с выходным файлом-->
+                                <!--  Панель работы с выходным файлом  -->
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
-                                    <!--Файл для сохранения-->
+                                    <!--  Файл для сохранения  -->
                                     <TextBox
                                         Grid.Row="0"
                                         VerticalAlignment="Center"
@@ -154,7 +152,7 @@
                                         Template="{StaticResource TextBoxWithControl}"
                                         Text="{Binding Files.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                                        <!--Управление выходным файлом-->
+                                    <!--  Управление выходным файлом  -->
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto" />
@@ -162,7 +160,7 @@
                                             <ColumnDefinition Width="auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <!--Выбор файла для сохранения-->
+                                        <!--  Выбор файла для сохранения  -->
                                         <Button
                                             Grid.Column="0"
                                             VerticalAlignment="Top"
@@ -170,13 +168,13 @@
                                             Content="Выбрать файл для сохранения"
                                             Style="{StaticResource ButtonMainStyle}" />
 
-                                        <!--Настройки для сохранения-->
+                                        <!--  Настройки для сохранения  -->
                                         <StackPanel
                                             Grid.Column="1"
                                             Margin="5"
                                             Orientation="Vertical">
 
-                                            <!--Копировать ли выходной файл на ФТП-сервер-->
+                                            <!--  Копировать ли выходной файл на ФТП-сервер  -->
                                             <CheckBox
                                                 VerticalAlignment="Center"
                                                 Content="Так же скопировать данный файл на FTP-сервер"
@@ -184,16 +182,16 @@
                                                 IsEnabled="False"
                                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP-сервер (если он настроен на вкладке FTP)" />
 
-                                            <!--Настройка разбиения выходного файла-->
+                                            <!--  Настройка разбиения выходного файла  -->
                                             <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения">
 
-                                              <!--Разбивать ли выходной файл на части (по количеству строк)-->
+                                                <!--  Разбивать ли выходной файл на части (по количеству строк)  -->
                                                 <CheckBox
                                                     Content="Разбить файл на части (по строкам):"
                                                     IsChecked="{Binding Files.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IsEnabled="False" />
 
-                                                <!--Максимальное количесво строк в файле-->
+                                                <!--  Максимальное количесво строк в файле  -->
                                                 <TextBox
                                                     Width="80"
                                                     Margin="5,0,0,0"
@@ -202,7 +200,7 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                         <!--Кнопка сохранения данных-->
+                                        <!--  Кнопка сохранения данных  -->
                                         <Button
                                             Grid.Column="2"
                                             Command="{Binding CommandSaveData}"
@@ -215,7 +213,7 @@
                     </Border>
                 </TabItem>
 
-                <!--Работа с базой данных-->
+                <!--  Работа с базой данных  -->
                 <TabItem Header="БД" IsEnabled="False">
                     <Border BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" />
                 </TabItem>
@@ -229,7 +227,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
-            <!-- Индикация работы геокодирования-->
+            <!--  Индикация работы геокодирования  -->
             <StackPanel
                 Grid.Column="0"
                 HorizontalAlignment="Right"
@@ -238,24 +236,24 @@
                 Orientation="Horizontal"
                 Visibility="{Binding IsStartGeoCoding, Converter={StaticResource BooleanToVisibilityConverter}}">
 
-                <!-- Подпись к индикации процесса геокодирования-->
+                <!--  Подпись к индикации процесса геокодирования  -->
                 <TextBlock
                     FontSize="35"
                     FontWeight="Bold"
                     Foreground="Red"
                     Text="Идет обработка данных..." />
 
-                    <!--Прогрессбар для процесса геокодирования-->
+                <!--  Прогрессбар для процесса геокодирования  -->
                 <Controls:ProgressRing IsActive="{Binding IsStartGeoCoding}" />
             </StackPanel>
 
-            <!--Данные-->
+            <!--  Данные  -->
             <TabControl Grid.Column="0">
                 <TabItem Header="Данные">
                     <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMain}">
                         <DataGrid.Columns>
 
-                            <!-- Колонка статуса-->
+                            <!--  Колонка статуса  -->
                             <DataGridTemplateColumn SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -264,16 +262,16 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!-- Колонка адреса-->
+                            <!--  Колонка адреса  -->
                             <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Address}" />
+                                        <TextBlock Text="{Binding Address}" TextWrapping="Wrap" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--Колонка широта-->
+                            <!--  Колонка широта  -->
                             <DataGridTemplateColumn Header="Широта">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -282,7 +280,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--Колонка долгота-->
+                            <!--  Колонка долгота  -->
                             <DataGridTemplateColumn Header="Долгота">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -291,7 +289,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--Колонка вид объекта-->
+                            <!--  Колонка вид объекта  -->
                             <DataGridTemplateColumn Header="Вид объекта" SortMemberPath="Kind">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -300,7 +298,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--Колонка вид качество-->
+                            <!--  Колонка вид качество  -->
                             <DataGridTemplateColumn Header="Качество" SortMemberPath="Precision">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -309,7 +307,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--Колонка вид качество для базы-->
+                            <!--  Колонка вид качество для базы  -->
                             <DataGridTemplateColumn Header="Качество - Qcode" SortMemberPath="Qcode">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -323,7 +321,7 @@
                 <TabItem Header="Ошибки" />
             </TabControl>
 
-            <!--Статистика и кнопка запуска геокодирования-->
+            <!--  Статистика и кнопка запуска геокодирования  -->
             <Grid Grid.Column="1" Width="200">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -331,26 +329,26 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <!--Статистика-->
+                <!--  Статистика  -->
                 <GroupBox Margin="3" Header="Статистика">
                     <uc:Statistics />
                 </GroupBox>
 
-                <!--Запуск геокодирования-->
+                <!--  Запуск геокодирования  -->
                 <Button Grid.Row="1" Style="{StaticResource ButtonStopStart}" />
 
-                <!--Настройки геокодирования-->
+                <!--  Настройки геокодирования  -->
                 <StackPanel Grid.Row="2" Orientation="Vertical">
 
-                  <!-- Геокодировать все объекты в таблице данных-->
-                  <CheckBox Content="Геокодировать все"/>
+                    <!--  Геокодировать все объекты в таблице данных  -->
+                    <CheckBox Margin="10,2,2,5" Content="Все" />
 
-                  <!-- Геокодировать только объекты со статусом "Ошибка"-->
-                  <CheckBox Content="Геокодировать с ошибками"/>
+                    <!--  Геокодировать только объекты со статусом "Ошибка"  -->
+                    <CheckBox Margin="10,2,2,5" Content="С ошибками" />
 
-                  <!-- Геокодировать только объекты со статусом "Негеокодирован"-->
-                  <CheckBox Content="Геокодировать негеокодированные"/>
-              </StackPanel>
+                    <!--  Геокодировать только объекты со статусом "Негеокодирован"  -->
+                    <CheckBox Margin="10,2,2,5" Content="Негеокодированные" />
+                </StackPanel>
             </Grid>
         </Grid>
     </Grid>

@@ -35,7 +35,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения значения расположен ли файл на ФТП-сервере
         /// </summary>
-        private bool _isFileInputOnFTP = false
+        private bool _isFileInputOnFTP = false;
 
         /// <summary>
         /// Имя файла с данными

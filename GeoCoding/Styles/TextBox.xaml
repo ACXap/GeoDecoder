@@ -6,22 +6,26 @@
     <ControlTemplate x:Key="TextBoxWithControl" TargetType="{x:Type TextBox}">
         <Grid>
             <TextBox
-                Controls:TextBoxHelper.Watermark="{TemplateBinding Controls:TextBoxHelper.Watermark}" VerticalContentAlignment="Center"
-                Text="{TemplateBinding Text}" Style="{TemplateBinding Style}" x:Name="tb"/>
+                x:Name="tb"
+                VerticalContentAlignment="Center"
+                Controls:TextBoxHelper.Watermark="{TemplateBinding Controls:TextBoxHelper.Watermark}"
+                Style="{TemplateBinding Style}"
+                Text="{TemplateBinding Text}" />
             <Button
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Command="{TemplateBinding Tag}"
                 CommandParameter="{TemplateBinding Text}">
-<Button.Style>
-  <Style TargetType="{x:Type Button}">
-    <Setter Property="Visibility" Value="Visible"/>
-    <Style.Trigger>
-      <Trigger Property="Text" SourceName="tb" Value="{x:Null}">
-        <Setter Property="Visibility" Value="Colapsed"/>
-      </Trigger>
-  </Style>
-</Button.Style>
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <Trigger Property="CommandParameter"  Value="">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
                 <Button.Template>
                     <ControlTemplate>
                         <TextBlock
