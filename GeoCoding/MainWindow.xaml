@@ -15,12 +15,15 @@
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
     mc:Ignorable="d">
+<!--Ресурсы окна, в основном конверторы-->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Controls:MetroWindow.Resources>
+<!--Датаконтекст/ViewModel окна -->
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />
     </Controls:MetroWindow.DataContext>
+<!--Иконка приложения с конткст меню-->
     <Controls:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Source="geo.ico">
@@ -71,6 +74,8 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
+
+                                    <!-- Имя входного файла с данными-->
                                     <TextBox
                                         Grid.Row="0"
                                         Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
@@ -94,17 +99,23 @@
 
                                       <!--Настройки для получения данных-->
                                       <StackPanel Grid.Column="1" Orientation="Horizontal">
+
+                                        <!-- Выбор входного файла на ФТП-сервере-->
                                         <CheckBox
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
                                             Content="Файл на FTP сервере"
                                             IsChecked="{Binding}" />
+
+                                            <!-- После выбора файла с данными, данные получаем сразу-->
                                         <CheckBox
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
                                             Content="Данные получить сразу"
                                             IsChecked="{Binding CanGetDataOnce}" />
                                       </StackPanel>
+
+                                      <!-- Выбор файла с данными, открываем проводник-->
                                         <Button
                                             Grid.Column="2"
                                             HorizontalAlignment="Right"
@@ -183,7 +194,6 @@
                                                     IsEnabled="{Binding Files.CanBreakFileOutput}"
                                                     Text="{Binding Files.MaxSizePart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </StackPanel>
-
                                         </StackPanel>
 
                                          <!--Кнопка сохранения данных-->
@@ -221,11 +231,15 @@
                 Panel.ZIndex="1"
                 Orientation="Horizontal"
                 Visibility="{Binding IsStartGeoCoding, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                <!-- Подпись к индикации процесса геокодирования-->
                 <TextBlock
                     FontSize="35"
                     FontWeight="Bold"
                     Foreground="Red"
                     Text="Идет обработка данных..." />
+
+                    <!--Прогрессбар для процесса геокодирования-->
                 <Controls:ProgressRing IsActive="{Binding IsStartGeoCoding}" />
             </StackPanel>
 
@@ -314,7 +328,11 @@
 
                 <!--Настройки геокодирования-->
                 <StackPanel Grid.Row="2" Orientation="Vertical">
+
+                  <!-- Геокодировать все объекты в таблице данных-->
                   <CheckBox Content="Геокодировать все"/>
+
+                  <!-- Геокодировать только объекты со статусом ""Ошибка"-->
                   <CheckBox Content="Геокодировать с ошибками"/>
               </StackPanel>
             </Grid>
