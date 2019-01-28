@@ -11,7 +11,7 @@ namespace GeoCoding
     {
         #region PrivateConst
         /// <summary>
-        /// Заголовок оповещения с ошибками 
+        /// Заголовок оповещения с ошибками
         /// </summary>
         private const string _headerNotificationError = "Ошибка";
         /// <summary>
@@ -323,6 +323,9 @@ namespace GeoCoding
 
         #endregion PublicCommands
 
+        /// <summary>
+        /// Конструктор по умолчанию
+        /// </summary>
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
@@ -334,6 +337,9 @@ namespace GeoCoding
             });
         }
 
+        /// <summary>
+        /// Метод для получения данных из файла
+        /// </summary>
         private void GetDataFromFile()
         {
             _model.GetDataFromFile((list, error) =>
@@ -361,11 +367,19 @@ namespace GeoCoding
             }, _files.FileInput);
         }
 
+        /// <summary>
+        /// Метод для оповещения о выполенных процессах
+        /// </summary>
+        /// <param name="header">Заголовок оповещения</param>
+        /// <param name="message">Сообщение оповещения</param>
         private async void NotificationPlainText(string header, string message)
         {
             await dialogCoordinator.ShowMessageAsync(this, header, message);
         }
 
+        /// <summary>
+        /// Метод для получения статистики
+        /// </summary>
         private void UpdateStatistics()
         {
             if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)

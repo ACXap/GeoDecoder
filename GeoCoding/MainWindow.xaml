@@ -83,6 +83,8 @@
                                         Tag="{Binding CommandOpenFolder}"
                                         Template="{StaticResource TextBoxWithControl}"
                                         Text="{Binding Files.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+                                        <!--Управление входным файлом-->
                                       <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                           <ColumnDefinition Width="auto"/>
@@ -151,6 +153,7 @@
                                         Template="{StaticResource TextBoxWithControl}"
                                         Text="{Binding Files.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
+                                        <!--Управление выходным файлом-->
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto" />
@@ -179,6 +182,8 @@
                                                 IsChecked="{Binding Files.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
                                                 IsEnabled="False"
                                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP-сервер (если он настроен на вкладке FTP)" />
+
+                                            <!--Настройка разбиения выходного файла-->
                                             <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения">
 
                                               <!--Разбивать ли выходной файл на части (по количеству строк)-->

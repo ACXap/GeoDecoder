@@ -59,6 +59,7 @@ namespace GeoCoding
         /// Метод для получения(выбора) файла для сохранения данных
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: полное имя файла и ошибка</param>
+        /// <param name="defaultName">Имя файла по умолчанию</param>
         public void SetFileForSave(Action<string, Exception> callback, string defaultName = "")
         {
             Exception error = null;
@@ -228,11 +229,19 @@ namespace GeoCoding
             callback(error);
         }
 
+        /// <summary>
+        /// Метод остановки процесса
+        /// </summary>
         public void StopGet()
         {
             _cts.Cancel();
         }
 
+        /// <summary>
+        /// Метод для открытия папки
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром статистика, ошибка</param>
+        /// <param name="data">Множество объектов по которым считается статистика</param>
         public async void UpdateStatistic(Action<Statistics, Exception> callback, IEnumerable<EntityGeoCod> data)
         {
             Exception error = null;
