@@ -371,6 +371,18 @@ namespace GeoCoding
 
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private FTPSettings _ftpSettings;
+        public FTPSettings FTPSettings
+        {
+            get => _ftpSettings;
+            set => Set(ref _ftpSettings, value);
+        }
+
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -379,6 +391,7 @@ namespace GeoCoding
             _model = new MainWindowModel();
             Files = new FilesSettings();
             GeoCodSettings = new GeoCodSettings();
+            FTPSettings = new FTPSettings();
 
             Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
             {

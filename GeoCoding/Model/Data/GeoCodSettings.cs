@@ -9,6 +9,15 @@ namespace GeoCoding
         /// </summary>
         private bool _canGeoCodGetAll = true;
         /// <summary>
+        /// Поле для хранения параметра геокодировать только объекты с ошибками
+        /// </summary>
+        private bool _canGeoCodGetError = false;
+        /// <summary>
+        /// Поле для хранения параметра геокодировать негеокодированные объекты
+        /// </summary>
+        private bool _canGeoCodGetNotGeo = false;
+
+        /// <summary>
         /// Геокодировать все объекты
         /// </summary>
         public bool CanGeoCodGetAll
@@ -18,10 +27,6 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Поле для хранения параметра геокодировать только объекты с ошибками
-        /// </summary>
-        private bool _canGeoCodGetError = false;
-        /// <summary>
         /// Геокодировать только объекты с ошибками
         /// </summary>
         public bool CanGeoCodGetError
@@ -30,10 +35,6 @@ namespace GeoCoding
             set => Set(ref _canGeoCodGetError, value);
         }
 
-        /// <summary>
-        /// Поле для хранения параметра геокодировать негеокодированные объекты
-        /// </summary>
-        private bool _canGeoCodGetNotGeo = false;
         /// <summary>
         /// Геокодировать негеокодированные объекты
         /// </summary>
