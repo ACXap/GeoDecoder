@@ -21,7 +21,6 @@
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />
     </Controls:MetroWindow.DataContext>
-<!-- Иконка приложения с контекстным меню-->
     <Controls:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Source="geo.ico">
@@ -72,8 +71,6 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
-
-                                    <!-- Поле с именем файла с данными-->
                                     <TextBox
                                         Grid.Row="0"
                                         Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
@@ -97,23 +94,17 @@
 
                                       <!--Настройки для получения данных-->
                                       <StackPanel Grid.Column="1" Orientation="Horizontal">
-
-                                        <!--Файл брать с ФТП-сервера-->
                                         <CheckBox
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
                                             Content="Файл на FTP сервере"
                                             IsChecked="{Binding}" />
-
-                                        <!--После выбора файла, данные из файла загружаются сразу-->
                                         <CheckBox
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
                                             Content="Данные получить сразу"
                                             IsChecked="{Binding CanGetDataOnce}" />
                                       </StackPanel>
-
-                                      <!--Кнопка получения данных из выбранного файла-->
                                         <Button
                                             Grid.Column="2"
                                             HorizontalAlignment="Right"
@@ -215,7 +206,7 @@
             </TabControl>
         </Grid>
 
-        <!--  Таблицы с данными, статистика, кнопка запуска геокодирования, настройки геокодирования, индикация процесса  -->
+        <!--  Таблицы с данными, статистика, кнопка запуска геокодирования, индикация процесса  -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -230,15 +221,11 @@
                 Panel.ZIndex="1"
                 Orientation="Horizontal"
                 Visibility="{Binding IsStartGeoCoding, Converter={StaticResource BooleanToVisibilityConverter}}">
-
-                <!--Подпись индикации геокодирования -->
                 <TextBlock
                     FontSize="35"
                     FontWeight="Bold"
                     Foreground="Red"
                     Text="Идет обработка данных..." />
-
-                    <!-- Прогресбар процесса геокодирования-->
                 <Controls:ProgressRing IsActive="{Binding IsStartGeoCoding}" />
             </StackPanel>
 
@@ -329,7 +316,6 @@
                 <StackPanel Grid.Row="2" Orientation="Vertical">
                   <CheckBox Content="Геокодировать все"/>
                   <CheckBox Content="Геокодировать с ошибками"/>
-                  <CheckBox Content="Геокодировать негеокодированные"/>
               </StackPanel>
             </Grid>
         </Grid>
