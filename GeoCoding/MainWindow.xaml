@@ -341,13 +341,22 @@
                 <StackPanel Grid.Row="2" Orientation="Vertical">
 
                     <!--  Геокодировать все объекты в таблице данных  -->
-                    <CheckBox Margin="10,2,2,5" Content="Все" />
+                    <CheckBox
+                        Margin="10,2,2,5"
+                        Content="Все"
+                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" />
 
                     <!--  Геокодировать только объекты со статусом "Ошибка"  -->
-                    <CheckBox Margin="10,2,2,5" Content="С ошибками" />
+                    <CheckBox
+                        Margin="10,2,2,5"
+                        Content="С ошибками"
+                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" />
 
                     <!--  Геокодировать только объекты со статусом "Негеокодирован"  -->
-                    <CheckBox Margin="10,2,2,5" Content="Негеокодированные" />
+                    <CheckBox
+                        Margin="10,2,2,5"
+                        Content="Негеокодированные"
+                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
                 </StackPanel>
             </Grid>
         </Grid>

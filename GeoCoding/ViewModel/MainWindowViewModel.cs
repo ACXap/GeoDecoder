@@ -7,9 +7,9 @@ using System.Collections.ObjectModel;
 
 namespace GeoCoding
 {
-  /// <summary>
-  /// Класс ViewModel для основного окна
-  /// </summary>
+    /// <summary>
+    /// Класс ViewModel для основного окна
+    /// </summary>
     public class MainWindowViewModel : ViewModelBase
     {
         #region PrivateConst
@@ -36,7 +36,7 @@ namespace GeoCoding
         /// <summary>
         /// Сообщение об успешности записи в файл
         /// </summary>
-        private const string _messageSaveData ="Сохранение данных в файл завершено успешно";
+        private const string _messageSaveData = "Сохранение данных в файл завершено успешно";
         /// <summary>
         /// Сообщение об отмене опрерации
         /// </summary>
@@ -252,12 +252,12 @@ namespace GeoCoding
                         {
                             if (error == null)
                             {
-                              // Оповещаем о успешности записи
+                                // Оповещаем о успешности записи
                                 NotificationPlainText(_headerNotificationSaveData, _messageSaveData);
                             }
                             else
                             {
-                              // Оповещаем если были ошибки
+                                // Оповещаем если были ошибки
                                 NotificationPlainText(_headerNotificationError, error.Message);
                             }
                         }, _collectionGeoCod, _files.FileOutput);
@@ -285,11 +285,11 @@ namespace GeoCoding
                         {
                             if (er == null)
                             {
-                              // Оповещаем после окончания геокодирования
+                                // Оповещаем после окончания геокодирования
                             }
                             else
                             {
-                              // Оповещаем если были ошибки
+                                // Оповещаем если были ошибки
                                 NotificationPlainText(_headerNotificationError, er.Message);
                             }
                         }, geocod);
@@ -306,7 +306,7 @@ namespace GeoCoding
                         {
                             if (e != null)
                             {
-                              // Оповещаем если были ошибки
+                                // Оповещаем если были ошибки
                                 NotificationPlainText(_headerNotificationError, e.Message);
                             }
                         }, str);
@@ -319,7 +319,7 @@ namespace GeoCoding
         _commandGetAllGeoCod ?? (_commandGetAllGeoCod = new RelayCommand(
                     () =>
                     {
-                      // Отображаем индикацию работы процесса
+                        // Отображаем индикацию работы процесса
                         IsStartGeoCoding = true;
 
                         _model.GetAllGeoCod((r, i, e) =>
@@ -331,7 +331,7 @@ namespace GeoCoding
                             }
                             else if (e.Message == _errorCancel)
                             {
-                              // Оповещаем если сами отменили
+                                // Оповещаем если сами отменили
                                 NotificationPlainText(_headerNotificationCancel, e.Message);
                             }
                             else
@@ -354,11 +354,22 @@ namespace GeoCoding
         _commandStopGeoCoding ?? (_commandStopGeoCoding = new RelayCommand(
                     () =>
                     {
-                      // Останавливаем процесс
+                        // Останавливаем процесс
                         _model.StopGet();
                     }));
 
         #endregion PublicCommands
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private GeoCodSettings _geoCodSettings;
+        public GeoCodSettings GeoCodSettings
+        {
+            get => _geoCodSettings;
+            set => Set(ref _geoCodSettings, value);
+
+        }
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -367,10 +378,11 @@ namespace GeoCoding
         {
             _model = new MainWindowModel();
             Files = new FilesSettings();
+            GeoCodSettings = new GeoCodSettings();
 
             Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
             {
-              // Обновляем статистику
+                // Обновляем статистику
                 UpdateStatistics();
             });
         }

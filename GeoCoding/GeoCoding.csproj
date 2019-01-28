@@ -82,6 +82,7 @@
     <Compile Include="ExMethods\ExtensionMethods.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
     <Compile Include="Model\Data\FilesSettings.cs" />
+    <Compile Include="Model\Data\GeoCodSettings.cs" />
     <Compile Include="Model\Data\KindType.cs" />
     <Compile Include="Model\Data\PrecisionType.cs" />
     <Compile Include="Model\Data\Statistics.cs" />
