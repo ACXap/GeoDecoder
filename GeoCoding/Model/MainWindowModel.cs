@@ -307,7 +307,7 @@ namespace GeoCoding
                 }
                 else
                 {
-                  data.Qcode = 2
+                  data.Qcode = 2;
                 }
             }
         }
