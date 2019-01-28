@@ -35,7 +35,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения значения расположен ли файл на ФТП-сервере
         /// </summary>
-        private bool _isFileOnFTP = false
+        private bool _isFileInputOnFTP = false
 
         /// <summary>
         /// Имя файла с данными
@@ -85,10 +85,10 @@ namespace GeoCoding
         /// <summary>
         /// Расположен ли файл на ФТП-сервере
         /// </summary>
-        public bool IsFileOnFTP
+        public bool IsFileInputOnFTP
         {
-            get => _isFileOnFTP;
-            set => Set("IsFileOnFTP", ref _isFileOnFTP, value);
+            get => _isFileInputOnFTP;
+            set => Set("IsFileInputOnFTP", ref _isFileInputOnFTP, value);
         }
     }
 }
