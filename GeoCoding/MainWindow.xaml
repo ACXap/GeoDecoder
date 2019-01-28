@@ -248,13 +248,8 @@
                 <TabItem Header="Данные">
                     <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMain}">
                         <DataGrid.Columns>
-                            <!--<DataGridTemplateColumn Header="GlobalID" SortMemberPath="GlobalID">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding GlobalID}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>-->
+
+                            <!-- Колонка статуса-->
                             <DataGridTemplateColumn SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -262,6 +257,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+
+                            <!-- Колонка адреса-->
                             <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -269,6 +266,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+
+                            <!--Колонка широта-->
                             <DataGridTemplateColumn Header="Широта">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -276,6 +275,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+
+                            <!--Колонка долгота-->
                             <DataGridTemplateColumn Header="Долгота">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -283,6 +284,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+
+                            <!--Колонка вид объекта-->
                             <DataGridTemplateColumn Header="Вид объекта" SortMemberPath="Kind">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -290,6 +293,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+
+                            <!--Колонка вид качество-->
                             <DataGridTemplateColumn Header="Качество" SortMemberPath="Precision">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -297,6 +302,8 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
+
+                            <!--Колонка вид качество для базы-->
                             <DataGridTemplateColumn Header="Качество - Qcode" SortMemberPath="Qcode">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
