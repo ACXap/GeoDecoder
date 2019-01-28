@@ -293,6 +293,10 @@ namespace GeoCoding
                 {
                     data.Qcode = 1;
                 }
+                else
+                {
+                  data.Qcode = 2
+                }
             }
         }
 
