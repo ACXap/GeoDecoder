@@ -7,7 +7,20 @@ namespace GeoCoding
   /// </summary>
   public class GeoCodingSettings : ViewModelBase
   {
-  
+  /// <summary>
+  /// Поле для хранения значения геокодировать все объекты
+  /// </summary>
+  private bool _canGeoCodAll = True
+
+  /// <summary>
+  /// Геокодировать все объекты
+  /// </summary>
+  public bool CanGeoCodAll
+  {
+      get => _canGeoCodAll;
+      set => Set("canGeoCodAll", ref _canGeoCodAll, value);
+  }
+
   }
 }
 }
