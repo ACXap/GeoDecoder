@@ -169,9 +169,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="geo.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\GeoCoding.FileService\GeoCoding.FileService.csproj">
       <Project>{88E8217A-88BB-4123-95A1-8323F1F99478}</Project>
       <Name>GeoCoding.FileService</Name>
@@ -184,6 +181,9 @@
       <Project>{fed4d728-e13c-482c-8795-12484e8d377b}</Project>
       <Name>GeoCoding.Resources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="geo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
