@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace GeoCoding
 {
+  /// <summary>
+  /// Класс модель(работа с модулями файл, геокодирование, база данных) для основного окна
+  /// </summary>
     public class MainWindowModel
     {
         #region PrivateConst
