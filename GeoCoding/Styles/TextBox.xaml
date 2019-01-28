@@ -7,12 +7,21 @@
         <Grid>
             <TextBox
                 Controls:TextBoxHelper.Watermark="{TemplateBinding Controls:TextBoxHelper.Watermark}" VerticalContentAlignment="Center"
-                Text="{TemplateBinding Text}" Style="{TemplateBinding Style}" />
+                Text="{TemplateBinding Text}" Style="{TemplateBinding Style}" x:Name="tb"/>
             <Button
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Command="{TemplateBinding Tag}"
                 CommandParameter="{TemplateBinding Text}">
+<Button.Style>
+  <Style TargetType="{x.Type Button}">
+    <Setter Property="Visibility" Value="Visibility"/>
+    <Style.Trigger>
+      <Trigger Property="Text" Source="tb" Value="{x.Null}">
+        <Setter Property="Visibility" Value="Colapsed"/>
+      </Trigger>
+  </Style>
+</Button.Style>
                 <Button.Template>
                     <ControlTemplate>
                         <TextBlock
