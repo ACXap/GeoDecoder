@@ -14,10 +14,10 @@
                 Command="{TemplateBinding Tag}"
                 CommandParameter="{TemplateBinding Text}">
 <Button.Style>
-  <Style TargetType="{x.Type Button}">
-    <Setter Property="Visibility" Value="Visibility"/>
+  <Style TargetType="{x:Type Button}">
+    <Setter Property="Visibility" Value="Visible"/>
     <Style.Trigger>
-      <Trigger Property="Text" Source="tb" Value="{x.Null}">
+      <Trigger Property="Text" Source="tb" Value="{x:Null}">
         <Setter Property="Visibility" Value="Colapsed"/>
       </Trigger>
   </Style>
