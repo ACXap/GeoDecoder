@@ -1,0 +1,13 @@
+using GalaSoft.MvvmLight;
+
+namespace GeoCoding
+{
+  /// <summary>
+  /// Класс для хранения настроек о входном и выходном файле
+  /// </summary>
+  public class GeoCodingSettings : ViewModelBase
+  {
+  
+  }
+}
+}
