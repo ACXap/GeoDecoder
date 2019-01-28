@@ -169,6 +169,8 @@
                                             Grid.Column="1"
                                             Margin="5"
                                             Orientation="Vertical">
+
+                                            <!--Копировать ли выходной файл на ФТП-сервер-->
                                             <CheckBox
                                                 VerticalAlignment="Center"
                                                 Content="Так же скопировать данный файл на FTP-сервер"
@@ -176,10 +178,14 @@
                                                 IsEnabled="False"
                                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP-сервер (если он настроен на вкладке FTP)" />
                                             <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения">
+
+                                              <!--Разбивать ли выходной файл на части (по количеству строк)-->
                                                 <CheckBox
                                                     Content="Разбить файл на части (по строкам):"
                                                     IsChecked="{Binding Files.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IsEnabled="False" />
+
+                                                <!--Максимальное количесво строк в файле-->
                                                 <TextBox
                                                     Width="80"
                                                     Margin="5,0,0,0"
