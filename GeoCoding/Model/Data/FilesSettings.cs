@@ -33,6 +33,11 @@ namespace GeoCoding
         private bool _canBreakFileOutput = false;
 
         /// <summary>
+        /// Поле для хранения значения расположен ли файл на ФТП-сервере
+        /// </summary>
+        private bool _isFileOnFTP = false
+
+        /// <summary>
         /// Имя файла с данными
         /// </summary>
         public string FileInput
@@ -75,6 +80,15 @@ namespace GeoCoding
         {
             get => _canBreakFileOutput;
             set => Set("CanBreakFileOutput", ref _canBreakFileOutput, value);
+        }
+
+        /// <summary>
+        /// Расположен ли файл на ФТП-сервере
+        /// </summary>
+        public bool IsFileOnFTP
+        {
+            get => _isFileOnFTP;
+            set => Set("IsFileOnFTP", ref _isFileOnFTP, value);
         }
     }
 }

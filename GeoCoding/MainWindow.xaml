@@ -108,7 +108,7 @@
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Bottom"
                                             Content="Файл на FTP сервере"
-                                            IsChecked="{Binding}" />
+                                            IsChecked="{Binding Files.IsFileInputOnFTP}" />
 
                                             <!-- После выбора файла с данными, данные получаем сразу-->
                                         <CheckBox
