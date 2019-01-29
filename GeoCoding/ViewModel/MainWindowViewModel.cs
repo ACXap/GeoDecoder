@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.Windows;
 using System.Collections.ObjectModel;
 
 namespace GeoCoding
@@ -376,7 +377,6 @@ namespace GeoCoding
 
         }
 
-
         /// <summary>
         ///
         /// </summary>
@@ -386,6 +386,18 @@ namespace GeoCoding
             get => _ftpSettings;
             set => Set(ref _ftpSettings, value);
         }
+
+
+private RelayCommand<EntityGeoCod> _commandCopyAddress;
+/// <summary>
+/// Команда копирования адреса в буфер
+/// </summary>
+public RelayCommand<EntityGeoCod> CommandCopyAddress =>
+_commandCopyAddress ?? (_commandCopyAddress = new RelayCommand<EntityGeoCod>(
+            obj =>
+            {
+                Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
+            }));
 
 
         /// <summary>

@@ -8,6 +8,11 @@
             Command="{Binding DataContext.CommandGetGeoCod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
             CommandParameter="{Binding}"
             Header="Выполнить геокодирование" />
+            <Separator/>
+            <MenuItem
+                Command="{Binding DataContext.CommandCopyAddress, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+                CommandParameter="{Binding}"
+                Header="Копировать адрес" />
     </ContextMenu>
 
     <Style
