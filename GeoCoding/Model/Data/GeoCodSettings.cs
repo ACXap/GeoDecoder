@@ -43,5 +43,25 @@ namespace GeoCoding
             get => _canGeoCodGetNotGeo;
             set => Set(ref _canGeoCodGetNotGeo, value);
         }
+
+public bool _canSaveDataAsTemp = true;
+        /// <summary>
+        /// Сохранить все данные геокодирования в полном объеме
+        /// </summary>
+        public bool CanSaveDataAsTemp
+        {
+            get => _canGeoCodGetNotGeo;
+            set => Set(ref _canGeoCodGetNotGeo, value);
+        }
+
+public bool _canSaveDataAsFinished = false;
+        /// <summary>
+        /// Сохранить все данные геокодирования в формате для базы данных
+        /// </summary>
+        public bool CanSaveDataAsFinished
+        {
+            get => _canGeoCodGetNotGeo;
+            set => Set(ref _canGeoCodGetNotGeo, value);
+        }
     }
 }
