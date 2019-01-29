@@ -468,6 +468,7 @@ namespace GeoCoding
                 {
                     SetError(data, errorMsg);
                 }
+                data.DateTimeGeoCod = DateTime.Now;
 
             }, data.Address);
             return error;

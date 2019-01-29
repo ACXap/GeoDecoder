@@ -87,6 +87,16 @@ namespace GeoCoding
             set => Set("Status", ref _status, value, true);
         }
 
+        private DateTime _dateTimeGeoCod;
+        /// <summary>
+        /// Дата и время геокодирования
+        /// </summary>
+        public DateTime DataTimeGeoCod
+        {
+            get => _dateTimeGeoCod;
+            set => Set("DataTimeGeoCod", ref _dateTimeGeoCod, value, true);
+        }
+
         private KindType _kind;
         /// <summary>
         /// Тип объекта

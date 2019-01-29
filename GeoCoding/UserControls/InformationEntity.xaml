@@ -1,10 +1,10 @@
 ﻿<UserControl x:Class="GeoCoding.UserControls.InformationEntity"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:GeoCoding.UserControls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -13,6 +13,7 @@
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -33,9 +34,10 @@
         <TextBlock Grid.Column="2" Grid.Row="5" Text="{Binding Qcode}"/>
         <TextBlock Grid.Column="2" Grid.Row="6" Text="{Binding Error}"/>
         <TextBlock Grid.Column="2" Grid.Row="7" Text="{Binding Status}"/>
-        <TextBlock Grid.Column="2" Grid.Row="8" Text="{Binding Kind}"/>
-        <TextBlock Grid.Column="2" Grid.Row="9" Text="{Binding Precision}"/>
-        <TextBlock Grid.Column="2" Grid.Row="10" Text="{Binding CountResult}"/>
+        <TextBlock Grid.Column="2" Grid.Row="8" Text="{Binding DataTimeGeoCod}"/>
+        <TextBlock Grid.Column="2" Grid.Row="9" Text="{Binding Kind}"/>
+        <TextBlock Grid.Column="2" Grid.Row="10" Text="{Binding Precision}"/>
+        <TextBlock Grid.Column="2" Grid.Row="11" Text="{Binding CountResult}"/>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="GlobalID"/>
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Адрес"/>
@@ -45,8 +47,9 @@
         <TextBlock Grid.Column="0" Grid.Row="5" Text="Качество"/>
         <TextBlock Grid.Column="0" Grid.Row="6" Text="Ошибка"/>
         <TextBlock Grid.Column="0" Grid.Row="7" Text="Статус"/>
-        <TextBlock Grid.Column="0" Grid.Row="8" Text="Тип объекта"/>
-        <TextBlock Grid.Column="0" Grid.Row="9" Text="Качество"/>
-        <TextBlock Grid.Column="0" Grid.Row="10" Text="Кол.результатов"/>
+        <TextBlock Grid.Column="2" Grid.Row="8" Text="Дата и время"/>
+        <TextBlock Grid.Column="0" Grid.Row="9" Text="Тип объекта"/>
+        <TextBlock Grid.Column="0" Grid.Row="10" Text="Качество"/>
+        <TextBlock Grid.Column="0" Grid.Row="11" Text="Кол.результатов"/>
     </Grid>
 </UserControl>

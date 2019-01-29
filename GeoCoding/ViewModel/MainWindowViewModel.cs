@@ -387,31 +387,27 @@ namespace GeoCoding
             set => Set(ref _ftpSettings, value);
         }
 
-
-private RelayCommand<EntityGeoCod> _commandCopyAddress;
-/// <summary>
-/// Команда копирования адреса в буфер
-/// </summary>
-public RelayCommand<EntityGeoCod> CommandCopyAddress =>
-_commandCopyAddress ?? (_commandCopyAddress = new RelayCommand<EntityGeoCod>(
+            private RelayCommand<EntityGeoCod> _commandCopyAddress;
+            /// <summary>
+            /// Команда копирования адреса в буфер
+            /// </summary>
+            public RelayCommand<EntityGeoCod> CommandCopyAddress =>
+            _commandCopyAddress ?? (_commandCopyAddress = new RelayCommand<EntityGeoCod>(
             obj =>
             {
                 Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
             }));
 
-private RelayCommand<EntityGeoCod> _commandOpenInBrowser;
-
-/// <summary>
-/// Команда открыть адрес в браузере
-/// </summary>
-public RelayCommand<EntityGeoCod> CommandOpenInBrowser =>
-_commandOpenInBrowser ?? (_commandOpenInBrowser = new RelayCommand<EntityGeoCod>(
+            private RelayCommand<EntityGeoCod> _commandOpenInBrowser;
+          /// <summary>
+          /// Команда открыть адрес в браузере
+          /// </summary>
+          public RelayCommand<EntityGeoCod> CommandOpenInBrowser =>
+            _commandOpenInBrowser ?? (_commandOpenInBrowser = new RelayCommand<EntityGeoCod>(
             obj =>
             {
-System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode="+ obj.Address);
-
+                System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode="+ obj.Address);
             }));
-
 
         /// <summary>
         /// Конструктор по умолчанию
