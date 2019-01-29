@@ -3,55 +3,58 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Data;
 
-public class ConverterPrecisionTypeToString : IValueConverter
+namespace GeoCoding
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public class ConverterPrecisionTypeToString : IValueConverter
     {
-        string str = string.Empty;
-        if(value!=null)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-          var pt = (PrecisionType)value;
+            string str = string.Empty;
+            if(value!=null)
+            {
+              var pt = (PrecisionType)value;
 
-          switch (pt)
-          {
-            case "PrecisionType.None":
-              str= "Негеокодировано"
-            break;
+              switch (pt)
+              {
+                case PrecisionType.None:
+                  str= "Негеокодировано";
+                break;
 
-            case "PrecisionType.Exact":
-              str= "Точное совпадение"
-            break;
+                case PrecisionType.Exact:
+                  str= "Точное совпадение";
+                break;
 
-            case "PrecisionType.Number":
-              str= "Найден дом с номером, но другой корпус, строение"
-            break;
+                case PrecisionType.Number:
+                  str= "Найден дом с номером, но другой корпус, строение";
+                break;
 
-            case "PrecisionType.Near":
-              str= "Найден дом с номером, близким к запрошенному"
-            break;
+                case PrecisionType.Near:
+                  str= "Найден дом с номером, близким к запрошенному";
+                break;
 
-            case "PrecisionType.Range":
-              str= "Найдены приблизительные координаты запрашиваемого дома"
-            break;
+                case PrecisionType.Range:
+                  str= "Найдены приблизительные координаты запрашиваемого дома";
+                break;
 
-            case "PrecisionType.Street":
-              str= "Найдена только улица"
-            break;
+                case PrecisionType.Street:
+                  str= "Найдена только улица";
+                break;
 
-            case "PrecisionType.Other":
-              str= "Не найдена улица, но найден, например, посёлок, район и т.п."
-            break;
+                case PrecisionType.Other:
+                  str= "Не найдена улица, но найден, например, посёлок, район и т.п.";
+                break;
 
-            default:
-              str= "Что-то новое!!!"
-            break;
-          }
+                default:
+                  str= "Что-то новое!!!";
+                break;
+              }
+            }
+            return str;
         }
-        return str;
-    }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return DependencyProperty.UnsetValue;
-    }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+      }
 }

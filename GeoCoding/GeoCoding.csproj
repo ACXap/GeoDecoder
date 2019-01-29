@@ -79,6 +79,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ConverterKintTypeToString.cs" />
+    <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
     <Compile Include="Model\Data\FilesSettings.cs" />

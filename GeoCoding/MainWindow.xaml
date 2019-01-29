@@ -18,6 +18,8 @@
     <!--  Ресурсы окна, в основном конверторы  -->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+<local:ConverterKindTypeToString x:Key="ConverterKindTypeToString"/>
+        <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString"/>
     </Controls:MetroWindow.Resources>
     <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
@@ -293,7 +295,7 @@
                             <DataGridTemplateColumn Header="Вид объекта" SortMemberPath="Kind">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Kind}" />
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -302,7 +304,7 @@
                             <DataGridTemplateColumn Header="Качество" SortMemberPath="Precision">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Precision}" />
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
