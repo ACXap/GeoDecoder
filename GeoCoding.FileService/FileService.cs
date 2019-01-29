@@ -225,5 +225,31 @@ namespace GeoCoding.FileService
 
             callback(error);
         }
+
+        /// <summary>
+        /// Метод для создания папки
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="str">Путь к папке</param>
+        void CreateFolder(Action<Exception> callback, string str)
+        {
+          Exception error= null;
+          try
+          {
+            if(!Directory.Exists(str))
+            {
+                  Directory.CreateDirectory(str);
+            }
+          }
+          catch (Exception ex)
+          {
+            error = ex;
+          }
+
+          callback(error);
+
+
+
+        }
     }
 }

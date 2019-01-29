@@ -25,10 +25,10 @@
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />
     </Controls:MetroWindow.DataContext>
-    <!--  Иконка приложения с конткст меню  -->
+    <!--  Иконка приложения с контекст меню  -->
     <Controls:MetroWindow.IconTemplate>
         <DataTemplate>
-            <Image Source="geo.ico">
+            <Image Source="geo.ico" Margin="2">
                 <Image.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Привет =)" />

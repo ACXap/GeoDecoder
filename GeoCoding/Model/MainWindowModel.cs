@@ -33,12 +33,32 @@ namespace GeoCoding
 
         private readonly IFileService _fileService = new FileService.FileService();
 
-         private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
+        private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
         //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private CancellationTokenSource _cts;
         private bool _isStartUpdateStatistic = false;
+
+        /// <summary>
+        /// Конструктор по умолчанию
+        /// </summary>
+        public MainWindowModel()
+        {
+            string[] nameFolders = new string[]{"Temp", "Input", "Output"};
+            string path = Environment.CurrentDirectory;
+            foreach(var item in nameFolders)
+            {
+              _fileService.СreateFolder((e)=>
+              {
+                if(e==null)
+                {
+
+                }
+              }, $"{path}/{item}");
+            }
+        }
+
 
         /// <summary>
         /// Метод для получения(выбора) файла с данными
