@@ -24,6 +24,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock
             Grid.Row="0"
@@ -91,9 +92,18 @@
             <TextBlock
                 Grid.Row="7"
                 Grid.Column="0"
-                Text="Время выполнения (c.):" />
+                Text="Не найдено:" />
             <TextBlock
                 Grid.Row="7"
+                Grid.Column="2"
+                Text="{Binding Statistics.NotFound}" />
+
+            <TextBlock
+                Grid.Row="8"
+                Grid.Column="0"
+                Text="Время выполнения (c.):" />
+            <TextBlock
+                Grid.Row="8"
                 Grid.Column="2" Text="{Binding Statistics.TimeGeoCod}"/>
     </Grid>
 </UserControl>

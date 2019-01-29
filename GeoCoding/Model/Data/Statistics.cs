@@ -34,6 +34,10 @@
         /// </summary>
         public int Exact { get; set; }
         /// <summary>
+        /// Всего объектов для которых не найдены варианты
+        /// </summary>
+        public int NotFound { get; set; }
+        /// <summary>
         /// Время геокодирования в секундах
         /// </summary>
         public double TimeGeoCod { get; set;}

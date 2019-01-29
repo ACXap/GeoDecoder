@@ -268,7 +268,8 @@ namespace GeoCoding
                             Error = data.Count(x => x.Status == StatusType.Error),
                             House = data.Count(x => x.Kind == KindType.House),
                             Exact = data.Count(x => x.Precision == PrecisionType.Exact),
-                            TimeGeoCod = Math.Ceiling(time)
+                            TimeGeoCod = Math.Ceiling(time),
+                            NotFound = data.Count(x => x.CountResult == 0)
                         };
                     }
                     catch (Exception ex)
