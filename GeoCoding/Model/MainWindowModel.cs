@@ -49,7 +49,7 @@ namespace GeoCoding
             string path = Environment.CurrentDirectory;
             foreach(var item in nameFolders)
             {
-              _fileService.СreateFolder((e)=>
+              _fileService.CreateFolder(e=>
               {
                 if(e==null)
                 {
@@ -58,7 +58,6 @@ namespace GeoCoding
               }, $"{path}/{item}");
             }
         }
-
 
         /// <summary>
         /// Метод для получения(выбора) файла с данными

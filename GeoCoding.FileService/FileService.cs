@@ -231,9 +231,10 @@ namespace GeoCoding.FileService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="str">Путь к папке</param>
-        void CreateFolder(Action<Exception> callback, string str)
+        public void CreateFolder(Action<Exception> callback, string str)
         {
           Exception error= null;
+
           try
           {
             if(!Directory.Exists(str))
@@ -247,9 +248,6 @@ namespace GeoCoding.FileService
           }
 
           callback(error);
-
-
-
         }
     }
 }
