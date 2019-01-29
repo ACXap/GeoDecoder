@@ -203,7 +203,7 @@ namespace GeoCoding
                 _nameColumnOutputFile
             };
 
-            list.AddRange(data.Select(x =>
+            list.AddRange(data.Where(y=>y.Status == StatusType.OK).Select(x =>
             {
                 return $"{x.GlobalID}{_charSplit}{x.Latitude}{_charSplit}{x.Longitude}{_charSplit}{x.Qcode}";
             }));
