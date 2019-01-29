@@ -269,6 +269,7 @@ namespace GeoCoding
                             Exact = data.Count(x => x.Precision == PrecisionType.Exact),
                             NotFound = data.Count(x => x.CountResult == 0)
                         };
+                        // надо переделывать время выполнения. если два раза один и тот же список отправлять, то время очень разное
                         if(statistics.NotGeoCoding == 0)
                         {
                           var time = (data.Max(x=>x.DateTimeGeoCod) - data.Min(x=>x.DateTimeGeoCod)).TotalSeconds;

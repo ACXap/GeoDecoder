@@ -1,0 +1,88 @@
+using System;
+using System.ComponentModel;
+using System.Globalization;
+using System.Windows.Data;
+
+public class ConverterPrecisionTypeToString : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        string str = string.Empty;
+if(value!=null)
+{
+var k = (KindType)value;
+switch (pt)
+{
+  case "PrecisionType.None":
+    str= "Негеокодировано"
+  break;
+
+  case "PrecisionType.House":
+    str= "Дом"
+  break;
+
+  case "PrecisionType.Street":
+    str= "Улица"
+  break;
+
+  case "PrecisionType.Metro":
+    str= "Станция метро"
+  break;
+
+  case "PrecisionType.District":
+    str= "Район города"
+  break;
+
+  case "PrecisionType.Locality":
+    str= "Населённый пункт"
+  break;
+
+  case "PrecisionType.Area":
+    str= "Район / область"
+  break;
+
+  case "PrecisionType.Province":
+    str= "Область"
+  break;
+
+  case "PrecisionType.Country":
+    str= "Страна"
+  break;
+
+  case "PrecisionType.Hydro":
+    str= "Река / озеро / ручей / водохранилище"
+  break;
+
+  case "PrecisionType.Rainway":
+    str= "Ж.Д.станция"
+  break;
+
+  case "PrecisionType.Route":
+    str= "Линия метро / шоссе / ж.д.линия"
+  break;
+
+  case "PrecisionType.Vegetation":
+    str= "Лес / парк / сад"
+  break;
+
+  case "PrecisionType.Airport":
+    str= "Аэропорт"
+  break;
+
+  case "PrecisionType.Other":
+    str= "Прочее"
+  break;
+
+  default:
+    str= "Что-то новое!!!"
+  break;
+}
+}
+        return str;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return DependencyProperty.UnsetValue;
+    }
+}

@@ -298,7 +298,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--  Колонка вид качество  -->
+                            <!--  Колонка качество  -->
                             <DataGridTemplateColumn Header="Качество" SortMemberPath="Precision">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -307,8 +307,8 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--  Колонка вид качество для базы  -->
-                            <DataGridTemplateColumn Header="Качество - Qcode" SortMemberPath="Qcode">
+                            <!--  Колонка качество для базы  -->
+                            <DataGridTemplateColumn Header="Qcode" SortMemberPath="Qcode">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding Qcode}" />
@@ -321,7 +321,7 @@
                 <TabItem Header="Ошибки" />
             </TabControl>
 
-            <!--  Статистика и кнопка запуска геокодирования  -->
+            <!--  Статистика, кнопка запуска геокодирования, настройки геокодирования  -->
             <Grid Grid.Column="1" Width="200">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
