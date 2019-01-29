@@ -1,13 +1,13 @@
 ﻿namespace GeoCoding
 {
-  /// <summary>
-  /// Перечисление статусов геокодирования
-  /// </summary>
+    /// <summary>
+    /// Перечисление статусов геокодирования
+    /// </summary>
     public enum StatusType
     {
-      /// <summary>
-      /// Негеокодирован
-      /// </summary>
+        /// <summary>
+        /// Негеокодирован
+        /// </summary>
         NotGeoCoding,
         /// <summary>
         /// Геокодирован без ошибок

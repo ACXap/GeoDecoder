@@ -1,13 +1,13 @@
 ﻿namespace GeoCoding
 {
-  /// <summary>
-  /// Класс для хранения статистики
-  /// </summary>
+    /// <summary>
+    /// Класс для хранения статистики
+    /// </summary>
     public class Statistics
     {
-      /// <summary>
-      /// Всего объектов в коллекции
-      /// </summary>
+        /// <summary>
+        /// Всего объектов в коллекции
+        /// </summary>
         public int AllEntity { get; set; }
         /// <summary>
         /// Всего объектов со статусом "ОК"
@@ -40,6 +40,6 @@
         /// <summary>
         /// Время геокодирования в секундах
         /// </summary>
-        public double TimeGeoCod { get; set;}
+        public double TimeGeoCod { get; set; }
     }
 }

@@ -20,7 +20,7 @@
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Visibility" Value="Visible" />
                         <Style.Triggers>
-                            <Trigger Property="CommandParameter"  Value="">
+                            <Trigger Property="CommandParameter" Value="">
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </Trigger>
                         </Style.Triggers>

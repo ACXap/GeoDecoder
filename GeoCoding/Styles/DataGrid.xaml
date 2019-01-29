@@ -8,16 +8,15 @@
             Command="{Binding DataContext.CommandGetGeoCod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
             CommandParameter="{Binding}"
             Header="Выполнить геокодирование" />
-
-            <MenuItem
-                Command="{Binding DataContext.CommandOpenInBrowser, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
-                CommandParameter="{Binding}"
-                Header="Открыть геокодирование в браузере" />
-            <Separator/>
-            <MenuItem
-                Command="{Binding DataContext.CommandCopyAddress, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
-                CommandParameter="{Binding}"
-                Header="Копировать адрес" />
+        <MenuItem
+            Command="{Binding DataContext.CommandOpenInBrowser, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Открыть геокодирование в браузере" />
+        <Separator />
+        <MenuItem
+            Command="{Binding DataContext.CommandCopyAddress, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Копировать адрес" />
     </ContextMenu>
 
     <Style

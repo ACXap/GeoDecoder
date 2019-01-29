@@ -49,12 +49,12 @@ namespace GeoCoding.FileService
             string a = Environment.CurrentDirectory;
             string defFolder = string.Empty;
 
-          //  if(Directory.Exists(defaultFolder))
+            //  if(Directory.Exists(defaultFolder))
             //{
-              defFolder = defaultFolder;
-          //  }
-          //  else
-          //  {
+            defFolder = defaultFolder;
+            //  }
+            //  else
+            //  {
             //  defFolder = Environment.CurrentDirectory;
             //}
             OpenFileDialog fd = new OpenFileDialog()
@@ -233,21 +233,21 @@ namespace GeoCoding.FileService
         /// <param name="str">Путь к папке</param>
         public void CreateFolder(Action<Exception> callback, string str)
         {
-          Exception error= null;
+            Exception error = null;
 
-          try
-          {
-            if(!Directory.Exists(str))
+            try
             {
-                  Directory.CreateDirectory(str);
+                if (!Directory.Exists(str))
+                {
+                    Directory.CreateDirectory(str);
+                }
             }
-          }
-          catch (Exception ex)
-          {
-            error = ex;
-          }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
 
-          callback(error);
+            callback(error);
         }
     }
 }

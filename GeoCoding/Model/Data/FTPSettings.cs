@@ -4,12 +4,9 @@ namespace GeoCoding
 {
     public class FTPSettings : ViewModelBase
     {
-        /// <summary>
-        /// 
-        /// </summary>
         private string _server;
         /// <summary>
-        /// 
+        /// Сервер
         /// </summary>
         public string Server
         {
@@ -17,12 +14,9 @@ namespace GeoCoding
             set => Set(ref _server, value);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private int _port;
         /// <summary>
-        /// 
+        /// Порт сервера
         /// </summary>
         public int Port
         {
@@ -30,12 +24,9 @@ namespace GeoCoding
             set => Set(ref _port, value);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private string _user;
         /// <summary>
-        /// 
+        /// Пользователь
         /// </summary>
         public string User
         {
@@ -43,12 +34,9 @@ namespace GeoCoding
             set => Set(ref _user, value);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private string _password;
         /// <summary>
-        /// 
+        /// Пароль от сервера
         /// </summary>
         public string Password
         {
@@ -56,12 +44,9 @@ namespace GeoCoding
             set => Set(ref _password, value);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private string _folderInput;
         /// <summary>
-        /// 
+        /// Папка с загрузками
         /// </summary>
         public string FolderInput
         {
@@ -69,12 +54,9 @@ namespace GeoCoding
             set => Set(ref _folderInput, value);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         private string _folderOutput;
         /// <summary>
-        /// 
+        /// Папка с выгрузками
         /// </summary>
         public string FolderOutput
         {

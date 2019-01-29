@@ -89,21 +89,22 @@
             Grid.Column="2"
             Text="{Binding Statistics.Exact}" />
 
-            <TextBlock
-                Grid.Row="7"
-                Grid.Column="0"
-                Text="Не найдено:" />
-            <TextBlock
-                Grid.Row="7"
-                Grid.Column="2"
-                Text="{Binding Statistics.NotFound}" />
+        <TextBlock
+            Grid.Row="7"
+            Grid.Column="0"
+            Text="Не найдено:" />
+        <TextBlock
+            Grid.Row="7"
+            Grid.Column="2"
+            Text="{Binding Statistics.NotFound}" />
 
-            <TextBlock
-                Grid.Row="8"
-                Grid.Column="0"
-                Text="Время выполнения (c.):" />
-            <TextBlock
-                Grid.Row="8"
-                Grid.Column="2" Text="{Binding Statistics.TimeGeoCod}"/>
+        <TextBlock
+            Grid.Row="8"
+            Grid.Column="0"
+            Text="Время выполнения (c.):" />
+        <TextBlock
+            Grid.Row="8"
+            Grid.Column="2"
+            Text="{Binding Statistics.TimeGeoCod}" />
     </Grid>
 </UserControl>

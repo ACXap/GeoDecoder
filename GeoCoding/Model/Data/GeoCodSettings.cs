@@ -2,7 +2,7 @@
 
 namespace GeoCoding
 {
-    public class GeoCodSettings:ViewModelBase
+    public class GeoCodSettings : ViewModelBase
     {
         /// <summary>
         /// Поле для хранения параметра геокодировать все объекты
@@ -22,8 +22,8 @@ namespace GeoCoding
         /// </summary>
         public bool CanGeoCodGetAll
         {
-            get=> _canGeoCodGetAll;
-            set=>Set(ref _canGeoCodGetAll, value);
+            get => _canGeoCodGetAll;
+            set => Set(ref _canGeoCodGetAll, value);
         }
 
         /// <summary>

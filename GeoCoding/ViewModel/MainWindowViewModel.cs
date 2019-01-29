@@ -3,8 +3,8 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Windows;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace GeoCoding
 {
@@ -193,11 +193,11 @@ namespace GeoCoding
         _commandGetFile ?? (_commandGetFile = new RelayCommand(
                     () =>
                     {
-                      string defFolder = string.Empty;
-                      if(FilesSettings.IsFileInputOnFTP)
-                      {
-                        defFolder = $"{FTPSettings.Server}{FTPSettings.FolderOutput}";
-                      }
+                        string defFolder = string.Empty;
+                        if (FilesSettings.IsFileInputOnFTP)
+                        {
+                            defFolder = $"{FTPSettings.Server}{FTPSettings.FolderOutput}";
+                        }
                         _model.GetFile((f, er) =>
                         {
                             if (er == null)
@@ -387,27 +387,27 @@ namespace GeoCoding
             set => Set(ref _ftpSettings, value);
         }
 
-            private RelayCommand<EntityGeoCod> _commandCopyAddress;
-            /// <summary>
-            /// Команда копирования адреса в буфер
-            /// </summary>
-            public RelayCommand<EntityGeoCod> CommandCopyAddress =>
-            _commandCopyAddress ?? (_commandCopyAddress = new RelayCommand<EntityGeoCod>(
-            obj =>
-            {
-                Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
-            }));
+        private RelayCommand<EntityGeoCod> _commandCopyAddress;
+        /// <summary>
+        /// Команда копирования адреса в буфер
+        /// </summary>
+        public RelayCommand<EntityGeoCod> CommandCopyAddress =>
+        _commandCopyAddress ?? (_commandCopyAddress = new RelayCommand<EntityGeoCod>(
+        obj =>
+        {
+            Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
+        }));
 
-            private RelayCommand<EntityGeoCod> _commandOpenInBrowser;
-          /// <summary>
-          /// Команда открыть адрес в браузере
-          /// </summary>
-          public RelayCommand<EntityGeoCod> CommandOpenInBrowser =>
-            _commandOpenInBrowser ?? (_commandOpenInBrowser = new RelayCommand<EntityGeoCod>(
-            obj =>
-            {
-                System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode="+ obj.Address);
-            }));
+        private RelayCommand<EntityGeoCod> _commandOpenInBrowser;
+        /// <summary>
+        /// Команда открыть адрес в браузере
+        /// </summary>
+        public RelayCommand<EntityGeoCod> CommandOpenInBrowser =>
+          _commandOpenInBrowser ?? (_commandOpenInBrowser = new RelayCommand<EntityGeoCod>(
+          obj =>
+          {
+              System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode=" + obj.Address);
+          }));
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -419,9 +419,9 @@ namespace GeoCoding
             GeoCodSettings = new GeoCodSettings();
             FTPSettings = new FTPSettings()
             {
-              Server = @"ftp://10.42.78.142",
-              FolderOutput = @"/exchange/ORPONtoGeo/load/",
-              FolderInput = @"/exchange/ORPONtoGeo/upload/"
+                Server = @"ftp://10.42.78.142",
+                FolderOutput = @"/exchange/ORPONtoGeo/load/",
+                FolderInput = @"/exchange/ORPONtoGeo/upload/"
             };
 
             Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>

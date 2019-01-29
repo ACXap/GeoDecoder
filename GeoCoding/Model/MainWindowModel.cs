@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace GeoCoding
 {
-  /// <summary>
-  /// Класс модель(работа с модулями файл, геокодирование, база данных) для основного окна
-  /// </summary>
+    /// <summary>
+    /// Класс модель(работа с модулями файл, геокодирование, база данных) для основного окна
+    /// </summary>
     public class MainWindowModel
     {
         #region PrivateConst
@@ -45,17 +45,17 @@ namespace GeoCoding
         /// </summary>
         public MainWindowModel()
         {
-            string[] nameFolders = new string[]{"Temp", "Input", "Output"};
+            string[] nameFolders = new string[] { "Temp", "Input", "Output" };
             string path = Environment.CurrentDirectory;
-            foreach(var item in nameFolders)
+            foreach (var item in nameFolders)
             {
-              _fileService.CreateFolder(e=>
-              {
-                if(e==null)
+                _fileService.CreateFolder(e =>
                 {
+                    if (e == null)
+                    {
 
-                }
-              }, $"{path}/{item}");
+                    }
+                }, $"{path}/{item}");
             }
         }
 
@@ -222,10 +222,10 @@ namespace GeoCoding
                 _nameColumnOutputFile
             };
 
-            list.AddRange(data.Where(y=>y.Status == StatusType.OK).Select(x =>
-            {
-                return $"{x.GlobalID}{_charSplit}{x.Latitude}{_charSplit}{x.Longitude}{_charSplit}{x.Qcode}";
-            }));
+            list.AddRange(data.Where(y => y.Status == StatusType.OK).Select(x =>
+              {
+                  return $"{x.GlobalID}{_charSplit}{x.Latitude}{_charSplit}{x.Longitude}{_charSplit}{x.Qcode}";
+              }));
 
             _fileService.SaveData(er =>
             {
@@ -270,9 +270,9 @@ namespace GeoCoding
             Exception error = null;
             Statistics statistics = null;
 
-            if(!_isStartUpdateStatistic)
+            if (!_isStartUpdateStatistic)
             {
-               _isStartUpdateStatistic = true;
+                _isStartUpdateStatistic = true;
                 await Task.Factory.StartNew(() =>
                 {
                     try
@@ -289,10 +289,10 @@ namespace GeoCoding
                             NotFound = data.Count(x => x.CountResult == 0)
                         };
                         // надо переделывать время выполнения. если два раза один и тот же список отправлять, то время очень разное
-                        if(statistics.NotGeoCoding == 0)
+                        if (statistics.NotGeoCoding == 0)
                         {
-                          var time = (data.Max(x=>x.DateTimeGeoCod) - data.Min(x=>x.DateTimeGeoCod)).TotalSeconds;
-                          statistics.TimeGeoCod = Math.Ceiling(time);
+                            var time = (data.Max(x => x.DateTimeGeoCod) - data.Min(x => x.DateTimeGeoCod)).TotalSeconds;
+                            statistics.TimeGeoCod = Math.Ceiling(time);
                         }
                     }
                     catch (Exception ex)
@@ -334,7 +334,7 @@ namespace GeoCoding
                 }
                 else
                 {
-                  data.Qcode = 2;
+                    data.Qcode = 2;
                 }
             }
         }

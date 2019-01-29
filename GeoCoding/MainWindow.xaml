@@ -18,8 +18,8 @@
     <!--  Ресурсы окна, в основном конверторы  -->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-<local:ConverterKindTypeToString x:Key="ConverterKindTypeToString"/>
-        <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString"/>
+        <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
+        <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
     </Controls:MetroWindow.Resources>
     <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
@@ -28,7 +28,7 @@
     <!--  Иконка приложения с контекст меню  -->
     <Controls:MetroWindow.IconTemplate>
         <DataTemplate>
-            <Image Source="geo.ico" Margin="2">
+            <Image Margin="2" Source="geo.ico">
                 <Image.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Привет =)" />
@@ -197,7 +197,7 @@
                                                 <TextBox
                                                     Width="80"
                                                     Margin="5,0,0,0"
-                                                    IsEnabled="{Binding Files.CanBreakFileOutput}"
+                                                    IsEnabled="{Binding FilesSettings.CanBreakFileOutput}"
                                                     Text="{Binding FilesSettings.MaxSizePart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </StackPanel>
                                         </StackPanel>
@@ -340,9 +340,15 @@
                 <Button Grid.Row="1" Style="{StaticResource ButtonStopStart}" />
 
                 <!--  Настройки геокодирования  -->
-                <StackPanel Grid.Row="2" Orientation="Vertical" IsEnabled="False">
+                <StackPanel
+                    Grid.Row="2"
+                    IsEnabled="False"
+                    Orientation="Vertical">
 
-<TextBlock Text="Что геокодируем:" Margin="5,1,1,1" FontWeight="Bold"/>
+                    <TextBlock
+                        Margin="5,1,1,1"
+                        FontWeight="Bold"
+                        Text="Что геокодируем:" />
                     <!--  Геокодировать все объекты в таблице данных  -->
                     <CheckBox
                         Margin="10,2,2,5"
@@ -361,17 +367,22 @@
                         Content="Негеокодированные"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
 
-                        <TextBlock Text="Что делаем после:" Margin="5,1,1,1" FontWeight="Bold"/>
-                        <CheckBox
-                            Margin="10,2,2,5" ToolTip="Сохранить все данные в формате программы, во временную папку"
-                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}">
-                            <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap"/>
-                          </CheckBox>
+                    <TextBlock
+                        Margin="5,1,1,1"
+                        FontWeight="Bold"
+                        Text="Что делаем после:" />
+                    <CheckBox
+                        Margin="10,2,2,5"
+                        IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}"
+                        ToolTip="Сохранить все данные в формате программы, во временную папку">
+                        <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap" />
+                    </CheckBox>
 
-                            <CheckBox
-                                Margin="10,2,2,5" ToolTip="Сохранить все данные в формате для базы данных"
-                                Content="Сохранить результаты"
-                                IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}" />
+                    <CheckBox
+                        Margin="10,2,2,5"
+                        Content="Сохранить результаты"
+                        IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}"
+                        ToolTip="Сохранить все данные в формате для базы данных" />
                 </StackPanel>
             </Grid>
         </Grid>

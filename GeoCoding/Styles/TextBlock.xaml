@@ -1,7 +1,8 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:GeoCoding">
-    
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:GeoCoding">
+
     <!--<Style x:Key="TextBlockTime" TargetType="{x:Type TextBlock}">
         <Setter Property="Text" Value="{Binding TimeCheck, StringFormat=\{0:G\},ConverterCulture=ru}"/>
         <Style.Triggers>
@@ -12,21 +13,21 @@
     </Style>-->
 
     <Style x:Key="TextBlockFolder" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
-        <Setter Property="Text" Value="{StaticResource FontAwesomeFolderClose}"/>
-        <Setter Property="HorizontalAlignment" Value="Right"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="5"/>
-        <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="ToolTip" Value="Открыть папку файла"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
+        <Setter Property="Text" Value="{StaticResource FontAwesomeFolderClose}" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="5" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="ToolTip" Value="Открыть папку файла" />
+        <Setter Property="FontSize" Value="16" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeFolderOpen}"/>
+                <Setter Property="Text" Value="{StaticResource FontAwesomeFolderOpen}" />
             </Trigger>
         </Style.Triggers>
-    </Style>    
-    
+    </Style>
+
     <!--<Style x:Key="TextBlockElapsedTime" TargetType="{x:Type TextBlock}">
         <Setter Property="Text" Value="{Binding ElapsedTime, StringFormat=\{0:D\}мс}"/>
         <Style.Triggers>
@@ -53,28 +54,28 @@
     </Style>-->
 
     <Style x:Key="TextBlockStatus" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="16" />
         <Style.Triggers>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.OK}">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeOk}"/>
-                <Setter Property="Foreground" Value="Green"/>
-                <Setter Property="ToolTip" Value="Геокодирован успешно"/>
+                <Setter Property="Text" Value="{StaticResource FontAwesomeOk}" />
+                <Setter Property="Foreground" Value="Green" />
+                <Setter Property="ToolTip" Value="Геокодирован успешно" />
             </Trigger>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.Error}">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeError}"/>
-                <Setter Property="Foreground" Value="Yellow"/>
-                <Setter Property="ToolTip" Value="Геокодирован с ошибкой"/>
+                <Setter Property="Text" Value="{StaticResource FontAwesomeError}" />
+                <Setter Property="Foreground" Value="Yellow" />
+                <Setter Property="ToolTip" Value="Геокодирован с ошибкой" />
             </Trigger>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.NotGeoCoding}">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeNotCheck}"/>
-                <Setter Property="ToolTip" Value="Не геокодирован"/>
+                <Setter Property="Text" Value="{StaticResource FontAwesomeNotCheck}" />
+                <Setter Property="ToolTip" Value="Не геокодирован" />
             </Trigger>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.GeoCodingNow}">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeCheckNow}"/>
-                <Setter Property="ToolTip" Value="Геокодируется в данный момент"/>
+                <Setter Property="Text" Value="{StaticResource FontAwesomeCheckNow}" />
+                <Setter Property="ToolTip" Value="Геокодируется в данный момент" />
             </Trigger>
         </Style.Triggers>
     </Style>
