@@ -75,7 +75,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения настроек входного и выходного файла
         /// </summary>
-        private FilesSettings _files;
+        private FilesSettings _filesSettings;
 
         /// <summary>
         /// Поле для хранения статистики
@@ -148,10 +148,10 @@ namespace GeoCoding
         /// <summary>
         /// Настройки входного и выходного файла
         /// </summary>
-        public FilesSettings Files
+        public FilesSettings FilesSettings
         {
-            get => _files;
-            set => Set("Files", ref _files, value);
+            get => _filesSettings;
+            set => Set("FilesSettings", ref _filesSettings, value);
         }
 
         /// <summary>
@@ -192,14 +192,19 @@ namespace GeoCoding
         _commandGetFile ?? (_commandGetFile = new RelayCommand(
                     () =>
                     {
+                      string defFolder = string.Empty;
+                      if(FilesSettings.IsFileInputOnFTP)
+                      {
+                        defFolder = $"{FTPSettings.Server}{FTPSettings.FolderOutput}";
+                      }
                         _model.GetFile((f, er) =>
                         {
                             if (er == null)
                             {
                                 // Сохраняем полное имя файла в свойство FilesInput
-                                Files.FileInput = f;
+                                FilesSettings.FileInput = f;
                                 // Если данные получать сразу, то получаем
-                                if (_canGetDataOnce && !string.IsNullOrEmpty(_files.FileInput))
+                                if (_canGetDataOnce && !string.IsNullOrEmpty(_filesSettings.FileInput))
                                 {
                                     // Получаем данные из файла
                                     GetDataFromFile();
@@ -210,7 +215,7 @@ namespace GeoCoding
                                 // Оповещаем, если были ошибки
                                 NotificationPlainText(_headerNotificationError, er.Message);
                             }
-                        });
+                        }, defFolder);
                     }));
 
         /// <summary>
@@ -231,7 +236,7 @@ namespace GeoCoding
                             if (error == null)
                             {
                                 // Сохраняем полное имя файла в свойстве FileOutput
-                                Files.FileOutput = file;
+                                FilesSettings.FileOutput = file;
                             }
                             else
                             {
@@ -260,8 +265,8 @@ namespace GeoCoding
                                 // Оповещаем если были ошибки
                                 NotificationPlainText(_headerNotificationError, error.Message);
                             }
-                        }, _collectionGeoCod, _files.FileOutput);
-                    }, () => !string.IsNullOrEmpty(_files.FileOutput) && _collectionGeoCod != null));
+                        }, _collectionGeoCod, _filesSettings.FileOutput);
+                    }, () => !string.IsNullOrEmpty(_filesSettings.FileOutput) && _collectionGeoCod != null));
 
         /// <summary>
         /// Команда получения данных из файла
@@ -272,7 +277,7 @@ namespace GeoCoding
                     {
                         // Получаем данные из файла
                         GetDataFromFile();
-                    }, () => !string.IsNullOrEmpty(_files.FileInput)));
+                    }, () => !string.IsNullOrEmpty(_filesSettings.FileInput)));
 
         /// <summary>
         /// Команда для геокодирования объекта
@@ -389,7 +394,7 @@ namespace GeoCoding
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
-            Files = new FilesSettings();
+            FilesSettings = new FilesSettings();
             GeoCodSettings = new GeoCodSettings();
             FTPSettings = new FTPSettings()
             {
@@ -432,7 +437,7 @@ namespace GeoCoding
                     // Оповещаем если были ошибки
                     NotificationPlainText(_headerNotificationError, error.Message);
                 }
-            }, _files.FileInput);
+            }, _filesSettings.FileInput);
         }
 
         /// <summary>

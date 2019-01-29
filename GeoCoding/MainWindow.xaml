@@ -82,7 +82,7 @@
                                         IsReadOnly="True"
                                         Tag="{Binding CommandOpenFolder}"
                                         Template="{StaticResource TextBoxWithControl}"
-                                        Text="{Binding Files.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        Text="{Binding FilesSettings.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                                     <!--  Управление входным файлом  -->
                                     <Grid Grid.Row="1">
@@ -107,7 +107,7 @@
                                             <CheckBox
                                                 Margin="5"
                                                 Content="Файл на FTP сервере"
-                                                IsChecked="{Binding Files.IsFileInputOnFTP}" />
+                                                IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" />
 
                                             <!--  После выбора файла с данными, данные получаем сразу  -->
                                             <CheckBox
@@ -150,7 +150,7 @@
                                         IsReadOnly="True"
                                         Tag="{Binding CommandOpenFolder}"
                                         Template="{StaticResource TextBoxWithControl}"
-                                        Text="{Binding Files.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        Text="{Binding FilesSettings.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                                     <!--  Управление выходным файлом  -->
                                     <Grid Grid.Row="1">
@@ -178,7 +178,7 @@
                                             <CheckBox
                                                 VerticalAlignment="Center"
                                                 Content="Так же скопировать данный файл на FTP-сервер"
-                                                IsChecked="{Binding Files.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
+                                                IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
                                                 IsEnabled="False"
                                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP-сервер (если он настроен на вкладке FTP)" />
 
@@ -188,7 +188,7 @@
                                                 <!--  Разбивать ли выходной файл на части (по количеству строк)  -->
                                                 <CheckBox
                                                     Content="Разбить файл на части (по строкам):"
-                                                    IsChecked="{Binding Files.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    IsChecked="{Binding FilesSettings.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IsEnabled="False" />
 
                                                 <!--  Максимальное количесво строк в файле  -->
@@ -196,7 +196,7 @@
                                                     Width="80"
                                                     Margin="5,0,0,0"
                                                     IsEnabled="{Binding Files.CanBreakFileOutput}"
-                                                    Text="{Binding Files.MaxSizePart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    Text="{Binding FilesSettings.MaxSizePart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </StackPanel>
                                         </StackPanel>
 
