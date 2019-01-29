@@ -23,6 +23,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock
             Grid.Row="0"
@@ -86,5 +87,14 @@
             Grid.Row="6"
             Grid.Column="2"
             Text="{Binding Statistics.Exact}" />
+
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="0"
+                Text="Время выполнения:" />
+            <TextBlock
+                Grid.Row="7"
+                Grid.Column="2"
+                Text="{Binding Statistics.TimeGeoCod}" />
     </Grid>
 </UserControl>

@@ -258,6 +258,7 @@ namespace GeoCoding
                 {
                     try
                     {
+                      var time = (data.Max(x=>x.DateTimeGeoCod) - data.Min(x=>x.DateTimeGeoCod)).TotalSeconds;
                         statistics = new Statistics()
                         {
                             AllEntity = data.Count(),
@@ -266,7 +267,8 @@ namespace GeoCoding
                             GeoCodingNow = data.Count(x => x.Status == StatusType.GeoCodingNow),
                             Error = data.Count(x => x.Status == StatusType.Error),
                             House = data.Count(x => x.Kind == KindType.House),
-                            Exact = data.Count(x => x.Precision == PrecisionType.Exact)
+                            Exact = data.Count(x => x.Precision == PrecisionType.Exact),
+                            TimeGeoCod = time
                         };
                     }
                     catch (Exception ex)

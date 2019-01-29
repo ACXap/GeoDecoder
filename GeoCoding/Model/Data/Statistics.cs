@@ -33,5 +33,9 @@
         /// Всего объектов с качеством геокодирования "Точное геокодирование"
         /// </summary>
         public int Exact { get; set; }
+        /// <summary>
+        /// Время геокодирования в секундах
+        /// </summary>
+        public double TimeGeoCod { get; set;}
     }
 }
