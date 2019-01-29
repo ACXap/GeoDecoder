@@ -364,13 +364,14 @@
                         <TextBlock Text="Что делаем после:" Margin="5,1,1,1" FontWeight="Bold"/>
                         <CheckBox
                             Margin="10,2,2,5" ToolTip="Сохранить все данные в формате программы, во временную папку"
-                            IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}">
-<TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap"/>
+                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}">
+                            <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap"/>
                           </CheckBox>
+
                             <CheckBox
                                 Margin="10,2,2,5" ToolTip="Сохранить все данные в формате для базы данных"
                                 Content="Сохранить результаты"
-                                IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
+                                IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}" />
                 </StackPanel>
             </Grid>
         </Grid>
