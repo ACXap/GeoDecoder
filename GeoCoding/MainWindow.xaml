@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
     Title="Геокодирование"
-    Width="1200"
+    Width="1400"
     Height="800"
     Dialog:DialogParticipation.Register="{Binding}"
     BorderBrush="{DynamicResource AccentColorBrush}"
@@ -342,6 +342,7 @@
                 <!--  Настройки геокодирования  -->
                 <StackPanel Grid.Row="2" Orientation="Vertical" IsEnabled="False">
 
+<TextBlock Text="Что геокодируем:" Margin="5,1,1,1" FontWeight="Bold"/>
                     <!--  Геокодировать все объекты в таблице данных  -->
                     <CheckBox
                         Margin="10,2,2,5"
@@ -359,6 +360,17 @@
                         Margin="10,2,2,5"
                         Content="Негеокодированные"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
+
+                        <TextBlock Text="Что делаем после:" Margin="5,1,1,1" FontWeight="Bold"/>
+                        <CheckBox
+                            Margin="10,2,2,5"
+                            IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}">
+<TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap"/>
+                          </CheckBox>
+                            <CheckBox
+                                Margin="10,2,2,5"
+                                Content="Сохранить результаты"
+                                IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
                 </StackPanel>
             </Grid>
         </Grid>

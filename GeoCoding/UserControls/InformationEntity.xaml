@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:GeoCoding.UserControls"
+             xmlns:l="clr-namespace:GeoCoding"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
+             <UserControl.Resources>
+       <l:ConverterKindTypeToString x:Key="ConverterKindTypeToString"/>
+                 <l:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString"/>
+             </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -35,8 +40,8 @@
         <TextBlock Grid.Column="2" Grid.Row="6" Text="{Binding Error}"/>
         <TextBlock Grid.Column="2" Grid.Row="7" Text="{Binding Status}"/>
         <TextBlock Grid.Column="2" Grid.Row="8" Text="{Binding DataTimeGeoCod}"/>
-        <TextBlock Grid.Column="2" Grid.Row="9" Text="{Binding Kind}"/>
-        <TextBlock Grid.Column="2" Grid.Row="10" Text="{Binding Precision}"/>
+        <TextBlock Grid.Column="2" Grid.Row="9" Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}"/>
+        <TextBlock Grid.Column="2" Grid.Row="10" Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}"/>
         <TextBlock Grid.Column="2" Grid.Row="11" Text="{Binding CountResult}"/>
 
         <TextBlock Grid.Column="0" Grid.Row="0" Text="GlobalID"/>
