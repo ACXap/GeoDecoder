@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using System;
 
 namespace GeoCoding
 {
@@ -91,10 +92,10 @@ namespace GeoCoding
         /// <summary>
         /// Дата и время геокодирования
         /// </summary>
-        public DateTime DataTimeGeoCod
+        public DateTime DateTimeGeoCod
         {
             get => _dateTimeGeoCod;
-            set => Set("DataTimeGeoCod", ref _dateTimeGeoCod, value, true);
+            set => Set("DateTimeGeoCod", ref _dateTimeGeoCod, value, true);
         }
 
         private KindType _kind;

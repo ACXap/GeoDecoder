@@ -91,10 +91,9 @@
             <TextBlock
                 Grid.Row="7"
                 Grid.Column="0"
-                Text="Время выполнения:" />
+                Text="Время выполнения (c.):" />
             <TextBlock
                 Grid.Row="7"
-                Grid.Column="2"
-                Text="{Binding Statistics.TimeGeoCod}" />
+                Grid.Column="2" Text="{Binding Statistics.TimeGeoCod}"/>
     </Grid>
 </UserControl>
