@@ -44,7 +44,8 @@ namespace GeoCoding
         /// Метод для получения(выбора) файла с данными
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: полное имя файла и ошибка</param>
-        public void GetFile(Action<string, Exception> callback)
+        /// <param name="defaultFolder">Имя папки по умолчанию для открытия</param>
+        public void GetFile(Action<string, Exception> callback, string defaultFolder = "")
         {
             Exception error = null;
             string file = string.Empty;
@@ -53,7 +54,7 @@ namespace GeoCoding
             {
                 file = f;
                 error = e;
-            });
+            }, defaultFolder);
 
             callback(file, error);
         }

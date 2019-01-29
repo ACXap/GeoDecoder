@@ -361,7 +361,7 @@ namespace GeoCoding
         #endregion PublicCommands
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private GeoCodSettings _geoCodSettings;
         public GeoCodSettings GeoCodSettings
@@ -373,7 +373,7 @@ namespace GeoCoding
 
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         private FTPSettings _ftpSettings;
         public FTPSettings FTPSettings
@@ -391,7 +391,12 @@ namespace GeoCoding
             _model = new MainWindowModel();
             Files = new FilesSettings();
             GeoCodSettings = new GeoCodSettings();
-            FTPSettings = new FTPSettings();
+            FTPSettings = new FTPSettings()
+            {
+              Server = @"ftp://10.42.78.142",
+              FolderOutput = @"/exchange/ORPONtoGeo/load/",
+              FolderInput = @"/exchange/ORPONtoGeo/upload/"
+            };
 
             Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
             {

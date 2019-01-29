@@ -12,7 +12,8 @@ namespace GeoCoding.FileService
         /// Метод выбора файла c данными
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами полное имя файла и ошибка</param>
-        void GetFile(Action<string, Exception> callback);
+        /// <param name="defaultFolder">Имя папки по умолчанию для открытия</param>
+        void GetFile(Action<string, Exception> callback, string defaultFolder = "");
 
         /// <summary>
         /// Метод получения данных из файла

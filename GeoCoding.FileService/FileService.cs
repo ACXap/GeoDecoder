@@ -42,18 +42,27 @@ namespace GeoCoding.FileService
         /// Метод выбора файла c данными
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами полное имя файла и ошибка</param>
-        public void GetFile(Action<string, Exception> callback)
+        public void GetFile(Action<string, Exception> callback, string defaultFolder = "")
         {
             Exception error = null;
             string data = string.Empty;
             string a = Environment.CurrentDirectory;
+            string defFolder = string.Empty;
 
+            if(Directory.Exists(defaultFolder))
+            {
+              defFolder = defaultFolder;
+            }
+            else
+            {
+              defFolder = Environment.CurrentDirectory;
+            }
             OpenFileDialog fd = new OpenFileDialog()
             {
                 Multiselect = false,
                 Filter = _filterForGetFile,
                 Title = _titleFileGetDialog,
-                InitialDirectory = Environment.CurrentDirectory
+                InitialDirectory = defFolder
             };
 
             if (fd.ShowDialog() == true)

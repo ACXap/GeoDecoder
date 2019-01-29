@@ -338,7 +338,7 @@
                 <Button Grid.Row="1" Style="{StaticResource ButtonStopStart}" />
 
                 <!--  Настройки геокодирования  -->
-                <StackPanel Grid.Row="2" Orientation="Vertical">
+                <StackPanel Grid.Row="2" Orientation="Vertical" IsEnabled="False">
 
                     <!--  Геокодировать все объекты в таблице данных  -->
                     <CheckBox
