@@ -399,6 +399,19 @@ _commandCopyAddress ?? (_commandCopyAddress = new RelayCommand<EntityGeoCod>(
                 Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
             }));
 
+private RelayCommand<EntityGeoCod> _commandOpenInBrowser;
+
+/// <summary>
+/// Команда открыть адрес в браузере
+/// </summary>
+public RelayCommand<EntityGeoCod> CommandOpenInBrowser =>
+_commandOpenInBrowser ?? (_commandOpenInBrowser = new RelayCommand<EntityGeoCod>(
+            obj =>
+            {
+System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode="+ obj.Address);
+
+            }));
+
 
         /// <summary>
         /// Конструктор по умолчанию
