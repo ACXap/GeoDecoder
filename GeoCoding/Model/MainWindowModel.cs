@@ -164,7 +164,7 @@ namespace GeoCoding
             ParallelOptions po = new ParallelOptions
             {
                 CancellationToken = _cts.Token,
-                MaxDegreeOfParallelism = 5
+               // MaxDegreeOfParallelism = 5
             };
 
             await Task.Factory.StartNew(() =>

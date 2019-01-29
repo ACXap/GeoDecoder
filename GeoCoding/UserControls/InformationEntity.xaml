@@ -68,7 +68,7 @@
         <TextBlock
             Grid.Row="8"
             Grid.Column="2"
-            Text="{Binding DataTimeGeoCod}" />
+            Text="{Binding DateTimeGeoCod}" />
         <TextBlock
             Grid.Row="9"
             Grid.Column="2"

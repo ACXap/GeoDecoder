@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 
 namespace GeoCoding.GeoCodingService
@@ -99,7 +101,32 @@ namespace GeoCoding.GeoCodingService
                     }
                     else
                     {
-                        geocod = new GeoCod() { CountResult = count };
+                        var list = new List<GeoCod>();
+
+                        var ad = a["response"]["GeoObjectCollection"]["featureMember"].Children();
+                        foreach (var item in ad)
+                        {
+                            var g = new GeoCod()
+                            {
+                                Kind = (string)((JValue)item["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["kind"]).Value,
+                                Precision = (string)((JValue)item["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["precision"]).Value,
+                                Text = (string)((JValue)item["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["text"]).Value
+                            };
+                            var point = ((JValue)item["GeoObject"]["Point"]["pos"]).Value.ToString().Split(' ');
+                            g.Latitude = point[1];
+                            g.Longitude = point[0];
+                            list.Add(g);
+                        }
+                        var e = list.Where(x => x.Precision == "exact");
+                        if(e.Any() && e.Count()==1)
+                        {
+                            geocod = e.First();
+                            geocod.CountResult = 1;
+                        }
+                        else
+                        {
+                            geocod = new GeoCod() { CountResult = count };
+                        }
                     }
                 }
             }
