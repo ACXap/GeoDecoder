@@ -33,8 +33,8 @@ namespace GeoCoding
 
         private readonly IFileService _fileService = new FileService.FileService();
 
-        // private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
-        private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
+         private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
+        //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private CancellationTokenSource _cts;
