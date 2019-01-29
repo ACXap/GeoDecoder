@@ -4,7 +4,9 @@ using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 
 namespace GeoCoding
 {
@@ -374,7 +376,6 @@ namespace GeoCoding
         {
             get => _geoCodSettings;
             set => Set(ref _geoCodSettings, value);
-
         }
 
         /// <summary>
@@ -408,6 +409,13 @@ namespace GeoCoding
           {
               System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode=" + obj.Address);
           }));
+
+        private ICollectionView _customerView;
+        public ICollectionView Customers
+        {
+            get => _customerView;
+            set => Set(ref _customerView, value);
+        }
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -448,6 +456,9 @@ namespace GeoCoding
                     }
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
+                    Customers = CollectionViewSource.GetDefaultView(CollectionGeoCod);
+                    //Customers.Filter = CustomerFilter;
+
                     // Обновляем статистику
                     UpdateStatistics();
                     // Оповещаем о создании коллекции
@@ -486,6 +497,12 @@ namespace GeoCoding
                     }
                 }, _collectionGeoCod);
             }
+        }
+
+        private bool CustomerFilter(object item)
+        {
+            EntityGeoCod customer = item as EntityGeoCod;
+            return customer.Status==StatusType.Error;
         }
     }
 }

@@ -320,7 +320,32 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
-                <TabItem Header="Ошибки" />
+                <TabItem Header="Ошибки">
+                    <DataGrid ItemsSource="{Binding Customers}" AutoGenerateColumns="False" CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            
+                            <!--  Колонка адреса  -->
+                            <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Address}" TextWrapping="Wrap" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--  Колонка адреса  -->
+                            <DataGridTemplateColumn Header="Ошибка" SortMemberPath="Error">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Error}" TextWrapping="Wrap" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                       
             </TabControl>
 
             <!--  Статистика, кнопка запуска геокодирования, настройки геокодирования  -->
