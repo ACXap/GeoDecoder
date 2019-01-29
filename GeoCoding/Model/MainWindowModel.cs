@@ -258,7 +258,6 @@ namespace GeoCoding
                 {
                     try
                     {
-                      var time = (data.Max(x=>x.DateTimeGeoCod) - data.Where(y=>y.DateTimeGeoCod.Year>1).Min(x=>x.DateTimeGeoCod)).TotalSeconds;
                         statistics = new Statistics()
                         {
                             AllEntity = data.Count(),
@@ -268,9 +267,13 @@ namespace GeoCoding
                             Error = data.Count(x => x.Status == StatusType.Error),
                             House = data.Count(x => x.Kind == KindType.House),
                             Exact = data.Count(x => x.Precision == PrecisionType.Exact),
-                            TimeGeoCod = Math.Ceiling(time),
                             NotFound = data.Count(x => x.CountResult == 0)
                         };
+                        if(statistics.NotGeoCoding == 0)
+                        {
+                          var time = (data.Max(x=>x.DateTimeGeoCod) - data.Min(x=>x.DateTimeGeoCod)).TotalSeconds;
+                          statistics.TimeGeoCod = Math.Ceiling(time);
+                        }
                     }
                     catch (Exception ex)
                     {
