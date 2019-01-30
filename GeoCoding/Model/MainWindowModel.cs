@@ -499,5 +499,24 @@ namespace GeoCoding
             }, data.Address);
             return error;
         }
+
+        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings> callback)
+        {
+            Exception error = null;
+            var properties = Properties.Settings.Default;
+            FilesSettings f = new FilesSettings()
+            {
+                CanBreakFileOutput = properties.CanBreakFileOutput,
+                CanCopyFileOutputToFtp =  properties.CanCopyFileOutputToFtp,
+                
+            
+            };
+            GeoCodSettings g = new GeoCodSettings()
+            {
+
+            };
+
+            callback(error, f, g);
+        }
     }
 }

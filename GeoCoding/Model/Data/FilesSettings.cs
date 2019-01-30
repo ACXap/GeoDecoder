@@ -43,6 +43,16 @@ namespace GeoCoding
         private string _folderTemp = string.Empty;
 
         /// <summary>
+        /// Поле для хранения имени папки для входящих файлов
+        /// </summary>
+        private string _folderInput = string.Empty;
+
+        /// <summary>
+        /// Поле для хранения имени папки для исходящих файлов
+        /// </summary>
+        private string _folderOutput = string.Empty;
+
+        /// <summary>
         /// Имя файла с данными
         /// </summary>
         public string FileInput
@@ -61,12 +71,30 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Имя файла для записи
+        /// Имя папки для временных файлов
         /// </summary>
         public string FolderTemp
         {
             get => _folderTemp;
             set => Set(ref _folderTemp, value);
+        }
+
+        /// <summary>
+        /// Имя папки для входящих файлов
+        /// </summary>
+        public string FolderInput
+        {
+            get => _folderInput;
+            set => Set(ref _folderInput, value);
+        }
+
+        /// <summary>
+        /// Папка для исходящих файлов
+        /// </summary>
+        public string FolderOutput
+        {
+            get => _folderOutput;
+            set => Set(ref _folderOutput, value);
         }
 
         /// <summary>

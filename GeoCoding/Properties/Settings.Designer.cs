@@ -61,5 +61,113 @@ namespace GeoCoding.Properties {
                 return ((string)(this["FolderTemp"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsFileInputOnFTP {
+            get {
+                return ((bool)(this["IsFileInputOnFTP"]));
+            }
+            set {
+                this["IsFileInputOnFTP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanCopyFileOutputToFtp {
+            get {
+                return ((bool)(this["CanCopyFileOutputToFtp"]));
+            }
+            set {
+                this["CanCopyFileOutputToFtp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanBreakFileOutput {
+            get {
+                return ((bool)(this["CanBreakFileOutput"]));
+            }
+            set {
+                this["CanBreakFileOutput"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MaxSizePart {
+            get {
+                return ((int)(this["MaxSizePart"]));
+            }
+            set {
+                this["MaxSizePart"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CanGeoCodGetAll {
+            get {
+                return ((bool)(this["CanGeoCodGetAll"]));
+            }
+            set {
+                this["CanGeoCodGetAll"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanGeoCodGetError {
+            get {
+                return ((bool)(this["CanGeoCodGetError"]));
+            }
+            set {
+                this["CanGeoCodGetError"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanGeoCodGetNotGeo {
+            get {
+                return ((bool)(this["CanGeoCodGetNotGeo"]));
+            }
+            set {
+                this["CanGeoCodGetNotGeo"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CanSaveDataAsTemp {
+            get {
+                return ((bool)(this["CanSaveDataAsTemp"]));
+            }
+            set {
+                this["CanSaveDataAsTemp"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanSaveDataAsFinished {
+            get {
+                return ((bool)(this["CanSaveDataAsFinished"]));
+            }
+            set {
+                this["CanSaveDataAsFinished"] = value;
+            }
+        }
     }
 }

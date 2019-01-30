@@ -458,27 +458,7 @@ namespace GeoCoding
 
         #endregion PublicCommands
 
-        /// <summary>
-        /// Конструктор по умолчанию
-        /// </summary>
-        public MainWindowViewModel()
-        {
-            _model = new MainWindowModel();
-            FilesSettings = new FilesSettings();
-            GeoCodSettings = new GeoCodSettings();
-            //FTPSettings = new FTPSettings()
-            //{
-            //    Server = Properties.Settings.Default.FTPServer,
-            //    FolderOutput = Properties.Settings.Default.FTPFolderOutput,
-            //    FolderInput = Properties.Settings.Default.FTPFolderInput
-            //};
-
-            Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
-            {
-                // Обновляем статистику
-                UpdateStatistics();
-            });
-        }
+        #region PrivateMethod
 
         /// <summary>
         /// Метод для получения данных из файла
@@ -560,6 +540,40 @@ namespace GeoCoding
         {
             EntityGeoCod customer = item as EntityGeoCod;
             return customer.Status == StatusType.Error;
+        }
+
+        #endregion PrivateMethod
+
+        /// <summary>
+        /// Конструктор по умолчанию
+        /// </summary>
+        public MainWindowViewModel()
+        {
+            _model = new MainWindowModel();
+            _model.GetSettings((e,f,g)=>
+            {
+                if(e==null)
+                {
+                    FilesSettings = f;
+                    GeoCodSettings = g;
+                }
+                else
+                {
+                    NotificationPlainText(_headerNotificationError, e.Message);
+                }
+            });
+            //FTPSettings = new FTPSettings()
+            //{
+            //    Server = Properties.Settings.Default.FTPServer,
+            //    FolderOutput = Properties.Settings.Default.FTPFolderOutput,
+            //    FolderInput = Properties.Settings.Default.FTPFolderInput
+            //};
+
+            Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
+            {
+                // Обновляем статистику
+                UpdateStatistics();
+            });
         }
     }
 }
