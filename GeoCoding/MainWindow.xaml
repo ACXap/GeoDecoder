@@ -179,10 +179,10 @@
                                             <!--  Копировать ли выходной файл на ФТП-сервер  -->
                                             <CheckBox
                                                 VerticalAlignment="Center"
-                                                Content="Так же скопировать данный файл на FTP-сервер"
+                                                Content="Так же скопировать данный файл на FTP сервер"
                                                 IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
                                                 IsEnabled="False"
-                                                ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP-сервер (если он настроен на вкладке FTP)" />
+                                                ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP сервер (если он настроен на вкладке FTP)" />
 
                                             <!--  Настройка разбиения выходного файла  -->
                                             <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения">

@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.ObjectModel;
@@ -76,6 +77,11 @@ namespace GeoCoding
         private ObservableCollection<EntityGeoCod> _collectionGeoCod;
 
         /// <summary>
+        /// Поле для хранения ссылки на представления коллекции
+        /// </summary>
+        private ICollectionView _customerView;
+
+        /// <summary>
         /// Поле для хранения настроек входного и выходного файла
         /// </summary>
         private FilesSettings _filesSettings;
@@ -94,6 +100,16 @@ namespace GeoCoding
         /// Поле для хранения переменной получать данные сразу
         /// </summary>
         private bool _canGetDataOnce = true;
+
+        /// <summary>
+        /// Поле для хранения ссылки на настройки геокодирования
+        /// </summary>
+        private GeoCodSettings _geoCodSettings;
+
+        /// <summary>
+        /// Поле для хранения ссылки на настройки фтп сервера
+        /// </summary>
+        private FTPSettings _ftpSettings;
 
         /// <summary>
         /// Поле для хранения ссылки на команду получения полного имени файла
@@ -134,6 +150,16 @@ namespace GeoCoding
         /// Поле для хранения ссылки на команду остановки геокодирования
         /// </summary>
         private RelayCommand _commandStopGeoCoding;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду копирования адреса объекта
+        /// </summary>
+        private RelayCommand<EntityGeoCod> _commandCopyAddress;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду открытия(геокодирования) адреса в браузере
+        /// </summary>
+        private RelayCommand<EntityGeoCod> _commandOpenInBrowser;
 
         #endregion PrivateFields
 
@@ -368,29 +394,6 @@ namespace GeoCoding
                         _model.StopGet();
                     }));
 
-        #endregion PublicCommands
-
-        /// <summary>
-        ///
-        /// </summary>
-        private GeoCodSettings _geoCodSettings;
-        public GeoCodSettings GeoCodSettings
-        {
-            get => _geoCodSettings;
-            set => Set(ref _geoCodSettings, value);
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        private FTPSettings _ftpSettings;
-        public FTPSettings FTPSettings
-        {
-            get => _ftpSettings;
-            set => Set(ref _ftpSettings, value);
-        }
-
-        private RelayCommand<EntityGeoCod> _commandCopyAddress;
         /// <summary>
         /// Команда копирования адреса в буфер
         /// </summary>
@@ -398,10 +401,16 @@ namespace GeoCoding
         _commandCopyAddress ?? (_commandCopyAddress = new RelayCommand<EntityGeoCod>(
         obj =>
         {
-            Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
+            try
+            {
+                Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
+            }
+            catch (Exception ex)
+            {
+                NotificationPlainText(_headerNotificationError, ex.Message);
+            }
         }));
 
-        private RelayCommand<EntityGeoCod> _commandOpenInBrowser;
         /// <summary>
         /// Команда открыть адрес в браузере
         /// </summary>
@@ -409,10 +418,41 @@ namespace GeoCoding
           _commandOpenInBrowser ?? (_commandOpenInBrowser = new RelayCommand<EntityGeoCod>(
           obj =>
           {
-              System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode=" + obj.Address);
+              try
+              {
+                  System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode=" + obj.Address);
+              }
+              catch (Exception ex)
+              {
+                  NotificationPlainText(_headerNotificationError, ex.Message);
+              }
+
           }));
 
-        private ICollectionView _customerView;
+        #endregion PublicCommands
+
+
+        /// <summary>
+        /// Настройки геокодирования
+        /// </summary>
+        public GeoCodSettings GeoCodSettings
+        {
+            get => _geoCodSettings;
+            set => Set(ref _geoCodSettings, value);
+        }
+
+        /// <summary>
+        /// Настройки для работы с ФТП-сервером
+        /// </summary>
+        public FTPSettings FTPSettings
+        {
+            get => _ftpSettings;
+            set => Set(ref _ftpSettings, value);
+        }
+
+        /// <summary>
+        /// Представление коллекции
+        /// </summary>
         public ICollectionView Customers
         {
             get => _customerView;
@@ -454,8 +494,9 @@ namespace GeoCoding
                     }
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
-                    Customers= new CollectionViewSource { Source= CollectionGeoCod }.View;
-                  //  Customers = CollectionViewSource.GetDefaultView(CollectionGeoCod);
+
+                    // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
+                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
                     Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
                     Customers.Filter = CustomerFilter;
 
@@ -494,15 +535,28 @@ namespace GeoCoding
                     if (e == null)
                     {
                         Statistics = s;
+
+                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        {
+                            if (Customers != null)
+                            {
+                                Customers.Refresh();
+                            }
+                        });
                     }
                 }, _collectionGeoCod);
             }
         }
 
+        /// <summary>
+        /// Фильтрация для представления колекции
+        /// </summary>
+        /// <param name="item">Объект</param>
+        /// <returns>Возвращает истину. если объект по критериям проходит</returns>
         private bool CustomerFilter(object item)
         {
             EntityGeoCod customer = item as EntityGeoCod;
-            return customer.Status==StatusType.Error;
+            return customer.Status == StatusType.Error;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace GeoCoding.GeoCodingService.Test
 
             GeoCod geocod = new GeoCod()
             {
-                CountResult = (byte)rnd.Next(1, 3),
+                CountResult = (byte)rnd.Next(0, 5),
                 Latitude = "",
                 Longitude = "",
                 Text = "",
