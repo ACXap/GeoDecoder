@@ -426,12 +426,8 @@ namespace GeoCoding
             _model = new MainWindowModel();
             FilesSettings = new FilesSettings();
             GeoCodSettings = new GeoCodSettings();
-            FTPSettings = new FTPSettings()
-            {
-                Server = @"ftp://10.42.78.142",
-                FolderOutput = @"/exchange/ORPONtoGeo/load/",
-                FolderInput = @"/exchange/ORPONtoGeo/upload/"
-            };
+            FTPSettings = new FTPSettings();
+
 
             Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
             {

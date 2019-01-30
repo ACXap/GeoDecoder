@@ -55,16 +55,19 @@
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="CanUserAddRows" Value="False" />
         <Setter Property="IsReadOnly" Value="True" />
+    </Style>
+
+    <Style
+        x:Key="DataGridMainAll"
+        BasedOn="{StaticResource DataGridMain}"
+        TargetType="{x:Type DataGrid}">
         <Setter Property="RowStyle" Value="{StaticResource DataGridMainRow}" />
     </Style>
 
     <Style
         x:Key="DataGridErrors"
-        BasedOn="{StaticResource MetroDataGrid}"
+        BasedOn="{StaticResource DataGridMain}"
         TargetType="{x:Type DataGrid}">
-        <Setter Property="AutoGenerateColumns" Value="False" />
-        <Setter Property="CanUserAddRows" Value="False" />
-        <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="RowStyle" Value="{StaticResource DataGridMainRowError}" />
     </Style>
 

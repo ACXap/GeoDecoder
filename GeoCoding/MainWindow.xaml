@@ -108,7 +108,7 @@
                                             <!--  Выбор входного файла на ФТП-сервере  -->
                                             <CheckBox
                                                 Margin="5"
-                                                Content="Файл на FTP сервере"
+                                                Content="Файл на FTP сервере" IsEnabled="False"
                                                 IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" />
 
                                             <!--  После выбора файла с данными, данные получаем сразу  -->
@@ -252,7 +252,7 @@
             <!--  Данные  -->
             <TabControl Grid.Column="0">
                 <TabItem Header="Данные">
-                    <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMain}">
+                    <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMainAll}">
                         <DataGrid.Columns>
 
                             <!--  Колонка статуса  -->
