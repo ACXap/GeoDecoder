@@ -336,6 +336,7 @@ namespace GeoCoding
                             {
                                 // Оповещаем о завершении получении координат
                                 NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {_collectionGeoCod.Count}");
+                                Customers.Refresh();
                             }
                             else if (e.Message == _errorCancel)
                             {
@@ -456,8 +457,9 @@ namespace GeoCoding
                     }
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
-                    Customers = CollectionViewSource.GetDefaultView(CollectionGeoCod);
-                    //Customers.Filter = CustomerFilter;
+                    Customers= new CollectionViewSource { Source= CollectionGeoCod }.View;
+                  //  Customers = CollectionViewSource.GetDefaultView(CollectionGeoCod);
+                    Customers.Filter = CustomerFilter;
 
                     // Обновляем статистику
                     UpdateStatistics();

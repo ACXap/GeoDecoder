@@ -321,9 +321,18 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Ошибки">
-                    <DataGrid ItemsSource="{Binding Customers}" AutoGenerateColumns="False" CanUserAddRows="False">
+                    <DataGrid ItemsSource="{Binding Customers}" Style="{StaticResource DataGridErrors}">
                         <DataGrid.Columns>
-                            
+
+                          <!--  Колонка статуса  -->
+                        <!--  <DataGridTemplateColumn SortMemberPath="Status">
+                              <DataGridTemplateColumn.CellTemplate>
+                                  <DataTemplate>
+                                      <TextBlock Style="{StaticResource TextBlockStatus}" Tag="{Binding Status}" />
+                                  </DataTemplate>
+                              </DataGridTemplateColumn.CellTemplate>
+                          </DataGridTemplateColumn> -->
+
                             <!--  Колонка адреса  -->
                             <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -345,7 +354,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
-                       
+
             </TabControl>
 
             <!--  Статистика, кнопка запуска геокодирования, настройки геокодирования  -->

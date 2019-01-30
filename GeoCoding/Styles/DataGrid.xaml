@@ -37,6 +37,18 @@
     </Style>
 
     <Style
+        x:Key="DataGridMainRowError"
+        BasedOn="{StaticResource MetroDataGridRow}"
+        TargetType="{x:Type DataGridRow}">
+        <Setter Property="ContextMenu" Value="{StaticResource ContextMenuRow}" />
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{StaticResource ToolTipDataGrid}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style
         x:Key="DataGridMain"
         BasedOn="{StaticResource MetroDataGrid}"
         TargetType="{x:Type DataGrid}">
@@ -45,4 +57,16 @@
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="RowStyle" Value="{StaticResource DataGridMainRow}" />
     </Style>
+
+    <Style
+        x:Key="DataGridErrors"
+        BasedOn="{StaticResource MetroDataGrid}"
+        TargetType="{x:Type DataGrid}">
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="RowStyle" Value="{StaticResource DataGridMainRowError}" />
+    </Style>
+
+
 </ResourceDictionary>
