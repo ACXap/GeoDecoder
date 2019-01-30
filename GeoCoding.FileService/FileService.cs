@@ -47,17 +47,13 @@ namespace GeoCoding.FileService
         {
             Exception error = null;
             string data = string.Empty;
-            string a = Environment.CurrentDirectory;
-            string defFolder = string.Empty;
+            string defFolder = Environment.CurrentDirectory;
 
-            // if (Directory.Exists(defaultFolder))
-            // {
-            defFolder = defaultFolder;
-           // }
-           // else
-           // {
-            //   defFolder = Environment.CurrentDirectory;
-           // }
+            if (!string.IsNullOrEmpty(defaultFolder) && Directory.Exists(defaultFolder))
+            {
+                defFolder = defaultFolder;
+            }
+
             OpenFileDialog fd = new OpenFileDialog()
             {
                 Multiselect = false,
@@ -185,11 +181,11 @@ namespace GeoCoding.FileService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="str">Путь к папке/файлу</param>
-        public void OpenFolder(Action<Exception> callback, string str)
+        public void OpenFolder(Action<Exception> callback, string path)
         {
             Exception error = null;
 
-            if (string.IsNullOrEmpty(str))
+            if (string.IsNullOrEmpty(path))
             {
                 error = new ArgumentNullException();
             }
@@ -197,20 +193,20 @@ namespace GeoCoding.FileService
             {
                 try
                 {
-                    if (File.Exists(str))
+                    if (File.Exists(path))
                     {
-                        System.Diagnostics.Process.Start("explorer", @"/select, " + str);
+                        System.Diagnostics.Process.Start("explorer", @"/select, " + path);
                     }
-                    else if (Directory.Exists(str))
+                    else if (Directory.Exists(path))
                     {
-                        System.Diagnostics.Process.Start(str);
+                        System.Diagnostics.Process.Start(path);
                     }
                     else
                     {
-                        var path = Path.GetDirectoryName(str);
-                        if (Directory.Exists(path))
+                        var p = Path.GetDirectoryName(path);
+                        if (Directory.Exists(p))
                         {
-                            System.Diagnostics.Process.Start(path);
+                            System.Diagnostics.Process.Start(p);
                         }
                         else
                         {
@@ -232,15 +228,15 @@ namespace GeoCoding.FileService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="str">Путь к папке</param>
-        public void CreateFolder(Action<Exception> callback, string str)
+        public void CreateFolder(Action<Exception> callback, string path)
         {
             Exception error = null;
 
             try
             {
-                if (!Directory.Exists(str))
+                if (!Directory.Exists(path))
                 {
-                    Directory.CreateDirectory(str);
+                    Directory.CreateDirectory(path);
                 }
             }
             catch (Exception ex)

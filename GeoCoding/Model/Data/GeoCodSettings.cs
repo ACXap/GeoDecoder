@@ -16,7 +16,15 @@ namespace GeoCoding
         /// Поле для хранения параметра геокодировать негеокодированные объекты
         /// </summary>
         private bool _canGeoCodGetNotGeo = false;
-
+        /// <summary>
+        /// Поле для хранения параметра сохранить все данные геокодирования в полном объеме
+        /// </summary>
+        private bool _canSaveDataAsTemp = true;
+        /// <summary>
+        /// Поле для хранения параметра сохранить все данные геокодирования в формате для базы данных
+        /// </summary>
+        private bool _canSaveDataAsFinished = false;
+        
         /// <summary>
         /// Геокодировать все объекты
         /// </summary>
@@ -43,8 +51,7 @@ namespace GeoCoding
             get => _canGeoCodGetNotGeo;
             set => Set(ref _canGeoCodGetNotGeo, value);
         }
-
-        public bool _canSaveDataAsTemp = true;
+        
         /// <summary>
         /// Сохранить все данные геокодирования в полном объеме
         /// </summary>
@@ -53,8 +60,7 @@ namespace GeoCoding
             get => _canSaveDataAsTemp;
             set => Set(ref _canSaveDataAsTemp, value);
         }
-
-        public bool _canSaveDataAsFinished = false;
+        
         /// <summary>
         /// Сохранить все данные геокодирования в формате для базы данных
         /// </summary>

@@ -41,13 +41,13 @@ namespace GeoCoding.FileService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="str">Путь к папке, к файлу</param>
-        void OpenFolder(Action<Exception> callback, string str);
+        void OpenFolder(Action<Exception> callback, string path);
 
         /// <summary>
         /// Метод для создания папки
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="str">Путь к папке</param>
-        void CreateFolder(Action<Exception> callback, string str);
+        void CreateFolder(Action<Exception> callback, string path);
     }
 }

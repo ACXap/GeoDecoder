@@ -249,10 +249,8 @@ namespace GeoCoding
                     () =>
                     {
                         string defFolder = string.Empty;
-                        if (FilesSettings.IsFileInputOnFTP)
-                        {
-                            defFolder = $"{FTPSettings.Server}{FTPSettings.FolderOutput}";
-                        }
+                        defFolder = _filesSettings.FolderInput;
+
                         _model.GetFile((f, er) =>
                         {
                             if (er == null)
@@ -550,24 +548,19 @@ namespace GeoCoding
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
-            _model.GetSettings((e,f,g)=>
+            _model.GetSettings((e, f, g, ftp) =>
             {
-                if(e==null)
+                if (e == null)
                 {
                     FilesSettings = f;
                     GeoCodSettings = g;
+                    FTPSettings = ftp;
                 }
                 else
                 {
                     NotificationPlainText(_headerNotificationError, e.Message);
                 }
             });
-            //FTPSettings = new FTPSettings()
-            //{
-            //    Server = Properties.Settings.Default.FTPServer,
-            //    FolderOutput = Properties.Settings.Default.FTPFolderOutput,
-            //    FolderInput = Properties.Settings.Default.FTPFolderInput
-            //};
 
             Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
             {

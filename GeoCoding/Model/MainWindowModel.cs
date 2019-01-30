@@ -500,23 +500,40 @@ namespace GeoCoding
             return error;
         }
 
-        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings> callback)
+        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings> callback)
         {
             Exception error = null;
-            var properties = Properties.Settings.Default;
+            var p = Properties.Settings.Default;
             FilesSettings f = new FilesSettings()
             {
-                CanBreakFileOutput = properties.CanBreakFileOutput,
-                CanCopyFileOutputToFtp =  properties.CanCopyFileOutputToFtp,
-                
-            
+                CanBreakFileOutput = p.CanBreakFileOutput,
+                CanCopyFileOutputToFtp =  p.CanCopyFileOutputToFtp,
+                FolderInput = $"{Environment.CurrentDirectory}\\{p.FolderInput}",
+                FolderOutput = $"{Environment.CurrentDirectory}\\{p.FolderOutput}",
+                FolderTemp = $"{Environment.CurrentDirectory}\\{p.FolderTemp}",
+                IsFileInputOnFTP = p.IsFileInputOnFTP,
+                MaxSizePart = p.MaxSizePart
+               
             };
             GeoCodSettings g = new GeoCodSettings()
             {
-
+                CanGeoCodGetAll = p.CanGeoCodGetAll,
+                CanGeoCodGetError = p.CanGeoCodGetError,
+                CanGeoCodGetNotGeo = p.CanGeoCodGetNotGeo,
+                CanSaveDataAsFinished = p.CanSaveDataAsFinished,
+                CanSaveDataAsTemp = p.CanSaveDataAsTemp
+            };
+            FTPSettings ftp = new FTPSettings()
+            {
+                Server = p.Server,
+                Port = p.Port,
+                User = p.User,
+                Password = p.Password,
+                FolderInput = p.FtpFolderInput,
+                FolderOutput = p.FtpFolderOutput
             };
 
-            callback(error, f, g);
+            callback(error, f, g, ftp);
         }
     }
 }
