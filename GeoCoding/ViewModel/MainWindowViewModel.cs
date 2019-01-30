@@ -336,7 +336,6 @@ namespace GeoCoding
                             {
                                 // Оповещаем о завершении получении координат
                                 NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {_collectionGeoCod.Count}");
-                                Customers.Refresh();
                             }
                             else if (e.Message == _errorCancel)
                             {
@@ -348,6 +347,8 @@ namespace GeoCoding
                                 // Оповещаем если были ошибки и номер на котором была остановка
                                 NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r {_messageCancel} {i} {_messageCancelEntity}");
                             }
+
+                            Customers.Refresh();
 
                             // Прекращаем отображение
                             IsStartGeoCoding = false;
@@ -455,6 +456,7 @@ namespace GeoCoding
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
                     Customers= new CollectionViewSource { Source= CollectionGeoCod }.View;
                   //  Customers = CollectionViewSource.GetDefaultView(CollectionGeoCod);
+                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
                     Customers.Filter = CustomerFilter;
 
                     // Обновляем статистику
