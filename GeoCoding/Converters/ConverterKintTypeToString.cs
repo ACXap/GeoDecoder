@@ -4,8 +4,12 @@ using System.Windows.Data;
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс конвертер для конвертирования KindType (вид объекта) в строковое представление
+    /// </summary>
     public class ConverterKindTypeToString : IValueConverter
     {
+        // Прямое конвертирование
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string str = string.Empty;
@@ -82,6 +86,7 @@ namespace GeoCoding
             return str;
         }
 
+        // Обратное конвертирование
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return null;

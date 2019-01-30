@@ -60,7 +60,7 @@ namespace GeoCoding
 
         private byte _qCode;
         /// <summary>
-        /// Качество полученых геокоординат - данные для базы
+        /// Качество полученных геокоординат - данные для базы
         /// </summary>
         public byte Qcode
         {
@@ -110,7 +110,7 @@ namespace GeoCoding
 
         private PrecisionType _precision;
         /// <summary>
-        /// Точность соответсвия запроса и результата
+        /// Точность соответствия запроса и результата
         /// </summary>
         public PrecisionType Precision
         {

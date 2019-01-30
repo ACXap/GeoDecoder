@@ -28,7 +28,7 @@ namespace GeoCoding
         private int _maxSizePart = 0;
 
         /// <summary>
-        /// Поле для хранения значения разбивать ли выходной файл по строчно
+        /// Поле для хранения значения разбивать ли выходной файл построчно
         /// </summary>
         private bool _canBreakFileOutput = false;
 
@@ -74,7 +74,7 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Разбивать ли выходной файл по строчно
+        /// Разбивать ли выходной файл построчно
         /// </summary>
         public bool CanBreakFileOutput
         {

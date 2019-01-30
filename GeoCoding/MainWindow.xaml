@@ -15,7 +15,7 @@
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
     mc:Ignorable="d">
-    <!--  Ресурсы окна, в основном конверторы  -->
+    <!--  Ресурсы окна, в основном конвертеры  -->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
@@ -193,7 +193,7 @@
                                                     IsChecked="{Binding FilesSettings.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     IsEnabled="False" />
 
-                                                <!--  Максимальное количесво строк в файле  -->
+                                                <!--  Максимальное количество строк в файле  -->
                                                 <TextBox
                                                     Width="80"
                                                     Margin="5,0,0,0"
@@ -329,37 +329,37 @@
                       EnableColumnVirtualization = "true"
                       EnableRowVirtualization = "true"
                   VirtualizingPanel.IsContainerVirtualizable="True">
-                      <DataGrid.GroupStyle>
-                          <GroupStyle>
-                            <GroupStyle.Panel>
-                                            <ItemsPanelTemplate>
-                                                <DataGridRowsPresenter />
-                                            </ItemsPanelTemplate>
-                            </GroupStyle.Panel>
-                              <GroupStyle.ContainerStyle>
-                                  <Style TargetType="{x:Type GroupItem}">
-                                      <Setter Property="Margin" Value="0,0,0,5"/>
-                                      <Setter Property="Template">
-                                          <Setter.Value>
-                                              <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                  <Expander IsExpanded="False">
-                                                      <Expander.Header>
-                                                          <StackPanel Orientation="Horizontal">
-                                                              <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" />
-                                                              <TextBlock FontWeight="Bold" Text="Количество:" Margin="20,0,0,0" />
-                                                              <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Margin="5,0,0,0"/>
-                                                          </StackPanel>
-                                                      </Expander.Header>
-                                                      <Expander.Content>
-                                                          <ItemsPresenter />
-                                                      </Expander.Content>
-                                                  </Expander>
-                                              </ControlTemplate>
-                                          </Setter.Value>
-                                      </Setter>
-                                  </Style>
-                              </GroupStyle.ContainerStyle>
-                          </GroupStyle>
+                        <DataGrid.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.Panel>
+                                    <ItemsPanelTemplate>
+                                        <DataGridRowsPresenter />
+                                    </ItemsPanelTemplate>
+                                </GroupStyle.Panel>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Margin" Value="0,0,0,5"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <Expander IsExpanded="False">
+                                                        <Expander.Header>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" />
+                                                                <TextBlock FontWeight="Bold" Text="Количество:" Margin="20,0,0,0" />
+                                                                <TextBlock FontWeight="Bold" Text="{Binding Path=ItemCount}" Margin="5,0,0,0"/>
+                                                            </StackPanel>
+                                                        </Expander.Header>
+                                                        <Expander.Content>
+                                                            <ItemsPresenter />
+                                                        </Expander.Content>
+                                                    </Expander>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
                         </DataGrid.GroupStyle>
                         <DataGrid.Columns>
 

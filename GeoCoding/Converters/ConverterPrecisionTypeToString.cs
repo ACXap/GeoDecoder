@@ -4,6 +4,9 @@ using System.Windows.Data;
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс конвертер для конвертирования PrecisionType (качество геокодирования) в строковое представление
+    /// </summary>
     public class ConverterPrecisionTypeToString : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

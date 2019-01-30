@@ -7,7 +7,7 @@ using System.Text;
 namespace GeoCoding.FileService
 {
     /// <summary>
-    /// Класс для орагнизации работы с файлами, реализует IFileService
+    /// Класс для организации работы с файлами, реализует IFileService
     /// </summary>
     public class FileService : IFileService
     {

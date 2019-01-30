@@ -34,7 +34,7 @@ namespace GeoCoding
         /// </summary>
         private const string _headerNotificationSaveData = "Сохранение файла";
         /// <summary>
-        /// Сообщение об отмене опрерации
+        /// Сообщение об отмене операции
         /// </summary>
         private const string _errorCancel = "Операция была отменена.";
         /// <summary>
@@ -42,11 +42,11 @@ namespace GeoCoding
         /// </summary>
         private const string _messageSaveData = "Сохранение данных в файл завершено успешно";
         /// <summary>
-        /// Сообщение об отмене опрерации
+        /// Сообщение об отмене операции
         /// </summary>
-        private const string _messageCancel = "Процеес завершен на:";
+        private const string _messageCancel = "Процесс завершен на:";
         /// <summary>
-        /// Сообщение об отмене опрерации
+        /// Сообщение об отмене операции
         /// </summary>
         private const string _messageCancelEntity = "элементе";
         /// <summary>
@@ -122,7 +122,7 @@ namespace GeoCoding
         private RelayCommand _commandSetFileOutput;
 
         /// <summary>
-        /// Поле для хранения ссылки на комаду сохранения данных
+        /// Поле для хранения ссылки на команду сохранения данных
         /// </summary>
         private RelayCommand _commandSaveData;
 
@@ -202,7 +202,7 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Статистика по выполненому геокодированию
+        /// Статистика по выполненному геокодированию
         /// </summary>
         public Statistics Statistics
         {
@@ -486,7 +486,7 @@ namespace GeoCoding
             {
                 if (error == null)
                 {
-                    // Если колекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
+                    // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
                     if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
                     {
                         _collectionGeoCod.Clear();
@@ -514,7 +514,7 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Метод для оповещения о выполенных процессах
+        /// Метод для оповещения о выполненных процессах
         /// </summary>
         /// <param name="header">Заголовок оповещения</param>
         /// <param name="message">Сообщение оповещения</param>
@@ -549,7 +549,7 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Фильтрация для представления колекции
+        /// Фильтрация для представления коллекции
         /// </summary>
         /// <param name="item">Объект</param>
         /// <returns>Возвращает истину. если объект по критериям проходит</returns>
