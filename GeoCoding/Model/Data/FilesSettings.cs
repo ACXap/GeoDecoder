@@ -38,12 +38,17 @@ namespace GeoCoding
         private bool _isFileInputOnFTP = false;
 
         /// <summary>
+        /// Поле для хранения имени папки для временных файлов
+        /// </summary>
+        private string _folderTemp = string.Empty;
+
+        /// <summary>
         /// Имя файла с данными
         /// </summary>
         public string FileInput
         {
             get => _fileInput;
-            set => Set("FileInput", ref _fileInput, value);
+            set => Set(ref _fileInput, value);
         }
 
         /// <summary>
@@ -52,7 +57,16 @@ namespace GeoCoding
         public string FileOutput
         {
             get => _fileOutput;
-            set => Set("FileOutput", ref _fileOutput, value);
+            set => Set(ref _fileOutput, value);
+        }
+
+        /// <summary>
+        /// Имя файла для записи
+        /// </summary>
+        public string FolderTemp
+        {
+            get => _folderTemp;
+            set => Set(ref _folderTemp, value);
         }
 
         /// <summary>
@@ -61,7 +75,7 @@ namespace GeoCoding
         public bool CanCopyFileOutputToFtp
         {
             get => _canCopyFileOutputToFTP;
-            set => Set("CanCopyFileOutputToFtp", ref _canCopyFileOutputToFTP, value);
+            set => Set(ref _canCopyFileOutputToFTP, value);
         }
 
         /// <summary>
@@ -70,7 +84,7 @@ namespace GeoCoding
         public int MaxSizePart
         {
             get => _maxSizePart;
-            set => Set("MaxSizePart", ref _maxSizePart, value);
+            set => Set(ref _maxSizePart, value);
         }
 
         /// <summary>
@@ -79,7 +93,7 @@ namespace GeoCoding
         public bool CanBreakFileOutput
         {
             get => _canBreakFileOutput;
-            set => Set("CanBreakFileOutput", ref _canBreakFileOutput, value);
+            set => Set(ref _canBreakFileOutput, value);
         }
 
         /// <summary>
@@ -88,7 +102,7 @@ namespace GeoCoding
         public bool IsFileInputOnFTP
         {
             get => _isFileInputOnFTP;
-            set => Set("IsFileInputOnFTP", ref _isFileInputOnFTP, value);
+            set => Set(ref _isFileInputOnFTP, value);
         }
     }
 }

@@ -210,6 +210,33 @@ namespace GeoCoding
             set => Set(ref _statistics, value);
         }
 
+        /// <summary>
+        /// Представление коллекции
+        /// </summary>
+        public ICollectionView Customers
+        {
+            get => _customerView;
+            set => Set(ref _customerView, value);
+        }
+
+        /// <summary>
+        /// Настройки для работы с ФТП-сервером
+        /// </summary>
+        public FTPSettings FTPSettings
+        {
+            get => _ftpSettings;
+            set => Set(ref _ftpSettings, value);
+        }
+
+        /// <summary>
+        /// Настройки геокодирования
+        /// </summary>
+        public GeoCodSettings GeoCodSettings
+        {
+            get => _geoCodSettings;
+            set => Set(ref _geoCodSettings, value);
+        }
+
         #endregion PublicPropertys
 
         #region PublicCommands
@@ -431,34 +458,6 @@ namespace GeoCoding
 
         #endregion PublicCommands
 
-
-        /// <summary>
-        /// Настройки геокодирования
-        /// </summary>
-        public GeoCodSettings GeoCodSettings
-        {
-            get => _geoCodSettings;
-            set => Set(ref _geoCodSettings, value);
-        }
-
-        /// <summary>
-        /// Настройки для работы с ФТП-сервером
-        /// </summary>
-        public FTPSettings FTPSettings
-        {
-            get => _ftpSettings;
-            set => Set(ref _ftpSettings, value);
-        }
-
-        /// <summary>
-        /// Представление коллекции
-        /// </summary>
-        public ICollectionView Customers
-        {
-            get => _customerView;
-            set => Set(ref _customerView, value);
-        }
-
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -467,8 +466,12 @@ namespace GeoCoding
             _model = new MainWindowModel();
             FilesSettings = new FilesSettings();
             GeoCodSettings = new GeoCodSettings();
-            FTPSettings = new FTPSettings();
-
+            //FTPSettings = new FTPSettings()
+            //{
+            //    Server = Properties.Settings.Default.FTPServer,
+            //    FolderOutput = Properties.Settings.Default.FTPFolderOutput,
+            //    FolderInput = Properties.Settings.Default.FTPFolderInput
+            //};
 
             Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
             {

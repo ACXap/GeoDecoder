@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Text;
 
 namespace GeoCoding.FileService
@@ -49,14 +50,14 @@ namespace GeoCoding.FileService
             string a = Environment.CurrentDirectory;
             string defFolder = string.Empty;
 
-            //  if(Directory.Exists(defaultFolder))
-            //{
+            // if (Directory.Exists(defaultFolder))
+            // {
             defFolder = defaultFolder;
-            //  }
-            //  else
-            //  {
-            //  defFolder = Environment.CurrentDirectory;
-            //}
+           // }
+           // else
+           // {
+            //   defFolder = Environment.CurrentDirectory;
+           // }
             OpenFileDialog fd = new OpenFileDialog()
             {
                 Multiselect = false,

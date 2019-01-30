@@ -1,7 +1,18 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GeoCoding.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="CanGetDataOnce" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="FolderInput" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Input</Value>
+    </Setting>
+    <Setting Name="FolderOutput" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Output</Value>
+    </Setting>
+    <Setting Name="FolderTemp" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Temp</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
