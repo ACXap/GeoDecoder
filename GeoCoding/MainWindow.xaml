@@ -322,8 +322,7 @@
                 </TabItem>
                 <TabItem Header="Ошибки">
                     <DataGrid ItemsSource="{Binding Customers}" Style="{StaticResource DataGridErrors}">
-<DataGrid.GroupStyle>
-                      <!-- Style for groups at top level. -->
+                      <DataGrid.GroupStyle>
                           <GroupStyle>
                               <GroupStyle.ContainerStyle>
                                   <Style TargetType="{x:Type GroupItem}">
@@ -349,23 +348,14 @@
                                   </Style>
                               </GroupStyle.ContainerStyle>
                           </GroupStyle>
-</DataGrid.GroupStyle>
+                        </DataGrid.GroupStyle>
                         <DataGrid.Columns>
-
-                          <!--  Колонка статуса  -->
-                        <!--  <DataGridTemplateColumn SortMemberPath="Status">
-                              <DataGridTemplateColumn.CellTemplate>
-                                  <DataTemplate>
-                                      <TextBlock Style="{StaticResource TextBlockStatus}" Tag="{Binding Status}" />
-                                  </DataTemplate>
-                              </DataGridTemplateColumn.CellTemplate>
-                          </DataGridTemplateColumn> -->
 
                             <!--  Колонка адреса  -->
                             <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Address}" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Address}" TextWrapping="Wrap" Margin="5,0"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -374,7 +364,7 @@
                             <DataGridTemplateColumn Header="Ошибка" SortMemberPath="Error">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Error}" TextWrapping="Wrap" />
+                                        <TextBlock Text="{Binding Error}" TextWrapping="Wrap" Margin="5,0"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
