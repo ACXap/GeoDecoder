@@ -321,7 +321,12 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Ошибки">
-                    <DataGrid ItemsSource="{Binding Customers}" Style="{StaticResource DataGridErrors}">
+                    <DataGrid ItemsSource="{Binding Customers}"
+                      Style="{StaticResource DataGridErrors}"
+                      VirtualizingPanel.IsVirtualizingWhenGrouping="True" ScrollViewer.CanContentScroll = "True"
+                      VirtualizingPanel.IsVirtualizing="True" EnableColumnVirtualization = "true"
+EnableRowVirtualization = "true"
+                  VirtualizingPanel.IsContainerVirtualizable="True">
                       <DataGrid.GroupStyle>
                           <GroupStyle>
                               <GroupStyle.ContainerStyle>

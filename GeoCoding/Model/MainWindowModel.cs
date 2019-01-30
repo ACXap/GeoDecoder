@@ -18,7 +18,7 @@ namespace GeoCoding
         private const string _errorIsNotFirstStringNameColumn = "Первая строка данных не название столбцов. Обработка прекращена.";
         private const string _errorLotOfMistakes = "Очень много ошибок при обработке данных. Обработка прекращена";
         private const string _errorGeoCodResponsEmpty = "Запрос к сервису геокодирования вернул пустой ответ";
-        private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Следует проверить адрес";
+        private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
         private const string _errorGeoCodNotFound = "Адрес не найден";
         private const string _errorFileNotHaveData = "Файл не содержит обрабатываемых данных";
         private const string _errorIsFormatIDWrong = "Формат значения GlobalId неверный";
@@ -33,8 +33,8 @@ namespace GeoCoding
 
         private readonly IFileService _fileService = new FileService.FileService();
 
-        private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
-        //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
+        //private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
+        private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private CancellationTokenSource _cts;
