@@ -331,6 +331,11 @@
                   VirtualizingPanel.IsContainerVirtualizable="True">
                       <DataGrid.GroupStyle>
                           <GroupStyle>
+                            <GroupStyle.Panel>
+                                            <ItemsPanelTemplate>
+                                                <DataGridRowsPresenter />
+                                            </ItemsPanelTemplate>
+                            </GroupStyle.Panel>
                               <GroupStyle.ContainerStyle>
                                   <Style TargetType="{x:Type GroupItem}">
                                       <Setter Property="Margin" Value="0,0,0,5"/>
