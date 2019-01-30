@@ -70,6 +70,4 @@
         TargetType="{x:Type DataGrid}">
         <Setter Property="RowStyle" Value="{StaticResource DataGridMainRowError}" />
     </Style>
-
-
 </ResourceDictionary>
