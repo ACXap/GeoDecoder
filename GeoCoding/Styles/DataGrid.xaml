@@ -29,23 +29,17 @@
                 <ToolTip Style="{StaticResource ToolTipDataGrid}" />
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style
+        x:Key="DataGridMainRowAll"
+        BasedOn="{StaticResource DataGridMainRow}"
+        TargetType="{x:Type DataGridRow}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Status}" Value="{x:Static l:StatusType.Error}">
                 <Setter Property="Background" Value="Red" />
             </DataTrigger>
         </Style.Triggers>
-    </Style>
-
-    <Style
-        x:Key="DataGridMainRowError"
-        BasedOn="{StaticResource MetroDataGridRow}"
-        TargetType="{x:Type DataGridRow}">
-        <Setter Property="ContextMenu" Value="{StaticResource ContextMenuRow}" />
-        <Setter Property="ToolTip">
-            <Setter.Value>
-                <ToolTip Style="{StaticResource ToolTipDataGrid}" />
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <Style
@@ -61,13 +55,13 @@
         x:Key="DataGridMainAll"
         BasedOn="{StaticResource DataGridMain}"
         TargetType="{x:Type DataGrid}">
-        <Setter Property="RowStyle" Value="{StaticResource DataGridMainRow}" />
+        <Setter Property="RowStyle" Value="{StaticResource DataGridMainRowAll}" />
     </Style>
 
     <Style
         x:Key="DataGridErrors"
         BasedOn="{StaticResource DataGridMain}"
         TargetType="{x:Type DataGrid}">
-        <Setter Property="RowStyle" Value="{StaticResource DataGridMainRowError}" />
+        <Setter Property="RowStyle" Value="{StaticResource DataGridMainRow}" />
     </Style>
 </ResourceDictionary>
