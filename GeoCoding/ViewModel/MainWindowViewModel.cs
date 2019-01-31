@@ -386,7 +386,7 @@ namespace GeoCoding
                             else
                             {
                                 // Оповещаем если были ошибки и номер на котором была остановка
-                                NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r {_messageCancel} {i} {_messageCancelEntity}");
+                                NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
                             }
 
                             Customers.Refresh();
