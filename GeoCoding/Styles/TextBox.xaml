@@ -3,40 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:local="clr-namespace:GeoCoding.Styles">
-    <!--<ControlTemplate x:Key="TextBoxWithControl" TargetType="{x:Type TextBox}">
-        <Grid>
-            <TextBox
-                x:Name="tb"
-                VerticalContentAlignment="Center"
-                Controls:TextBoxHelper.Watermark="{TemplateBinding Controls:TextBoxHelper.Watermark}"
-                Style="{TemplateBinding Style}"
-                Text="{TemplateBinding Text}" />
-            <Button
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Command="{TemplateBinding Tag}"
-                CommandParameter="{TemplateBinding Text}">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Visibility" Value="Visible" />
-                        <Style.Triggers>
-                            <Trigger Property="CommandParameter" Value="">
-                                <Setter Property="Visibility" Value="Collapsed" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Button.Template>
-                    <ControlTemplate>
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource TextBlockFolder}" />
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-        </Grid>
-    </ControlTemplate>-->
 
     <Style x:Key="TextBoxFolderOpen" TargetType="{x:Type TextBox}">
         <Setter Property="Template">

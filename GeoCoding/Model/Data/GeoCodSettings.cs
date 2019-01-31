@@ -28,6 +28,10 @@ namespace GeoCoding
         /// Поле для хранения параметра открывать ли папку с результатами после геокодирования и сохранения
         /// </summary>
         private bool _canOpenFolderAfter = false;
+        /// <summary>
+        /// Поле для хранения параметра геокодировать сразу по выбору файла
+        /// </summary>
+        private bool _canGeoCodAfterGetFile = false;
 
         /// <summary>
         /// Геокодировать все объекты
@@ -81,6 +85,15 @@ namespace GeoCoding
         {
             get => _canOpenFolderAfter;
             set => Set(ref _canOpenFolderAfter, value);
+        }
+
+        /// <summary>
+        /// Геокодировать ли сразу по выбору файла
+        /// </summary>
+        public bool CanGeoCodAfterGetFile
+        {
+            get => _canGeoCodAfterGetFile;
+            set => Set(ref _canGeoCodAfterGetFile, value);
         }
     }
 }

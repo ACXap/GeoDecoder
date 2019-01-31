@@ -97,16 +97,6 @@ namespace GeoCoding
         private bool _isStartGeoCoding = false;
 
         /// <summary>
-        /// Поле для хранения состояния открытия настроек
-        /// </summary>
-        //private bool _isOpenSettings = false;
-        
-        /// <summary>
-        /// Поле для хранения переменной получать данные сразу
-        /// </summary>
-        //private bool _canGetDataOnce = true;
-
-        /// <summary>
         /// Поле для хранения ссылки на настройки геокодирования
         /// </summary>
         private GeoCodSettings _geoCodSettings;
@@ -172,9 +162,9 @@ namespace GeoCoding
         private RelayCommand<DragEventArgs> _commandDragDrop;
 
         /// <summary>
-        /// Поле для хранения ссылки на команду открытия настроек
+        /// Поле для хранения ссылки на команду сохранения настроек
         /// </summary>
-        //private RelayCommand _commandOpenSettings;
+        private RelayCommand _commandSaveSettings;
 
         #endregion PrivateFields
 
@@ -206,24 +196,6 @@ namespace GeoCoding
             get => _isStartGeoCoding;
             set => Set("IsStartGeoCoding", ref _isStartGeoCoding, value);
         }
-
-        /// <summary>
-        /// Получать данные сразу после выбора файла
-        /// </summary>
-        //public bool CanGetDataOnce
-        //{
-        //    get => _canGetDataOnce;
-        //    set => Set(ref _canGetDataOnce, value);
-        //}
-
-        /// <summary>
-        /// Открыты ли настройки
-        /// </summary>
-        //public bool IsOpenSettings
-        //{
-        //    get => _isOpenSettings;
-        //    set => Set(ref _isOpenSettings, value);
-        //}
 
         /// <summary>
         /// Статистика по выполненному геокодированию
@@ -480,14 +452,24 @@ namespace GeoCoding
                     }));
 
         /// <summary>
-        /// Команда открытия настроек
+        /// Команда для сохранения настроек
         /// </summary>
-        //public RelayCommand CommandOpenSettings =>
-        //     _commandOpenSettings ?? (_commandOpenSettings = new RelayCommand(
-        //         () =>
-        //         {
-
-        //         }));
+        public RelayCommand CommandSaveSettings =>
+        _commandSaveSettings ?? (_commandSaveSettings = new RelayCommand(
+                    () =>
+                    {
+                        _model.SaveSettings(e =>
+                        {
+                            if (e == null)
+                            {
+                                NotificationPlainText("Настройки сохранены успешно", "");
+                            }
+                            else
+                            {
+                                NotificationPlainText(_headerNotificationError, e.Message);
+                            }
+                        }, _filesSettings, _ftpSettings, _geoCodSettings);
+                    }));
 
         #endregion PublicCommands
 

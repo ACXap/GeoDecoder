@@ -248,7 +248,7 @@ namespace GeoCoding
                 var a = data.Partition(maxSizePart);
                 try
                 {
-                    foreach(var item in a)
+                    foreach (var item in a)
                     {
                         string nameFile = System.IO.Path.GetFileNameWithoutExtension(file);
                         string nameFolder = System.IO.Path.GetDirectoryName(file);
@@ -575,7 +575,8 @@ namespace GeoCoding
                 CanGeoCodGetNotGeo = p.CanGeoCodGetNotGeo,
                 CanSaveDataAsFinished = p.CanSaveDataAsFinished,
                 CanSaveDataAsTemp = p.CanSaveDataAsTemp,
-                CanOpenFolderAfter = p.CanOpenFolderAfter
+                CanOpenFolderAfter = p.CanOpenFolderAfter,
+                CanGeoCodAfterGetFile = p.CanGeoCodAfterGetFile
             };
             FTPSettings ftp = new FTPSettings()
             {
@@ -588,6 +589,40 @@ namespace GeoCoding
             };
 
             callback(error, f, g, ftp);
+        }
+
+        /// <summary>
+        /// Метод для сохранения настроек
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром: ошибка</param>
+        /// <param name="filesSettings">Настройки файлов</param>
+        /// <param name="ftpSettings">Настройки фтп-сервера</param>
+        /// <param name="geoCodSettings">Настройки геокодирования</param>
+        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings)
+        {
+            Exception error = null;
+            var p = Properties.Settings.Default;
+            p.CanBreakFileOutput = filesSettings.CanBreakFileOutput;
+            p.CanCopyFileOutputToFtp = filesSettings.CanCopyFileOutputToFtp;
+            p.CanGeoCodGetAll = geoCodSettings.CanGeoCodGetAll;
+            p.CanGeoCodGetError = geoCodSettings.CanGeoCodGetError;
+            p.CanGeoCodGetNotGeo = geoCodSettings.CanGeoCodGetNotGeo;
+            p.CanGetDataOnce = filesSettings.CanGetDataOnce;
+            p.CanOpenFolderAfter = geoCodSettings.CanOpenFolderAfter;
+            p.CanSaveDataAsFinished = geoCodSettings.CanSaveDataAsFinished;
+            p.CanSaveDataAsTemp = geoCodSettings.CanSaveDataAsTemp;
+            p.FtpFolderInput = ftpSettings.FolderInput;
+            p.FtpFolderOutput = ftpSettings.FolderOutput;
+            p.IsFileInputOnFTP = filesSettings.IsFileInputOnFTP;
+            p.MaxSizePart = filesSettings.MaxSizePart;
+            p.Password = ftpSettings.Password;
+            p.Port = ftpSettings.Port;
+            p.Server = ftpSettings.Server;
+            p.User = ftpSettings.User;
+            p.CanGeoCodAfterGetFile = geoCodSettings.CanGeoCodAfterGetFile;
+            p.Save();
+
+            callback(error);
         }
     }
 }

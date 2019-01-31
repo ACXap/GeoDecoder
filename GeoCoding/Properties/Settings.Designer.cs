@@ -253,5 +253,17 @@ namespace GeoCoding.Properties {
                 this["CanOpenFolderAfter"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanGeoCodAfterGetFile {
+            get {
+                return ((bool)(this["CanGeoCodAfterGetFile"]));
+            }
+            set {
+                this["CanGeoCodAfterGetFile"] = value;
+            }
+        }
     }
 }
