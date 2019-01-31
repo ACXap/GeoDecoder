@@ -47,7 +47,7 @@ namespace GeoCoding.FileService
         {
             Exception error = null;
             string data = string.Empty;
-            string defFolder = Environment.CurrentDirectory;
+            string defFolder = string.Empty;
 
             if (!string.IsNullOrEmpty(defaultFolder) && Directory.Exists(defaultFolder))
             {
@@ -62,9 +62,16 @@ namespace GeoCoding.FileService
                 InitialDirectory = defFolder
             };
 
-            if (fd.ShowDialog() == true)
+            try
             {
-                data = fd.FileName;
+                if (fd.ShowDialog() == true)
+                {
+                    data = fd.FileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex;
             }
 
             callback(data, error);
@@ -118,24 +125,26 @@ namespace GeoCoding.FileService
             Exception error = null;
             string data = string.Empty;
 
-            if (string.IsNullOrEmpty(defaultName))
-            {
-                defaultName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{_defaultNameFileForSave}";
-            }
-
             SaveFileDialog fd = new SaveFileDialog()
             {
                 Filter = _filterForSaveFile,
                 AddExtension = true,
                 DefaultExt = _extensionFileForSave,
-                InitialDirectory = Environment.CurrentDirectory,
+                InitialDirectory = defaultName,
                 Title = _titleFileSaveDialog,
                 FileName = defaultName
             };
 
-            if (fd.ShowDialog() == true)
+            try
             {
-                data = fd.FileName;
+                if (fd.ShowDialog() == true)
+                {
+                    data = fd.FileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex;
             }
 
             callback(data, error);

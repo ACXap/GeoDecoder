@@ -521,7 +521,8 @@ namespace GeoCoding
                 CanGeoCodGetError = p.CanGeoCodGetError,
                 CanGeoCodGetNotGeo = p.CanGeoCodGetNotGeo,
                 CanSaveDataAsFinished = p.CanSaveDataAsFinished,
-                CanSaveDataAsTemp = p.CanSaveDataAsTemp
+                CanSaveDataAsTemp = p.CanSaveDataAsTemp,
+                CanOpenFolderAfter = p.CanOpenFolderAfter
             };
             FTPSettings ftp = new FTPSettings()
             {

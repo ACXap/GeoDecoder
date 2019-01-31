@@ -248,8 +248,6 @@ namespace GeoCoding
         _commandGetFile ?? (_commandGetFile = new RelayCommand(
                     () =>
                     {
-                        string defFolder = string.Empty;
-                        defFolder = _filesSettings.FolderInput;
 
                         _model.GetFile((f, er) =>
                         {
@@ -263,14 +261,35 @@ namespace GeoCoding
                                     // Получаем данные из файла
                                     GetDataFromFile();
                                 }
+
+                                if(string.IsNullOrEmpty(_filesSettings.FileOutput))
+                                {
+                                    FilesSettings.FileOutput = SetDefNameFileOutput();
+                                }
                             }
                             else
                             {
                                 // Оповещаем, если были ошибки
                                 NotificationPlainText(_headerNotificationError, er.Message);
                             }
-                        }, defFolder);
+                        });
                     }));
+
+        private string SetDefNameFileOutput()
+        {
+            string defNameOutput = string.Empty;
+
+            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+            {
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
+            }
+            else
+            {
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
+            }
+
+            return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
+        }
 
         /// <summary>
         /// Команда для выбора файла для сохранения (получения полного имени файла для сохранения)
@@ -280,17 +299,25 @@ namespace GeoCoding
                     () =>
                     {
                         string defName = string.Empty;
-                        // Имя файла по умолчанию, если есть непустая коллекция с данными
-                        if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                        if (string.IsNullOrEmpty(_filesSettings.FileOutput))
                         {
-                            defName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_UpLoad_{_collectionGeoCod.Count}";
+                            defName = SetDefNameFileOutput();
                         }
+                        else
+                        {
+                            defName = _filesSettings.FileOutput;
+                        }
+
+
                         _model.SetFileForSave((file, error) =>
                         {
                             if (error == null)
                             {
-                                // Сохраняем полное имя файла в свойстве FileOutput
-                                FilesSettings.FileOutput = file;
+                                if(!string.IsNullOrEmpty(file))
+                                {
+                                    // Сохраняем полное имя файла в свойстве FileOutput
+                                    FilesSettings.FileOutput = file;
+                                }
                             }
                             else
                             {
@@ -307,19 +334,7 @@ namespace GeoCoding
         _commandSaveData ?? (_commandSaveData = new RelayCommand(
                     () =>
                     {
-                        _model.SaveData(error =>
-                        {
-                            if (error == null)
-                            {
-                                // Оповещаем о успешности записи
-                                NotificationPlainText(_headerNotificationSaveData, _messageSaveData);
-                            }
-                            else
-                            {
-                                // Оповещаем если были ошибки
-                                NotificationPlainText(_headerNotificationError, error.Message);
-                            }
-                        }, _collectionGeoCod, _filesSettings.FileOutput);
+                        SaveData();
                     }, () => !string.IsNullOrEmpty(_filesSettings.FileOutput) && _collectionGeoCod != null));
 
         /// <summary>
@@ -361,14 +376,7 @@ namespace GeoCoding
         _commandOpenFolder ?? (_commandOpenFolder = new RelayCommand<string>(
                     str =>
                     {
-                        _model.OpenFolder(e =>
-                        {
-                            if (e != null)
-                            {
-                                // Оповещаем если были ошибки
-                                NotificationPlainText(_headerNotificationError, e.Message);
-                            }
-                        }, str);
+                        OpenFolder(str);
                     }, str => !string.IsNullOrEmpty(str)));
 
         /// <summary>
@@ -387,6 +395,11 @@ namespace GeoCoding
                             {
                                 // Оповещаем о завершении получении координат
                                 NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {_collectionGeoCod.Count}");
+
+                                if(GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
+                                {
+                                    SaveData();
+                                }
                             }
                             else if (e.Message == _errorCancel)
                             {
@@ -484,7 +497,7 @@ namespace GeoCoding
                     // Обновляем статистику
                     UpdateStatistics();
                     // Оповещаем о создании коллекции
-                    NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
+                    // NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
                 }
                 else
                 {
@@ -538,6 +551,46 @@ namespace GeoCoding
         {
             EntityGeoCod customer = item as EntityGeoCod;
             return customer.Status == StatusType.Error;
+        }
+
+        /// <summary>
+        /// Сохраняем данные
+        /// </summary>
+        private void SaveData()
+        {
+            _model.SaveData(error =>
+            {
+                if (error == null)
+                {
+                    // Оповещаем о успешности записи
+                    NotificationPlainText(_headerNotificationSaveData, _messageSaveData);
+                    if(_geoCodSettings.CanOpenFolderAfter)
+                    {
+                        OpenFolder(_filesSettings.FileOutput);
+                    }
+                }
+                else
+                {
+                    // Оповещаем если были ошибки
+                    NotificationPlainText(_headerNotificationError, error.Message);
+                }
+            }, _collectionGeoCod, _filesSettings.FileOutput);
+        }
+
+        /// <summary>
+        /// Открыть папку
+        /// </summary>
+        /// <param name="str">Путь к файлу или папке</param>
+        private void OpenFolder(string str)
+        {
+            _model.OpenFolder(e =>
+            {
+                if (e != null)
+                {
+                    // Оповещаем если были ошибки
+                    NotificationPlainText(_headerNotificationError, e.Message);
+                }
+            }, str);
         }
 
         #endregion PrivateMethod

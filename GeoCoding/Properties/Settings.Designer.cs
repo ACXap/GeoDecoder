@@ -148,7 +148,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool CanSaveDataAsTemp {
             get {
                 return ((bool)(this["CanSaveDataAsTemp"]));
@@ -160,7 +160,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool CanSaveDataAsFinished {
             get {
                 return ((bool)(this["CanSaveDataAsFinished"]));
@@ -220,7 +220,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("/exchange/ORPONtoGeo/upload/")]
         public string FtpFolderInput {
             get {
                 return ((string)(this["FtpFolderInput"]));
@@ -232,13 +232,25 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("/exchange/ORPONtoGeo/load/")]
         public string FtpFolderOutput {
             get {
                 return ((string)(this["FtpFolderOutput"]));
             }
             set {
                 this["FtpFolderOutput"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanOpenFolderAfter {
+            get {
+                return ((bool)(this["CanOpenFolderAfter"]));
+            }
+            set {
+                this["CanOpenFolderAfter"] = value;
             }
         }
     }

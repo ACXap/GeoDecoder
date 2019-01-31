@@ -36,10 +36,10 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="CanSaveDataAsTemp" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="CanSaveDataAsFinished" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Server" Type="System.String" Scope="User">
       <Value Profile="(Default)">ftp://</Value>
@@ -54,10 +54,13 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FtpFolderInput" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">/exchange/ORPONtoGeo/upload/</Value>
     </Setting>
     <Setting Name="FtpFolderOutput" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">/exchange/ORPONtoGeo/load/</Value>
+    </Setting>
+    <Setting Name="CanOpenFolderAfter" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -432,7 +432,6 @@
                 <!--  Настройки геокодирования  -->
                 <StackPanel
                     Grid.Row="2"
-                    IsEnabled="False"
                     Orientation="Vertical">
 
                     <TextBlock
@@ -442,18 +441,18 @@
                     <!--  Геокодировать все объекты в таблице данных  -->
                     <CheckBox
                         Margin="10,2,2,5"
-                        Content="Все"
+                        Content="Все" IsEnabled="False"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" />
 
                     <!--  Геокодировать только объекты со статусом "Ошибка"  -->
                     <CheckBox
                         Margin="10,2,2,5"
-                        Content="С ошибками"
+                        Content="С ошибками" IsEnabled="False"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" />
 
                     <!--  Геокодировать только объекты со статусом "Негеокодирован"  -->
                     <CheckBox
-                        Margin="10,2,2,5"
+                        Margin="10,2,2,5" IsEnabled="False"
                         Content="Негеокодированные"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
 
@@ -462,7 +461,7 @@
                         FontWeight="Bold"
                         Text="Что делаем после:" />
                     <CheckBox
-                        Margin="10,2,2,5"
+                        Margin="10,2,2,5" IsEnabled="False"
                         IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}"
                         ToolTip="Сохранить все данные в формате программы, во временную папку">
                         <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap" />
@@ -473,6 +472,13 @@
                         Content="Сохранить результаты"
                         IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}"
                         ToolTip="Сохранить все данные в формате для базы данных" />
+
+                    <CheckBox
+                        Margin="10,2,2,5"
+                        IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}"
+                        ToolTip="Сохранить все данные в формате для базы данных">
+                        <TextBlock Text="Открыть папку результатов после сохранения" TextWrapping="Wrap"/>
+                    </CheckBox>
                 </StackPanel>
             </Grid>
         </Grid>

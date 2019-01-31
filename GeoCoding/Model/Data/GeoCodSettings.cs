@@ -24,7 +24,11 @@ namespace GeoCoding
         /// Поле для хранения параметра сохранить все данные геокодирования в формате для базы данных
         /// </summary>
         private bool _canSaveDataAsFinished = false;
-        
+        /// <summary>
+        /// Поле для хранения параметра открывать ли папку с результатами после геокодирования и сохранения
+        /// </summary>
+        private bool _canOpenFolderAfter = false;
+
         /// <summary>
         /// Геокодировать все объекты
         /// </summary>
@@ -68,6 +72,15 @@ namespace GeoCoding
         {
             get => _canSaveDataAsFinished;
             set => Set(ref _canSaveDataAsFinished, value);
+        }
+
+        /// <summary>
+        /// открывать ли папку с результатом после сохранения
+        /// </summary>
+        public bool CanOpenFolderAfter
+        {
+            get => _canOpenFolderAfter;
+            set => Set(ref _canOpenFolderAfter, value);
         }
     }
 }
