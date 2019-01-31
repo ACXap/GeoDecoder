@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
+using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.ObjectModel;
@@ -672,5 +673,26 @@ namespace GeoCoding
                 UpdateStatistics();
             });
         }
+
+        private RelayCommand _myCommand;
+
+        /// <summary>
+        /// Gets the MyCommand.
+        /// </summary>
+        public RelayCommand CommandColor
+        {
+            get
+            {
+                return _myCommand
+                    ?? (_myCommand = new RelayCommand(
+                    () =>
+                    {
+                        Random rnd = new Random();
+                        var a = ThemeManager.Themes;
+                        ThemeManager.ChangeTheme(Application.Current, a[rnd.Next(a.Count)]);
+                    }));
+            }
+        }
+
     }
 }
