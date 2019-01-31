@@ -100,8 +100,7 @@
                                         Grid.Row="0"
                                         Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
                                         IsReadOnly="True"
-                                        Tag="{Binding CommandOpenFolder}"
-                                        Template="{StaticResource TextBoxWithControl}"
+                                        Style="{StaticResource TextBoxFolderOpen}"
                                         Text="{Binding FilesSettings.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                                     <!--  Управление входным файлом  -->
@@ -167,8 +166,7 @@
                                         VerticalAlignment="Center"
                                         Controls:TextBoxHelper.Watermark="Выбрать файл для сохранения"
                                         IsReadOnly="True"
-                                        Tag="{Binding CommandOpenFolder}"
-                                        Template="{StaticResource TextBoxWithControl}"
+Style="{StaticResource TextBoxFolderOpen}"
                                         Text="{Binding FilesSettings.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                                     <!--  Управление выходным файлом  -->
@@ -495,23 +493,121 @@
 
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            <Controls:Flyout IsOpen="{Binding ElementName=tbOpenSettings, Path=IsChecked}"  Position="Bottom" >
-                <Grid Margin="5">
+            <Controls:Flyout Background="AliceBlue" IsOpen="{Binding ElementName=tbOpenSettings, Path=IsChecked}"  Position="Bottom" Height="{Binding ElementName=metroWindow, Path=ActualHeight}" MaxHeight="600" Width="{Binding ElementName=metroWindow, Path=ActualWidth}" MaxWidth="900">
+                <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Expander Grid.Row="0" Header="Файлы и папки" IsExpanded="True">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+
+                    <TabControl Grid.Row="0" Controls:TabControlHelper.Underlined="TabPanel">
+                        <TabItem Header="Файлы и папки">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Папка для входящих файлов" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding FilesSettings.FolderInput}" Style="{StaticResource TextBoxFolderOpen}"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Папка для исходящих файлов" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding FilesSettings.FolderOutput}" Style="{StaticResource TextBoxFolderOpen}"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Папка для временных файлов" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding FilesSettings.FolderTemp}" Style="{StaticResource TextBoxFolderOpen}"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Загружать данные из файла сразу" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding FilesSettings.CanGetDataOnce}" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" Text="Разбить файл на части (по строкам)" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="4" IsChecked="{Binding FilesSettings.CanBreakFileOutput}" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="5" Text="Количество строк" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding FilesSettings.MaxSizePart, UpdateSourceTrigger=PropertyChanged}"  Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="6" Text="Файл находится на FTP сервере" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="6" IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" IsEnabled="False" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="7" Text="Скопировать выходной файл на FTP сервер" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="7" IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp}" IsEnabled="False" Margin="5"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="FTP сервер">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="FTP сервер" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Порт" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="User" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Password" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="4" Text="Папка исходящих файлов" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding FTPSettings.FolderOutput}" IsEnabled="False" Margin="5"/>
+                                <TextBlock Grid.Column="0" Grid.Row="5" Text="Папка входящих файлов" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding FTPSettings.FolderInput}" IsEnabled="False" Margin="5"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="База данных"/>
+                        <TabItem Header="Геокодирование">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0" Grid.Row="0" Text="Геокодировать все объекты" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" Margin="5"/>
+
+                                <TextBlock Grid.Column="0" Grid.Row="1" Text="Геокодировать только объекты с ошибками" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" Margin="5"/>
+
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Геокодировать негеокодированные объекты" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" Margin="5"/>
+
+                                <TextBlock Grid.Column="0" Grid.Row="3" Text="Сохранить все данные геокодирования в полном объеме" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" Margin="5"/>
+
+                                <TextBlock Grid.Column="0" Grid.Row="4" Text="Сохранить все данные геокодирования в формате для базы данных" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="4" IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}" Margin="5"/>
+
+                                <TextBlock Grid.Column="0" Grid.Row="5" Text="Открывать папку с результатом после сохранения" VerticalAlignment="Center"/>
+                                <CheckBox Grid.Column="2" Grid.Row="5" IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}" Margin="5"/>
+                            </Grid>
+                        </TabItem>
+                        <TabItem Header="Оповещения"/>
+                        
+                    </TabControl>
+                        <!--<Grid Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
@@ -519,100 +615,120 @@
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Папка для входящих файлов" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding FilesSettings.FolderInput}" IsReadOnly="True" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Папка для исходящих файлов" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding FilesSettings.FolderOutput}" IsReadOnly="True" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="2" Text="Папка для временных файлов" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding FilesSettings.FolderTemp}" IsReadOnly="True" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Загружать данные из файла сразу" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding FilesSettings.CanGetDataOnce}" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="4" Text="Разбить файл на части (по строкам)" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="4" IsChecked="{Binding FilesSettings.CanBreakFileOutput}" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="5" Text="Количество строк" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding FilesSettings.MaxSizePart, UpdateSourceTrigger=PropertyChanged}"  Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="6" Text="Файл находится на FTP сервере" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="6" IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" IsEnabled="False" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="7" Text="Скопировать выходной файл на FTP сервер" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="7" IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp}" IsEnabled="False" Margin="5"/>
-                        </Grid>
-                    </Expander>
-                    <Expander Grid.Row="1" Header="FTP сервер">
-                        <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="5"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="FTP сервер" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Порт" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="2" Text="User" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Password" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="4" Text="Папка исходящих файлов" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding FTPSettings.FolderOutput}" IsEnabled="False" Margin="5"/>
-                            <TextBlock Grid.Column="0" Grid.Row="5" Text="Папка входящих файлов" VerticalAlignment="Center"/>
-                            <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding FTPSettings.FolderInput}" IsEnabled="False" Margin="5"/>
-                        </Grid>
-                    </Expander>
-                    <Expander Grid.Row="2" Header="База данных"/>
-                    <Expander Grid.Row="3" Header="Геокодирование">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Геокодировать все объекты" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" Margin="5"/>
+                            
+                            
+                            <Expander Grid.Row="0" Header="Файлы и папки" IsExpanded="True">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Папка для входящих файлов" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding FilesSettings.FolderInput}" IsReadOnly="True" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Папка для исходящих файлов" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding FilesSettings.FolderOutput}" IsReadOnly="True" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Папка для временных файлов" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding FilesSettings.FolderTemp}" IsReadOnly="True" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Загружать данные из файла сразу" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding FilesSettings.CanGetDataOnce}" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Разбить файл на части (по строкам)" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="4" IsChecked="{Binding FilesSettings.CanBreakFileOutput}" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Количество строк" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding FilesSettings.MaxSizePart, UpdateSourceTrigger=PropertyChanged}"  Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="6" Text="Файл находится на FTP сервере" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="6" IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" IsEnabled="False" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="7" Text="Скопировать выходной файл на FTP сервер" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="7" IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp}" IsEnabled="False" Margin="5"/>
+                                </Grid>
+                            </Expander>
+                            <Expander Grid.Row="1" Header="FTP сервер">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="FTP сервер" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Порт" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="User" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Password" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding FTPSettings.Server}" IsEnabled="False" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Папка исходящих файлов" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="4" Text="{Binding FTPSettings.FolderOutput}" IsEnabled="False" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Папка входящих файлов" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding FTPSettings.FolderInput}" IsEnabled="False" Margin="5"/>
+                                </Grid>
+                            </Expander>
+                            <Expander Grid.Row="2" Header="База данных"/>
+                            <Expander Grid.Row="3" Header="Геокодирование">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Геокодировать все объекты" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="0" IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" Margin="5"/>
 
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Геокодировать только объекты с ошибками" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Геокодировать только объекты с ошибками" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="1" IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" Margin="5"/>
 
-                            <TextBlock Grid.Column="0" Grid.Row="2" Text="Геокодировать негеокодированные объекты" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="2" Text="Геокодировать негеокодированные объекты" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="2" IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" Margin="5"/>
 
-                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Сохранить все данные геокодирования в полном объеме" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="3" Text="Сохранить все данные геокодирования в полном объеме" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="3" IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" Margin="5"/>
 
-                            <TextBlock Grid.Column="0" Grid.Row="4" Text="Сохранить все данные геокодирования в формате для базы данных" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="4" IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}" Margin="5"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="4" Text="Сохранить все данные геокодирования в формате для базы данных" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="4" IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}" Margin="5"/>
 
-                            <TextBlock Grid.Column="0" Grid.Row="5" Text="Открывать папку с результатом после сохранения" VerticalAlignment="Center"/>
-                            <CheckBox Grid.Column="2" Grid.Row="5" IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}" Margin="5"/>
-                        </Grid>
-                    </Expander>
-                    <Expander Grid.Row="4" Header="Оповещения"/>
-                    <Button Grid.Row="5" Content="Сохранить настройки" HorizontalAlignment="Left" Margin="10" Padding="10"/>
+                                    <TextBlock Grid.Column="0" Grid.Row="5" Text="Открывать папку с результатом после сохранения" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="2" Grid.Row="5" IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}" Margin="5"/>
+                                </Grid>
+                            </Expander>
+                            <Expander Grid.Row="4" Header="Оповещения"/>
+                        </Grid>-->
+                    <Button Grid.Row="1" Content="Сохранить настройки" HorizontalAlignment="Left" Margin="10" Padding="10"/>
                 </Grid>
+               
             </Controls:Flyout>
-        </Controls:FlyoutsControl>
+        
+            </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 
 </Controls:MetroWindow>
