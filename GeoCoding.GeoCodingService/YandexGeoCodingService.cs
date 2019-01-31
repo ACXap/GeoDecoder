@@ -67,6 +67,19 @@ namespace GeoCoding.GeoCodingService
                     }
                 }
             }
+            catch (WebException wex)
+            {
+                //error = wex;
+                if(wex.Message == "Удаленный сервер возвратил ошибку: (429) Unknown status.")
+                {
+                    error = new Exception("Ваш лимит исчерпан", wex);
+                }
+                else
+                {
+                    error = wex;
+                }
+            }
+
             catch (Exception ex)
             {
                 error = ex;
@@ -118,7 +131,7 @@ namespace GeoCoding.GeoCodingService
                             list.Add(g);
                         }
                         var e = list.Where(x => x.Precision == "exact");
-                        if(e.Any() && e.Count()==1)
+                        if (e.Any() && e.Count() == 1)
                         {
                             geocod = e.First();
                             geocod.CountResult = 1;

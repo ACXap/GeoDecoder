@@ -161,6 +161,11 @@ namespace GeoCoding
         /// </summary>
         private RelayCommand<EntityGeoCod> _commandOpenInBrowser;
 
+        /// <summary>
+        /// Поле для хранения ссылки на команду перетаскивания файлов на окно программы
+        /// </summary>
+        private RelayCommand<DragEventArgs> _commandDragDrop;
+
         #endregion PrivateFields
 
         #region PublicPropertys
@@ -439,6 +444,23 @@ namespace GeoCoding
 
           }));
 
+        /// <summary>
+        /// Команда обработки перетаскивания файлов на окно программы
+        /// </summary>
+        public RelayCommand<DragEventArgs> CommandDragDrop =>
+        _commandDragDrop ?? (_commandDragDrop = new RelayCommand<DragEventArgs>(
+                    obj =>
+                    {
+                        if (obj.Data.GetDataPresent(DataFormats.FileDrop, true) == true)
+                        {
+                            var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
+                            if (a.Length > 0)
+                            {
+                                SetFileInput(a[0]);
+                            }
+                        }
+                    }));
+
         #endregion PublicCommands
 
         #region PrivateMethod
@@ -571,6 +593,47 @@ namespace GeoCoding
             }, str);
         }
 
+        /// <summary>
+        /// Метод установки файла с данными
+        /// </summary>
+        /// <param name="nameFile"></param>
+        private void SetFileInput(string nameFile)
+        {
+            // Сохраняем полное имя файла в свойство FilesInput
+            FilesSettings.FileInput = nameFile;
+            // Если данные получать сразу, то получаем
+            if (_canGetDataOnce && !string.IsNullOrEmpty(_filesSettings.FileInput))
+            {
+                // Получаем данные из файла
+                GetDataFromFile();
+            }
+
+            if (string.IsNullOrEmpty(_filesSettings.FileOutput))
+            {
+                FilesSettings.FileOutput = SetDefNameFileOutput();
+            }
+        }
+
+        /// <summary>
+        /// Метод задания имени файла для сохранения по умолчанию
+        /// </summary>
+        /// <returns>Возвращает полное имя файла</returns>
+        private string SetDefNameFileOutput()
+        {
+            string defNameOutput = string.Empty;
+
+            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+            {
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
+            }
+            else
+            {
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
+            }
+
+            return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
+        }
+
         #endregion PrivateMethod
 
         /// <summary>
@@ -599,55 +662,5 @@ namespace GeoCoding
                 UpdateStatistics();
             });
         }
-
-        private string SetDefNameFileOutput()
-        {
-            string defNameOutput = string.Empty;
-
-            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-            {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
-            }
-            else
-            {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
-            }
-
-            return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
-        }
-
-        private void SetFileInput(string nameFile)
-        {
-            // Сохраняем полное имя файла в свойство FilesInput
-            FilesSettings.FileInput = nameFile;
-            // Если данные получать сразу, то получаем
-            if (_canGetDataOnce && !string.IsNullOrEmpty(_filesSettings.FileInput))
-            {
-                // Получаем данные из файла
-                GetDataFromFile();
-            }
-
-            if (string.IsNullOrEmpty(_filesSettings.FileOutput))
-            {
-                FilesSettings.FileOutput = SetDefNameFileOutput();
-            }
-        }
-
-
-        private RelayCommand<DragEventArgs> _commandDragDrop;
-        public RelayCommand<DragEventArgs> CommandDragDrop =>
-        _commandDragDrop ?? (_commandDragDrop = new RelayCommand<DragEventArgs>(
-                    obj =>
-                    {
-                        if (obj.Data.GetDataPresent(DataFormats.FileDrop, true) == true)
-                        {
-                            var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
-                            if (a.Length > 0)
-                            {
-                                SetFileInput(a[0]);
-                            }
-                        }
-                    }));
-
     }
 }

@@ -1,15 +1,15 @@
 ﻿<Controls:MetroWindow
     x:Class="GeoCoding.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:GeoCoding"
-   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+    xmlns:local="clr-namespace:GeoCoding"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
+    xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     Title="Геокодирование"
     Width="1400"
     Height="800"
@@ -130,8 +130,6 @@
                                         <!--  Выбор файла с данными, открываем проводник  -->
                                         <Button
                                             Grid.Column="2"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Top"
                                             Command="{Binding CommandGetFile}"
                                             Content="Выбрать файл с данными"
                                             Style="{StaticResource ButtonMainStyle}" />
@@ -330,14 +328,8 @@
                 </TabItem>
                 <TabItem Header="Ошибки">
                     <DataGrid
-                        EnableColumnVirtualization="true"
-                        EnableRowVirtualization="true"
                         ItemsSource="{Binding Customers}"
-                        ScrollViewer.CanContentScroll="True"
-                        Style="{StaticResource DataGridErrors}"
-                        VirtualizingPanel.IsContainerVirtualizable="True"
-                        VirtualizingPanel.IsVirtualizing="True"
-                        VirtualizingPanel.IsVirtualizingWhenGrouping="True">
+                        Style="{StaticResource DataGridErrors}">
                         <DataGrid.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.Panel>

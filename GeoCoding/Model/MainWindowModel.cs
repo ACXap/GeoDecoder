@@ -176,13 +176,22 @@ namespace GeoCoding
                         po.CancellationToken.ThrowIfCancellationRequested();
 
                         var e = GetGeo(data);
+
                         if (e != null)
                         {
                             error = e;
-                            if (countError++ >= _maxCountError)
+
+                            if (e.Message == "Ваш лимит исчерпан")
                             {
-                                error = new Exception(_errorLotOfMistakes);
                                 pl.Break();
+                            }
+                            else
+                            {
+                                if (countError++ >= _maxCountError)
+                                {
+                                    error = new Exception(_errorLotOfMistakes);
+                                    pl.Break();
+                                }
                             }
                         }
                     });
@@ -540,6 +549,10 @@ namespace GeoCoding
             return error;
         }
 
+        /// <summary>
+        /// Метод для получения настроек приложения
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами: ошибка, настройки файлов, настройки геокодирования, настройки фтп-сервера</param>
         public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings> callback)
         {
             Exception error = null;
