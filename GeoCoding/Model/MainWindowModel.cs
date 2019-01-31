@@ -45,7 +45,7 @@ namespace GeoCoding
         /// </summary>
         public MainWindowModel()
         {
-            string[] nameFolders = new string[] { "Temp", "Input", "Output" };
+            string[] nameFolders = new string[] { "Temp", "Input", "Output", "Statistics" };
             string path = Environment.CurrentDirectory;
             foreach (var item in nameFolders)
             {
@@ -164,7 +164,7 @@ namespace GeoCoding
             ParallelOptions po = new ParallelOptions
             {
                 CancellationToken = _cts.Token,
-                // MaxDegreeOfParallelism = 5
+                MaxDegreeOfParallelism = 5
             };
 
             await Task.Factory.StartNew(() =>
@@ -557,13 +557,15 @@ namespace GeoCoding
         {
             Exception error = null;
             var p = Properties.Settings.Default;
+            var curDir = Environment.CurrentDirectory;
             FilesSettings f = new FilesSettings()
             {
                 CanBreakFileOutput = p.CanBreakFileOutput,
                 CanCopyFileOutputToFtp = p.CanCopyFileOutputToFtp,
-                FolderInput = $"{Environment.CurrentDirectory}\\{p.FolderInput}",
-                FolderOutput = $"{Environment.CurrentDirectory}\\{p.FolderOutput}",
-                FolderTemp = $"{Environment.CurrentDirectory}\\{p.FolderTemp}",
+                FolderInput = $"{curDir}\\{p.FolderInput}",
+                FolderOutput = $"{curDir}\\{p.FolderOutput}",
+                FolderTemp = $"{curDir}\\{p.FolderTemp}",
+                FolderStatistics = $"{curDir}\\{p.FolderStatistics}",
                 IsFileInputOnFTP = p.IsFileInputOnFTP,
                 MaxSizePart = p.MaxSizePart,
                 CanGetDataOnce = p.CanGetDataOnce

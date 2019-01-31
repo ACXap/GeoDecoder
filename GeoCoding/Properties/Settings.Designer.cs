@@ -265,5 +265,14 @@ namespace GeoCoding.Properties {
                 this["CanGeoCodAfterGetFile"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Statistics")]
+        public string FolderStatistics {
+            get {
+                return ((string)(this["FolderStatistics"]));
+            }
+        }
     }
 }

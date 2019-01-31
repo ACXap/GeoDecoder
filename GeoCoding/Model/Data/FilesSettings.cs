@@ -53,6 +53,11 @@ namespace GeoCoding
         private string _folderOutput = string.Empty;
 
         /// <summary>
+        /// Поле для хранения имени папки для статистики
+        /// </summary>
+        private string _folderStatistics = string.Empty;
+
+        /// <summary>
         /// Имя файла с данными
         /// </summary>
         public string FileInput
@@ -138,6 +143,15 @@ namespace GeoCoding
         {
             get => _canGetDataOnce;
             set => Set("CanGetDataOnce", ref _canGetDataOnce, value);
+        }
+
+        /// <summary>
+        /// Имя папки для статистики
+        /// </summary>
+        public string FolderStatistics
+        {
+            get => _folderStatistics;
+            set => Set(ref _folderStatistics, value);
         }
     }
 }
