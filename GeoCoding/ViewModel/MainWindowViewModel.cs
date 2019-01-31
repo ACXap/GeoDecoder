@@ -253,19 +253,7 @@ namespace GeoCoding
                         {
                             if (er == null)
                             {
-                                // Сохраняем полное имя файла в свойство FilesInput
-                                FilesSettings.FileInput = f;
-                                // Если данные получать сразу, то получаем
-                                if (_canGetDataOnce && !string.IsNullOrEmpty(_filesSettings.FileInput))
-                                {
-                                    // Получаем данные из файла
-                                    GetDataFromFile();
-                                }
-
-                                if(string.IsNullOrEmpty(_filesSettings.FileOutput))
-                                {
-                                    FilesSettings.FileOutput = SetDefNameFileOutput();
-                                }
+                                SetFileInput(f);
                             }
                             else
                             {
@@ -274,22 +262,6 @@ namespace GeoCoding
                             }
                         });
                     }));
-
-        private string SetDefNameFileOutput()
-        {
-            string defNameOutput = string.Empty;
-
-            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-            {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
-            }
-            else
-            {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
-            }
-
-            return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
-        }
 
         /// <summary>
         /// Команда для выбора файла для сохранения (получения полного имени файла для сохранения)
@@ -313,7 +285,7 @@ namespace GeoCoding
                         {
                             if (error == null)
                             {
-                                if(!string.IsNullOrEmpty(file))
+                                if (!string.IsNullOrEmpty(file))
                                 {
                                     // Сохраняем полное имя файла в свойстве FileOutput
                                     FilesSettings.FileOutput = file;
@@ -396,7 +368,7 @@ namespace GeoCoding
                                 // Оповещаем о завершении получении координат
                                 NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {_collectionGeoCod.Count}");
 
-                                if(GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
+                                if (GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
                                 {
                                     SaveData();
                                 }
@@ -570,7 +542,7 @@ namespace GeoCoding
                 {
                     // Оповещаем о успешности записи
                     NotificationPlainText(_headerNotificationSaveData, _messageSaveData);
-                    if(_geoCodSettings.CanOpenFolderAfter)
+                    if (_geoCodSettings.CanOpenFolderAfter)
                     {
                         OpenFolder(_filesSettings.FileOutput);
                     }
@@ -627,5 +599,55 @@ namespace GeoCoding
                 UpdateStatistics();
             });
         }
+
+        private string SetDefNameFileOutput()
+        {
+            string defNameOutput = string.Empty;
+
+            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+            {
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
+            }
+            else
+            {
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
+            }
+
+            return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
+        }
+
+        private void SetFileInput(string nameFile)
+        {
+            // Сохраняем полное имя файла в свойство FilesInput
+            FilesSettings.FileInput = nameFile;
+            // Если данные получать сразу, то получаем
+            if (_canGetDataOnce && !string.IsNullOrEmpty(_filesSettings.FileInput))
+            {
+                // Получаем данные из файла
+                GetDataFromFile();
+            }
+
+            if (string.IsNullOrEmpty(_filesSettings.FileOutput))
+            {
+                FilesSettings.FileOutput = SetDefNameFileOutput();
+            }
+        }
+
+
+        private RelayCommand<DragEventArgs> _commandDragDrop;
+        public RelayCommand<DragEventArgs> CommandDragDrop =>
+        _commandDragDrop ?? (_commandDragDrop = new RelayCommand<DragEventArgs>(
+                    obj =>
+                    {
+                        if (obj.Data.GetDataPresent(DataFormats.FileDrop, true) == true)
+                        {
+                            var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
+                            if (a.Length > 0)
+                            {
+                                SetFileInput(a[0]);
+                            }
+                        }
+                    }));
+
     }
 }

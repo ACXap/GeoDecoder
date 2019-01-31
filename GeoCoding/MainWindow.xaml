@@ -6,6 +6,8 @@
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GeoCoding"
+   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
     Title="Геокодирование"
@@ -39,7 +41,13 @@
     </Controls:MetroWindow.IconTemplate>
 
     <!--  Основная панель контролов  -->
-    <Grid>
+    <Grid AllowDrop="True">
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="PreviewDrop">
+                <cmd:EventToCommand Command="{Binding CommandDragDrop}" PassEventArgsToCommand="True" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
