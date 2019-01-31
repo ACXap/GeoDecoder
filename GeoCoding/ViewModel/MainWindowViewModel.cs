@@ -558,6 +558,12 @@ namespace GeoCoding
         /// </summary>
         private void SaveData()
         {
+            int parSize = _filesSettings.MaxSizePart;
+            if (!_filesSettings.CanBreakFileOutput)
+            {
+                parSize = 0;
+            }
+
             _model.SaveData(error =>
             {
                 if (error == null)
@@ -574,7 +580,7 @@ namespace GeoCoding
                     // Оповещаем если были ошибки
                     NotificationPlainText(_headerNotificationError, error.Message);
                 }
-            }, _collectionGeoCod, _filesSettings.FileOutput);
+            }, _collectionGeoCod, _filesSettings.FileOutput, parSize);
         }
 
         /// <summary>

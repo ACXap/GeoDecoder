@@ -191,8 +191,7 @@
                                                 <!--  Разбивать ли выходной файл на части (по количеству строк)  -->
                                                 <CheckBox
                                                     Content="Разбить файл на части (по строкам):"
-                                                    IsChecked="{Binding FilesSettings.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    IsEnabled="False" />
+                                                    IsChecked="{Binding FilesSettings.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                                 <!--  Максимальное количество строк в файле  -->
                                                 <TextBox

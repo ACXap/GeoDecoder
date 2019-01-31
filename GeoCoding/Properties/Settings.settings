@@ -24,7 +24,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="MaxSizePart" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">4999</Value>
     </Setting>
     <Setting Name="CanGeoCodGetAll" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>

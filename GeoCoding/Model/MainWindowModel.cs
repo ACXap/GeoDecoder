@@ -33,8 +33,8 @@ namespace GeoCoding
 
         private readonly IFileService _fileService = new FileService.FileService();
 
-        //private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
-        private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
+        private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
+        //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private CancellationTokenSource _cts;
@@ -164,7 +164,7 @@ namespace GeoCoding
             ParallelOptions po = new ParallelOptions
             {
                 CancellationToken = _cts.Token,
-               // MaxDegreeOfParallelism = 5
+                // MaxDegreeOfParallelism = 5
             };
 
             await Task.Factory.StartNew(() =>
@@ -213,24 +213,64 @@ namespace GeoCoding
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="data">Множество данных для записи</param>
         /// <param name="file">Файл куда записывать</param>
-        public void SaveData(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file)
+        public void SaveData(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file, int maxSizePart)
         {
             Exception error = null;
+            List<string> list = new List<string>();
 
-            var list = new List<string>()
+            if (maxSizePart == 0)
             {
-                _nameColumnOutputFile
-            };
+                list.Add(_nameColumnOutputFile);
 
-            list.AddRange(data.Where(y => y.Status == StatusType.OK).Select(x =>
-              {
-                  return $"{x.GlobalID}{_charSplit}{x.Latitude}{_charSplit}{x.Longitude}{_charSplit}{x.Qcode}";
-              }));
+                list.AddRange(data.Where(y => y.Status == StatusType.OK).Select(x =>
+                  {
+                      return $"{x.GlobalID}{_charSplit}{x.Latitude}{_charSplit}{x.Longitude}{_charSplit}{x.Qcode}";
+                  }));
 
-            _fileService.SaveData(er =>
+                _fileService.SaveData(er =>
+                {
+                    error = er;
+                }, list, file);
+            }
+            else
             {
-                error = er;
-            }, list, file);
+                var i = 1;
+
+                var a = data.Partition(maxSizePart);
+                try
+                {
+                    foreach(var item in a)
+                    {
+                        string nameFile = System.IO.Path.GetFileNameWithoutExtension(file);
+                        string nameFolder = System.IO.Path.GetDirectoryName(file);
+                        string ex = System.IO.Path.GetExtension(file);
+                        string newNameFile = $"{nameFolder}\\{nameFile}_{i}{ex}";
+
+                        list = new List<string>()
+                        {
+                            _nameColumnOutputFile
+                        };
+
+                        list.AddRange(item.Where(y => y.Status == StatusType.OK).Select(x =>
+                        {
+                            return $"{x.GlobalID}{_charSplit}{x.Latitude}{_charSplit}{x.Longitude}{_charSplit}{x.Qcode}";
+                        }));
+
+                        _fileService.SaveData(er =>
+                        {
+                            error = er;
+                        }, list, newNameFile);
+
+                        i++;
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    error = ex;
+                }
+
+            }
 
             callback(error);
         }
@@ -507,13 +547,13 @@ namespace GeoCoding
             FilesSettings f = new FilesSettings()
             {
                 CanBreakFileOutput = p.CanBreakFileOutput,
-                CanCopyFileOutputToFtp =  p.CanCopyFileOutputToFtp,
+                CanCopyFileOutputToFtp = p.CanCopyFileOutputToFtp,
                 FolderInput = $"{Environment.CurrentDirectory}\\{p.FolderInput}",
                 FolderOutput = $"{Environment.CurrentDirectory}\\{p.FolderOutput}",
                 FolderTemp = $"{Environment.CurrentDirectory}\\{p.FolderTemp}",
                 IsFileInputOnFTP = p.IsFileInputOnFTP,
                 MaxSizePart = p.MaxSizePart
-               
+
             };
             GeoCodSettings g = new GeoCodSettings()
             {

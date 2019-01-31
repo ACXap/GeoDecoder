@@ -1,4 +1,7 @@
-﻿namespace GeoCoding
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace GeoCoding
 {
     public static class ExtensionMethods
     {
@@ -16,6 +19,21 @@
                 return new string(chars);
             }
             return null;
+        }
+
+        /// <summary>
+        /// Метод расширения для IEnumerable, для разбиения на части с заданым количеством элементов внутри одной части
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance">Перечислитель</param>
+        /// <param name="partitionSize">Количество элементов в одной части</param>
+        /// <returns></returns>
+        public static IEnumerable<IEnumerable<T>> Partition<T>(this IEnumerable<T> instance, int partitionSize)
+        {
+            return instance
+                .Select((value, index) => new { Index = index, Value = value })
+                .GroupBy(i => i.Index / partitionSize)
+                .Select(i => i.Select(i2 => i2.Value));
         }
     }
 }
