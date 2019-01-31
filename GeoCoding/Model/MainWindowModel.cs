@@ -565,8 +565,8 @@ namespace GeoCoding
                 FolderOutput = $"{Environment.CurrentDirectory}\\{p.FolderOutput}",
                 FolderTemp = $"{Environment.CurrentDirectory}\\{p.FolderTemp}",
                 IsFileInputOnFTP = p.IsFileInputOnFTP,
-                MaxSizePart = p.MaxSizePart
-
+                MaxSizePart = p.MaxSizePart,
+                CanGetDataOnce = p.CanGetDataOnce
             };
             GeoCodSettings g = new GeoCodSettings()
             {

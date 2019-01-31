@@ -132,5 +132,12 @@ namespace GeoCoding
             get => _isFileInputOnFTP;
             set => Set(ref _isFileInputOnFTP, value);
         }
+
+        private bool _canGetDataOnce = false;
+        public bool CanGetDataOnce
+        {
+            get => _canGetDataOnce;
+            set => Set("CanGetDataOnce", ref _canGetDataOnce, value);
+        }
     }
 }

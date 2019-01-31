@@ -13,5 +13,6 @@
     <system:String x:Key="FontAwesomePause">&#xf28b;</system:String>
     <system:String x:Key="FontAwesomeFolderOpen">&#xf07c;</system:String>
     <system:String x:Key="FontAwesomeFolderClose">&#xf07b;</system:String>
+    <system:String x:Key="FontAwesomeSettings">&#xf013;</system:String>
 
 </ResourceDictionary>

@@ -190,5 +190,10 @@
   <ItemGroup>
     <Resource Include="geo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ЧитайМеня.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -69,7 +69,6 @@ namespace GeoCoding.GeoCodingService
             }
             catch (WebException wex)
             {
-                //error = wex;
                 if(wex.Message == "Удаленный сервер возвратил ошибку: (429) Unknown status.")
                 {
                     error = new Exception("Ваш лимит исчерпан", wex);

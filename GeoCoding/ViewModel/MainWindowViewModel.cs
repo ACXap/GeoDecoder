@@ -97,9 +97,14 @@ namespace GeoCoding
         private bool _isStartGeoCoding = false;
 
         /// <summary>
+        /// Поле для хранения состояния открытия настроек
+        /// </summary>
+        //private bool _isOpenSettings = false;
+        
+        /// <summary>
         /// Поле для хранения переменной получать данные сразу
         /// </summary>
-        private bool _canGetDataOnce = true;
+        //private bool _canGetDataOnce = true;
 
         /// <summary>
         /// Поле для хранения ссылки на настройки геокодирования
@@ -166,6 +171,11 @@ namespace GeoCoding
         /// </summary>
         private RelayCommand<DragEventArgs> _commandDragDrop;
 
+        /// <summary>
+        /// Поле для хранения ссылки на команду открытия настроек
+        /// </summary>
+        //private RelayCommand _commandOpenSettings;
+
         #endregion PrivateFields
 
         #region PublicPropertys
@@ -200,11 +210,20 @@ namespace GeoCoding
         /// <summary>
         /// Получать данные сразу после выбора файла
         /// </summary>
-        public bool CanGetDataOnce
-        {
-            get => _canGetDataOnce;
-            set => Set(ref _canGetDataOnce, value);
-        }
+        //public bool CanGetDataOnce
+        //{
+        //    get => _canGetDataOnce;
+        //    set => Set(ref _canGetDataOnce, value);
+        //}
+
+        /// <summary>
+        /// Открыты ли настройки
+        /// </summary>
+        //public bool IsOpenSettings
+        //{
+        //    get => _isOpenSettings;
+        //    set => Set(ref _isOpenSettings, value);
+        //}
 
         /// <summary>
         /// Статистика по выполненному геокодированию
@@ -253,7 +272,6 @@ namespace GeoCoding
         _commandGetFile ?? (_commandGetFile = new RelayCommand(
                     () =>
                     {
-
                         _model.GetFile((f, er) =>
                         {
                             if (er == null)
@@ -461,6 +479,16 @@ namespace GeoCoding
                         }
                     }));
 
+        /// <summary>
+        /// Команда открытия настроек
+        /// </summary>
+        //public RelayCommand CommandOpenSettings =>
+        //     _commandOpenSettings ?? (_commandOpenSettings = new RelayCommand(
+        //         () =>
+        //         {
+
+        //         }));
+
         #endregion PublicCommands
 
         #region PrivateMethod
@@ -602,7 +630,7 @@ namespace GeoCoding
             // Сохраняем полное имя файла в свойство FilesInput
             FilesSettings.FileInput = nameFile;
             // Если данные получать сразу, то получаем
-            if (_canGetDataOnce && !string.IsNullOrEmpty(_filesSettings.FileInput))
+            if (_filesSettings.CanGetDataOnce && !string.IsNullOrEmpty(_filesSettings.FileInput))
             {
                 // Получаем данные из файла
                 GetDataFromFile();
