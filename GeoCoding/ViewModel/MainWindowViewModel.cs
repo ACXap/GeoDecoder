@@ -370,75 +370,6 @@ namespace GeoCoding
 
                     }, () => _collectionGeoCod != null && _collectionGeoCod.Count > 0));
 
-        private void GetAllGeoCod()
-        {
-            System.Collections.Generic.IEnumerable<EntityGeoCod> data = null;
-
-            if (_geoCodSettings.CanGeoCodGetAll)
-            {
-                data = _collectionGeoCod;
-            }
-            else if (_geoCodSettings.CanGeoCodGetError)
-            {
-                data = _collectionGeoCod.Where(x => x.Status == StatusType.Error);
-            }
-            else if (_geoCodSettings.CanGeoCodGetNotGeo)
-            {
-                data = _collectionGeoCod.Where(x => x.Status == StatusType.Error || x.Status == StatusType.NotGeoCoding);
-            }
-
-            int coutData = data.Count();
-            if (coutData > 0)
-            {
-                // Отображаем индикацию работы процесса
-                IsStartGeoCoding = true;
-
-                _model.GetAllGeoCod((r, i, e) =>
-                {
-                    if (e == null)
-                    {
-                        // Оповещаем о завершении получении координат
-                        NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
-
-                        if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
-                        {
-                            SaveData();
-                            SaveErrors();
-                        }
-
-                        if (_geoCodSettings.CanSaveDataAsTemp && coutData > 0)
-                        {
-                            SaveTemp();
-                        }
-                        if (_geoCodSettings.CanSaveStatistics)
-                        {
-                            SaveStatistics();
-                        }
-                    }
-                    else if (e.Message == _errorCancel)
-                    {
-                        // Оповещаем если сами отменили
-                        NotificationPlainText(_headerNotificationCancel, e.Message);
-                    }
-                    else
-                    {
-                        // Оповещаем если были ошибки и номер на котором была остановка
-                        NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
-                    }
-
-                    Customers.Refresh();
-
-                    // Прекращаем отображение
-                    IsStartGeoCoding = false;
-
-                }, data);
-            }
-            else
-            {
-                NotificationPlainText("Нечего обрабатывать", "");
-            }
-        }
-
         /// <summary>
         /// Команда остановки геокодирования
         /// </summary>
@@ -829,6 +760,74 @@ namespace GeoCoding
         //    }
         //}
 
+        private void GetAllGeoCod()
+        {
+            System.Collections.Generic.IEnumerable<EntityGeoCod> data = null;
+
+            if (_geoCodSettings.CanGeoCodGetAll)
+            {
+                data = _collectionGeoCod;
+            }
+            else if (_geoCodSettings.CanGeoCodGetError)
+            {
+                data = _collectionGeoCod.Where(x => x.Status == StatusType.Error);
+            }
+            else if (_geoCodSettings.CanGeoCodGetNotGeo)
+            {
+                data = _collectionGeoCod.Where(x => x.Status == StatusType.Error || x.Status == StatusType.NotGeoCoding);
+            }
+
+            int coutData = data.Count();
+            if (coutData > 0)
+            {
+                // Отображаем индикацию работы процесса
+                IsStartGeoCoding = true;
+
+                _model.GetAllGeoCod((r, i, e) =>
+                {
+                    if (e == null)
+                    {
+                        // Оповещаем о завершении получении координат
+                        NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
+
+                        if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
+                        {
+                            SaveData();
+                            SaveErrors();
+                        }
+
+                        if (_geoCodSettings.CanSaveDataAsTemp && coutData > 0)
+                        {
+                            SaveTemp();
+                        }
+                        if (_geoCodSettings.CanSaveStatistics)
+                        {
+                            SaveStatistics();
+                        }
+                    }
+                    else if (e.Message == _errorCancel)
+                    {
+                        // Оповещаем если сами отменили
+                        NotificationPlainText(_headerNotificationCancel, e.Message);
+                    }
+                    else
+                    {
+                        // Оповещаем если были ошибки и номер на котором была остановка
+                        NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
+                    }
+
+                    Customers.Refresh();
+
+                    // Прекращаем отображение
+                    IsStartGeoCoding = false;
+
+                }, data);
+            }
+            else
+            {
+                NotificationPlainText("Нечего обрабатывать", "");
+            }
+        }
 
         public System.Collections.Generic.IReadOnlyCollection<Theme> ListTheme => ThemeManager.Themes;
 
@@ -838,9 +837,20 @@ namespace GeoCoding
             get => _colorTheme;
             set
             {
-                Set("ColorTheme", ref _colorTheme, value);
+                Set(ref _colorTheme, value);
                 ThemeManager.ChangeTheme(Application.Current, value.Name);
             }
         }
+
+        private RelayCommand _myCommand;
+        public RelayCommand MyCommand =>
+        _myCommand ?? (_myCommand = new RelayCommand(
+                    () =>
+                    {
+
+
+                    }));
+
+
     }
 }
