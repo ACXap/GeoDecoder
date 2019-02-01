@@ -691,7 +691,8 @@ namespace GeoCoding
                 CanSaveDataAsFinished = p.CanSaveDataAsFinished,
                 CanSaveDataAsTemp = p.CanSaveDataAsTemp,
                 CanOpenFolderAfter = p.CanOpenFolderAfter,
-                CanGeoCodAfterGetFile = p.CanGeoCodAfterGetFile
+                CanGeoCodAfterGetFile = p.CanGeoCodAfterGetFile,
+                CanSaveStatistics = p.CanSaveStatistics
             };
             FTPSettings ftp = new FTPSettings()
             {
@@ -735,6 +736,7 @@ namespace GeoCoding
             p.Server = ftpSettings.Server;
             p.User = ftpSettings.User;
             p.CanGeoCodAfterGetFile = geoCodSettings.CanGeoCodAfterGetFile;
+            p.CanSaveStatistics = geoCodSettings.CanSaveStatistics;
             p.Save();
 
             callback(error);

@@ -305,7 +305,11 @@ namespace GeoCoding
                     {
                         SaveData();
                         SaveErrors();
-                        SaveStatistics();
+                        
+                        if(_geoCodSettings.CanSaveStatistics)
+                        {
+                            SaveStatistics();
+                        }
                         if (_geoCodSettings.CanSaveDataAsTemp)
                         {
                             SaveTemp();
@@ -400,7 +404,10 @@ namespace GeoCoding
                                     {
                                         SaveTemp();
                                     }
-                                    SaveStatistics();
+                                    if(_geoCodSettings.CanSaveStatistics)
+                                    {
+                                        SaveStatistics();
+                                    }
                                 }
                                 else if (e.Message == _errorCancel)
                                 {
@@ -666,7 +673,6 @@ namespace GeoCoding
                 FilesSettings.FileOutput = SetDefNameFileOutput();
             }
         }
-
 
         /// <summary>
         /// Метод задания имени файла для сохранения по умолчанию

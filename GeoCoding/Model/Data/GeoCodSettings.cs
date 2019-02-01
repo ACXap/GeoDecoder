@@ -37,6 +37,11 @@ namespace GeoCoding
         private bool _canGeoCodAfterGetFile = false;
 
         /// <summary>
+        /// Поле для хранения параметра сохранять ли статистику
+        /// </summary>
+        private bool _canSaveStatistics = true;
+
+        /// <summary>
         /// Геокодировать все объекты
         /// </summary>
         public bool CanGeoCodGetAll
@@ -98,6 +103,15 @@ namespace GeoCoding
         {
             get => _canGeoCodAfterGetFile;
             set => Set(ref _canGeoCodAfterGetFile, value);
+        }
+
+        /// <summary>
+        /// Сохранять ли статистику
+        /// </summary>
+        public bool CanSaveStatistics
+        {
+            get => _canSaveStatistics;
+            set => Set(ref _canSaveStatistics, value);
         }
     }
 }

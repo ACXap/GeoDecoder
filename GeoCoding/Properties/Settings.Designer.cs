@@ -286,5 +286,17 @@ namespace GeoCoding.Properties {
                 this["FolderErrors"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CanSaveStatistics {
+            get {
+                return ((bool)(this["CanSaveStatistics"]));
+            }
+            set {
+                this["CanSaveStatistics"] = value;
+            }
+        }
     }
 }

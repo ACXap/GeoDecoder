@@ -71,5 +71,8 @@
     <Setting Name="FolderErrors" Type="System.String" Scope="User">
       <Value Profile="(Default)">Errors</Value>
     </Setting>
+    <Setting Name="CanSaveStatistics" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

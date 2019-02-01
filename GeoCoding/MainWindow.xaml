@@ -774,8 +774,7 @@
                                         <CheckBox
                                             Margin="5"
                                             Content="Сохранить статистику"
-                                            IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}"
-                                            IsEnabled="False" />
+                                            IsChecked="{Binding GeoCodSettings.CanSaveStatistics}" />
                                     </WrapPanel>
                                 </GroupBox>
                             </Grid>
