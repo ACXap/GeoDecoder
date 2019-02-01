@@ -723,7 +723,7 @@ namespace GeoCoding
         {
             string defName = string.Empty;
 
-            defName = $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics_{_statistics.AllEntity}.csv";
+            defName = $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
 
             return defName;
         }
