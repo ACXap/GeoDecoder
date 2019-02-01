@@ -7,6 +7,7 @@ using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
@@ -303,6 +304,7 @@ namespace GeoCoding
                     () =>
                     {
                         SaveData();
+                        SaveErrors();
                     }, () => !string.IsNullOrEmpty(_filesSettings.FileOutput) && _collectionGeoCod != null));
 
         /// <summary>
@@ -367,6 +369,7 @@ namespace GeoCoding
                                 if (GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
                                 {
                                     SaveData();
+                                    SaveErrors();
                                 }
                             }
                             else if (e.Message == _errorCancel)
@@ -645,6 +648,34 @@ namespace GeoCoding
             return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
         }
 
+        private string SetDefNameFileErrors()
+        {
+            string defName = string.Empty;
+
+            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+            {
+                int countError = _collectionGeoCod.Count(x => x.Status == StatusType.Error);
+                defName = $"{_filesSettings.FolderErrors}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Errors_{countError}.csv";
+            }
+
+            return defName;
+        }
+
+        private void SaveErrors()
+        {
+            if (_collectionGeoCod != null && _collectionGeoCod.Count(x => x.Status == StatusType.Error) > 0)
+            {
+                var nameFile = SetDefNameFileErrors();
+                _model.SaveError(error =>
+                {
+                    if(error!=null)
+                    {
+                        NotificationPlainText(_headerNotificationError, $"{error.Message} {nameFile}");
+                    }
+                }, _collectionGeoCod.Where(x=>x.Status == StatusType.Error), nameFile);
+            }
+        }
+
         #endregion PrivateMethod
 
         /// <summary>
@@ -675,7 +706,6 @@ namespace GeoCoding
         }
 
         private RelayCommand _myCommand;
-
         /// <summary>
         /// Gets the MyCommand.
         /// </summary>

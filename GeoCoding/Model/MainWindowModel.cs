@@ -37,6 +37,7 @@ namespace GeoCoding
         //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
+        private readonly string _nameColumnErrorFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}error";
         private CancellationTokenSource _cts;
         private bool _isStartUpdateStatistic = false;
 
@@ -45,7 +46,7 @@ namespace GeoCoding
         /// </summary>
         public MainWindowModel()
         {
-            string[] nameFolders = new string[] { "Temp", "Input", "Output", "Statistics" };
+            string[] nameFolders = new string[] { "Temp", "Input", "Output", "Statistics", "Errors" };
             string path = Environment.CurrentDirectory;
             foreach (var item in nameFolders)
             {
@@ -271,7 +272,6 @@ namespace GeoCoding
                         }, list, newNameFile);
 
                         i++;
-
                     }
                 }
                 catch (Exception ex)
@@ -279,6 +279,32 @@ namespace GeoCoding
                     error = ex;
                 }
 
+            }
+
+            callback(error);
+        }
+
+        public void SaveError(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file)
+        {
+            Exception error = null;
+            List<string> list = null;
+
+            if (!string.IsNullOrEmpty(file) && data != null && data.Count() > 0)
+            {
+                list = new List<string>(data.Count());
+                list.AddRange(data.Select(x =>
+                {
+                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.Error}";
+                }));
+
+                _fileService.SaveData(er =>
+                {
+                    error = er;
+                }, list, file);
+            }
+            else
+            {
+                error = new ArgumentNullException();
             }
 
             callback(error);
@@ -566,6 +592,7 @@ namespace GeoCoding
                 FolderOutput = $"{curDir}\\{p.FolderOutput}",
                 FolderTemp = $"{curDir}\\{p.FolderTemp}",
                 FolderStatistics = $"{curDir}\\{p.FolderStatistics}",
+                FolderErrors = $"{curDir}\\{p.FolderErrors}",
                 IsFileInputOnFTP = p.IsFileInputOnFTP,
                 MaxSizePart = p.MaxSizePart,
                 CanGetDataOnce = p.CanGetDataOnce

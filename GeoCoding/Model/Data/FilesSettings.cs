@@ -58,6 +58,11 @@ namespace GeoCoding
         private string _folderStatistics = string.Empty;
 
         /// <summary>
+        /// Поле для хранения имени папки для ошибок
+        /// </summary>
+        private string _folderErrors = string.Empty;
+
+        /// <summary>
         /// Имя файла с данными
         /// </summary>
         public string FileInput
@@ -152,6 +157,15 @@ namespace GeoCoding
         {
             get => _folderStatistics;
             set => Set(ref _folderStatistics, value);
+        }
+
+        /// <summary>
+        /// Имя папки для ошибок
+        /// </summary>
+        public string FolderErrors
+        {
+            get => _folderErrors;
+            set => Set(ref _folderErrors, value);
         }
     }
 }

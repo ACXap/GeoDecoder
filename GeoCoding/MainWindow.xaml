@@ -498,7 +498,9 @@
                 MaxHeight="600"
                 CloseButtonIsCancel="True"
                 IsOpen="{Binding ElementName=tbOpenSettings, Path=IsChecked}"
-                Position="Bottom">
+                Header="Настройки приложения"
+                Theme="Inverse"
+                Position="Right">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -519,6 +521,7 @@
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
@@ -565,6 +568,17 @@
                                             IsEnabled="False"
                                             Style="{StaticResource TextBoxFolderOpen}"
                                             Text="{Binding FilesSettings.FolderStatistics}" />
+                                        <TextBlock
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            VerticalAlignment="Center"
+                                            Text="Папка для ошибок" />
+                                        <TextBox
+                                            Grid.Row="4"
+                                            Grid.Column="2"
+                                            IsEnabled="False"
+                                            Style="{StaticResource TextBoxFolderOpen}"
+                                            Text="{Binding FilesSettings.FolderErrors}" />
                                     </Grid>
                                 </GroupBox>
                                 <WrapPanel
