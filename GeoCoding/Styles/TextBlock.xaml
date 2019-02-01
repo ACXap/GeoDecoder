@@ -3,14 +3,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:GeoCoding">
 
-    <!--<Style x:Key="TextBlockTime" TargetType="{x:Type TextBlock}">
-        <Setter Property="Text" Value="{Binding TimeCheck, StringFormat=\{0:G\},ConverterCulture=ru}"/>
+    <Style x:Key="TextBlockTime" TargetType="{x:Type TextBlock}">
+        <Setter Property="Text" Value="{Binding DateTimeGeoCod, StringFormat=\{0:G\},ConverterCulture=ru}"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding TimeCheck.Year}" Value="1">
+            <DataTrigger Binding="{Binding DateTimeGeoCod.Year}" Value="1">
                 <Setter Property="Text" Value="-"/>
             </DataTrigger>
         </Style.Triggers>
-    </Style>-->
+    </Style>
 
     <Style x:Key="TextBlockSettings" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>

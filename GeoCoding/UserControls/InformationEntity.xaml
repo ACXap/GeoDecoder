@@ -67,8 +67,7 @@
             Text="{Binding Status}" />
         <TextBlock
             Grid.Row="8"
-            Grid.Column="2"
-            Text="{Binding DateTimeGeoCod}" />
+            Grid.Column="2" Style="{StaticResource TextBlockTime}"/>
         <TextBlock
             Grid.Row="9"
             Grid.Column="2"

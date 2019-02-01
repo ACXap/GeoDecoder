@@ -568,7 +568,6 @@
                                         <TextBox
                                             Grid.Row="3"
                                             Grid.Column="2"
-                                            IsEnabled="False"
                                             Style="{StaticResource TextBoxFolderOpen}"
                                             Text="{Binding FilesSettings.FolderStatistics}" />
                                         <TextBlock
@@ -579,7 +578,6 @@
                                         <TextBox
                                             Grid.Row="4"
                                             Grid.Column="2"
-                                            IsEnabled="False"
                                             Style="{StaticResource TextBoxFolderOpen}"
                                             Text="{Binding FilesSettings.FolderErrors}" />
                                     </Grid>
@@ -722,12 +720,6 @@
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <CheckBox
-                                    Grid.Row="2"
-                                    Margin="10"
-                                    Content="Геокодировать сразу после выбора файла"
-                                    IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}"
-                                    IsEnabled="False" />
                                 <GroupBox
                                     Grid.Row="0"
                                     Header="Какие объекты геокодировать">
@@ -777,6 +769,11 @@
                                             IsChecked="{Binding GeoCodSettings.CanSaveStatistics}" />
                                     </WrapPanel>
                                 </GroupBox>
+                                <CheckBox
+                                    Grid.Row="2"
+                                    Margin="10"
+                                    Content="Геокодировать сразу после выбора файла"
+                                    IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}"/>
                             </Grid>
                         </TabItem>
                         <TabItem Header="Оповещения" />
