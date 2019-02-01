@@ -38,6 +38,11 @@ namespace GeoCoding
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private readonly string _nameColumnErrorFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}error";
+        private readonly string _nameColumnTempFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}AddressWeb{_charSplit}Longitude{_charSplit}Latitude" +
+                                                         $"{_charSplit}Qcode{_charSplit}Error{_charSplit}Status{_charSplit}DateTimeGeoCod{_charSplit}Kind{_charSplit}Precision{_charSplit}CountResult";
+        private readonly string _nameColumnStatisticsFile = $"DateTime{_charSplit}FileInput{_charSplit}FileOutput{_charSplit}FileError{_charSplit}AllEntity" +
+                                                             $"{_charSplit}OK{_charSplit}Error{_charSplit}NotGeoCoding{_charSplit}GeoCodingNow{_charSplit}House" +
+                                                                $"{_charSplit}Exact{_charSplit}NotFound{_charSplit}TimeGeoCod";
         private CancellationTokenSource _cts;
         private bool _isStartUpdateStatistic = false;
 
@@ -310,6 +315,83 @@ namespace GeoCoding
             {
                 error = new ArgumentNullException();
             }
+
+            callback(error);
+        }
+
+        public void SaveTemp(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file)
+        {
+            Exception error = null;
+            List<string> list = null;
+
+            if (!string.IsNullOrEmpty(file) && data != null && data.Count() > 0)
+            {
+                list = new List<string>(data.Count())
+                {
+                    _nameColumnTempFile
+                };
+
+                list.AddRange(data.Select(x =>
+                {
+                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.AddressWeb}{_charSplit}{x.Longitude}{_charSplit}{x.Latitude}" +
+                    $"{_charSplit}{x.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.Kind}" +
+                    $"{_charSplit}{x.Precision}{_charSplit}{x.CountResult}";
+                }));
+
+                _fileService.SaveData(er =>
+                {
+                    error = er;
+                }, list, file);
+            }
+            else
+            {
+                error = new ArgumentNullException();
+            }
+
+            callback(error);
+        }
+
+        public void SaveStatistics(Action<Exception> callback, Statistics stat, FilesSettings files, string file)
+        {
+            Exception error = null;
+            string[] data = null;
+            string row = $"{DateTime.Now}{_charSplit}{files.FileInput}{_charSplit}{files.FileOutput}{_charSplit}{_charSplit}{stat.AllEntity}" +
+                $"{_charSplit}{stat.OK}{_charSplit}{stat.Error}{_charSplit}{stat.NotGeoCoding}{_charSplit}{stat.GeoCodingNow}" +
+                $"{_charSplit}{stat.House}{_charSplit}{stat.Exact}{_charSplit}{stat.NotFound}{_charSplit}{stat.TimeGeoCod}";
+
+             _fileService.FileExists((exists, er) =>
+            {
+                if(er==null)
+                {
+                    if (exists)
+                    {
+                        data = new string[]
+                        {
+                            row
+                        };
+                    }
+                    else
+                    {
+                        data = new string[]
+                        {
+                            _nameColumnStatisticsFile,
+                            row
+                        };
+                    }
+
+                    _fileService.AppendData(e =>
+                    {
+                        if (e != null)
+                        {
+                            error = e;
+                        }
+                    }, data, file);
+                }
+                else
+                {
+                    error = er;
+                }
+            }, file);
 
             callback(error);
         }

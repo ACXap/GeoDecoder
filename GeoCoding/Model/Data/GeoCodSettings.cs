@@ -43,7 +43,6 @@ namespace GeoCoding
         {
             get => _canGeoCodGetAll;
             set => Set(ref _canGeoCodGetAll, value);
-
         }
 
         /// <summary>

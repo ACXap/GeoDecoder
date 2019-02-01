@@ -15,7 +15,7 @@ namespace GeoCoding
         public int GlobalID
         {
             get => _globalId;
-            set => Set("GlobalID", ref _globalId, value);
+            set => Set(ref _globalId, value);
         }
 
         private string _address = string.Empty;
@@ -25,17 +25,17 @@ namespace GeoCoding
         public string Address
         {
             get => _address;
-            set => Set("Address", ref _address, value);
+            set => Set(ref _address, value);
         }
 
+        private string _addressWeb = string.Empty;
         /// <summary>
         /// Адрес объекта полученный после геокодирования
         /// </summary>
-        private string _addressWeb = string.Empty;
         public string AddressWeb
         {
             get => _addressWeb;
-            set => Set("AddressWeb", ref _addressWeb, value);
+            set => Set(ref _addressWeb, value);
         }
 
         private string _longitude = string.Empty;
@@ -45,7 +45,7 @@ namespace GeoCoding
         public string Longitude
         {
             get => _longitude;
-            set => Set("Longitude", ref _longitude, value);
+            set => Set(ref _longitude, value);
         }
 
         private string _latitude = string.Empty;
@@ -55,7 +55,7 @@ namespace GeoCoding
         public string Latitude
         {
             get => _latitude;
-            set => Set("Latitude", ref _latitude, value);
+            set => Set(ref _latitude, value);
         }
 
         private byte _qCode;
@@ -65,7 +65,7 @@ namespace GeoCoding
         public byte Qcode
         {
             get => _qCode;
-            set => Set("Qcode", ref _qCode, value);
+            set => Set(ref _qCode, value);
         }
 
         private string _error = string.Empty;
@@ -75,7 +75,7 @@ namespace GeoCoding
         public string Error
         {
             get => _error;
-            set => Set("Error", ref _error, value);
+            set => Set(ref _error, value);
         }
 
         private StatusType _status;
@@ -95,7 +95,7 @@ namespace GeoCoding
         public DateTime DateTimeGeoCod
         {
             get => _dateTimeGeoCod;
-            set => Set("DateTimeGeoCod", ref _dateTimeGeoCod, value, true);
+            set => Set(ref _dateTimeGeoCod, value, true);
         }
 
         private KindType _kind;
@@ -105,7 +105,7 @@ namespace GeoCoding
         public KindType Kind
         {
             get => _kind;
-            set => Set("Kind", ref _kind, value);
+            set => Set(ref _kind, value);
         }
 
         private PrecisionType _precision;
@@ -115,7 +115,7 @@ namespace GeoCoding
         public PrecisionType Precision
         {
             get => _precision;
-            set => Set("Precision", ref _precision, value);
+            set => Set(ref _precision, value);
         }
 
         private byte _countResult = 0;
@@ -125,7 +125,7 @@ namespace GeoCoding
         public byte CountResult
         {
             get => _countResult;
-            set => Set("CountResult", ref _countResult, value);
+            set => Set(ref _countResult, value);
         }
     }
 }

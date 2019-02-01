@@ -305,6 +305,12 @@ namespace GeoCoding
                     {
                         SaveData();
                         SaveErrors();
+                        SaveStatistics();
+                        if (_geoCodSettings.CanSaveDataAsTemp)
+                        {
+                            SaveTemp();
+                        }
+                        
                     }, () => !string.IsNullOrEmpty(_filesSettings.FileOutput) && _collectionGeoCod != null));
 
         /// <summary>
@@ -384,11 +390,17 @@ namespace GeoCoding
                                     // Оповещаем о завершении получении координат
                                     NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
 
-                                    if (GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
+                                    if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
                                     {
                                         SaveData();
                                         SaveErrors();
                                     }
+
+                                    if(_geoCodSettings.CanSaveDataAsTemp && coutData>0)
+                                    {
+                                        SaveTemp();
+                                    }
+                                    SaveStatistics();
                                 }
                                 else if (e.Message == _errorCancel)
                                 {
@@ -655,6 +667,7 @@ namespace GeoCoding
             }
         }
 
+
         /// <summary>
         /// Метод задания имени файла для сохранения по умолчанию
         /// </summary>
@@ -688,6 +701,27 @@ namespace GeoCoding
             return defName;
         }
 
+        private string SetDefNameFileTemp()
+        {
+            string defName = string.Empty;
+
+            if(_collectionGeoCod !=null && _collectionGeoCod.Count>0)
+            {
+                defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
+            }
+
+            return defName;
+        }
+
+        private string SetDefNameFileStatistics()
+        {
+            string defName = string.Empty;
+
+            defName = $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics_{_statistics.AllEntity}.csv";
+
+            return defName;
+        }
+
         private void SaveErrors()
         {
             if (_collectionGeoCod != null && _collectionGeoCod.Count(x => x.Status == StatusType.Error) > 0)
@@ -697,10 +731,37 @@ namespace GeoCoding
                 {
                     if (error != null)
                     {
-                        NotificationPlainText(_headerNotificationError, $"{error.Message} {nameFile}");
+                        NotificationPlainText(_headerNotificationError, $"{error.Message}\n\r{nameFile}");
                     }
                 }, _collectionGeoCod.Where(x => x.Status == StatusType.Error), nameFile);
             }
+        }
+
+        private void SaveTemp()
+        {
+            if(_collectionGeoCod != null && _collectionGeoCod.Any())
+            {
+                var nameFile = SetDefNameFileTemp();
+                _model.SaveTemp(error =>
+                {
+                    if (error != null)
+                    {
+                        NotificationPlainText(_headerNotificationError, $"{error.Message}\n\r{nameFile}");
+                    }
+                }, _collectionGeoCod, nameFile);
+            }
+        }
+
+        private void SaveStatistics()
+        {
+            var nameFile = SetDefNameFileStatistics();
+            _model.SaveStatistics(e =>
+            {
+                if(e!=null)
+                {
+                    NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{nameFile}");
+                }
+            }, _statistics, _filesSettings, nameFile);
         }
 
         #endregion PrivateMethod

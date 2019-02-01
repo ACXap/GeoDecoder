@@ -49,5 +49,20 @@ namespace GeoCoding.FileService
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="str">Путь к папке</param>
         void CreateFolder(Action<Exception> callback, string path);
+
+        /// <summary>
+        /// Метод для проверки наличия файла
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром наличие файла и ошибка</param>
+        /// <param name="file">Имя файла</param>
+        void FileExists(Action<bool, Exception> callback, string file);
+
+        /// <summary>
+        /// Метод для добавления данных в файл
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="data">Данные для добавления</param>
+        /// <param name="file">Имя файла</param>
+        void AppendData(Action<Exception> callback, IEnumerable<string> data, string file);
     }
 }

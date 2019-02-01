@@ -468,7 +468,6 @@
                     <CheckBox
                         Margin="10,2,2,5"
                         IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}"
-                        IsEnabled="False"
                         ToolTip="Сохранить все данные в формате программы, во временную папку">
                         <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap" />
                     </CheckBox>
@@ -760,7 +759,7 @@
                                         <CheckBox
                                             Margin="5"
                                             Content="Сохранить все данные геокодирования в полном объеме"
-                                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" IsEnabled="False" />
+                                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" />
 
                                         <CheckBox
                                             Margin="5"

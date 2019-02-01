@@ -159,7 +159,6 @@ namespace GeoCoding.FileService
         public void SaveData(Action<Exception> callback, IEnumerable<string> data, string file)
         {
             Exception error = null;
-
             try
             {
                 if (Directory.Exists(Path.GetDirectoryName(file)))
@@ -183,6 +182,37 @@ namespace GeoCoding.FileService
             }
 
             callback(error);
+        }
+
+        public void AppendData(Action<Exception> callback, IEnumerable<string> data, string file)
+        {
+            Exception error = null;
+
+            try
+            {
+                if(Directory.Exists(Path.GetDirectoryName(file)))
+                {
+                    File.AppendAllLines(file, data, Encoding.Default);
+                }
+                else
+                {
+                    error = new DirectoryNotFoundException();
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+
+            callback(error);
+        }
+
+        public void FileExists(Action<bool, Exception> callback, string file)
+        {
+            Exception error = null;
+            bool exists = File.Exists(file);
+
+            callback(exists, error);
         }
 
         /// <summary>
