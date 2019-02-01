@@ -305,8 +305,8 @@ namespace GeoCoding
                     {
                         SaveData();
                         SaveErrors();
-                        
-                        if(_geoCodSettings.CanSaveStatistics)
+
+                        if (_geoCodSettings.CanSaveStatistics)
                         {
                             SaveStatistics();
                         }
@@ -314,7 +314,7 @@ namespace GeoCoding
                         {
                             SaveTemp();
                         }
-                        
+
                     }, () => !string.IsNullOrEmpty(_filesSettings.FileOutput) && _collectionGeoCod != null));
 
         /// <summary>
@@ -519,7 +519,7 @@ namespace GeoCoding
                             {
                                 NotificationPlainText(_headerNotificationError, e.Message);
                             }
-                        }, _filesSettings, _ftpSettings, _geoCodSettings);
+                        }, _filesSettings, _ftpSettings, _geoCodSettings, ColorTheme.Name);
                     }));
 
         #endregion PublicCommands
@@ -644,7 +644,7 @@ namespace GeoCoding
         /// <param name="str">Путь к файлу или папке</param>
         private void OpenFolder(string str)
         {
-            if(str == "Папка программы")
+            if (str == "Папка программы")
             {
                 str = Environment.CurrentDirectory;
             }
@@ -673,12 +673,12 @@ namespace GeoCoding
                 GetDataFromFile();
             }
 
-           // if (string.IsNullOrEmpty(_filesSettings.FileOutput))
-           // {
-                FilesSettings.FileOutput = SetDefNameFileOutput();
-           // }
+            // if (string.IsNullOrEmpty(_filesSettings.FileOutput))
+            // {
+            FilesSettings.FileOutput = SetDefNameFileOutput();
+            // }
 
-            if(_collectionGeoCod!=null && _collectionGeoCod.Any() && _geoCodSettings.CanGeoCodAfterGetFile)
+            if (_collectionGeoCod != null && _collectionGeoCod.Any() && _geoCodSettings.CanGeoCodAfterGetFile)
             {
                 GetAllGeoCod();
             }
@@ -721,7 +721,7 @@ namespace GeoCoding
         {
             string defName = string.Empty;
 
-            if(_collectionGeoCod !=null && _collectionGeoCod.Count>0)
+            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
             {
                 defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
             }
@@ -755,7 +755,7 @@ namespace GeoCoding
 
         private void SaveTemp()
         {
-            if(_collectionGeoCod != null && _collectionGeoCod.Any())
+            if (_collectionGeoCod != null && _collectionGeoCod.Any())
             {
                 var nameFile = SetDefNameFileTemp();
                 _model.SaveTemp(error =>
@@ -773,7 +773,7 @@ namespace GeoCoding
             var nameFile = SetDefNameFileStatistics();
             _model.SaveStatistics(e =>
             {
-                if(e!=null)
+                if (e != null)
                 {
                     NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{nameFile}");
                 }
@@ -788,13 +788,14 @@ namespace GeoCoding
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
-            _model.GetSettings((e, f, g, ftp) =>
+            _model.GetSettings((e, f, g, ftp, c) =>
             {
                 if (e == null)
                 {
                     FilesSettings = f;
                     GeoCodSettings = g;
                     FTPSettings = ftp;
+                    ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
                 }
                 else
                 {
@@ -809,24 +810,37 @@ namespace GeoCoding
             });
         }
 
-        private RelayCommand _myCommand;
-        /// <summary>
-        /// Gets the MyCommand.
-        /// </summary>
-        public RelayCommand CommandColor
+        //private RelayCommand _myCommand;
+        ///// <summary>
+        ///// Gets the MyCommand.
+        ///// </summary>
+        //public RelayCommand CommandColor
+        //{
+        //    get
+        //    {
+        //        return _myCommand
+        //            ?? (_myCommand = new RelayCommand(
+        //            () =>
+        //            {
+        //                Random rnd = new Random();
+        //                var a = ThemeManager.Themes;
+        //                ThemeManager.ChangeTheme(Application.Current, a[rnd.Next(a.Count)]);
+        //            }));
+        //    }
+        //}
+
+
+        public System.Collections.Generic.IReadOnlyCollection<Theme> ListTheme => ThemeManager.Themes;
+
+        private Theme _colorTheme = ThemeManager.DetectTheme();
+        public Theme ColorTheme
         {
-            get
+            get => _colorTheme;
+            set
             {
-                return _myCommand
-                    ?? (_myCommand = new RelayCommand(
-                    () =>
-                    {
-                        Random rnd = new Random();
-                        var a = ThemeManager.Themes;
-                        ThemeManager.ChangeTheme(Application.Current, a[rnd.Next(a.Count)]);
-                    }));
+                Set("ColorTheme", ref _colorTheme, value);
+                ThemeManager.ChangeTheme(Application.Current, value.Name);
             }
         }
-
     }
 }

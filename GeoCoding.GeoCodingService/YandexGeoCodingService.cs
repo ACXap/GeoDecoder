@@ -52,7 +52,8 @@ namespace GeoCoding.GeoCodingService
             {
                 WebRequest request = WebRequest.Create(url);
                 request.Headers.Add("Content-Encoding: gzip, deflate, br");
-                request.UseDefaultCredentials = true;
+                //request.UseDefaultCredentials = true;
+                request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
                     using (Stream dataStream = response.GetResponseStream())

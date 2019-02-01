@@ -298,5 +298,17 @@ namespace GeoCoding.Properties {
                 this["CanSaveStatistics"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Light.Blue")]
+        public string ColorTheme {
+            get {
+                return ((string)(this["ColorTheme"]));
+            }
+            set {
+                this["ColorTheme"] = value;
+            }
+        }
     }
 }

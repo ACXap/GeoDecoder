@@ -665,11 +665,12 @@ namespace GeoCoding
         /// Метод для получения настроек приложения
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: ошибка, настройки файлов, настройки геокодирования, настройки фтп-сервера</param>
-        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings> callback)
+        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, string> callback)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
             var curDir = Environment.CurrentDirectory;
+            string color = p.ColorTheme;
             FilesSettings f = new FilesSettings()
             {
                 CanBreakFileOutput = p.CanBreakFileOutput,
@@ -703,8 +704,9 @@ namespace GeoCoding
                 FolderInput = p.FtpFolderInput,
                 FolderOutput = p.FtpFolderOutput
             };
+            
 
-            callback(error, f, g, ftp);
+            callback(error, f, g, ftp, color);
         }
 
         /// <summary>
@@ -714,7 +716,7 @@ namespace GeoCoding
         /// <param name="filesSettings">Настройки файлов</param>
         /// <param name="ftpSettings">Настройки фтп-сервера</param>
         /// <param name="geoCodSettings">Настройки геокодирования</param>
-        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings)
+        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, string color)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
@@ -737,6 +739,7 @@ namespace GeoCoding
             p.User = ftpSettings.User;
             p.CanGeoCodAfterGetFile = geoCodSettings.CanGeoCodAfterGetFile;
             p.CanSaveStatistics = geoCodSettings.CanSaveStatistics;
+            p.ColorTheme = color;
             p.Save();
 
             callback(error);
