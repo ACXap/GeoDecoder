@@ -38,12 +38,19 @@
     <!--  Панель команд на заголовке окна  -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Content="Цвет" Command="{Binding CommandColor}"/>
-            <ToggleButton Name="tbOpenSettings" ToolTip="Настройки">
+           
+            <Button Content="Цвет" Command="{Binding CommandColor}" />
+
+            <Button Command="{Binding CommandOpenFolder}" CommandParameter="Папка программы">
+                <TextBlock Style="{StaticResource TextBlockFolder}" ToolTip="Папка программы"/>
+            </Button>
+            
+            <ToggleButton Name="tbOpenSettings" ToolTip="Настройки" Cursor="Hand">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource TextBlockSettings}" />
                 </StackPanel>
             </ToggleButton>
+            
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
@@ -437,25 +444,22 @@
                         FontWeight="Bold"
                         Text="Что геокодируем:" />
                     <!--  Геокодировать все объекты в таблице данных  -->
-                    <CheckBox
+                    <RadioButton
                         Margin="10,2,2,5"
                         Content="Все"
-                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}"
-                        IsEnabled="False" />
+                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" />
 
                     <!--  Геокодировать только объекты со статусом "Ошибка"  -->
-                    <CheckBox
+                    <RadioButton
                         Margin="10,2,2,5"
                         Content="С ошибками"
-                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}"
-                        IsEnabled="False" />
+                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" />
 
                     <!--  Геокодировать только объекты со статусом "Негеокодирован"  -->
-                    <CheckBox
+                    <RadioButton
                         Margin="10,2,2,5"
                         Content="Негеокодированные"
-                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}"
-                        IsEnabled="False" />
+                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
 
                     <TextBlock
                         Margin="5,1,1,1"
@@ -727,24 +731,23 @@
                                     IsEnabled="False" />
                                 <GroupBox
                                     Grid.Row="0"
-                                    Header="Какие объекты геокодировать"
-                                    IsEnabled="False">
+                                    Header="Какие объекты геокодировать">
                                     <WrapPanel Orientation="Vertical">
-                                        <CheckBox
+                                        <RadioButton
                                             Grid.Row="0"
                                             Grid.Column="2"
                                             Margin="5"
                                             Content="Геокодировать все объекты"
                                             IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" />
 
-                                        <CheckBox
+                                        <RadioButton
                                             Grid.Row="1"
                                             Grid.Column="2"
                                             Margin="5"
                                             Content="Геокодировать только объекты с ошибками"
                                             IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" />
 
-                                        <CheckBox
+                                        <RadioButton
                                             Grid.Row="2"
                                             Grid.Column="2"
                                             Margin="5"
@@ -757,8 +760,7 @@
                                         <CheckBox
                                             Margin="5"
                                             Content="Сохранить все данные геокодирования в полном объеме"
-                                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}"
-                                            IsEnabled="False" />
+                                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" IsEnabled="False" />
 
                                         <CheckBox
                                             Margin="5"
@@ -780,6 +782,7 @@
                             </Grid>
                         </TabItem>
                         <TabItem Header="Оповещения" />
+                        <TabItem Header="Общие"/>
                     </TabControl>
                     <Button
                         Grid.Row="1"

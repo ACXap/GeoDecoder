@@ -291,7 +291,11 @@ namespace GeoCoding
 
             if (!string.IsNullOrEmpty(file) && data != null && data.Count() > 0)
             {
-                list = new List<string>(data.Count());
+                list = new List<string>(data.Count())
+                {
+                    _nameColumnErrorFile
+                };
+
                 list.AddRange(data.Select(x =>
                 {
                     return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.Error}";

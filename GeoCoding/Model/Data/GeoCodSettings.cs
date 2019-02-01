@@ -2,6 +2,9 @@
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для хранения настроек геокодирования
+    /// </summary>
     public class GeoCodSettings : ViewModelBase
     {
         /// <summary>
@@ -40,6 +43,7 @@ namespace GeoCoding
         {
             get => _canGeoCodGetAll;
             set => Set(ref _canGeoCodGetAll, value);
+
         }
 
         /// <summary>
@@ -49,6 +53,7 @@ namespace GeoCoding
         {
             get => _canGeoCodGetError;
             set => Set(ref _canGeoCodGetError, value);
+
         }
 
         /// <summary>
@@ -59,7 +64,7 @@ namespace GeoCoding
             get => _canGeoCodGetNotGeo;
             set => Set(ref _canGeoCodGetNotGeo, value);
         }
-        
+
         /// <summary>
         /// Сохранить все данные геокодирования в полном объеме
         /// </summary>
@@ -68,7 +73,7 @@ namespace GeoCoding
             get => _canSaveDataAsTemp;
             set => Set(ref _canSaveDataAsTemp, value);
         }
-        
+
         /// <summary>
         /// Сохранить все данные геокодирования в формате для базы данных
         /// </summary>

@@ -356,39 +356,62 @@ namespace GeoCoding
         _commandGetAllGeoCod ?? (_commandGetAllGeoCod = new RelayCommand(
                     () =>
                     {
-                        // Отображаем индикацию работы процесса
-                        IsStartGeoCoding = true;
+                        System.Collections.Generic.IEnumerable<EntityGeoCod> data = null;
 
-                        _model.GetAllGeoCod((r, i, e) =>
+                        if (_geoCodSettings.CanGeoCodGetAll)
                         {
-                            if (e == null)
-                            {
-                                // Оповещаем о завершении получении координат
-                                NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {_collectionGeoCod.Count}");
+                            data = _collectionGeoCod;
+                        }
+                        else if (_geoCodSettings.CanGeoCodGetError)
+                        {
+                            data = _collectionGeoCod.Where(x => x.Status == StatusType.Error);
+                        }
+                        else if (_geoCodSettings.CanGeoCodGetNotGeo)
+                        {
+                            data = _collectionGeoCod.Where(x => x.Status == StatusType.Error || x.Status == StatusType.NotGeoCoding);
+                        }
 
-                                if (GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
+                        int coutData = data.Count();
+                        if (coutData > 0)
+                        {
+                            // Отображаем индикацию работы процесса
+                            IsStartGeoCoding = true;
+
+                            _model.GetAllGeoCod((r, i, e) =>
+                            {
+                                if (e == null)
                                 {
-                                    SaveData();
-                                    SaveErrors();
+                                    // Оповещаем о завершении получении координат
+                                    NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
+
+                                    if (GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
+                                    {
+                                        SaveData();
+                                        SaveErrors();
+                                    }
                                 }
-                            }
-                            else if (e.Message == _errorCancel)
-                            {
-                                // Оповещаем если сами отменили
-                                NotificationPlainText(_headerNotificationCancel, e.Message);
-                            }
-                            else
-                            {
-                                // Оповещаем если были ошибки и номер на котором была остановка
-                                NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
-                            }
+                                else if (e.Message == _errorCancel)
+                                {
+                                    // Оповещаем если сами отменили
+                                    NotificationPlainText(_headerNotificationCancel, e.Message);
+                                }
+                                else
+                                {
+                                    // Оповещаем если были ошибки и номер на котором была остановка
+                                    NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
+                                }
 
-                            Customers.Refresh();
+                                Customers.Refresh();
 
-                            // Прекращаем отображение
-                            IsStartGeoCoding = false;
+                                // Прекращаем отображение
+                                IsStartGeoCoding = false;
 
-                        }, _collectionGeoCod);
+                            }, data);
+                        }
+                        else
+                        {
+                            NotificationPlainText("Нечего обрабатывать", "");
+                        }
 
                     }, () => _collectionGeoCod != null && _collectionGeoCod.Count > 0));
 
@@ -597,6 +620,10 @@ namespace GeoCoding
         /// <param name="str">Путь к файлу или папке</param>
         private void OpenFolder(string str)
         {
+            if(str == "Папка программы")
+            {
+                str = Environment.CurrentDirectory;
+            }
             _model.OpenFolder(e =>
             {
                 if (e != null)
@@ -668,11 +695,11 @@ namespace GeoCoding
                 var nameFile = SetDefNameFileErrors();
                 _model.SaveError(error =>
                 {
-                    if(error!=null)
+                    if (error != null)
                     {
                         NotificationPlainText(_headerNotificationError, $"{error.Message} {nameFile}");
                     }
-                }, _collectionGeoCod.Where(x=>x.Status == StatusType.Error), nameFile);
+                }, _collectionGeoCod.Where(x => x.Status == StatusType.Error), nameFile);
             }
         }
 
