@@ -727,7 +727,46 @@
                                     Text="{Binding FTPSettings.FolderInput}" />
                             </Grid>
                         </TabItem>
-                        <TabItem Header="База данных" />
+                        <TabItem Header="База данных">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Column="0"  Grid.Row="0" Text="Сервер" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding BDSettings.Server, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5"/>
+
+                                <TextBlock Grid.Column="0"  Grid.Row="1" Text="База данных" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding BDSettings.BDName, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5"/>
+
+                                <TextBlock Grid.Column="0"  Grid.Row="2" Text="Порт" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding BDSettings.Port, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5"/>
+
+                                <TextBlock Grid.Column="0"  Grid.Row="3" Text="Логин" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5" IsEnabled="False"/>
+
+                                <TextBlock Grid.Column="0"  Grid.Row="4" Text="Пароль" VerticalAlignment="Center"/>
+                                <PasswordBox Grid.Column="2" Grid.Row="4" Margin="5" IsEnabled="False" Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+
+                                <WrapPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="5"  >
+                                    <Button Content="Проверить подключение" HorizontalAlignment="Left" Margin="10"/>
+                                    <TextBlock Text="Статус подключения:" VerticalAlignment="Center" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding BDSettings.StatusConnect}" VerticalAlignment="Center" Margin="5"/>
+                                </WrapPanel>
+                                <TextBox Grid.Column="2" Grid.Row="6" Margin="10" BorderThickness="0" TextWrapping="Wrap" Text="{Binding BDSettings.Error}"/>
+
+                            </Grid>
+                        </TabItem>
                         <TabItem Header="Геокодирование">
                             <Grid>
                                 <Grid.RowDefinitions>

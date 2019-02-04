@@ -173,48 +173,48 @@ namespace GeoCoding.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ftp://")]
-        public string Server {
+        public string FtpServer {
             get {
-                return ((string)(this["Server"]));
+                return ((string)(this["FtpServer"]));
             }
             set {
-                this["Server"] = value;
+                this["FtpServer"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("21")]
-        public int Port {
+        public int FtpPort {
             get {
-                return ((int)(this["Port"]));
+                return ((int)(this["FtpPort"]));
             }
             set {
-                this["Port"] = value;
+                this["FtpPort"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string User {
+        public string FtpUser {
             get {
-                return ((string)(this["User"]));
+                return ((string)(this["FtpUser"]));
             }
             set {
-                this["User"] = value;
+                this["FtpUser"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Password {
+        public string FtpPassword {
             get {
-                return ((string)(this["Password"]));
+                return ((string)(this["FtpPassword"]));
             }
             set {
-                this["Password"] = value;
+                this["FtpPassword"] = value;
             }
         }
         
@@ -308,6 +308,66 @@ namespace GeoCoding.Properties {
             }
             set {
                 this["ColorTheme"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BDServer {
+            get {
+                return ((string)(this["BDServer"]));
+            }
+            set {
+                this["BDServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BDName {
+            get {
+                return ((string)(this["BDName"]));
+            }
+            set {
+                this["BDName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BDPort {
+            get {
+                return ((int)(this["BDPort"]));
+            }
+            set {
+                this["BDPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BDLogin {
+            get {
+                return ((string)(this["BDLogin"]));
+            }
+            set {
+                this["BDLogin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BDPassword {
+            get {
+                return ((string)(this["BDPassword"]));
+            }
+            set {
+                this["BDPassword"] = value;
             }
         }
     }

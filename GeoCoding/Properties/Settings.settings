@@ -41,16 +41,16 @@
     <Setting Name="CanSaveDataAsFinished" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Server" Type="System.String" Scope="User">
+    <Setting Name="FtpServer" Type="System.String" Scope="User">
       <Value Profile="(Default)">ftp://</Value>
     </Setting>
-    <Setting Name="Port" Type="System.Int32" Scope="User">
+    <Setting Name="FtpPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">21</Value>
     </Setting>
-    <Setting Name="User" Type="System.String" Scope="User">
+    <Setting Name="FtpUser" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="Password" Type="System.String" Scope="User">
+    <Setting Name="FtpPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FtpFolderInput" Type="System.String" Scope="User">
@@ -76,6 +76,21 @@
     </Setting>
     <Setting Name="ColorTheme" Type="System.String" Scope="User">
       <Value Profile="(Default)">Light.Blue</Value>
+    </Setting>
+    <Setting Name="BDServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BDName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BDPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="BDLogin" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BDPassword" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

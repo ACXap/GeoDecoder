@@ -450,7 +450,7 @@ namespace GeoCoding
                             {
                                 NotificationPlainText(_headerNotificationError, e.Message);
                             }
-                        }, _filesSettings, _ftpSettings, _geoCodSettings, ColorTheme.Name);
+                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, ColorTheme.Name);
                     }));
 
         #endregion PublicCommands
@@ -719,13 +719,14 @@ namespace GeoCoding
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
-            _model.GetSettings((e, f, g, ftp, c) =>
+            _model.GetSettings((e, f, g, ftp, bds, c) =>
             {
                 if (e == null)
                 {
                     FilesSettings = f;
                     GeoCodSettings = g;
                     FTPSettings = ftp;
+                    BDSettings = bds;
                     ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
                 }
                 else
@@ -842,5 +843,14 @@ namespace GeoCoding
             }
         }
 
+
+
+
+        private BDSettings _bdSettings;
+        public BDSettings BDSettings
+        {
+            get => _bdSettings;
+            set => Set(ref _bdSettings, value);
+        }
     }
 }
