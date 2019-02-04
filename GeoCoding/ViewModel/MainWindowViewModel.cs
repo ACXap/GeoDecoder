@@ -109,6 +109,16 @@ namespace GeoCoding
         private FTPSettings _ftpSettings;
 
         /// <summary>
+        /// Поле для хранения ссылки на настройки БД
+        /// </summary>
+        private BDSettings _bdSettings;
+
+        /// <summary>
+        /// Поле для хранения ссылки на текущую тему оформления
+        /// </summary>
+        private Theme _colorTheme = ThemeManager.DetectTheme();
+
+        /// <summary>
         /// Поле для хранения ссылки на команду получения полного имени файла
         /// </summary>
         private RelayCommand _commandGetFile;
@@ -234,6 +244,33 @@ namespace GeoCoding
             get => _geoCodSettings;
             set => Set(ref _geoCodSettings, value);
         }
+
+        /// <summary>
+        /// настройки БД
+        /// </summary>
+        public BDSettings BDSettings
+        {
+            get => _bdSettings;
+            set => Set(ref _bdSettings, value);
+        }
+
+        /// <summary>
+        /// Текущая тема оформления окна
+        /// </summary>
+        public Theme ColorTheme
+        {
+            get => _colorTheme;
+            set
+            {
+                Set(ref _colorTheme, value);
+                ThemeManager.ChangeTheme(Application.Current, value.Name);
+            }
+        }
+
+        /// <summary>
+        /// Коллекция всех возможных тем оформления окна
+        /// </summary>
+        public System.Collections.Generic.IReadOnlyCollection<Theme> ListTheme => ThemeManager.Themes;
 
         #endregion PublicPropertys
 
@@ -711,56 +748,6 @@ namespace GeoCoding
             }, _statistics, _filesSettings, nameFile);
         }
 
-        #endregion PrivateMethod
-
-        /// <summary>
-        /// Конструктор по умолчанию
-        /// </summary>
-        public MainWindowViewModel()
-        {
-            _model = new MainWindowModel();
-            _model.GetSettings((e, f, g, ftp, bds, c) =>
-            {
-                if (e == null)
-                {
-                    FilesSettings = f;
-                    GeoCodSettings = g;
-                    FTPSettings = ftp;
-                    BDSettings = bds;
-                    ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
-                }
-                else
-                {
-                    NotificationPlainText(_headerNotificationError, e.Message);
-                }
-            });
-
-            Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
-            {
-                // Обновляем статистику
-                UpdateStatistics();
-            });
-        }
-
-        //private RelayCommand _myCommand;
-        ///// <summary>
-        ///// Gets the MyCommand.
-        ///// </summary>
-        //public RelayCommand CommandColor
-        //{
-        //    get
-        //    {
-        //        return _myCommand
-        //            ?? (_myCommand = new RelayCommand(
-        //            () =>
-        //            {
-        //                Random rnd = new Random();
-        //                var a = ThemeManager.Themes;
-        //                ThemeManager.ChangeTheme(Application.Current, a[rnd.Next(a.Count)]);
-        //            }));
-        //    }
-        //}
-
         private void GetAllGeoCod()
         {
             System.Collections.Generic.IEnumerable<EntityGeoCod> data = null;
@@ -830,27 +817,36 @@ namespace GeoCoding
             }
         }
 
-        public System.Collections.Generic.IReadOnlyCollection<Theme> ListTheme => ThemeManager.Themes;
+        #endregion PrivateMethod
 
-        private Theme _colorTheme = ThemeManager.DetectTheme();
-        public Theme ColorTheme
+        /// <summary>
+        /// Конструктор по умолчанию
+        /// </summary>
+        public MainWindowViewModel()
         {
-            get => _colorTheme;
-            set
+            _model = new MainWindowModel();
+            _model.GetSettings((e, f, g, ftp, bds, c) =>
             {
-                Set(ref _colorTheme, value);
-                ThemeManager.ChangeTheme(Application.Current, value.Name);
-            }
+                if (e == null)
+                {
+                    FilesSettings = f;
+                    GeoCodSettings = g;
+                    FTPSettings = ftp;
+                    BDSettings = bds;
+                    ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
+                }
+                else
+                {
+                    NotificationPlainText(_headerNotificationError, e.Message);
+                }
+            });
+
+            Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
+            {
+                // Обновляем статистику
+                UpdateStatistics();
+            });
         }
 
-
-
-
-        private BDSettings _bdSettings;
-        public BDSettings BDSettings
-        {
-            get => _bdSettings;
-            set => Set(ref _bdSettings, value);
-        }
     }
 }
