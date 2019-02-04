@@ -9,6 +9,7 @@
     xmlns:cmd="http://www.galasoft.ch/mvvmlight"
     xmlns:local="clr-namespace:GeoCoding"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
+    xmlns:Behaviors="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     x:Name="metroWindow"
     Title="Геокодирование" WindowStartupLocation="CenterScreen"
@@ -19,23 +20,23 @@
     BorderThickness="1"
     WindowButtonCommandsOverlayBehavior="Always"
     mc:Ignorable="d">
-    <!--  Ресурсы окна, в основном конвертеры  -->
+    <!-- Ресурсы окна, в основном конвертеры  -->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
         <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
     </Controls:MetroWindow.Resources>
-    <!--  Датаконтекст/ViewModel окна  -->
+    <!-- Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />
     </Controls:MetroWindow.DataContext>
-    <!--  Иконка приложения с контекст меню  -->
+    <!-- Иконка приложения с контекст меню  -->
     <Controls:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Margin="2" Source="geo.ico" />
         </DataTemplate>
     </Controls:MetroWindow.IconTemplate>
-    <!--  Панель команд на заголовке окна  -->
+    <!-- Панель команд на заголовке окна  -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
 
@@ -61,7 +62,6 @@
                 <cmd:EventToCommand Command="{Binding CommandDragDrop}" PassEventArgsToCommand="True" />
             </i:EventTrigger>
         </i:Interaction.Triggers>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -166,7 +166,7 @@
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Content="Получить данные" Margin="5" Padding="5"  />
 
-                                <Button Grid.Column="2" Content="Свой запрос" Margin="5" Padding="5" Command="{Binding MyCommand}"/>
+                                <ToggleButton  Grid.Column="2" Content="Свой запрос" Margin="5" Padding="5" Name="tbSql"/>
                             </Grid>
                         </Grid>
                     </Border>
@@ -820,6 +820,41 @@
                         Content="Сохранить настройки" />
                 </Grid>
             </Controls:Flyout>
+        
+            <!-- Запрос к базе данных-->
+            <Controls:Flyout
+                Width="{Binding ElementName=metroWindow, Path=ActualWidth}"
+                Height="{Binding ElementName=metroWindow, Path=ActualHeight}"
+                IsPinned="False"
+                MaxWidth="900"
+                MaxHeight="500"
+                CloseButtonIsCancel="True"
+                IsOpen="{Binding ElementName=tbSql, Path=IsChecked}"
+                Header="SQL-запрос"
+                Theme="Inverse"
+                Position="Left">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBox Grid.Row="1" TextWrapping="Wrap" Margin="20" Controls:TextBoxHelper.ClearTextButton="True"/>
+                    
+                    <StackPanel Orientation="Vertical" Grid.Row="0" Margin="20,0,20,0">
+                        <TextBlock FontSize="20">Свой запрос SQL, обязательно первый столбец <Bold>orponid</Bold>, второй столбец <Bold>adr_adm_ter</Bold></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock FontSize="16" Text=" Пример:"  VerticalAlignment="Center"/>
+                            <TextBox Controls:TextBoxHelper.SelectAllOnFocus="True" IsReadOnly="True" Margin="10" FontSize="16" BorderThickness="0" VerticalAlignment="Center" Text="SELECT H.orponid, H.adr_adm_ter FROM orpon_rf.public.ent_as_house H LIMIT 100"/>
+                        </StackPanel>
+                       
+                    </StackPanel>
+                    <Button Grid.Row="2" Margin="0,0,50,30" Padding="5" HorizontalAlignment="Right" Content="Получить данные"/>
+                </Grid>
+                
+            </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
+
+
 </Controls:MetroWindow>

@@ -842,15 +842,5 @@ namespace GeoCoding
             }
         }
 
-        private RelayCommand _myCommand;
-        public RelayCommand MyCommand =>
-        _myCommand ?? (_myCommand = new RelayCommand(
-                    () =>
-                    {
-
-
-                    }));
-
-
     }
 }
