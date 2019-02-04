@@ -882,7 +882,7 @@ namespace GeoCoding
                                 NotificationPlainText(_headerNotificationError, error.Message);
                             }
                         }, _bdSettings, _bdSettings.SQLQuery);
-                       
+
                     }));
 
         private RelayCommand _commandCheckConnect;
@@ -894,7 +894,7 @@ namespace GeoCoding
                         _bdSettings.Error = string.Empty;
                         _model.ConnectBDAsync(e =>
                         {
-                            if(e!=null)
+                            if (e != null)
                             {
                                 NotificationPlainText(_headerNotificationError, e.Message);
                                 BDSettings.StatusConnect = StatusConnectBD.Error;
@@ -907,6 +907,5 @@ namespace GeoCoding
                             }
                         }, _bdSettings);
                     }));
-
     }
 }

@@ -1,52 +1,56 @@
 ﻿<Controls:MetroWindow
     x:Class="GeoCoding.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
-    xmlns:local="clr-namespace:GeoCoding"
-    xmlns:uc="clr-namespace:GeoCoding.UserControls"
     xmlns:Behaviors="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:GeoCoding"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:GeoCoding.UserControls"
     x:Name="metroWindow"
-    Title="Геокодирование" WindowStartupLocation="CenterScreen"
+    Title="Геокодирование"
     Width="1400"
     Height="800"
     Dialog:DialogParticipation.Register="{Binding}"
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
     WindowButtonCommandsOverlayBehavior="Always"
+    WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <!-- Ресурсы окна, в основном конвертеры  -->
+    <!--  Ресурсы окна, в основном конвертеры  -->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
         <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
     </Controls:MetroWindow.Resources>
-    <!-- Датаконтекст/ViewModel окна  -->
+    <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />
     </Controls:MetroWindow.DataContext>
-    <!-- Иконка приложения с контекст меню  -->
+    <!--  Иконка приложения с контекст меню  -->
     <Controls:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Margin="2" Source="geo.ico" />
         </DataTemplate>
     </Controls:MetroWindow.IconTemplate>
-    <!-- Панель команд на заголовке окна  -->
+    <!--  Панель команд на заголовке окна  -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
 
-            <!-- Кнопка открытия папки программы-->
+            <!--  Кнопка открытия папки программы  -->
             <Button Command="{Binding CommandOpenFolder}" CommandParameter="Папка программы">
-                <TextBlock Style="{StaticResource TextBlockFolder}" ToolTip="Папка программы"/>
+                <TextBlock Style="{StaticResource TextBlockFolder}" ToolTip="Папка программы" />
             </Button>
 
-            <!-- Кнопка открытия настроек-->
-            <ToggleButton Name="tbOpenSettings" ToolTip="Настройки" Cursor="Hand">
+            <!--  Кнопка открытия настроек  -->
+            <ToggleButton
+                Name="tbOpenSettings"
+                Cursor="Hand"
+                ToolTip="Настройки">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Style="{StaticResource TextBlockSettings}" />
                 </StackPanel>
@@ -70,9 +74,9 @@
         <!--  Работа с получением данных и сохранением  -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
 
             <!--  Вкладки Файл, БД  -->
@@ -80,13 +84,13 @@
 
                 <!--  Работа с файлами  -->
                 <TabItem Header="Файл">
-                   
+
                     <!--  Панель работы с входным файлом  -->
                     <Border
-                                Grid.Column="0"
-                                Padding="5"
-                                BorderBrush="{DynamicResource AccentColorBrush}"
-                                BorderThickness="1">
+                        Grid.Column="0"
+                        Padding="5"
+                        BorderBrush="{DynamicResource AccentColorBrush}"
+                        BorderThickness="1">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
@@ -95,11 +99,11 @@
 
                             <!--  Имя входного файла с данными  -->
                             <TextBox
-                                        Grid.Row="0"
-                                        Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
-                                        IsReadOnly="True"
-                                        Style="{StaticResource TextBoxFolderOpen}"
-                                        Text="{Binding FilesSettings.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                Grid.Row="0"
+                                Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
+                                IsReadOnly="True"
+                                Style="{StaticResource TextBoxFolderOpen}"
+                                Text="{Binding FilesSettings.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                             <!--  Управление входным файлом  -->
                             <Grid Grid.Row="1">
@@ -111,62 +115,72 @@
 
                                 <!--  Кнопка получения данных  -->
                                 <Button
-                                            Grid.Column="0"
-                                            HorizontalAlignment="Left"
-                                            Command="{Binding CommandGetDataFromFile}"
-                                            Content="Получить данные"
-                                            Style="{StaticResource ButtonMainStyle}" />
+                                    Grid.Column="0"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding CommandGetDataFromFile}"
+                                    Content="Получить данные"
+                                    Style="{StaticResource ButtonMainStyle}" />
 
                                 <!--  Настройки для получения данных  -->
                                 <StackPanel Grid.Column="1" Orientation="Vertical">
 
                                     <!--  Выбор входного файла на ФТП-сервере  -->
                                     <CheckBox
-                                                Margin="5"
-                                                Content="Файл на FTP сервере"
-                                                IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
-                                                IsEnabled="False" />
+                                        Margin="5"
+                                        Content="Файл на FTP сервере"
+                                        IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
+                                        IsEnabled="False" />
 
                                     <!--  После выбора файла с данными, данные получаем сразу  -->
                                     <CheckBox
-                                                Margin="5,0,5,0"
-                                                Content="Данные получить сразу"
-                                                IsChecked="{Binding FilesSettings.CanGetDataOnce}" />
+                                        Margin="5,0,5,0"
+                                        Content="Данные получить сразу"
+                                        IsChecked="{Binding FilesSettings.CanGetDataOnce}" />
                                 </StackPanel>
 
                                 <!--  Выбор файла с данными, открываем проводник  -->
                                 <Button
-                                            Grid.Column="2"
-                                            Command="{Binding CommandGetFile}"
-                                            Content="Выбрать файл с данными"
-                                            Style="{StaticResource ButtonMainStyle}" />
+                                    Grid.Column="2"
+                                    Command="{Binding CommandGetFile}"
+                                    Content="Выбрать файл с данными"
+                                    Style="{StaticResource ButtonMainStyle}" />
                             </Grid>
                         </Grid>
                     </Border>
                 </TabItem>
 
                 <!--  Работа с базой данных  -->
-                <TabItem Header="БД" >
+                <TabItem Header="БД">
                     <Border
-                                Grid.Column="0"
-                                Padding="5"
-                                BorderBrush="{DynamicResource AccentColorBrush}"
-                                BorderThickness="1">
+                        Grid.Column="0"
+                        Padding="5"
+                        BorderBrush="{DynamicResource AccentColorBrush}"
+                        BorderThickness="1">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
-                            <Grid>
+                            <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Получить данные" Margin="5" Padding="5"  />
+                                <Button
+                                    Grid.Column="0"
+                                    Margin="5"
+                                    Padding="5"
+                                    Content="Получить данные" />
 
-                                <ToggleButton  Grid.Column="2" Content="Свой запрос" Margin="5" Padding="5" Name="tbSql"/>
+                                <ToggleButton
+                                    Name="tbSql"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Padding="5"
+                                    HorizontalAlignment="Right"
+                                    Content="Свой запрос" />
                             </Grid>
                         </Grid>
                     </Border>
@@ -175,11 +189,11 @@
 
             <!--  Панель работы с выходным файлом  -->
             <Border
-                                Margin="0,45,3,3"
                 Grid.Column="2"
-                                Padding="5"
-                                BorderBrush="{DynamicResource AccentColorBrush}"
-                                BorderThickness="1">
+                Margin="0,45,3,3"
+                Padding="5"
+                BorderBrush="{DynamicResource AccentColorBrush}"
+                BorderThickness="1">
 
                 <!--  Панель работы с выходным файлом  -->
                 <Grid>
@@ -190,12 +204,12 @@
 
                     <!--  Файл для сохранения  -->
                     <TextBox
-                                        Grid.Row="0"
-                                        VerticalAlignment="Center"
-                                        Controls:TextBoxHelper.Watermark="Выбрать файл для сохранения"
-                                        IsReadOnly="True"
-                                        Style="{StaticResource TextBoxFolderOpen}"
-                                        Text="{Binding FilesSettings.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        Grid.Row="0"
+                        VerticalAlignment="Center"
+                        Controls:TextBoxHelper.Watermark="Выбрать файл для сохранения"
+                        IsReadOnly="True"
+                        Style="{StaticResource TextBoxFolderOpen}"
+                        Text="{Binding FilesSettings.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                     <!--  Управление выходным файлом  -->
                     <Grid Grid.Row="1">
@@ -207,25 +221,25 @@
 
                         <!--  Выбор файла для сохранения  -->
                         <Button
-                                            Grid.Column="0"
-                                            VerticalAlignment="Top"
-                                            Command="{Binding CommandSetFileOutput}"
-                                            Content="Выбрать файл для сохранения"
-                                            Style="{StaticResource ButtonMainStyle}" />
+                            Grid.Column="0"
+                            VerticalAlignment="Top"
+                            Command="{Binding CommandSetFileOutput}"
+                            Content="Выбрать файл для сохранения"
+                            Style="{StaticResource ButtonMainStyle}" />
 
                         <!--  Настройки для сохранения  -->
                         <StackPanel
-                                            Grid.Column="1"
-                                            Margin="5"
-                                            Orientation="Vertical">
+                            Grid.Column="1"
+                            Margin="5"
+                            Orientation="Vertical">
 
                             <!--  Копировать ли выходной файл на ФТП-сервер  -->
                             <CheckBox
-                                                VerticalAlignment="Center"
-                                                Content="Так же скопировать данный файл на FTP сервер"
-                                                IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
-                                                IsEnabled="False"
-                                                ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP сервер (если он настроен на вкладке FTP)" />
+                                VerticalAlignment="Center"
+                                Content="Так же скопировать данный файл на FTP сервер"
+                                IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="False"
+                                ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP сервер (если он настроен на вкладке FTP)" />
 
                             <!--  Настройка разбиения выходного файла  -->
                             <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения">
@@ -235,19 +249,19 @@
 
                                 <!--  Максимальное количество строк в файле  -->
                                 <TextBox
-                                                    Width="80"
-                                                    Margin="5,0,0,0"
-                                                    IsEnabled="{Binding FilesSettings.CanBreakFileOutput}"
-                                                    Text="{Binding FilesSettings.MaxSizePart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    Width="80"
+                                    Margin="5,0,0,0"
+                                    IsEnabled="{Binding FilesSettings.CanBreakFileOutput}"
+                                    Text="{Binding FilesSettings.MaxSizePart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </StackPanel>
 
                         <!--  Кнопка сохранения данных  -->
                         <Button
-                                            Grid.Column="2"
-                                            Command="{Binding CommandSaveData}"
-                                            Content="Сохранить данные"
-                                            Style="{StaticResource ButtonMainStyle}" />
+                            Grid.Column="2"
+                            Command="{Binding CommandSaveData}"
+                            Content="Сохранить данные"
+                            Style="{StaticResource ButtonMainStyle}" />
                     </Grid>
                 </Grid>
             </Border>
@@ -511,14 +525,14 @@
             <Controls:Flyout
                 Width="{Binding ElementName=metroWindow, Path=ActualWidth}"
                 Height="{Binding ElementName=metroWindow, Path=ActualHeight}"
-                IsPinned="False"
                 MaxWidth="900"
                 MaxHeight="600"
                 CloseButtonIsCancel="True"
-                IsOpen="{Binding ElementName=tbOpenSettings, Path=IsChecked}"
                 Header="Настройки приложения"
-                Theme="Inverse"
-                Position="Right">
+                IsOpen="{Binding ElementName=tbOpenSettings, Path=IsChecked}"
+                IsPinned="False"
+                Position="Right"
+                Theme="Inverse">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -730,40 +744,124 @@
                         <TabItem Header="База данных">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="5"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Column="0"  Grid.Row="0" Text="Сервер" VerticalAlignment="Center"/>
-                                <TextBox Grid.Column="2" Grid.Row="0" Text="{Binding BDSettings.Server, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5"/>
+                                <TextBlock
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Сервер" />
+                                <TextBox
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Text="{Binding BDSettings.Server, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                                <TextBlock Grid.Column="0"  Grid.Row="1" Text="База данных" VerticalAlignment="Center"/>
-                                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding BDSettings.BDName, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5"/>
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="База данных" />
+                                <TextBox
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Text="{Binding BDSettings.BDName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                                <TextBlock Grid.Column="0"  Grid.Row="2" Text="Порт" VerticalAlignment="Center"/>
-                                <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding BDSettings.Port, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5"/>
+                                <TextBlock
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Порт" />
+                                <TextBox
+                                    Grid.Row="2"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Text="{Binding BDSettings.Port, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                                <TextBlock Grid.Column="0"  Grid.Row="3" Text="Логин" VerticalAlignment="Center"/>
-                                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5" />
+                                <TextBlock
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Логин" />
+                                <TextBox
+                                    Grid.Row="3"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                                <TextBlock Grid.Column="0"  Grid.Row="4" Text="Пароль" VerticalAlignment="Center"/>
-                                <PasswordBox Grid.Column="2" Grid.Row="4" Margin="5" Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                                <TextBlock
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Пароль" />
+                                <PasswordBox
+                                    Grid.Row="4"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                                <WrapPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="5"  >
-                                    <Button Content="Проверить подключение" HorizontalAlignment="Left" Margin="10" Command="{Binding CommandCheckConnect}"/>
-                                    <TextBlock Text="Статус подключения:" VerticalAlignment="Center" FontWeight="Bold"/>
-                                    <TextBlock Text="{Binding BDSettings.StatusConnect}" VerticalAlignment="Center" Margin="5"/>
+                                <WrapPanel
+                                    Grid.Row="5"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal">
+                                    <Button
+                                        Margin="10"
+                                        HorizontalAlignment="Left"
+                                        Command="{Binding CommandCheckConnect}">
+                                        <Button.Style>
+                                            <Style BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}" TargetType="{x:Type Button}">
+                                                <Setter Property="Content" Value="Проверить подключение" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding BDSettings.StatusConnect}" Value="{x:Static local:StatusConnectBD.ConnectNow}">
+                                                        <Setter Property="Content" Value="Идет подключение..." />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Text="Статус подключения:" />
+                                    <TextBlock
+                                        Margin="5"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding BDSettings.StatusConnect}" />
                                 </WrapPanel>
-                                <TextBox Grid.Column="2" Grid.Row="6" Margin="10" BorderThickness="0" TextWrapping="Wrap" Text="{Binding BDSettings.Error}"/>
+                                <WrapPanel
+                                    Grid.Row="6"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal">
+                                    <Controls:ProgressRing>
+                                        <Controls:ProgressRing.Style>
+                                            <Style TargetType="{x:Type Controls:ProgressRing}">
+                                                <Setter Property="IsActive" Value="False" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding BDSettings.StatusConnect}" Value="{x:Static local:StatusConnectBD.ConnectNow}">
+                                                        <Setter Property="IsActive" Value="True" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Controls:ProgressRing.Style>
+                                    </Controls:ProgressRing>
+                                    <TextBox
+                                        Margin="10"
+                                        BorderThickness="0"
+                                        Text="{Binding BDSettings.Error}"
+                                        TextWrapping="Wrap" />
+                                </WrapPanel>
 
                             </Grid>
                         </TabItem>
@@ -774,9 +872,7 @@
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <GroupBox
-                                    Grid.Row="0"
-                                    Header="Какие объекты геокодировать">
+                                <GroupBox Grid.Row="0" Header="Какие объекты геокодировать">
                                     <WrapPanel Orientation="Vertical">
                                         <RadioButton
                                             Grid.Row="0"
@@ -827,22 +923,27 @@
                                     Grid.Row="2"
                                     Margin="10"
                                     Content="Геокодировать сразу после выбора файла"
-                                    IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}"/>
+                                    IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
                             </Grid>
                         </TabItem>
                         <TabItem Header="Оповещения" />
                         <TabItem Header="Общие">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
-                                <WrapPanel Orientation="Horizontal" Margin="5">
-                                    <TextBlock Text="Цветовая тема приложения" VerticalAlignment="Center"/>
-                                    <ComboBox ItemsSource="{Binding ListTheme}" HorizontalAlignment="Left" VerticalAlignment="Top" SelectedItem="{Binding ColorTheme}" Margin="5">
+                                <WrapPanel Margin="5" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="Цветовая тема приложения" />
+                                    <ComboBox
+                                        Margin="5"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Top"
+                                        ItemsSource="{Binding ListTheme}"
+                                        SelectedItem="{Binding ColorTheme}">
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding DisplayName}"/>
+                                                <TextBlock Text="{Binding DisplayName}" />
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
@@ -859,38 +960,66 @@
                         Content="Сохранить настройки" />
                 </Grid>
             </Controls:Flyout>
-        
-            <!-- Запрос к базе данных-->
+
+            <!--  Запрос к базе данных  -->
             <Controls:Flyout
                 Width="{Binding ElementName=metroWindow, Path=ActualWidth}"
                 Height="{Binding ElementName=metroWindow, Path=ActualHeight}"
-                IsPinned="False"
                 MaxWidth="900"
                 MaxHeight="500"
                 CloseButtonIsCancel="True"
-                IsOpen="{Binding ElementName=tbSql, Path=IsChecked}"
                 Header="SQL-запрос"
-                Theme="Inverse"
-                Position="Left">
+                IsOpen="{Binding ElementName=tbSql, Path=IsChecked}"
+                IsPinned="False"
+                Position="Left"
+                Theme="Inverse">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="1" TextWrapping="Wrap" Margin="20" Controls:TextBoxHelper.ClearTextButton="True" Text="{Binding BDSettings.SQLQuery, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                    
-                    <StackPanel Orientation="Vertical" Grid.Row="0" Margin="20,0,20,0">
-                        <TextBlock FontSize="20">Свой запрос SQL, обязательно первый столбец <Bold>orponid</Bold>, второй столбец <Bold>adr_adm_ter</Bold></TextBlock>
+                    <TextBox
+                        Grid.Row="1"
+                        Margin="20" FontSize="20"
+                        Controls:TextBoxHelper.ClearTextButton="True"
+                        Text="{Binding BDSettings.SQLQuery, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        TextWrapping="Wrap" />
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Margin="20,0,20,0"
+                        Orientation="Vertical">
+                        <TextBlock FontSize="20">
+                            <Run Text="Свой запрос SQL, обязательно первый столбец"/>
+                            <Run FontWeight="Bold" Text="orponid"/>
+                            <Run Text=", второй столбец"/>
+                            <Run FontWeight="Bold" Text="adr_adm_ter"/></TextBlock>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock FontSize="16" Text=" Пример:"  VerticalAlignment="Center"/>
-                            <TextBox Controls:TextBoxHelper.SelectAllOnFocus="True" IsReadOnly="True" Margin="10" FontSize="16" BorderThickness="0" VerticalAlignment="Center" Text="SELECT H.orponid, H.adr_adm_ter FROM orpon_rf.public.ent_as_house H LIMIT 100"/>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                Text=" Пример:" />
+                            <TextBox
+                                Margin="10"
+                                VerticalAlignment="Center"
+                                Controls:TextBoxHelper.SelectAllOnFocus="True"
+                                BorderThickness="0"
+                                FontSize="16"
+                                IsReadOnly="True"
+                                Text="SELECT H.orponid, H.adr_adm_ter FROM orpon_rf.public.ent_as_house H LIMIT 100" />
                         </StackPanel>
-                       
+
                     </StackPanel>
-                    <Button Grid.Row="2" Margin="0,0,50,30" Padding="5" HorizontalAlignment="Right" Content="Получить данные" Command="{Binding MyCommand}"/>
+                    <Button
+                        Grid.Row="2"
+                        Margin="0,0,50,30"
+                        Padding="5"
+                        HorizontalAlignment="Right"
+                        Command="{Binding MyCommand}"
+                        Content="Получить данные" />
                 </Grid>
-                
+
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
