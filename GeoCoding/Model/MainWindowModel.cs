@@ -1,4 +1,5 @@
-﻿using GeoCoding.FileService;
+﻿using GeoCoding.BDService;
+using GeoCoding.FileService;
 using GeoCoding.GeoCodingService;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace GeoCoding
         #endregion PrivateConst
 
         private readonly IFileService _fileService = new FileService.FileService();
+        private readonly IBDService _bdService = new BDPostgresql();
 
         private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
         //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
@@ -359,39 +361,39 @@ namespace GeoCoding
                 $"{_charSplit}{stat.OK}{_charSplit}{stat.Error}{_charSplit}{stat.NotGeoCoding}{_charSplit}{stat.GeoCodingNow}" +
                 $"{_charSplit}{stat.House}{_charSplit}{stat.Exact}{_charSplit}{stat.NotFound}{_charSplit}{stat.TimeGeoCod}";
 
-             _fileService.FileExists((exists, er) =>
-            {
-                if(er==null)
-                {
-                    if (exists)
-                    {
-                        data = new string[]
-                        {
+            _fileService.FileExists((exists, er) =>
+           {
+               if (er == null)
+               {
+                   if (exists)
+                   {
+                       data = new string[]
+                       {
                             row
-                        };
-                    }
-                    else
-                    {
-                        data = new string[]
-                        {
+                       };
+                   }
+                   else
+                   {
+                       data = new string[]
+                       {
                             _nameColumnStatisticsFile,
                             row
-                        };
-                    }
+                       };
+                   }
 
-                    _fileService.AppendData(e =>
-                    {
-                        if (e != null)
-                        {
-                            error = e;
-                        }
-                    }, data, file);
-                }
-                else
-                {
-                    error = er;
-                }
-            }, file);
+                   _fileService.AppendData(e =>
+                   {
+                       if (e != null)
+                       {
+                           error = e;
+                       }
+                   }, data, file);
+               }
+               else
+               {
+                   error = er;
+               }
+           }, file);
 
             callback(error);
         }
@@ -760,5 +762,59 @@ namespace GeoCoding
 
             callback(error);
         }
+
+
+        public void ConnectBD(Action<Exception> callback, BDSettings bds)
+        {
+            Exception error = null;
+            _bdService.ConnectBD(e =>
+            {
+                error = e;
+            }, new ConnectionSettings()
+            {
+                Server = bds.Server,
+                BDName = bds.BDName,
+                Port = bds.Port,
+                Login = bds.Login,
+                Password = bds.Password
+            });
+
+            callback(error);
+        }
+
+        public void GetDataFromDB(Action<IEnumerable<EntityGeoCod>, Exception> callback, BDSettings bds, string query)
+        {
+            Exception error = null;
+            List<EntityGeoCod> data = new List<EntityGeoCod>();
+
+            _bdService.ExecuteUserQuery((d, e) =>
+            {
+                if (e == null)
+                {
+                    foreach(var item in d)
+                    {
+                        data.Add(new EntityGeoCod()
+                        {
+                            GlobalID = item.OrponId,
+                            Address = item.Address
+                        });
+                    }
+                }
+                else
+                {
+                    error = e;
+                }
+            }, new ConnectionSettings()
+            {
+                Server = bds.Server,
+                BDName = bds.BDName,
+                Port = bds.Port,
+                Login = bds.Login,
+                Password = bds.Password
+            }, query);
+
+            callback(data, error);
+        }
+
     }
 }

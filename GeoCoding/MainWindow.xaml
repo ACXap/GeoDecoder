@@ -753,13 +753,13 @@
                                 <TextBox Grid.Column="2" Grid.Row="2" Text="{Binding BDSettings.Port, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5"/>
 
                                 <TextBlock Grid.Column="0"  Grid.Row="3" Text="Логин" VerticalAlignment="Center"/>
-                                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5" IsEnabled="False"/>
+                                <TextBox Grid.Column="2" Grid.Row="3" Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="5" />
 
                                 <TextBlock Grid.Column="0"  Grid.Row="4" Text="Пароль" VerticalAlignment="Center"/>
-                                <PasswordBox Grid.Column="2" Grid.Row="4" Margin="5" IsEnabled="False" Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                                <PasswordBox Grid.Column="2" Grid.Row="4" Margin="5" Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
 
                                 <WrapPanel Orientation="Horizontal" Grid.Column="2" Grid.Row="5"  >
-                                    <Button Content="Проверить подключение" HorizontalAlignment="Left" Margin="10"/>
+                                    <Button Content="Проверить подключение" HorizontalAlignment="Left" Margin="10" Command="{Binding CommandCheckConnect}"/>
                                     <TextBlock Text="Статус подключения:" VerticalAlignment="Center" FontWeight="Bold"/>
                                     <TextBlock Text="{Binding BDSettings.StatusConnect}" VerticalAlignment="Center" Margin="5"/>
                                 </WrapPanel>
@@ -878,7 +878,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="1" TextWrapping="Wrap" Margin="20" Controls:TextBoxHelper.ClearTextButton="True"/>
+                    <TextBox Grid.Row="1" TextWrapping="Wrap" Margin="20" Controls:TextBoxHelper.ClearTextButton="True" Text="{Binding BDSettings.SQLQuery, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     
                     <StackPanel Orientation="Vertical" Grid.Row="0" Margin="20,0,20,0">
                         <TextBlock FontSize="20">Свой запрос SQL, обязательно первый столбец <Bold>orponid</Bold>, второй столбец <Bold>adr_adm_ter</Bold></TextBlock>
@@ -888,12 +888,10 @@
                         </StackPanel>
                        
                     </StackPanel>
-                    <Button Grid.Row="2" Margin="0,0,50,30" Padding="5" HorizontalAlignment="Right" Content="Получить данные"/>
+                    <Button Grid.Row="2" Margin="0,0,50,30" Padding="5" HorizontalAlignment="Right" Content="Получить данные" Command="{Binding MyCommand}"/>
                 </Grid>
                 
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
-
-
 </Controls:MetroWindow>

@@ -188,6 +188,10 @@
       <Project>{fed4d728-e13c-482c-8795-12484e8d377b}</Project>
       <Name>GeoCoding.Resources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GeoDecoder.BDService\GeoCoding.BDService.csproj">
+      <Project>{ef2fbc95-76f0-4851-a5ae-3efa6aca4ccf}</Project>
+      <Name>GeoCoding.BDService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="geo.ico" />

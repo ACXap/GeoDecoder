@@ -40,6 +40,14 @@ namespace GeoCoding
             set => Set(ref _password, value);
         }
 
+
+        private string _sqlQuery = string.Empty;
+        public string SQLQuery
+        {
+            get => _sqlQuery;
+            set => Set(ref _sqlQuery, value);
+        }
+
         private StatusConnectBD _statusConnect = StatusConnectBD.NotConnect;
         public StatusConnectBD StatusConnect
         {

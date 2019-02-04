@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.GeoCodingService"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.Resources", "GeoCoding.Resources\GeoCoding.Resources.csproj", "{FED4D728-E13C-482C-8795-12484E8D377B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.BDService", "GeoDecoder.BDService\GeoCoding.BDService.csproj", "{EF2FBC95-76F0-4851-A5AE-3EFA6ACA4CCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FED4D728-E13C-482C-8795-12484E8D377B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FED4D728-E13C-482C-8795-12484E8D377B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FED4D728-E13C-482C-8795-12484E8D377B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF2FBC95-76F0-4851-A5AE-3EFA6ACA4CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF2FBC95-76F0-4851-A5AE-3EFA6ACA4CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF2FBC95-76F0-4851-A5AE-3EFA6ACA4CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF2FBC95-76F0-4851-A5AE-3EFA6ACA4CCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

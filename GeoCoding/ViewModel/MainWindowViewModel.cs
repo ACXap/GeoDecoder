@@ -848,5 +848,64 @@ namespace GeoCoding
             });
         }
 
+        private RelayCommand _myCommand;
+        public RelayCommand MyCommand =>
+        _myCommand ?? (_myCommand = new RelayCommand(
+                    () =>
+                    {
+                        _model.GetDataFromDB((data, error) =>
+                        {
+                            if (error == null)
+                            {
+                                // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
+                                if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                                {
+                                    _collectionGeoCod.Clear();
+                                    _collectionGeoCod = null;
+                                }
+                                // Создаем коллекцию с данными
+                                CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
+
+                                // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
+                                Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
+                                Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
+                                Customers.Filter = CustomerFilter;
+
+                                // Обновляем статистику
+                                UpdateStatistics();
+                                // Оповещаем о создании коллекции
+                                // NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
+                            }
+                            else
+                            {
+                                // Оповещаем если были ошибки
+                                NotificationPlainText(_headerNotificationError, error.Message);
+                            }
+                        }, _bdSettings, _bdSettings.SQLQuery);
+                       
+                    }));
+
+
+        private RelayCommand _commandCheckConnect;
+        public RelayCommand CommandCheckConnect =>
+        _commandCheckConnect ?? (_commandCheckConnect = new RelayCommand(
+                    () =>
+                    {
+                        _model.ConnectBD(e =>
+                        {
+                            if(e!=null)
+                            {
+                                NotificationPlainText(_headerNotificationError, e.Message);
+                                BDSettings.StatusConnect = StatusConnectBD.Error;
+                                BDSettings.Error = e.Message;
+                            }
+                            else
+                            {
+                                BDSettings.StatusConnect = StatusConnectBD.OK;
+                                BDSettings.Error = string.Empty;
+                            }
+                        }, _bdSettings);
+                    }));
+
     }
 }
