@@ -885,7 +885,6 @@ namespace GeoCoding
                        
                     }));
 
-
         private RelayCommand _commandCheckConnect;
         public RelayCommand CommandCheckConnect =>
         _commandCheckConnect ?? (_commandCheckConnect = new RelayCommand(

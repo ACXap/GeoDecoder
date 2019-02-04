@@ -85,6 +85,7 @@
     <Compile Include="Converters\ConverterKintTypeToString.cs" />
     <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
+    <Compile Include="geo.cs" />
     <Compile Include="Model\Data\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
     <Compile Include="Model\Data\FilesSettings.cs" />
@@ -96,6 +97,12 @@
     <Compile Include="Model\Data\Enumeration\StatusConnectBD.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
+    <Compile Include="Properties\Geo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Geo.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="UserControls\InformationEntity.xaml.cs">
       <DependentUpon>InformationEntity.xaml</DependentUpon>
     </Compile>
@@ -167,6 +174,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\Geo.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Geo.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

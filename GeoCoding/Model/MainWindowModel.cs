@@ -733,6 +733,10 @@ namespace GeoCoding
         {
             Exception error = null;
             var p = Properties.Settings.Default;
+            var s = Properties.Geo.Default;
+            s.Параметр = "123";
+            s.Save();
+
             p.CanBreakFileOutput = filesSettings.CanBreakFileOutput;
             p.CanCopyFileOutputToFtp = filesSettings.CanCopyFileOutputToFtp;
             p.CanGeoCodGetAll = geoCodSettings.CanGeoCodGetAll;
@@ -758,7 +762,15 @@ namespace GeoCoding
             p.BDName = bdSettings.BDName;
             p.BDLogin = bdSettings.Login;
             p.BDPassword = bdSettings.Password;
-            p.Save();
+            try
+            {
+                p.Save();
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+            
 
             callback(error);
         }
