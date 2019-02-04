@@ -890,7 +890,9 @@ namespace GeoCoding
         _commandCheckConnect ?? (_commandCheckConnect = new RelayCommand(
                     () =>
                     {
-                        _model.ConnectBD(e =>
+                        _bdSettings.StatusConnect = StatusConnectBD.ConnectNow;
+                        _bdSettings.Error = string.Empty;
+                        _model.ConnectBDAsync(e =>
                         {
                             if(e!=null)
                             {

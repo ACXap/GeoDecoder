@@ -770,28 +770,33 @@ namespace GeoCoding
             {
                 error = ex;
             }
-            
+
 
             callback(error);
         }
 
 
-        public void ConnectBD(Action<Exception> callback, BDSettings bds)
+        public async void ConnectBDAsync(Action<Exception> callback, BDSettings bds)
         {
             Exception error = null;
-            _bdService.ConnectBD(e =>
+            await Task.Factory.StartNew(() =>
             {
+                _bdService.ConnectBD(e =>
+                {
                 error = e;
-            }, new ConnectionSettings()
-            {
+                }, new ConnectionSettings()
+                {
                 Server = bds.Server,
                 BDName = bds.BDName,
                 Port = bds.Port,
                 Login = bds.Login,
                 Password = bds.Password
+                });
+
+                callback(error);
             });
 
-            callback(error);
+            
         }
 
         public void GetDataFromDB(Action<IEnumerable<EntityGeoCod>, Exception> callback, BDSettings bds, string query)
@@ -803,7 +808,7 @@ namespace GeoCoding
             {
                 if (e == null)
                 {
-                    foreach(var item in d)
+                    foreach (var item in d)
                     {
                         data.Add(new EntityGeoCod()
                         {
