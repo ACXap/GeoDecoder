@@ -719,6 +719,14 @@ namespace GeoCoding
                 Password = p.BDPassword
             };
 
+            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    bds.Password = d;
+                }
+            }, p.BDPassword);
+
             callback(error, f, g, ftp, bds, color);
         }
 
@@ -733,9 +741,6 @@ namespace GeoCoding
         {
             Exception error = null;
             var p = Properties.Settings.Default;
-            var s = Properties.Geo.Default;
-            s.Параметр = "123";
-            s.Save();
 
             p.CanBreakFileOutput = filesSettings.CanBreakFileOutput;
             p.CanCopyFileOutputToFtp = filesSettings.CanCopyFileOutputToFtp;
@@ -761,7 +766,15 @@ namespace GeoCoding
             p.BDPort = bdSettings.Port;
             p.BDName = bdSettings.BDName;
             p.BDLogin = bdSettings.Login;
-            p.BDPassword = bdSettings.Password;
+
+            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    p.BDPassword = d;
+                }
+            }, bdSettings.Password);
+
             try
             {
                 p.Save();
@@ -783,20 +796,20 @@ namespace GeoCoding
             {
                 _bdService.ConnectBD(e =>
                 {
-                error = e;
+                    error = e;
                 }, new ConnectionSettings()
                 {
-                Server = bds.Server,
-                BDName = bds.BDName,
-                Port = bds.Port,
-                Login = bds.Login,
-                Password = bds.Password
+                    Server = bds.Server,
+                    BDName = bds.BDName,
+                    Port = bds.Port,
+                    Login = bds.Login,
+                    Password = bds.Password
                 });
 
                 callback(error);
             });
 
-            
+
         }
 
         public void GetDataFromDB(Action<IEnumerable<EntityGeoCod>, Exception> callback, BDSettings bds, string query)

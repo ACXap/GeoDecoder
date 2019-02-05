@@ -61,6 +61,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -86,6 +87,7 @@
     <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
     <Compile Include="geo.cs" />
+    <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
     <Compile Include="Model\Data\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
     <Compile Include="Model\Data\FilesSettings.cs" />
@@ -97,11 +99,6 @@
     <Compile Include="Model\Data\Enumeration\StatusConnectBD.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
-    <Compile Include="Properties\Geo.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Geo.settings</DependentUpon>
-    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="UserControls\InformationEntity.xaml.cs">
       <DependentUpon>InformationEntity.xaml</DependentUpon>
@@ -174,10 +171,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="Properties\Geo.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Geo.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -212,5 +205,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
