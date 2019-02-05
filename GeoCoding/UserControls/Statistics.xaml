@@ -5,10 +5,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GeoCoding"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Name="StatisticsControl"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    Name="StatisticsControl" 
     mc:Ignorable="d">
+    <d:DesignerProperties.DesignStyle>
+        <Style TargetType="UserControl">
+            <Setter Property="Background" Value="White"/>
+        </Style>
+    </d:DesignerProperties.DesignStyle>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -34,7 +37,6 @@
             Grid.Row="0"
             Grid.Column="2"
             Text="{Binding Statistics.AllEntity}" />
-
         <TextBlock
             Grid.Row="1"
             Grid.Column="0"
@@ -43,7 +45,6 @@
             Grid.Row="1"
             Grid.Column="2"
             Text="{Binding Statistics.OK}" />
-
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
@@ -52,7 +53,6 @@
             Grid.Row="2"
             Grid.Column="2"
             Text="{Binding Statistics.Error}" />
-
         <TextBlock
             Grid.Row="3"
             Grid.Column="0"
@@ -61,7 +61,6 @@
             Grid.Row="3"
             Grid.Column="2"
             Text="{Binding Statistics.NotGeoCoding}" />
-
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
@@ -70,7 +69,6 @@
             Grid.Row="4"
             Grid.Column="2"
             Text="{Binding Statistics.GeoCodingNow}" />
-
         <TextBlock
             Grid.Row="5"
             Grid.Column="0"
@@ -79,7 +77,6 @@
             Grid.Row="5"
             Grid.Column="2"
             Text="{Binding Statistics.House}" />
-
         <TextBlock
             Grid.Row="6"
             Grid.Column="0"
@@ -88,7 +85,6 @@
             Grid.Row="6"
             Grid.Column="2"
             Text="{Binding Statistics.Exact}" />
-
         <TextBlock
             Grid.Row="7"
             Grid.Column="0"
@@ -97,11 +93,10 @@
             Grid.Row="7"
             Grid.Column="2"
             Text="{Binding Statistics.NotFound}" />
-
         <TextBlock
             Grid.Row="8"
             Grid.Column="0"
-            Text="Время выполнения (c.):" />
+            Text="Время выполнения (c):" />
         <TextBlock
             Grid.Row="8"
             Grid.Column="2"

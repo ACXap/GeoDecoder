@@ -6,9 +6,12 @@
     xmlns:l="clr-namespace:GeoCoding"
     xmlns:local="clr-namespace:GeoCoding.UserControls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     mc:Ignorable="d">
+    <d:DesignerProperties.DesignStyle>
+        <Style TargetType="UserControl">
+            <Setter Property="Background" Value="White"/>
+        </Style>
+    </d:DesignerProperties.DesignStyle>
     <UserControl.Resources>
         <l:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
         <l:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
@@ -80,7 +83,6 @@
             Grid.Row="11"
             Grid.Column="2"
             Text="{Binding CountResult}" />
-
         <TextBlock
             Grid.Row="0"
             Grid.Column="0"
