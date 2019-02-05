@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GeoCoding.Helpers
 {
@@ -16,7 +13,7 @@ namespace GeoCoding.Helpers
 
             if (string.IsNullOrEmpty(data))
             {
-                error = new ArgumentNullException();
+                //error = new ArgumentNullException();
             }
             else
             {
@@ -43,7 +40,7 @@ namespace GeoCoding.Helpers
 
             if (string.IsNullOrEmpty(data))
             {
-                error = new ArgumentNullException();
+                //error = new ArgumentNullException();
             }
             else
             {
@@ -65,7 +62,6 @@ namespace GeoCoding.Helpers
 
         private static byte[] GetEntropy(string EntropyString)
         {
-
             MD5 md5 = MD5.Create();
             return md5.ComputeHash(Encoding.UTF8.GetBytes(EntropyString));
         }

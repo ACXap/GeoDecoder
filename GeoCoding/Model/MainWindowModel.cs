@@ -702,22 +702,43 @@ namespace GeoCoding
 
             FTPSettings ftp = new FTPSettings()
             {
-                Server = p.FtpServer,
                 Port = p.FtpPort,
                 User = p.FtpUser,
-                Password = p.FtpPassword,
                 FolderInput = p.FtpFolderInput,
                 FolderOutput = p.FtpFolderOutput
             };
 
+            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    ftp.Server = d;
+                }
+            }, p.FtpServer);
+
+            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    ftp.Password = d;
+                }
+            }, p.FtpPassword);
+
             BDSettings bds = new BDSettings()
             {
-                Server = p.BDServer,
                 BDName = p.BDName,
                 Port = p.BDPort,
                 Login = p.BDLogin,
                 Password = p.BDPassword
             };
+
+            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    bds.Server = d;
+                }
+            }, p.BDServer);
 
             Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
             {
@@ -755,18 +776,45 @@ namespace GeoCoding
             p.FtpFolderOutput = ftpSettings.FolderOutput;
             p.IsFileInputOnFTP = filesSettings.IsFileInputOnFTP;
             p.MaxSizePart = filesSettings.MaxSizePart;
-            p.FtpPassword = ftpSettings.Password;
+
+            // ФТП-сервер пароль шифруем
+            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    p.FtpPassword = d;
+                }
+            }, ftpSettings.Password);
+
+            // ФТП-сервер шифруем
+            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    p.FtpServer = d;
+                }
+            }, ftpSettings.Server);
+
             p.FtpPort = ftpSettings.Port;
-            p.FtpServer = ftpSettings.Server;
             p.FtpUser = ftpSettings.User;
             p.CanGeoCodAfterGetFile = geoCodSettings.CanGeoCodAfterGetFile;
             p.CanSaveStatistics = geoCodSettings.CanSaveStatistics;
             p.ColorTheme = color;
-            p.BDServer = bdSettings.Server;
+            
             p.BDPort = bdSettings.Port;
             p.BDName = bdSettings.BDName;
             p.BDLogin = bdSettings.Login;
 
+            // БД сервер шифруем
+            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    p.BDServer = d;
+                }
+            }, bdSettings.Server);
+
+            // БД пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
             {
                 if (e == null)
@@ -784,10 +832,8 @@ namespace GeoCoding
                 error = ex;
             }
 
-
             callback(error);
         }
-
 
         public async void ConnectBDAsync(Action<Exception> callback, BDSettings bds)
         {
