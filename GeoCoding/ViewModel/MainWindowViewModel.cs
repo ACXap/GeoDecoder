@@ -883,7 +883,7 @@ namespace GeoCoding
                             }
                         }, _bdSettings, _bdSettings.SQLQuery);
 
-                    }));
+                    }, ()=> !string.IsNullOrEmpty(_bdSettings.SQLQuery)));
 
         private RelayCommand _commandCheckConnect;
         public RelayCommand CommandCheckConnect =>
@@ -906,6 +906,6 @@ namespace GeoCoding
                                 BDSettings.Error = string.Empty;
                             }
                         }, _bdSettings);
-                    }));
+                    }, ()=> !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName)));
     }
 }
