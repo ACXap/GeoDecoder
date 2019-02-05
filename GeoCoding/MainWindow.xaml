@@ -982,7 +982,7 @@
                     <TextBox
                         Grid.Row="1"
                         Margin="20" FontSize="20"
-                        Controls:TextBoxHelper.ClearTextButton="True"
+                        Controls:TextBoxHelper.ClearTextButton="True" AcceptsReturn="True"
                         Text="{Binding BDSettings.SQLQuery, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                         TextWrapping="Wrap" />
 
