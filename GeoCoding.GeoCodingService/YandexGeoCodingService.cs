@@ -7,10 +7,31 @@ using System.Net;
 
 namespace GeoCoding.GeoCodingService
 {
+    /// <summary>
+    /// Реализация интерфейса IGeoCodingService для Yandex
+    /// </summary>
     public class YandexGeoCodingService : IGeoCodingService
     {
+        #region PrivateConst
+        /// <summary>
+        /// Ссылка на геокодер яндекса
+        /// </summary>
         private const string yandexUrl = @"https://geocode-maps.yandex.ru/1.x/";
+        /// <summary>
+        /// Ошибка при привышении лимита в сутки
+        /// </summary>
+        private const string _errorWebRequest429 = "Удаленный сервер возвратил ошибку: (429) Unknown status.";
+        /// <summary>
+        /// Сообщение по поводу превышения лимита в сутки
+        /// </summary>
+        private const string _textForError429 = "Ваш лимит исчерпан";
+        #endregion PrivateConst
 
+        /// <summary>
+        /// Метод для получения геоокординат по адресу
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
+        /// <param name="address">Строка адреса для поиска</param>
         public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
         {
             Exception error = null;
@@ -42,6 +63,11 @@ namespace GeoCoding.GeoCodingService
             callback(geocod, error);
         }
 
+        /// <summary>
+        /// Метод для получения json ответа от яндекса
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметроми строка, ошибка</param>
+        /// <param name="address">Строка адреса для поиска координат</param>
         private void GetJsonString(Action<string, Exception> callback, string address)
         {
             Exception error = null;
@@ -52,7 +78,6 @@ namespace GeoCoding.GeoCodingService
             {
                 WebRequest request = WebRequest.Create(url);
                 request.Headers.Add("Content-Encoding: gzip, deflate, br");
-                //request.UseDefaultCredentials = true;
                 request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
@@ -70,9 +95,9 @@ namespace GeoCoding.GeoCodingService
             }
             catch (WebException wex)
             {
-                if(wex.Message == "Удаленный сервер возвратил ошибку: (429) Unknown status.")
+                if(wex.Message == _errorWebRequest429)
                 {
-                    error = new Exception("Ваш лимит исчерпан", wex);
+                    error = new Exception(_textForError429, wex);
                 }
                 else
                 {
@@ -88,6 +113,11 @@ namespace GeoCoding.GeoCodingService
             callback(json, error);
         }
 
+        /// <summary>
+        /// Метод преобразования json в объекты
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
+        /// <param name="json">Строка json</param>
         private void ParserJson(Action<GeoCod, Exception> callback, string json)
         {
             Exception error = null;

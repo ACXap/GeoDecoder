@@ -3,6 +3,9 @@ using System.Threading;
 
 namespace GeoCoding.GeoCodingService.Test
 {
+    /// <summary>
+    /// Тестовый геокодер, просто рандом
+    /// </summary>
     public class GeoCodingTest : IGeoCodingService
     {
         public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
@@ -15,8 +18,8 @@ namespace GeoCoding.GeoCodingService.Test
             GeoCod geocod = new GeoCod()
             {
                 CountResult = (byte)rnd.Next(0, 5),
-                Latitude = "",
-                Longitude = "",
+                Latitude = $"{rnd.Next(0,120)}.{rnd.Next(0,900000)}",
+                Longitude = $"{rnd.Next(0, 120)}.{rnd.Next(0, 900000)}",
                 Text = "",
                 Kind = (string)kind.GetValue(rnd.Next(kind.Length)),
                 Precision = (string)precision.GetValue(rnd.Next(precision.Length)),

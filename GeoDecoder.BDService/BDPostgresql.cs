@@ -6,17 +6,21 @@ namespace GeoCoding.BDService
 {
     public class BDPostgresql : IBDService
     {
-        private string _connectionString;
-
+        /// <summary>
+        /// Метод для выполнения пользовательского запроса к базе данных
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова,с параметрами: множество объектов, ошибка</param>
+        /// <param name="conSettings">Свойства подключения</param>
+        /// <param name="query">Пользовательский запрос</param>
         public void ExecuteUserQuery(Action<IEnumerable<Entity>, Exception> callback, ConnectionSettings conSettings, string query)
         {
             Exception error = null;
             List<Entity> data = new List<Entity>();
-            SetConnectionString(conSettings);
+            string connectionString = SetConnectionString(conSettings);
 
             try
             {
-                using (NpgsqlConnection con = new NpgsqlConnection(_connectionString))
+                using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
                 {
                     try
                     {
@@ -58,18 +62,19 @@ namespace GeoCoding.BDService
             callback(data, error);
         }
 
-        public void GetAddress(Action<IEnumerable<Entity>, Exception> callback, ConnectionSettings conSettings)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Метод для проверки соединения с базой данных 
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами: ошибка</param>
+        /// <param name="conSettings">Свойства подключения</param>
         public void ConnectBD(Action<Exception> callback, ConnectionSettings conSettings)
         {
             Exception error = null;
-            SetConnectionString(conSettings);
+            string connectionString = SetConnectionString(conSettings);
+
             try
             {
-                using (NpgsqlConnection con = new NpgsqlConnection(_connectionString))
+                using (NpgsqlConnection con = new NpgsqlConnection(connectionString))
                 {
                     try
                     {
@@ -92,13 +97,17 @@ namespace GeoCoding.BDService
                 error = ex;
             }
 
-
             callback(error);
         }
 
-        private void SetConnectionString(ConnectionSettings conSettings)
+        /// <summary>
+        /// метод для формирования строки подключения
+        /// </summary>
+        /// <param name="conSettings">Свойства подключения</param>
+        /// <returns>Строка подключения</returns>
+        private string SetConnectionString(ConnectionSettings conSettings)
         {
-            _connectionString = $"Server={conSettings.Server};Port={conSettings.Port};User Id={conSettings.Login};Password={conSettings.Password};Database={conSettings.BDName};Timeout=0";
+            return $"Server={conSettings.Server};Port={conSettings.Port};User Id={conSettings.Login};Password={conSettings.Password};Database={conSettings.BDName};Timeout=0";
         }
     }
 }
