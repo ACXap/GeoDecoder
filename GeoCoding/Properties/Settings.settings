@@ -68,7 +68,7 @@
     <Setting Name="FolderStatistics" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Statistics</Value>
     </Setting>
-    <Setting Name="FolderErrors" Type="System.String" Scope="User">
+    <Setting Name="FolderErrors" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Errors</Value>
     </Setting>
     <Setting Name="CanSaveStatistics" Type="System.Boolean" Scope="User">
@@ -84,7 +84,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="BDPort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">5432</Value>
     </Setting>
     <Setting Name="BDLogin" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

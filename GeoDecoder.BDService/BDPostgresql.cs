@@ -12,6 +12,7 @@ namespace GeoCoding.BDService
         {
             Exception error = null;
             List<Entity> data = new List<Entity>();
+            SetConnectionString(conSettings);
 
             try
             {
@@ -27,11 +28,17 @@ namespace GeoCoding.BDService
                             {
                                 while (reader.Read())
                                 {
-                                    var entity = new Entity()
+                                    var entity = new Entity();
+
+                                    if (!reader.IsDBNull(0))
                                     {
-                                        OrponId = reader.GetInt32(0),
-                                        Address = reader.GetString(1)
-                                    };
+                                        entity.OrponId = reader.GetInt32(0);
+                                    }
+                                    if (!reader.IsDBNull(1))
+                                    {
+                                        entity.Address = reader.GetString(1);
+                                    }
+
                                     data.Add(entity);
                                 }
                             }
@@ -80,11 +87,11 @@ namespace GeoCoding.BDService
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 error = ex;
             }
-            
+
 
             callback(error);
         }

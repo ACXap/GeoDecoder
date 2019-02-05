@@ -275,15 +275,12 @@ namespace GeoCoding.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Errors")]
         public string FolderErrors {
             get {
                 return ((string)(this["FolderErrors"]));
-            }
-            set {
-                this["FolderErrors"] = value;
             }
         }
         
@@ -337,7 +334,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("5432")]
         public int BDPort {
             get {
                 return ((int)(this["BDPort"]));

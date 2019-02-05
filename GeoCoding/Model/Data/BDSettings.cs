@@ -19,7 +19,7 @@ namespace GeoCoding
             set => Set(ref _bdName, value);
         }
 
-        private int _port = 0;
+        private int _port = 5432;
         public int Port
         {
             get => _port;

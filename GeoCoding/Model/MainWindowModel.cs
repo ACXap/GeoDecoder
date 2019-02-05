@@ -823,11 +823,27 @@ namespace GeoCoding
                 {
                     foreach (var item in d)
                     {
-                        data.Add(new EntityGeoCod()
+                        var a = new EntityGeoCod();
+
+                        if(item.OrponId == 0)
                         {
-                            GlobalID = item.OrponId,
-                            Address = item.Address
-                        });
+                            SetError(a, _errorIsFormatIDWrong);
+                        }
+                        else
+                        {
+                            a.GlobalID = item.OrponId;
+                        }
+
+                        if(string.IsNullOrEmpty(item.Address))
+                        {
+                            SetError(a, _errorIsAddressEmpty);
+                        }
+                        else
+                        {
+                            a.Address = item.Address;
+                        }
+
+                        data.Add(a);
                     }
                 }
                 else
