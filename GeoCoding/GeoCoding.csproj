@@ -86,20 +86,18 @@
     <Compile Include="Converters\ConverterKintTypeToString.cs" />
     <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
-    <Compile Include="geo.cs" />
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
-    <Compile Include="Model\Data\BDSettings.cs" />
+    <Compile Include="Model\Data\Settings\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
-    <Compile Include="Model\Data\FilesSettings.cs" />
-    <Compile Include="Model\Data\FTPSettings.cs" />
-    <Compile Include="Model\Data\GeoCodSettings.cs" />
-    <Compile Include="Model\Data\KindType.cs" />
-    <Compile Include="Model\Data\PrecisionType.cs" />
+    <Compile Include="Model\Data\Settings\FilesSettings.cs" />
+    <Compile Include="Model\Data\Settings\FTPSettings.cs" />
+    <Compile Include="Model\Data\Settings\GeoCodSettings.cs" />
+    <Compile Include="Model\Data\Enumeration\KindType.cs" />
+    <Compile Include="Model\Data\Enumeration\PrecisionType.cs" />
     <Compile Include="Model\Data\Statistics.cs" />
     <Compile Include="Model\Data\Enumeration\StatusConnectBD.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="UserControls\InformationEntity.xaml.cs">
       <DependentUpon>InformationEntity.xaml</DependentUpon>
     </Compile>
