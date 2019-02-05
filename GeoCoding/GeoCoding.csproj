@@ -98,8 +98,14 @@
     <Compile Include="Model\Data\Enumeration\StatusConnectBD.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
+    <Compile Include="UserControls\FlyoutSql.xaml.cs">
+      <DependentUpon>FlyoutSql.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\InformationEntity.xaml.cs">
       <DependentUpon>InformationEntity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FlyoutSettings.xaml.cs">
+      <DependentUpon>FlyoutSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Statistics.xaml.cs">
       <DependentUpon>Statistics.xaml</DependentUpon>
@@ -125,6 +131,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\Flyout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Fonts.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -141,9 +151,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\FlyoutSql.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\InformationEntity.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\FlyoutSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\Statistics.xaml">
       <Generator>MSBuild:Compile</Generator>
