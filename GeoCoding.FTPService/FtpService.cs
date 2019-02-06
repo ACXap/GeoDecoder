@@ -58,7 +58,6 @@ namespace GeoCoding.FTPService
             callback(error);
         }
 
-
         private string GetNewName(string nameFile, ConnectionSettings conSettings)
         {
             string name = Path.GetFileName(nameFile);

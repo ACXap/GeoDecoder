@@ -172,7 +172,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button
+                                <Button Visibility="Collapsed"
                                     Grid.Column="0"
                                     Margin="5"
                                     Padding="5"
@@ -183,7 +183,7 @@
                                     x:Name="tbSql"
                                     Grid.Column="2"
                                     Margin="5"
-                                    Padding="5"
+                                    Padding="15"
                                     HorizontalAlignment="Right"
                                     Content="Свой запрос" />
                             </Grid>
