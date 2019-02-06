@@ -241,7 +241,7 @@
                             <!--  Копировать ли выходной файл на ФТП-сервер  -->
                             <CheckBox
                                 VerticalAlignment="Center"
-                                Content="Так же скопировать данный файл на FTP сервер"
+                                Content="Также скопировать данный файл на FTP сервер"
                                 IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP сервер (если он настроен на вкладке FTP)" />
 

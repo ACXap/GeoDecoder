@@ -54,10 +54,10 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FtpFolderInput" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/exchange/ORPONtoGeo/upload/</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FtpFolderOutput" Type="System.String" Scope="User">
-      <Value Profile="(Default)">/exchange/ORPONtoGeo/load/</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="CanOpenFolderAfter" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

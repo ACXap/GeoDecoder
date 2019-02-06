@@ -4,7 +4,7 @@ namespace GeoCoding
 {
     public class FTPSettings : ViewModelBase
     {
-        private string _server;
+        private string _server ="ftp://";
         /// <summary>
         /// Сервер
         /// </summary>

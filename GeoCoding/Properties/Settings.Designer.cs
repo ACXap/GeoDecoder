@@ -220,7 +220,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("/exchange/ORPONtoGeo/upload/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string FtpFolderInput {
             get {
                 return ((string)(this["FtpFolderInput"]));
@@ -232,7 +232,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("/exchange/ORPONtoGeo/load/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string FtpFolderOutput {
             get {
                 return ((string)(this["FtpFolderOutput"]));
