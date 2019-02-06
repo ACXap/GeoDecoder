@@ -95,7 +95,7 @@
     <Compile Include="Model\Data\Enumeration\KindType.cs" />
     <Compile Include="Model\Data\Enumeration\PrecisionType.cs" />
     <Compile Include="Model\Data\Statistics.cs" />
-    <Compile Include="Model\Data\Enumeration\StatusConnectBD.cs" />
+    <Compile Include="Model\Data\Enumeration\StatusConnect.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="UserControls\FlyoutSql.xaml.cs">

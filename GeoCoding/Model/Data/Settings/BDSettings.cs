@@ -48,8 +48,8 @@ namespace GeoCoding
             set => Set(ref _sqlQuery, value);
         }
 
-        private StatusConnectBD _statusConnect = StatusConnectBD.NotConnect;
-        public StatusConnectBD StatusConnect
+        private StatusConnect _statusConnect = StatusConnect.NotConnect;
+        public StatusConnect StatusConnect
         {
             get => _statusConnect;
             set => Set(ref _statusConnect, value);

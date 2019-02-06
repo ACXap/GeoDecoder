@@ -3,7 +3,7 @@
     /// <summary>
     /// Перечень статусов подключения к базе данных
     /// </summary>
-    public enum StatusConnectBD
+    public enum StatusConnect
     {
         /// <summary>
         /// не подключено

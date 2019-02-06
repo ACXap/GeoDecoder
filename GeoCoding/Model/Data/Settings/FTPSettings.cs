@@ -44,6 +44,16 @@ namespace GeoCoding
             set => Set(ref _password, value);
         }
 
+        private StatusConnect _statusConnect;
+        /// <summary>
+        /// Статус подключения
+        /// </summary>
+        public StatusConnect StatusConnect
+        {
+            get => _statusConnect;
+            set => Set(ref _statusConnect, value);
+        }
+
         private string _folderInput;
         /// <summary>
         /// Папка с загрузками
