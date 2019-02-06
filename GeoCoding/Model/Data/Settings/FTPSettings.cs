@@ -73,5 +73,15 @@ namespace GeoCoding
             get => _folderOutput;
             set => Set(ref _folderOutput, value);
         }
+
+        private string _error = string.Empty;
+        /// <summary>
+        /// Текст ошибки при подключении
+        /// </summary>
+        public string Error
+        {
+            get => _error;
+            set => Set("Error", ref _error, value);
+        }
     }
 }

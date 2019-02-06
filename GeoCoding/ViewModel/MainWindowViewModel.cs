@@ -906,6 +906,6 @@ namespace GeoCoding
                                 BDSettings.Error = string.Empty;
                             }
                         }, _bdSettings);
-                    }, ()=> !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName)));
+                    }, ()=> !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect==StatusConnect.ConnectNow));
     }
 }

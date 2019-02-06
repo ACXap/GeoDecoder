@@ -40,7 +40,6 @@ namespace GeoCoding
             set => Set(ref _password, value);
         }
 
-
         private string _sqlQuery = string.Empty;
         public string SQLQuery
         {

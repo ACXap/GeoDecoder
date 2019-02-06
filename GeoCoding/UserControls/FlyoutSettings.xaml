@@ -152,6 +152,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock
                                     Grid.Row="0"
@@ -229,6 +230,17 @@
                                         Margin="5"
                                         VerticalAlignment="Center"
                                         Text="{Binding FTPSettings.StatusConnect}" />
+                    </WrapPanel>
+                    <WrapPanel
+                                    Grid.Row="7"
+                                    Grid.Column="2"
+                                    Orientation="Horizontal">
+                        <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding FTPSettings.StatusConnect}"/>
+                        <TextBox
+                                        Margin="10"
+                                        BorderThickness="0"
+                                        Text="{Binding FTPSettings.Error}"
+                                        TextWrapping="Wrap" />
                     </WrapPanel>
                 </Grid>
             </TabItem>
@@ -324,18 +336,7 @@
                                     Grid.Row="6"
                                     Grid.Column="2"
                                     Orientation="Horizontal">
-                        <Controls:ProgressRing>
-                            <Controls:ProgressRing.Style>
-                                <Style TargetType="{x:Type Controls:ProgressRing}">
-                                    <Setter Property="IsActive" Value="False" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding BDSettings.StatusConnect}" Value="{x:Static local:StatusConnect.ConnectNow}">
-                                            <Setter Property="IsActive" Value="True" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Controls:ProgressRing.Style>
-                        </Controls:ProgressRing>
+                        <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding BDSettings.StatusConnect}"/>
                         <TextBox
                                         Margin="10"
                                         BorderThickness="0"
