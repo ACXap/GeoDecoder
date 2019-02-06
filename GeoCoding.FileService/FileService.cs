@@ -42,19 +42,13 @@ namespace GeoCoding.FileService
         {
             Exception error = null;
             string data = string.Empty;
-            string defFolder = string.Empty;
-
-            if (!string.IsNullOrEmpty(defaultFolder) && Directory.Exists(defaultFolder))
-            {
-                defFolder = defaultFolder;
-            }
 
             OpenFileDialog fd = new OpenFileDialog()
             {
                 Multiselect = false,
                 Filter = _filterForGetFile,
                 Title = _titleFileGetDialog,
-                InitialDirectory = defFolder
+                InitialDirectory = defaultFolder
             };
 
             try

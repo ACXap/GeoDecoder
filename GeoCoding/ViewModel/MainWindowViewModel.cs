@@ -283,6 +283,12 @@ namespace GeoCoding
         _commandGetFile ?? (_commandGetFile = new RelayCommand(
                     () =>
                     {
+                        string defName = string.Empty;
+
+                        if (_filesSettings.IsFileInputOnFTP)
+                        {
+                            defName = _ftpSettings.Server + _ftpSettings.FolderOutput;
+                        }
                         _model.GetFile((f, er) =>
                         {
                             if (er == null)
@@ -294,7 +300,7 @@ namespace GeoCoding
                                 // Оповещаем, если были ошибки
                                 NotificationPlainText(_headerNotificationError, er.Message);
                             }
-                        });
+                        }, defName);
                     }));
 
         /// <summary>
@@ -897,15 +903,40 @@ namespace GeoCoding
                             if (e != null)
                             {
                                 NotificationPlainText(_headerNotificationError, e.Message);
-                                BDSettings.StatusConnect = StatusConnect.Error;
-                                BDSettings.Error = e.Message;
+                                _bdSettings.StatusConnect = StatusConnect.Error;
+                                _bdSettings.Error = e.Message;
                             }
                             else
                             {
-                                BDSettings.StatusConnect = StatusConnect.OK;
-                                BDSettings.Error = string.Empty;
+                                _bdSettings.StatusConnect = StatusConnect.OK;
+                                _bdSettings.Error = string.Empty;
                             }
                         }, _bdSettings);
                     }, ()=> !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect==StatusConnect.ConnectNow));
+
+
+        private RelayCommand _commandCheckConnectFtp;
+        public RelayCommand CommandCheckConnectFtp =>
+        _commandCheckConnectFtp ?? (_commandCheckConnectFtp = new RelayCommand(
+                    () =>
+                    {
+                        _ftpSettings.StatusConnect = StatusConnect.ConnectNow;
+                        _ftpSettings.Error = string.Empty;
+                        _model.ConnectFTPAsync(e =>
+                        {
+                            if (e != null)
+                            {
+                                NotificationPlainText(_headerNotificationError, e.Message);
+                                _ftpSettings.StatusConnect = StatusConnect.Error;
+                                _ftpSettings.Error = e.Message;
+                            }
+                            else
+                            {
+                                FTPSettings.StatusConnect = StatusConnect.OK;
+                                _ftpSettings.Error = string.Empty;
+                            }
+                        }, _ftpSettings);
+
+                    }, ()=> !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect==StatusConnect.ConnectNow));
     }
 }

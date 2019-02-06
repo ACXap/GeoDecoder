@@ -1,6 +1,7 @@
 ﻿using GeoCoding.BDService;
 using GeoCoding.FileService;
 using GeoCoding.GeoCodingService;
+using GeoCoding.FTPService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace GeoCoding
 
         private readonly IFileService _fileService = new FileService.FileService();
         private readonly IBDService _bdService = new BDPostgresql();
-
+        private readonly IFtpService _ftpService = new FtpService();
         private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
         //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
 
@@ -843,7 +844,7 @@ namespace GeoCoding
                 _bdService.ConnectBD(e =>
                 {
                     error = e;
-                }, new ConnectionSettings()
+                }, new BDService.ConnectionSettings()
                 {
                     Server = bds.Server,
                     BDName = bds.BDName,
@@ -854,8 +855,6 @@ namespace GeoCoding
 
                 callback(error);
             });
-
-
         }
 
         public void GetDataFromDB(Action<IEnumerable<EntityGeoCod>, Exception> callback, BDSettings bds, string query)
@@ -896,7 +895,7 @@ namespace GeoCoding
                 {
                     error = e;
                 }
-            }, new ConnectionSettings()
+            }, new BDService.ConnectionSettings()
             {
                 Server = bds.Server,
                 BDName = bds.BDName,
@@ -906,6 +905,26 @@ namespace GeoCoding
             }, query);
 
             callback(data, error);
+        }
+
+        public async void ConnectFTPAsync(Action<Exception> callback, FTPSettings ftps)
+        {
+            Exception error = null;
+            await Task.Factory.StartNew(() =>
+            {
+                _ftpService.ConnectFtp(e =>
+                {
+                    error = e;
+                }, new FTPService.ConnectionSettings()
+                {
+                    Server = ftps.Server,
+                    Port = ftps.Port,
+                    Login = ftps.User,
+                    Password = ftps.Password
+                });
+
+                callback(error);
+            });
         }
 
     }

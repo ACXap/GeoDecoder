@@ -131,8 +131,7 @@
                                     <CheckBox
                                         Margin="5"
                                         Content="Файл на FTP сервере"
-                                        IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
-                                        IsEnabled="False" />
+                                        IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" />
 
                                     <!--  После выбора файла с данными, данные получаем сразу  -->
                                     <CheckBox

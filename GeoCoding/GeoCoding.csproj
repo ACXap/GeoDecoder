@@ -206,6 +206,10 @@
       <Project>{88E8217A-88BB-4123-95A1-8323F1F99478}</Project>
       <Name>GeoCoding.FileService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GeoCoding.FTPService\GeoCoding.FTPService.csproj">
+      <Project>{a1e2831a-adf0-49e0-8120-28ef56c3840a}</Project>
+      <Name>GeoCoding.FTPService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GeoCoding.GeoCodingService\GeoCoding.GeoCodingService.csproj">
       <Project>{88082673-6130-433c-8fe3-e613182a80e6}</Project>
       <Name>GeoCoding.GeoCodingService</Name>
