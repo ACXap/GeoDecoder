@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Linq;
 
 namespace GeoCoding.FTPService
 {
@@ -31,6 +33,67 @@ namespace GeoCoding.FTPService
             }
 
             callback(error);
+        }
+
+        public void CopyFileOnFtp(Action<Exception> callback, ConnectionSettings conSettings, string path)
+        {
+            Exception error = null;
+            string data = string.Empty;
+
+            try
+            {
+                string nameFile = GetNewName(path, conSettings);
+
+                using (WebClient client = new WebClient())
+                {
+                    client.Credentials = new NetworkCredential(conSettings.Login, conSettings.Password);
+                    client.UploadFile($"{conSettings.Server}:{conSettings.Port}{conSettings.FolderOutput}/{nameFile}", "STOR", path);
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+
+            callback(error);
+        }
+
+
+        private string GetNewName(string nameFile, ConnectionSettings conSettings)
+        {
+            string name = Path.GetFileName(nameFile);
+            string data = string.Empty;
+
+            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create($"{conSettings.Server}:{conSettings.Port}{conSettings.FolderOutput}");
+            ftpRequest.Credentials = new NetworkCredential(conSettings.Login, conSettings.Password);
+            ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
+
+            using (FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse())
+            {
+                using (StreamReader sr = new StreamReader(ftpResponse.GetResponseStream()))
+                {
+                    data = sr.ReadToEnd();
+                }
+            }
+
+            List<string> list = data.Split('\n').ToList();
+            bool exist = true;
+            int i = 1;
+
+            while (exist)
+            {
+                var a = list.Count(x => x.Trim('\r') == name);
+                if (a > 0)
+                {
+                    name = $"{Path.GetFileNameWithoutExtension(name)}_{i++}{Path.GetExtension(name)}";
+                }
+                else
+                {
+                    exist = false;
+                }
+            }
+
+            return name;
         }
     }
 }

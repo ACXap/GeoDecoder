@@ -185,7 +185,7 @@ namespace GeoCoding.FileService
 
             try
             {
-                if(Directory.Exists(Path.GetDirectoryName(file)))
+                if (Directory.Exists(Path.GetDirectoryName(file)))
                 {
                     File.AppendAllLines(file, data, Encoding.Default);
                 }
@@ -284,6 +284,33 @@ namespace GeoCoding.FileService
             }
 
             callback(error);
+        }
+
+        public void GetByteFromFile(Action<byte[], Exception> callback, string file)
+        {
+            Exception error = null;
+            byte[] data = null;
+
+            try
+            {
+                if (File.Exists(file))
+                {
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        data = Encoding.UTF8.GetBytes(sr.ReadToEnd());
+                    }
+                }
+                else
+                {
+                    error = new FileNotFoundException();
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+
+            callback(data, error);
         }
     }
 }

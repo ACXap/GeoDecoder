@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GeoCoding.FTPService
+﻿namespace GeoCoding.FTPService
 {
     /// <summary>
     /// Класс для хранения настроек подключения
@@ -24,8 +18,16 @@ namespace GeoCoding.FTPService
         /// </summary>
         public string Login { get; set; }
         /// <summary>
-        /// пароль
+        /// Пароль
         /// </summary>
         public string Password { get; set; }
+        /// <summary>
+        /// Папка для загрузки на фтп
+        /// </summary>
+        public string FolderOutput { get; set; }
+        /// <summary>
+        /// Папка для скачивания с фтп
+        /// </summary>
+        public string FolderInput { get; set; }
     }
 }

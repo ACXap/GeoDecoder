@@ -64,5 +64,8 @@ namespace GeoCoding.FileService
         /// <param name="data">Данные для добавления</param>
         /// <param name="file">Имя файла</param>
         void AppendData(Action<Exception> callback, IEnumerable<string> data, string file);
+
+        void GetByteFromFile(Action<byte[], Exception> callback, string file);
+
     }
 }

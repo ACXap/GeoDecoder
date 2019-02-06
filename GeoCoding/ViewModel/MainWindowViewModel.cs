@@ -587,11 +587,7 @@ namespace GeoCoding
         /// </summary>
         private void SaveData()
         {
-            int parSize = _filesSettings.MaxSizePart;
-            if (!_filesSettings.CanBreakFileOutput)
-            {
-                parSize = 0;
-            }
+            int parSize = _filesSettings.CanBreakFileOutput ? _filesSettings.MaxSizePart : 0;
 
             _model.SaveData(error =>
             {
@@ -609,7 +605,7 @@ namespace GeoCoding
                     // Оповещаем если были ошибки
                     NotificationPlainText(_headerNotificationError, error.Message);
                 }
-            }, _collectionGeoCod, _filesSettings.FileOutput, parSize);
+            }, _collectionGeoCod, _filesSettings.FileOutput, parSize, _filesSettings.CanCopyFileOutputToFtp, _ftpSettings);
         }
 
         /// <summary>

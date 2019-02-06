@@ -1,7 +1,7 @@
 ﻿using GeoCoding.BDService;
 using GeoCoding.FileService;
-using GeoCoding.GeoCodingService;
 using GeoCoding.FTPService;
+using GeoCoding.GeoCodingService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -231,7 +231,7 @@ namespace GeoCoding
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="data">Множество данных для записи</param>
         /// <param name="file">Файл куда записывать</param>
-        public void SaveData(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file, int maxSizePart)
+        public void SaveData(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file, int maxSizePart, bool canCopyToFtp, FTPSettings ftps)
         {
             Exception error = null;
             List<string> list = new List<string>();
@@ -249,6 +249,14 @@ namespace GeoCoding
                 {
                     error = er;
                 }, list, file);
+
+                if (error == null && canCopyToFtp)
+                {
+                    CopyFileOnFtp(e =>
+                    {
+                        error = e;
+                    }, ftps, file);
+                }
             }
             else
             {
@@ -278,6 +286,14 @@ namespace GeoCoding
                         {
                             error = er;
                         }, list, newNameFile);
+
+                        if (error == null && canCopyToFtp)
+                        {
+                            CopyFileOnFtp(e =>
+                            {
+                                error = e;
+                            }, ftps, newNameFile);
+                        }
 
                         i++;
                     }
@@ -801,7 +817,7 @@ namespace GeoCoding
             p.CanGeoCodAfterGetFile = geoCodSettings.CanGeoCodAfterGetFile;
             p.CanSaveStatistics = geoCodSettings.CanSaveStatistics;
             p.ColorTheme = color;
-            
+
             p.BDPort = bdSettings.Port;
             p.BDName = bdSettings.BDName;
             p.BDLogin = bdSettings.Login;
@@ -870,7 +886,7 @@ namespace GeoCoding
                     {
                         var a = new EntityGeoCod();
 
-                        if(item.OrponId == 0)
+                        if (item.OrponId == 0)
                         {
                             SetError(a, _errorIsFormatIDWrong);
                         }
@@ -879,7 +895,7 @@ namespace GeoCoding
                             a.GlobalID = item.OrponId;
                         }
 
-                        if(string.IsNullOrEmpty(item.Address))
+                        if (string.IsNullOrEmpty(item.Address))
                         {
                             SetError(a, _errorIsAddressEmpty);
                         }
@@ -915,17 +931,36 @@ namespace GeoCoding
                 _ftpService.ConnectFtp(e =>
                 {
                     error = e;
-                }, new FTPService.ConnectionSettings()
-                {
-                    Server = ftps.Server,
-                    Port = ftps.Port,
-                    Login = ftps.User,
-                    Password = ftps.Password
-                });
+                }, GetConSettings(ftps));
 
                 callback(error);
             });
         }
 
+        public void CopyFileOnFtp(Action<Exception> callback, FTPSettings ftps, string path)
+        {
+            Exception error = null;
+            byte[] fileContents = null;
+
+            _ftpService.CopyFileOnFtp(e =>
+            {
+                error = e;
+            }, GetConSettings(ftps), path);
+
+            callback(error);
+        }
+
+        private FTPService.ConnectionSettings GetConSettings(FTPSettings ftps)
+        {
+            return new FTPService.ConnectionSettings()
+            {
+                Server = ftps.Server,
+                Port = ftps.Port,
+                Login = ftps.User,
+                Password = ftps.Password,
+                FolderInput = ftps.FolderInput,
+                FolderOutput = ftps.FolderOutput
+            };
+        }
     }
 }
