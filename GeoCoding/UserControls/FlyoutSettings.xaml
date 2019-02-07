@@ -403,7 +403,13 @@
                     </GroupBox>
                     <GroupBox Grid.Row="2" Header="Какой используем геокодер">
                         <WrapPanel Orientation="Vertical">
-                            
+                            <ListBox ItemsSource="{Binding MyProperty}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <RadioButton Content="{Binding Name}" GroupName="radioList"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </WrapPanel>
                     </GroupBox>
                     <CheckBox

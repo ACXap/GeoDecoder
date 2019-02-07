@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -910,7 +911,6 @@ namespace GeoCoding
                         }, _bdSettings);
                     }, ()=> !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect==StatusConnect.ConnectNow));
 
-
         private RelayCommand _commandCheckConnectFtp;
         public RelayCommand CommandCheckConnectFtp =>
         _commandCheckConnectFtp ?? (_commandCheckConnectFtp = new RelayCommand(
@@ -934,5 +934,9 @@ namespace GeoCoding
                         }, _ftpSettings);
 
                     }, ()=> !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect==StatusConnect.ConnectNow));
+
+        public List<GeoCodingService.GeoService> MyProperty => GeoCodingService.MainGeoService.GetAllService().ToList();
+
+
     }
 }
