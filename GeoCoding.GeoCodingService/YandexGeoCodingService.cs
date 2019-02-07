@@ -16,7 +16,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Ссылка на геокодер яндекса
         /// </summary>
-        private const string yandexUrl = @"https://geocode-maps.yandex.ru/1.x/";
+        private const string _yandexUrl = @"https://geocode-maps.yandex.ru/1.x/";
         /// <summary>
         /// Ошибка при привышении лимита в сутки
         /// </summary>
@@ -72,7 +72,7 @@ namespace GeoCoding.GeoCodingService
         {
             Exception error = null;
             string json = string.Empty;
-            string url = $"{yandexUrl}?geocode={address}&format=json";
+            string url = $"{_yandexUrl}?geocode={address}&format=json";
 
             try
             {
