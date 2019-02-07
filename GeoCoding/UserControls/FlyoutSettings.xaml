@@ -352,6 +352,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <GroupBox Grid.Row="0" Header="Какие объекты геокодировать">
                         <WrapPanel Orientation="Vertical">
@@ -400,8 +401,13 @@
                                             IsChecked="{Binding GeoCodSettings.CanSaveStatistics}" />
                         </WrapPanel>
                     </GroupBox>
+                    <GroupBox Grid.Row="2" Header="Какой используем геокодер">
+                        <WrapPanel Orientation="Vertical">
+                            
+                        </WrapPanel>
+                    </GroupBox>
                     <CheckBox
-                                    Grid.Row="2"
+                                    Grid.Row="3"
                                     Margin="10"
                                     Content="Геокодировать сразу после выбора файла"
                                     IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
