@@ -16,7 +16,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Ссылка на геокодер яндекса
         /// </summary>
-        private const string _yandexUrl = @"https://geocode-maps.yandex.ru/1.x/";
+        private const string _url = @"https://geocode-maps.yandex.ru/1.x/";
         /// <summary>
         /// Ошибка при привышении лимита в сутки
         /// </summary>
@@ -65,6 +65,11 @@ namespace GeoCoding.GeoCodingService
             callback(geocod, error);
         }
 
+        public string GetUrlRequest(string address)
+        {
+            return $"{_url}?geocode={address}&format=json";
+        }
+
         /// <summary>
         /// Метод для получения json ответа от яндекса
         /// </summary>
@@ -74,7 +79,7 @@ namespace GeoCoding.GeoCodingService
         {
             Exception error = null;
             string json = string.Empty;
-            string url = $"{_yandexUrl}?geocode={address}&format=json";
+            string url = GetUrlRequest(address);
 
             try
             {

@@ -451,7 +451,7 @@ namespace GeoCoding
           {
               try
               {
-                  System.Diagnostics.Process.Start(@"https://geocode-maps.yandex.ru/1.x/?geocode=" + obj.Address);
+                  System.Diagnostics.Process.Start(_currentGeoService.GetUrlRequest(obj.Address));
               }
               catch (Exception ex)
               {
@@ -948,6 +948,7 @@ namespace GeoCoding
             set
             {
                 _geoCodSettings.GeoService = value.Name;
+                _model.SetGeoService(value);
                 Set(ref _currentGeoService, value);
             }
         }

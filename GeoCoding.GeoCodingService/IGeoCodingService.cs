@@ -14,5 +14,12 @@ namespace GeoCoding.GeoCodingService
         /// <param name="callback">Функция обратного вызова, с параметрами найденные данные о адресе и ошибка</param>
         /// <param name="address">Искомый адрес</param>
         void GetGeoCod(Action<GeoCod, Exception> callback, string address);
+
+        /// <summary>
+        /// Метод для формирования урла с веб запросом
+        /// </summary>
+        /// <param name="address">Адрес для вебзапроса</param>
+        /// <returns>Урл для вебзапроса</returns>
+        string GetUrlRequest(string address);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,12 +7,17 @@ using System.Net;
 
 namespace GeoCoding.GeoCodingService
 {
-    internal class SputnikGeoCodingService : IGeoCodingService
+    public class RusGisDemoGeoCodingService : IGeoCodingService
     {
-        private const string _sputnicUrl = "http://search.maps.sputnik.ru/search/addr?q=";
+        public string Name => "RusGeoDemo";
 
-        public string Name => "Sputnik";
+        private const string _url = @"https://capex.cloud.rt.ru/view/rest/gp/geocoding?geocode=";
 
+        /// <summary>
+        /// Метод для получения геоокординат по адресу
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
+        /// <param name="address">Строка адреса для поиска</param>
         public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
         {
             Exception error = null;
@@ -45,11 +49,11 @@ namespace GeoCoding.GeoCodingService
             callback(geocod, error);
         }
 
-        public string GetUrlRequest(string address)
-        {
-            return $"{_sputnicUrl}{address}";
-        }
-
+        /// <summary>
+        /// Метод для получения json ответа от яндекса
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметроми строка, ошибка</param>
+        /// <param name="address">Строка адреса для поиска координат</param>
         private void GetJsonString(Action<string, Exception> callback, string address)
         {
             Exception error = null;
@@ -75,6 +79,11 @@ namespace GeoCoding.GeoCodingService
                     }
                 }
             }
+            catch (WebException wex)
+            {
+                error = wex;
+            }
+
             catch (Exception ex)
             {
                 error = ex;
@@ -83,6 +92,11 @@ namespace GeoCoding.GeoCodingService
             callback(json, error);
         }
 
+        /// <summary>
+        /// Метод преобразования json в объекты
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
+        /// <param name="json">Строка json</param>
         private void ParserJson(Action<GeoCod, Exception> callback, string json)
         {
             Exception error = null;
@@ -90,50 +104,30 @@ namespace GeoCoding.GeoCodingService
 
             try
             {
-                SputnikJsonRootObject a = JsonConvert.DeserializeObject<SputnikJsonRootObject>(json);
-                var countFound = a.result.address[0].features.Count;
-
-                if (countFound == 1)
+                List<RusGisDemoJson> a = JsonConvert.DeserializeObject<List<RusGisDemoJson>>(json);
+                if (a.Any())
                 {
-                    var g = a.result.address[0].features[0];
-                    geocod = new GeoCod()
+                    if (a.Count == 1)
                     {
-                        Text = g.properties.display_name,
-                        CountResult = (byte)countFound,
-                        Latitude = g.geometry.geometries[0].coordinates[0].ToString(),
-                        Longitude = g.geometry.geometries[0].coordinates[1].ToString(),
-                        Kind = g.properties.type,
-                        Precision = g.properties.full_match.ToString()
-                    };
-                }
-                else
-                {
-                    var list = new List<GeoCod>();
-                    var adr = a.result.address[0].features;
-                    foreach (var item in adr)
-                    {
-                        var geo = new GeoCod()
+                        var item = a[0];
+                        geocod = new GeoCod()
                         {
-                            Text = item.properties.display_name,
-                            CountResult = (byte)countFound,
-                            Latitude = item.geometry.geometries[0].coordinates[0].ToString(),
-                            Longitude = item.geometry.geometries[0].coordinates[1].ToString(),
-                            Kind = item.properties.type,
-                            Precision = item.properties.full_match.ToString()
+                            CountResult = 1,
+                            Kind = item.kind,
+                            Precision = item.precision,
+                            Longitude = item.posY.ToString(),
+                            Latitude = item.posX.ToString(),
+                            Text = item.text
                         };
-                        list.Add(geo);
-                    }
-
-                    var e = list.Where(x => x.Precision == "true");
-                    if (e != null && e.Count() == 1)
-                    {
-                        geocod = e.First();
-                        geocod.CountResult = 1;
                     }
                     else
                     {
-                        geocod = new GeoCod() { CountResult = (byte)countFound };
+                        geocod = new GeoCod() { CountResult = (byte)a.Count };
                     }
+                }
+                else
+                {
+                    geocod = new GeoCod() { CountResult = 0 };
                 }
             }
             catch (Exception ex)
@@ -142,6 +136,11 @@ namespace GeoCoding.GeoCodingService
             }
 
             callback(geocod, error);
+        }
+
+        public string GetUrlRequest(string address)
+        {
+            return $"{_url}{address}";
         }
     }
 }

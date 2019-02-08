@@ -969,5 +969,10 @@ namespace GeoCoding
                 FolderOutput = ftps.FolderOutput
             };
         }
+
+        public void SetGeoService(IGeoCodingService geoService)
+        {
+            _geoCodingService = geoService;
+        }
     }
 }

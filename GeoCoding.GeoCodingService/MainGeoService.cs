@@ -10,7 +10,8 @@ namespace GeoCoding.GeoCodingService
             return _allService ?? (_allService = new ReadOnlyObservableCollection<IGeoCodingService>(new ObservableCollection<IGeoCodingService>()
             {
                 new YandexGeoCodingService(),
-                new SputnikGeoCodingService()
+                new SputnikGeoCodingService(),
+                new RusGisDemoGeoCodingService()
             }));
         }
     }

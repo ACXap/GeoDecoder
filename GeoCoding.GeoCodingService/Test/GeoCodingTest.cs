@@ -29,5 +29,10 @@ namespace GeoCoding.GeoCodingService.Test
             Thread.Sleep(50);
             callback(geocod, error);
         }
+
+        public string GetUrlRequest(string address)
+        {
+            return null;
+        }
     }
 }
