@@ -1,15 +1,15 @@
 ﻿<Controls:MetroWindow
     x:Class="GeoCoding.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
-    xmlns:local="clr-namespace:GeoCoding"
-    xmlns:uc="clr-namespace:GeoCoding.UserControls"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+    xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:GeoCoding"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:GeoCoding.UserControls"
     x:Name="metroWindow"
     Title="Геокодирование"
     Width="1400"
@@ -26,19 +26,19 @@
         <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
         <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
     </Controls:MetroWindow.Resources>
-    
+
     <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />
     </Controls:MetroWindow.DataContext>
-    
+
     <!--  Иконка приложения с контекст меню  -->
     <Controls:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Margin="2" Source="geo.ico" />
         </DataTemplate>
     </Controls:MetroWindow.IconTemplate>
-    
+
     <!--  Панель команд на заголовке окна  -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
@@ -63,7 +63,7 @@
 
     <!--  Основная панель контролов  -->
     <Grid AllowDrop="True">
-        <!-- Обработка перетаскивания файлов на окно программы-->
+        <!--  Обработка перетаскивания файлов на окно программы  -->
         <i:Interaction.Triggers>
             <i:EventTrigger EventName="PreviewDrop">
                 <cmd:EventToCommand Command="{Binding CommandDragDrop}" PassEventArgsToCommand="True" />
@@ -153,8 +153,8 @@
 
                 <!--  Работа с базой данных  -->
                 <TabItem Header="БД">
-                    
-                    <!-- Панель работы с базой данных-->
+
+                    <!--  Панель работы с базой данных  -->
                     <Border
                         Grid.Column="0"
                         Padding="5"
@@ -172,13 +172,14 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button Visibility="Collapsed"
+                                <Button
                                     Grid.Column="0"
                                     Margin="5"
                                     Padding="5"
-                                    Content="Получить данные" />
+                                    Content="Получить данные"
+                                    Visibility="Collapsed" />
 
-                                <!-- Открытие панели пользовательского sql-запроса-->
+                                <!--  Открытие панели пользовательского sql-запроса  -->
                                 <ToggleButton
                                     x:Name="tbSql"
                                     Grid.Column="2"
@@ -466,24 +467,23 @@
                     <uc:Statistics />
                 </GroupBox>
 
-                <StackPanel  Grid.Row="1"  Orientation="Vertical">
+                <StackPanel Grid.Row="1" Orientation="Vertical">
                     <TextBlock
                         Margin="5,1,1,1"
                         FontWeight="Bold"
                         Text="Геокодер:" />
 
-                    <ComboBox  ItemsSource="{Binding CollectionGeoService}" Margin="5,2" SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox
+                        Margin="5,2"
+                        ItemsSource="{Binding CollectionGeoService}"
+                        SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Name}" />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                
-                   
-
-                
 
                 <!--  Запуск геокодирования  -->
                 <Button Grid.Row="2" Style="{StaticResource ButtonStopStart}" />
@@ -544,30 +544,32 @@
     <!--  Всплывающие окна  -->
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
-            
+
             <!--  Настройки  -->
-            <Controls:Flyout Style="{StaticResource FlyoutStyleMain}"
+            <Controls:Flyout
                 MaxWidth="900"
                 MaxHeight="600"
                 Header="Настройки приложения"
                 IsOpen="{Binding ElementName=tbOpenSettings, Path=IsChecked}"
-                Position="Right">
+                Position="Right"
+                Style="{StaticResource FlyoutStyleMain}">
 
-                <!-- Юзер-контрол для отображения настроек приложения-->
-                <uc:FlyoutSettings/>
+                <!--  Юзер-контрол для отображения настроек приложения  -->
+                <uc:FlyoutSettings />
 
             </Controls:Flyout>
 
             <!--  Запрос к базе данных  -->
-            <Controls:Flyout Style="{StaticResource FlyoutStyleMain}"
+            <Controls:Flyout
                 MaxWidth="900"
                 MaxHeight="500"
                 Header="SQL-запрос"
                 IsOpen="{Binding ElementName=tbSql, Path=IsChecked}"
-                Position="Left">
+                Position="Left"
+                Style="{StaticResource FlyoutStyleMain}">
 
-                <!-- >Юзер-контрол для отображения запроса пользовательского sql-запроса-->
-                <uc:FlyoutSql/>
+                <!--  >Юзер-контрол для отображения запроса пользовательского sql-запроса  -->
+                <uc:FlyoutSql />
 
             </Controls:Flyout>
         </Controls:FlyoutsControl>

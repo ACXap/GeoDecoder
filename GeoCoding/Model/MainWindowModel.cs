@@ -70,7 +70,7 @@ namespace GeoCoding
                 }, $"{path}/{item}");
             }
 
-            _geoCodingService = geoservices.FirstOrDefault(x => x.Name == p.GeoService);
+           // _geoCodingService = geoservices.FirstOrDefault(x => x.Name == p.GeoService);
         }
 
         /// <summary>
@@ -947,7 +947,6 @@ namespace GeoCoding
         public void CopyFileOnFtp(Action<Exception> callback, FTPSettings ftps, string path)
         {
             Exception error = null;
-            byte[] fileContents = null;
 
             _ftpService.CopyFileOnFtp(e =>
             {

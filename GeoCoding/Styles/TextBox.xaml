@@ -13,13 +13,12 @@
                             x:Name="tb"
                             VerticalContentAlignment="Center"
                             Controls:TextBoxHelper.Watermark="{TemplateBinding Controls:TextBoxHelper.Watermark}"
-               
                             Text="{TemplateBinding Text}" />
                         <Button
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Command="{TemplateBinding Tag}"
-                            CommandParameter="{TemplateBinding Text}">  
+                            CommandParameter="{TemplateBinding Text}">
                             <Button.Style>
                                 <Style TargetType="{x:Type Button}">
                                     <Setter Property="Visibility" Value="Visible" />
@@ -33,9 +32,9 @@
                             <Button.Template>
                                 <ControlTemplate>
                                     <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource TextBlockFolder}" />
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource TextBlockFolder}" />
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
@@ -43,9 +42,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Tag" Value="{Binding CommandOpenFolder}"/>
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="Margin" Value="2"/>
+        <Setter Property="Tag" Value="{Binding CommandOpenFolder}" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="Margin" Value="2" />
     </Style>
-    
+
 </ResourceDictionary>

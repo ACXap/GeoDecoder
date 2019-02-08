@@ -59,7 +59,7 @@ namespace GeoCoding.GeoCodingService
             }
             else
             {
-                error = new ArgumentNullException();
+                error = new ArgumentNullException("Значение адреса пусто");
             }
 
             callback(geocod, error);

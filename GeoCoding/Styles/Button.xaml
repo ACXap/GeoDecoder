@@ -29,12 +29,15 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="ButtonStopStartConnect" BasedOn="{StaticResource ButtonMainStyle}" TargetType="{x:Type Button}">
-        <Setter Property="Content" Value="Проверить подключение"/>
+    <Style
+        x:Key="ButtonStopStartConnect"
+        BasedOn="{StaticResource ButtonMainStyle}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Content" Value="Проверить подключение" />
         <Style.Triggers>
             <Trigger Property="Tag" Value="{x:Static local:StatusConnect.ConnectNow}">
-                <Setter Property="Content" Value="Идет подключение..."/>
-                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Content" Value="Идет подключение..." />
+                <Setter Property="IsEnabled" Value="False" />
             </Trigger>
         </Style.Triggers>
     </Style>

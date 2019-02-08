@@ -702,11 +702,7 @@ namespace GeoCoding
 
         private string SetDefNameFileStatistics()
         {
-            string defName = string.Empty;
-
-            defName = $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
-
-            return defName;
+            return $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
         }
 
         private void SaveErrors()
