@@ -8,6 +8,8 @@ namespace GeoCoding.GeoCodingService.Test
     /// </summary>
     public class GeoCodingTest : IGeoCodingService
     {
+        public string Name => "Test";
+
         public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
         {
             Exception error = null;

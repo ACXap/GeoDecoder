@@ -5,6 +5,10 @@ namespace GeoCoding.GeoCodingService
     public interface IGeoCodingService
     {
         /// <summary>
+        /// Название сервиса
+        /// </summary>
+        string Name { get; }
+        /// <summary>
         /// Метод получения геокоординат для одного объекта
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами найденные данные о адресе и ошибка</param>

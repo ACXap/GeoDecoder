@@ -36,7 +36,7 @@ namespace GeoCoding
         private readonly IFileService _fileService = new FileService.FileService();
         private readonly IBDService _bdService = new BDPostgresql();
         private readonly IFtpService _ftpService = new FtpService();
-        private readonly IGeoCodingService _geoCodingService = new YandexGeoCodingService();
+        private  IGeoCodingService _geoCodingService; //= new YandexGeoCodingService();
         //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
@@ -54,7 +54,10 @@ namespace GeoCoding
         /// </summary>
         public MainWindowModel()
         {
-            string[] nameFolders = new string[] { "Temp", "Input", "Output", "Statistics", "Errors" };
+            var p = Properties.Settings.Default;
+            var geoservices = MainGeoService.GetAllService();
+
+            string[] nameFolders = new string[] { p.FolderTemp, p.FolderInput, p.FolderOutput, p.FolderErrors, p.FolderStatistics };
             string path = Environment.CurrentDirectory;
             foreach (var item in nameFolders)
             {
@@ -66,6 +69,8 @@ namespace GeoCoding
                     }
                 }, $"{path}/{item}");
             }
+
+            _geoCodingService = geoservices.FirstOrDefault(x => x.Name == p.GeoService);
         }
 
         /// <summary>
@@ -714,7 +719,8 @@ namespace GeoCoding
                 CanSaveDataAsTemp = p.CanSaveDataAsTemp,
                 CanOpenFolderAfter = p.CanOpenFolderAfter,
                 CanGeoCodAfterGetFile = p.CanGeoCodAfterGetFile,
-                CanSaveStatistics = p.CanSaveStatistics
+                CanSaveStatistics = p.CanSaveStatistics,
+                GeoService = p.GeoService
             };
 
             FTPSettings ftp = new FTPSettings()
@@ -789,6 +795,7 @@ namespace GeoCoding
             p.CanOpenFolderAfter = geoCodSettings.CanOpenFolderAfter;
             p.CanSaveDataAsFinished = geoCodSettings.CanSaveDataAsFinished;
             p.CanSaveDataAsTemp = geoCodSettings.CanSaveDataAsTemp;
+            p.GeoService = geoCodSettings.GeoService;
             p.FtpFolderInput = ftpSettings.FolderInput;
             p.FtpFolderOutput = ftpSettings.FolderOutput;
             p.IsFileInputOnFTP = filesSettings.IsFileInputOnFTP;

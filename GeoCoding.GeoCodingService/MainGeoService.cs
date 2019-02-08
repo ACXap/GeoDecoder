@@ -1,24 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 
 namespace GeoCoding.GeoCodingService
 {
     public static class MainGeoService
     {
-        public static IEnumerable<GeoService> GetAllService()
+        private static ReadOnlyObservableCollection<IGeoCodingService> _allService;
+        public static ReadOnlyObservableCollection<IGeoCodingService> GetAllService()
         {
-            return new List<GeoService>()
+            return _allService ?? (_allService = new ReadOnlyObservableCollection<IGeoCodingService>(new ObservableCollection<IGeoCodingService>()
             {
-                new GeoService()
-                {
-                    Name = "Yandex",
-                    Service = new YandexGeoCodingService()
-                },
-                new GeoService()
-                {
-                    Name = "Sputnik",
-                    Service = new SputnikGeoCodingService()
-                }
-            };
+                new YandexGeoCodingService(),
+                new SputnikGeoCodingService()
+            }));
         }
     }
 }

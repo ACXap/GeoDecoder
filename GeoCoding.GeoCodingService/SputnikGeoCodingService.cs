@@ -8,6 +8,8 @@ namespace GeoCoding.GeoCodingService
     {
         private const string _sputnicUrl = "http://search.maps.sputnik.ru/search?q=";
 
+        public string Name => "Sputnik";
+
         public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
         {
             Exception error = null;

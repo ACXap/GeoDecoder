@@ -347,77 +347,80 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Геокодирование">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <GroupBox Grid.Row="0" Header="Какие объекты геокодировать">
-                        <WrapPanel Orientation="Vertical">
-                            <RadioButton
+                <ScrollViewer>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Какие объекты геокодировать">
+                            <WrapPanel Orientation="Vertical">
+                                <RadioButton
                                             Grid.Row="0"
                                             Grid.Column="2"
                                             Margin="5"
                                             Content="Геокодировать все объекты"
                                             IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" />
 
-                            <RadioButton
+                                <RadioButton
                                             Grid.Row="1"
                                             Grid.Column="2"
                                             Margin="5"
                                             Content="Геокодировать только объекты с ошибками"
                                             IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" />
 
-                            <RadioButton
+                                <RadioButton
                                             Grid.Row="2"
                                             Grid.Column="2"
                                             Margin="5"
                                             Content="Геокодировать негеокодированные объекты"
                                             IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
-                        </WrapPanel>
-                    </GroupBox>
-                    <GroupBox Grid.Row="1" Header="Что делаем сразу после геокодирования">
-                        <WrapPanel Orientation="Vertical">
-                            <CheckBox
+                            </WrapPanel>
+                        </GroupBox>
+                        <GroupBox Grid.Row="1" Header="Что делаем сразу после геокодирования">
+                            <WrapPanel Orientation="Vertical">
+                                <CheckBox
                                             Margin="5"
                                             Content="Сохранить все данные геокодирования в полном объеме"
                                             IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" />
 
-                            <CheckBox
+                                <CheckBox
                                             Margin="5"
                                             Content="Сохранить все данные геокодирования в формате для базы данных"
                                             IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}" />
 
-                            <CheckBox
+                                <CheckBox
                                             Margin="5"
                                             Content="Открывать папку с результатом после сохранения"
                                             IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}" />
 
-                            <CheckBox
+                                <CheckBox
                                             Margin="5"
                                             Content="Сохранить статистику"
                                             IsChecked="{Binding GeoCodSettings.CanSaveStatistics}" />
-                        </WrapPanel>
-                    </GroupBox>
-                    <GroupBox Grid.Row="2" Header="Какой используем геокодер">
-                        <WrapPanel Orientation="Vertical">
-                            <ListBox ItemsSource="{Binding MyProperty}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <RadioButton Content="{Binding Name}" GroupName="radioList"/>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </WrapPanel>
-                    </GroupBox>
-                    <CheckBox
+                            </WrapPanel>
+                        </GroupBox>
+                        <GroupBox Grid.Row="2" Header="Какой используем геокодер">
+                            <WrapPanel Orientation="Vertical">
+                                <ListBox ItemsSource="{Binding CollectionGeoService}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <RadioButton Content="{Binding Name}" GroupName="radioList"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </WrapPanel>
+                        </GroupBox>
+                        <CheckBox
                                     Grid.Row="3"
                                     Margin="10"
                                     Content="Геокодировать сразу после выбора файла"
                                     IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
-                </Grid>
+                    </Grid>
+                </ScrollViewer>
+                
             </TabItem>
             <TabItem Header="Оповещения" />
             <TabItem Header="Общие">

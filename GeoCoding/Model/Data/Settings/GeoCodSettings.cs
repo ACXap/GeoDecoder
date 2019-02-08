@@ -37,6 +37,11 @@ namespace GeoCoding
         private bool _canGeoCodAfterGetFile = false;
 
         /// <summary>
+        /// Поле для хранения названия геосервиса
+        /// </summary>
+        private string _geoService = "YANDEX";
+
+        /// <summary>
         /// Поле для хранения параметра сохранять ли статистику
         /// </summary>
         private bool _canSaveStatistics = true;
@@ -112,6 +117,15 @@ namespace GeoCoding
         {
             get => _canSaveStatistics;
             set => Set(ref _canSaveStatistics, value);
+        }
+
+        /// <summary>
+        /// Название геосервиса
+        /// </summary>
+        public string GeoService
+        {
+            get => _geoService;
+            set => Set(ref _geoService, value);
         }
     }
 }

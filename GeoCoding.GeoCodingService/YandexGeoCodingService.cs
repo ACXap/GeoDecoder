@@ -27,6 +27,8 @@ namespace GeoCoding.GeoCodingService
         private const string _textForError429 = "Ваш лимит исчерпан";
         #endregion PrivateConst
 
+        public string Name => "YANDEX";
+
         /// <summary>
         /// Метод для получения геоокординат по адресу
         /// </summary>

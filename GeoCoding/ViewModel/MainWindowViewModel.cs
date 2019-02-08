@@ -837,6 +837,7 @@ namespace GeoCoding
                     FTPSettings = ftp;
                     BDSettings = bds;
                     ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
+                    CurrentGeoService = CollectionGeoService.FirstOrDefault(x => x.Name == g.GeoService);
                 }
                 else
                 {
@@ -935,8 +936,16 @@ namespace GeoCoding
 
                     }, ()=> !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect==StatusConnect.ConnectNow));
 
-        public List<GeoCodingService.GeoService> MyProperty => GeoCodingService.MainGeoService.GetAllService().ToList();
+        public ReadOnlyObservableCollection<GeoCodingService.IGeoCodingService> CollectionGeoService => GeoCodingService.MainGeoService.GetAllService();
 
-
+        private GeoCodingService.IGeoCodingService _currentGeoService;
+        /// <summary>
+        /// Текущий геосервис
+        /// </summary>
+        public GeoCodingService.IGeoCodingService CurrentGeoService
+        {
+            get => _currentGeoService;
+            set => Set(ref _currentGeoService, value);
+        }
     }
 }

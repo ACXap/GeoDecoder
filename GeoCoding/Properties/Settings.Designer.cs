@@ -367,5 +367,17 @@ namespace GeoCoding.Properties {
                 this["BDPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("YANDEX")]
+        public string GeoService {
+            get {
+                return ((string)(this["GeoService"]));
+            }
+            set {
+                this["GeoService"] = value;
+            }
+        }
     }
 }
