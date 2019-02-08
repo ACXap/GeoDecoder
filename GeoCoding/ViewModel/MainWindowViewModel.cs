@@ -945,7 +945,11 @@ namespace GeoCoding
         public GeoCodingService.IGeoCodingService CurrentGeoService
         {
             get => _currentGeoService;
-            set => Set(ref _currentGeoService, value);
+            set
+            {
+                _geoCodSettings.GeoService = value.Name;
+                Set(ref _currentGeoService, value);
+            }
         }
     }
 }

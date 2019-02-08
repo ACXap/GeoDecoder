@@ -404,13 +404,13 @@
                         </GroupBox>
                         <GroupBox Grid.Row="2" Header="Какой используем геокодер">
                             <WrapPanel Orientation="Vertical">
-                                <ListBox ItemsSource="{Binding CollectionGeoService}">
-                                    <ListBox.ItemTemplate>
+                                <ComboBox  ItemsSource="{Binding CollectionGeoService}" Margin="5,2" SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
                                         <DataTemplate>
-                                            <RadioButton Content="{Binding Name}" GroupName="radioList"/>
+                                            <TextBlock Text="{Binding Name}"/>
                                         </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </WrapPanel>
                         </GroupBox>
                         <CheckBox
