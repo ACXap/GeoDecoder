@@ -36,7 +36,7 @@ namespace GeoCoding
         private readonly IFileService _fileService = new FileService.FileService();
         private readonly IBDService _bdService = new BDPostgresql();
         private readonly IFtpService _ftpService = new FtpService();
-        private  IGeoCodingService _geoCodingService; //= new YandexGeoCodingService();
+        private IGeoCodingService _geoCodingService; //= new YandexGeoCodingService();
         //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
@@ -70,7 +70,7 @@ namespace GeoCoding
                 }, $"{path}/{item}");
             }
 
-           // _geoCodingService = geoservices.FirstOrDefault(x => x.Name == p.GeoService);
+            // _geoCodingService = geoservices.FirstOrDefault(x => x.Name == p.GeoService);
         }
 
         /// <summary>
@@ -506,10 +506,24 @@ namespace GeoCoding
                 {
                     data.Kind = kind;
                 }
+                else if(geocod.Kind =="place")
+                {
+                    data.Kind = KindType.Locality;
+                }
+
                 if (Enum.TryParse(geocod.Precision.ToUpperFistChar(), out PrecisionType precision))
                 {
                     data.Precision = precision;
                 }
+                else if (geocod.Precision.ToLower() == "true")
+                {
+                    data.Precision = PrecisionType.Exact;
+                }
+                else
+                {
+                    data.Precision = PrecisionType.Other;
+                }
+
                 data.AddressWeb = geocod.Text;
                 data.Latitude = geocod.Latitude;
                 data.Longitude = geocod.Longitude;
