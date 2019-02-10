@@ -89,30 +89,21 @@ namespace GeoCoding.GeoCodingService
             try
             {
                 SputnikJsonOldFormat a = JsonConvert.DeserializeObject<SputnikJsonOldFormat>(json);
-                int countFound = a.Result.Count;
-                if (countFound == 1)
+
+                var g = a.Result.Where(x => x.FullMatch && x.Type == "house");
+                byte countFound = (byte)a.Result.Count;
+
+                if (g != null && g.Count() == 1)
                 {
-                    var g = a.Result[0];
-                    geocod = GetGeo(g, (byte)countFound);
-                }
-                else if (countFound > 1)
-                {
-                    var g = a.Result.Where(x => x.FullMatch && x.Type == "house");
-                    if (g != null && g.Count() == 1)
-                    {
-                        geocod = GetGeo(g.FirstOrDefault(), (byte)countFound);
-                    }
-                    else
-                    {
-                        geocod = new GeoCod()
-                        {
-                            CountResult = (byte)countFound
-                        };
-                    }
+                    geocod = GetGeo(g.FirstOrDefault());
+                    geocod.CountResult = 1;
                 }
                 else
                 {
-                    geocod = new GeoCod() { CountResult = 0 };
+                    geocod = new GeoCod()
+                    {
+                        CountResult = countFound
+                    };
                 }
             }
             catch (Exception ex)
@@ -123,11 +114,10 @@ namespace GeoCoding.GeoCodingService
             callback(geocod, error);
         }
 
-        private GeoCod GetGeo(Result g, byte countFound)
+        private GeoCod GetGeo(Result g)
         {
             return new GeoCod()
             {
-                CountResult = (byte)countFound,
                 Text = g.DisplayName,
                 Kind = g.Type,
                 Precision = g.FullMatch.ToString(),
