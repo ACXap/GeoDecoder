@@ -5,7 +5,6 @@ using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -560,13 +559,13 @@ namespace GeoCoding
                     {
                         Statistics = s;
 
-                        DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        {
-                            if (Customers != null)
-                            {
-                                Customers.Refresh();
-                            }
-                        });
+                        //DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                        //{
+                        //    if (Customers != null)
+                        //    {
+                        //        Customers.Refresh();
+                        //    }
+                        //});
                     }
                 }, _collectionGeoCod);
             }
@@ -776,6 +775,8 @@ namespace GeoCoding
                     {
                         // Оповещаем о завершении получении координат
                         NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
+
+                        Customers.Refresh();
 
                         if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
                         {

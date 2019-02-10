@@ -38,12 +38,10 @@ namespace GeoCoding.FTPService
         public void CopyFileOnFtp(Action<Exception> callback, ConnectionSettings conSettings, string path)
         {
             Exception error = null;
-            string data = string.Empty;
 
             try
             {
                 string nameFile = GetNewName(path, conSettings);
-
                 using (WebClient client = new WebClient())
                 {
                     client.Credentials = new NetworkCredential(conSettings.Login, conSettings.Password);
