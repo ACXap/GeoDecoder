@@ -26,7 +26,7 @@ namespace GeoCoding.GeoCodingService.Test
                 Kind = (string)kind.GetValue(rnd.Next(kind.Length)),
                 Precision = (string)precision.GetValue(rnd.Next(precision.Length)),
             };
-            Thread.Sleep(50);
+
             callback(geocod, error);
         }
 

@@ -45,7 +45,7 @@ namespace GeoCoding.GeoCodingService
 
         public string GetUrlRequest(string address)
         {
-            return $"{_sputnicUrl}{address}";
+            return $"{_sputnicUrl}{address}/";
         }
 
         private void GetJsonString(Action<string, Exception> callback, string address)
@@ -89,11 +89,10 @@ namespace GeoCoding.GeoCodingService
             try
             {
                 SputnikJsonOldFormat a = JsonConvert.DeserializeObject<SputnikJsonOldFormat>(json);
-
-                var g = a.Result.Where(x => x.FullMatch && x.Type == "house");
                 byte countFound = (byte)a.Result.Count;
 
-                if (g != null && g.Count() == 1)
+                var g = a.Result.Where(x => x.FullMatch && x.Type == "house");
+                if (g.Count() == 1)
                 {
                     geocod = GetGeo(g.FirstOrDefault());
                     geocod.CountResult = 1;

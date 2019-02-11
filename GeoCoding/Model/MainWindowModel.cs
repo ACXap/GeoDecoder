@@ -502,20 +502,24 @@ namespace GeoCoding
 
             if (geocod.CountResult == 1)
             {
-                if (Enum.TryParse(geocod.Kind.ToUpperFistChar(), out KindType kind))
+                if (Enum.TryParse(geocod.Kind?.ToUpperFistChar(), out KindType kind))
                 {
                     data.Kind = kind;
                 }
-                else if(geocod.Kind =="place")
+                else if (geocod.Kind == "place")
                 {
                     data.Kind = KindType.Locality;
                 }
 
-                if (Enum.TryParse(geocod.Precision.ToUpperFistChar(), out PrecisionType precision))
+                if (Enum.TryParse(geocod.Precision?.ToUpperFistChar(), out PrecisionType precision))
                 {
                     data.Precision = precision;
                 }
-                else if (geocod.Precision.ToLower() == "true")
+                else if (string.IsNullOrEmpty(geocod.Precision))
+                {
+                    data.Precision = PrecisionType.None;
+                }
+                else if (geocod.Precision?.ToLower() == "true")
                 {
                     data.Precision = PrecisionType.Exact;
                 }
@@ -527,9 +531,14 @@ namespace GeoCoding
                 data.AddressWeb = geocod.Text;
                 data.Latitude = geocod.Latitude;
                 data.Longitude = geocod.Longitude;
+
                 if (data.Precision == PrecisionType.Exact)
                 {
                     data.Qcode = 1;
+                }
+                else if(data.Precision == PrecisionType.None)
+                {
+                    data.Qcode = 0;
                 }
                 else
                 {
@@ -668,7 +677,15 @@ namespace GeoCoding
                         SetDataGeoCod(data, geocod);
                         if (data.CountResult == 1)
                         {
-                            data.Status = StatusType.OK;
+                            if (data.Kind == KindType.None && data.Precision == PrecisionType.None)
+                            {
+                                data.Error = "Нет совпадений";
+                                data.Status = StatusType.Error;
+                            }
+                            else
+                            {
+                                data.Status = StatusType.OK;
+                            }
                         }
                         else if (data.CountResult == 0)
                         {

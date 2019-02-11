@@ -11,7 +11,8 @@ namespace GeoCoding.GeoCodingService
             {
                 new YandexGeoCodingService(),
                 new SputnikGeoCodingService(),
-                new RusGisDemoGeoCodingService()
+                new RusGisDemoGeoCodingService(),
+                new Test.GeoCodingTest()
             }));
         }
     }

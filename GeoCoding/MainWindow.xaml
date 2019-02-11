@@ -303,6 +303,11 @@
             <TabControl Grid.Column="0">
                 <TabItem Header="Данные">
                     <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMainAll}">
+                        <!--<DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <uc:InformationEntity Background="Transparent"/>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>-->
                         <DataGrid.Columns>
 
                             <!--  Колонка статуса  -->
@@ -371,7 +376,9 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Ошибки">
-                    <DataGrid ItemsSource="{Binding Customers}" Style="{StaticResource DataGridErrors}">
+                    <DataGrid ItemsSource="{Binding Customers}" 
+                              Style="{StaticResource DataGridErrors}" 
+                              ScrollViewer.CanContentScroll="True">
                         <DataGrid.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.Panel>
