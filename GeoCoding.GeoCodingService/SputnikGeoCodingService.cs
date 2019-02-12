@@ -8,7 +8,7 @@ namespace GeoCoding.GeoCodingService
 {
     internal class SputnikGeoCodingService : IGeoCodingService
     {
-        private const string _sputnicUrl = "http://search.maps.sputnik.ru/search?q=";
+        private const string _url = "http://search.maps.sputnik.ru/search?q=";
 
         public string Name => "Sputnik";
 
@@ -45,7 +45,7 @@ namespace GeoCoding.GeoCodingService
 
         public string GetUrlRequest(string address)
         {
-            return $"{_sputnicUrl}{address}/";
+            return $"{_url}{address}/";
         }
 
         private void GetJsonString(Action<string, Exception> callback, string address)

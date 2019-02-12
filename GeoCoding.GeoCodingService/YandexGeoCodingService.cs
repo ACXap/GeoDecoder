@@ -67,7 +67,7 @@ namespace GeoCoding.GeoCodingService
 
         public string GetUrlRequest(string address)
         {
-            return $"{_url}?geocode={address}&format=json/";
+            return $"{_url}?geocode={address}&format=json";
         }
 
         /// <summary>

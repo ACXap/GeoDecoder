@@ -7,17 +7,12 @@ using System.Net;
 
 namespace GeoCoding.GeoCodingService
 {
-    public class RusGisDemoGeoCodingService : IGeoCodingService
+    public class YandexRusGisGeoCodingService : IGeoCodingService
     {
-        public string Name => "RusGeoDemo";
+        private const string _url = @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
 
-        private const string _url = @"https://capex.cloud.rt.ru/view/rest/gp/geocoding?geocode=";
+        public string Name => "YandexRusGis";
 
-        /// <summary>
-        /// Метод для получения геоокординат по адресу
-        /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
-        /// <param name="address">Строка адреса для поиска</param>
         public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
         {
             Exception error = null;
@@ -43,17 +38,12 @@ namespace GeoCoding.GeoCodingService
             }
             else
             {
-                error = new ArgumentNullException();
+                error = new ArgumentNullException("Значение адреса пусто");
             }
 
             callback(geocod, error);
         }
 
-        /// <summary>
-        /// Метод для получения json ответа от яндекса
-        /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметроми строка, ошибка</param>
-        /// <param name="address">Строка адреса для поиска координат</param>
         private void GetJsonString(Action<string, Exception> callback, string address)
         {
             Exception error = null;
@@ -79,11 +69,6 @@ namespace GeoCoding.GeoCodingService
                     }
                 }
             }
-            catch (WebException wex)
-            {
-                error = wex;
-            }
-
             catch (Exception ex)
             {
                 error = ex;
@@ -92,11 +77,6 @@ namespace GeoCoding.GeoCodingService
             callback(json, error);
         }
 
-        /// <summary>
-        /// Метод преобразования json в объекты
-        /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметром объект, ошибка</param>
-        /// <param name="json">Строка json</param>
         private void ParserJson(Action<GeoCod, Exception> callback, string json)
         {
             Exception error = null;
@@ -104,31 +84,26 @@ namespace GeoCoding.GeoCodingService
 
             try
             {
-                List<RusGisDemoJson> a = JsonConvert.DeserializeObject<List<RusGisDemoJson>>(json);
-                if (a.Any())
+                List<YandexRusGisJson> list = JsonConvert.DeserializeObject<List<YandexRusGisJson>>(json);
+                if (list.Count == 1)
                 {
-                    if (a.Count == 1)
-                    {
-                        var item = a[0];
-                        geocod = new GeoCod()
-                        {
-                            CountResult = 1,
-                            Kind = item.kind,
-                            Precision = item.precision,
-                            Longitude = item.posY.ToString(),
-                            Latitude = item.posX.ToString(),
-                            Text = item.text
-                        };
-                    }
-                    else
-                    {
-                        geocod = new GeoCod() { CountResult = (byte)a.Count };
-                    }
+                    geocod = GetGeo(list.FirstOrDefault());
+                    geocod.CountResult = 1;
                 }
                 else
                 {
-                    geocod = new GeoCod() { CountResult = 0 };
+                    var a = list.Where(x => x.Precision == "exact");
+                    if (a.Any() && a.Count() == 1)
+                    {
+                        geocod = GetGeo(list.FirstOrDefault());
+                        geocod.CountResult = 1;
+                    }
+                    else
+                    {
+                        geocod = new GeoCod() { CountResult = (byte)list.Count };
+                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -138,9 +113,21 @@ namespace GeoCoding.GeoCodingService
             callback(geocod, error);
         }
 
+        private GeoCod GetGeo(YandexRusGisJson geo)
+        {
+            return new GeoCod()
+            {
+                Text = geo.Text,
+                Kind = geo.Kind,
+                Precision = geo.Precision,
+                Latitude = geo.PosY.ToString().Replace(',', '.'),
+                Longitude = geo.PosX.ToString().Replace(',', '.')
+            };
+        }
+
         public string GetUrlRequest(string address)
         {
-            return $"{_url}{address}";
+            return $"{_url}{address}&geoCoderType=YANDEX";
         }
     }
 }

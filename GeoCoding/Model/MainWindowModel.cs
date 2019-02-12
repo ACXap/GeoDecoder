@@ -43,7 +43,7 @@ namespace GeoCoding
         private readonly string _nameColumnErrorFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}error";
         private readonly string _nameColumnTempFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}AddressWeb{_charSplit}Longitude{_charSplit}Latitude" +
                                                          $"{_charSplit}Qcode{_charSplit}Error{_charSplit}Status{_charSplit}DateTimeGeoCod{_charSplit}Kind{_charSplit}Precision{_charSplit}CountResult";
-        private readonly string _nameColumnStatisticsFile = $"DateTime{_charSplit}User{_charSplit}FileInput{_charSplit}FileOutput{_charSplit}FileError{_charSplit}AllEntity" +
+        private readonly string _nameColumnStatisticsFile = $"DateTime{_charSplit}User{_charSplit}System{_charSplit}FileInput{_charSplit}FileOutput{_charSplit}FileError{_charSplit}AllEntity" +
                                                              $"{_charSplit}OK{_charSplit}Error{_charSplit}NotGeoCoding{_charSplit}GeoCodingNow{_charSplit}House" +
                                                                 $"{_charSplit}Exact{_charSplit}NotFound{_charSplit}TimeGeoCod";
         private CancellationTokenSource _cts;
@@ -379,7 +379,7 @@ namespace GeoCoding
         {
             Exception error = null;
             string[] data = null;
-            string row = $"{DateTime.Now}{_charSplit}{Environment.UserName}{_charSplit}{files.FileInput}{_charSplit}{files.FileOutput}{_charSplit}{_charSplit}{stat.AllEntity}" +
+            string row = $"{DateTime.Now}{_charSplit}{Environment.UserName}{_charSplit}{_geoCodingService.Name}{_charSplit}{files.FileInput}{_charSplit}{files.FileOutput}{_charSplit}{_charSplit}{stat.AllEntity}" +
                 $"{_charSplit}{stat.OK}{_charSplit}{stat.Error}{_charSplit}{stat.NotGeoCoding}{_charSplit}{stat.GeoCodingNow}" +
                 $"{_charSplit}{stat.House}{_charSplit}{stat.Exact}{_charSplit}{stat.NotFound}{_charSplit}{stat.TimeGeoCod}";
 
