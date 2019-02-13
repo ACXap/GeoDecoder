@@ -382,6 +382,7 @@ namespace GeoCoding
                         {
                             if (er == null)
                             {
+                                Customers.Refresh();
                                 // Оповещаем после окончания геокодирования
                             }
                             else
@@ -776,7 +777,7 @@ namespace GeoCoding
                         // Оповещаем о завершении получении координат
                         NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
 
-                        Customers.Refresh();
+                        //Customers.Refresh();
 
                         if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
                         {

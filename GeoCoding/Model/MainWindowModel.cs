@@ -685,6 +685,7 @@ namespace GeoCoding
                             else
                             {
                                 data.Status = StatusType.OK;
+                                data.Error = string.Empty;
                             }
                         }
                         else if (data.CountResult == 0)

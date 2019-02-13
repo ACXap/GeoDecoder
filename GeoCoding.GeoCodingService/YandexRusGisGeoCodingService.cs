@@ -10,6 +10,8 @@ namespace GeoCoding.GeoCodingService
     public class YandexRusGisGeoCodingService : IGeoCodingService
     {
         private const string _url = @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
+        private const string _errorWebRequest = "Удаленный сервер возвратил ошибку: (500) Внутренняя ошибка сервера.";
+        private const string _textError = "Ваш лимит исчерпан";
 
         public string Name => "YandexRusGis";
 
@@ -69,6 +71,37 @@ namespace GeoCoding.GeoCodingService
                     }
                 }
             }
+            catch (WebException wex)
+            {
+                //if (wex.Response != null)
+                //{
+                //    using (Stream dataStream = wex.Response.GetResponseStream())
+                //    {
+                //        if (dataStream != null)
+                //        {
+                //            using (StreamReader reader = new StreamReader(dataStream))
+                //            {
+                //                var a = reader.ReadToEnd();
+                //            }
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    error = wex;
+                //}
+
+                if (wex.Message == _errorWebRequest)
+                {
+                    error = new Exception(_textError, wex);
+                }
+                else
+                {
+                    error = wex;
+                }
+
+
+            }
             catch (Exception ex)
             {
                 error = ex;
@@ -95,7 +128,7 @@ namespace GeoCoding.GeoCodingService
                     var a = list.Where(x => x.Precision == "exact");
                     if (a.Any() && a.Count() == 1)
                     {
-                        geocod = GetGeo(list.FirstOrDefault());
+                        geocod = GetGeo(a.FirstOrDefault());
                         geocod.CountResult = 1;
                     }
                     else
