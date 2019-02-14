@@ -470,32 +470,7 @@
                 </Grid.RowDefinitions>
 
                 <!--  Статистика  -->
-                <GroupBox Margin="3">
-                    <GroupBox.HeaderTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Controls:ContentControlEx Content="Статистика" ContentCharacterCasing="Upper" VerticalAlignment="Center" />
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Command="{Binding DataContext.CommandSaveStatistics, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
-                                        <Button.Template>
-                                            <ControlTemplate>
-                                                <TextBlock Style="{StaticResource TextBlockSave}" Margin="5,0"/>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
-                                    <Button Command="{Binding DataContext.CommandOpenFolder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" CommandParameter="Статистика">
-                                        <Button.Template>
-                                            <ControlTemplate>
-                                                <TextBlock Style="{StaticResource TextBlockFolder}" Margin="5,0"/>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                        </DataTemplate>
-                    </GroupBox.HeaderTemplate>
-                    <uc:Statistics />
-                </GroupBox>
+                <uc:Statistics  Grid.Row="0"/>
 
                 <StackPanel Grid.Row="1" Orientation="Vertical">
                     <TextBlock
