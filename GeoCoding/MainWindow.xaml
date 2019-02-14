@@ -228,7 +228,6 @@
                         <!--  Выбор файла для сохранения  -->
                         <Button
                             Grid.Column="0"
-                            VerticalAlignment="Top"
                             Command="{Binding CommandSetFileOutput}"
                             Content="Выбрать файл для сохранения"
                             Style="{StaticResource ButtonMainStyle}" />
@@ -303,11 +302,6 @@
             <TabControl Grid.Column="0">
                 <TabItem Header="Данные">
                     <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMainAll}">
-                        <!--<DataGrid.RowDetailsTemplate>
-                            <DataTemplate>
-                                <uc:InformationEntity Background="Transparent"/>
-                            </DataTemplate>
-                        </DataGrid.RowDetailsTemplate>-->
                         <DataGrid.Columns>
 
                             <!--  Колонка статуса  -->
