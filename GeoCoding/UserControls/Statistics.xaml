@@ -36,7 +36,7 @@
         <TextBlock
             Grid.Row="0"
             Grid.Column="2"
-            Text="{Binding Statistics.AllEntity}" />
+            Text="{Binding Stat.Statistics.AllEntity}" />
         <TextBlock
             Grid.Row="1"
             Grid.Column="0"
@@ -44,7 +44,7 @@
         <TextBlock
             Grid.Row="1"
             Grid.Column="2"
-            Text="{Binding Statistics.OK}" />
+            Text="{Binding Stat.Statistics.OK}" />
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
@@ -52,7 +52,7 @@
         <TextBlock
             Grid.Row="2"
             Grid.Column="2"
-            Text="{Binding Statistics.Error}" />
+            Text="{Binding Stat.Statistics.Error}" />
         <TextBlock
             Grid.Row="3"
             Grid.Column="0"
@@ -60,7 +60,7 @@
         <TextBlock
             Grid.Row="3"
             Grid.Column="2"
-            Text="{Binding Statistics.NotGeoCoding}" />
+            Text="{Binding Stat.Statistics.NotGeoCoding}" />
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
@@ -68,7 +68,7 @@
         <TextBlock
             Grid.Row="4"
             Grid.Column="2"
-            Text="{Binding Statistics.GeoCodingNow}" />
+            Text="{Binding Stat.Statistics.GeoCodingNow}" />
         <TextBlock
             Grid.Row="5"
             Grid.Column="0"
@@ -76,7 +76,7 @@
         <TextBlock
             Grid.Row="5"
             Grid.Column="2"
-            Text="{Binding Statistics.House}" />
+            Text="{Binding Stat.Statistics.House}" />
         <TextBlock
             Grid.Row="6"
             Grid.Column="0"
@@ -84,7 +84,7 @@
         <TextBlock
             Grid.Row="6"
             Grid.Column="2"
-            Text="{Binding Statistics.Exact}" />
+            Text="{Binding Stat.Statistics.Exact}" />
         <TextBlock
             Grid.Row="7"
             Grid.Column="0"
@@ -92,7 +92,7 @@
         <TextBlock
             Grid.Row="7"
             Grid.Column="2"
-            Text="{Binding Statistics.NotFound}" />
+            Text="{Binding Stat.Statistics.NotFound}" />
         <TextBlock
             Grid.Row="8"
             Grid.Column="0"
@@ -100,6 +100,6 @@
         <TextBlock
             Grid.Row="8"
             Grid.Column="2"
-            Text="{Binding Statistics.TimeGeoCod,StringFormat={}{0:hh}:{0:mm}:{0:ss}}" />
+            Text="{Binding Stat.Statistics.TimeGeoCod,StringFormat={}{0:hh}:{0:mm}:{0:ss}}" />
     </Grid>
 </UserControl>

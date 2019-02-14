@@ -188,7 +188,11 @@ namespace GeoCoding
         public ObservableCollection<EntityGeoCod> CollectionGeoCod
         {
             get => _collectionGeoCod;
-            set => Set("CollectionGeoCod", ref _collectionGeoCod, value);
+            set
+            {
+                Set("CollectionGeoCod", ref _collectionGeoCod, value);
+                _stat.Init(value);
+            }
         }
 
         /// <summary>
@@ -788,6 +792,7 @@ namespace GeoCoding
             {
                 // Отображаем индикацию работы процесса
                 IsStartGeoCoding = true;
+                _stat.Start();
 
                 _model.GetAllGeoCod((r, i, e) =>
                 {
@@ -828,6 +833,7 @@ namespace GeoCoding
 
                     // Прекращаем отображение
                     IsStartGeoCoding = false;
+                    _stat.Stop();
 
                 }, data);
             }
@@ -861,6 +867,7 @@ namespace GeoCoding
                     NotificationPlainText(_headerNotificationError, e.Message);
                 }
             });
+            Stat = new StatisticsViewModel();
 
             Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
             {
@@ -984,5 +991,17 @@ namespace GeoCoding
                             NotificationPlainText(_headerNotificationError, ex.Message);
                         }
                     }));
+
+        private StatisticsViewModel _stat;
+        /// <summary>
+        /// 
+        /// </summary>
+        public StatisticsViewModel Stat
+        {
+            get => _stat;
+            set => Set(ref _stat, value);
+        }
+
+
     }
 }
