@@ -950,5 +950,20 @@ namespace GeoCoding
                 Set(ref _currentGeoService, value);
             }
         }
+
+        private RelayCommand<EntityGeoCod> _commandCopyRequest;
+        public RelayCommand<EntityGeoCod> CommandCopyRequest =>
+        _commandCopyRequest ?? (_commandCopyRequest = new RelayCommand<EntityGeoCod>(
+                    obj =>
+                    {
+                        try
+                        {
+                            Clipboard.SetText(_currentGeoService.GetUrlRequest(obj.Address), TextDataFormat.UnicodeText);
+                        }
+                        catch (Exception ex)
+                        {
+                            NotificationPlainText(_headerNotificationError, ex.Message);
+                        }
+                    }));
     }
 }

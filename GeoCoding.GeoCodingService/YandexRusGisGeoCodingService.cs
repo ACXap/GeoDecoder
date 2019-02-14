@@ -1,116 +1,61 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 
 namespace GeoCoding.GeoCodingService
 {
-    public class YandexRusGisGeoCodingService : IGeoCodingService
+    /// <summary>
+    /// Реализация интерфейса IGeoCodingService
+    /// </summary>
+    public class YandexRusGisGeoCodingService : GeoService, IGeoCodingService
     {
-        private const string _url = @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
-        private const string _errorWebRequest = "Удаленный сервер возвратил ошибку: (500) Внутренняя ошибка сервера.";
-        private const string _textError = "Ваш лимит исчерпан";
+        #region PrivateConst
+        /// <summary>
+        /// Ссылка на геокодер яндексаРусГис
+        /// </summary>
+        protected override string _url => @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
+        
+        /// <summary>
+        /// Ошибка при привышении лимита в сутки
+        /// </summary>
+        protected override string _errorWebRequestLimit => "Удаленный сервер возвратил ошибку: (500) Внутренняя ошибка сервера.";
+        #endregion PrivateConst
 
-        public string Name => "YandexRusGis";
+        /// <summary>
+        /// Название геосервиса
+        /// </summary>
+        public override string Name => "YandexRusGis";
 
-        public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
+        /// <summary>
+        /// Метод для получения геоокординат по адресу
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
+        /// <param name="address">Строка адреса для поиска</param>
+        public override void GetGeoCod(Action<GeoCod, Exception> callback, string address)
         {
-            Exception error = null;
-            GeoCod geocod = null;
-
-            if (!string.IsNullOrEmpty(address))
+            base.GetGeoCod((g, e) =>
             {
-                GetJsonString((s, e) =>
-                {
-                    error = e;
-                    if (e == null && !string.IsNullOrEmpty(s))
-                    {
-                        ParserJson((g, er) =>
-                        {
-                            error = er;
-                            if (error == null)
-                            {
-                                geocod = g;
-                            }
-                        }, s);
-                    }
-                }, address);
-            }
-            else
-            {
-                error = new ArgumentNullException("Значение адреса пусто");
-            }
-
-            callback(geocod, error);
+                callback(g, e);
+            }, address);
         }
 
-        private void GetJsonString(Action<string, Exception> callback, string address)
+        /// <summary>
+        /// Метод для формирования урла с веб запросом
+        /// </summary>
+        /// <param name="address">Адрес для вебзапроса</param>
+        /// <returns>Урл для вебзапроса</returns>
+        public override string GetUrlRequest(string address)
         {
-            Exception error = null;
-            string json = string.Empty;
-            string url = GetUrlRequest(address);
-
-            try
-            {
-                WebRequest request = WebRequest.Create(url);
-                request.Headers.Add("Content-Encoding: gzip, deflate, br");
-                request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    using (Stream dataStream = response.GetResponseStream())
-                    {
-                        if (dataStream != null)
-                        {
-                            using (StreamReader reader = new StreamReader(dataStream))
-                            {
-                                json = reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (WebException wex)
-            {
-                //if (wex.Response != null)
-                //{
-                //    using (Stream dataStream = wex.Response.GetResponseStream())
-                //    {
-                //        if (dataStream != null)
-                //        {
-                //            using (StreamReader reader = new StreamReader(dataStream))
-                //            {
-                //                var a = reader.ReadToEnd();
-                //            }
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                //    error = wex;
-                //}
-
-                if (wex.Message == _errorWebRequest)
-                {
-                    error = new Exception(_textError, wex);
-                }
-                else
-                {
-                    error = wex;
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                error = ex;
-            }
-
-            callback(json, error);
+            return $"{_url}{address}&geoCoderType=YANDEX";
         }
 
-        private void ParserJson(Action<GeoCod, Exception> callback, string json)
+        /// <summary>
+        /// Метод преобразования json в объекты
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
+        /// <param name="json">Строка json</param>
+        protected override void ParserJson(Action<GeoCod, Exception> callback, string json)
         {
             Exception error = null;
             GeoCod geocod = null;
@@ -120,23 +65,20 @@ namespace GeoCoding.GeoCodingService
                 List<YandexRusGisJson> list = JsonConvert.DeserializeObject<List<YandexRusGisJson>>(json);
                 if (list.Count == 1)
                 {
-                    geocod = GetGeo(list.FirstOrDefault());
-                    geocod.CountResult = 1;
+                    geocod = GetGeo(list.FirstOrDefault(), 1);
                 }
                 else
                 {
                     var a = list.Where(x => x.Precision == "exact");
-                    if (a.Any() && a.Count() == 1)
+                    if (a.Count() == 1)
                     {
-                        geocod = GetGeo(a.FirstOrDefault());
-                        geocod.CountResult = 1;
+                        geocod = GetGeo(a.FirstOrDefault(), 1);
                     }
                     else
                     {
-                        geocod = new GeoCod() { CountResult = (byte)list.Count };
+                        geocod = GetGeo(null, 1);
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -146,21 +88,27 @@ namespace GeoCoding.GeoCodingService
             callback(geocod, error);
         }
 
-        private GeoCod GetGeo(YandexRusGisJson geo)
+        private GeoCod GetGeo(YandexRusGisJson geo, int countResult)
         {
-            return new GeoCod()
+            if(geo!=null)
             {
-                Text = geo.Text,
-                Kind = geo.Kind,
-                Precision = geo.Precision,
-                Latitude = geo.PosY.ToString().Replace(',', '.'),
-                Longitude = geo.PosX.ToString().Replace(',', '.')
-            };
-        }
-
-        public string GetUrlRequest(string address)
-        {
-            return $"{_url}{address}&geoCoderType=YANDEX";
+                return new GeoCod()
+                {
+                    Text = geo.Text,
+                    Kind = geo.Kind,
+                    Precision = geo.Precision,
+                    Latitude = geo.PosY.ToString().Replace(',', '.'),
+                    Longitude = geo.PosX.ToString().Replace(',', '.'),
+                    CountResult = (byte)countResult
+                };
+            }
+            else
+            {
+                return new GeoCod()
+                {
+                    CountResult = (byte)countResult
+                };
+            }
         }
     }
 }

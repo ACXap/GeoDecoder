@@ -1,123 +1,53 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 
 namespace GeoCoding.GeoCodingService
 {
     /// <summary>
-    /// Реализация интерфейса IGeoCodingService для Yandex
+    /// Реализация интерфейса IGeoCodingService
     /// </summary>
-    public class YandexGeoCodingService : IGeoCodingService
+    public class YandexGeoCodingService : GeoService, IGeoCodingService
     {
         #region PrivateConst
         /// <summary>
         /// Ссылка на геокодер яндекса
         /// </summary>
-        private const string _url = @"https://geocode-maps.yandex.ru/1.x/";
+        protected override string _url => @"https://geocode-maps.yandex.ru/1.x/?geocode=";
+        
         /// <summary>
         /// Ошибка при привышении лимита в сутки
         /// </summary>
-        private const string _errorWebRequest429 = "Удаленный сервер возвратил ошибку: (429) Unknown status.";
-        /// <summary>
-        /// Сообщение по поводу превышения лимита в сутки
-        /// </summary>
-        private const string _textForError429 = "Ваш лимит исчерпан";
+        protected override string _errorWebRequestLimit => "Удаленный сервер возвратил ошибку: (429) Unknown status.";
         #endregion PrivateConst
 
-        public string Name => "YANDEX";
+        /// <summary>
+        /// Название геосервиса
+        /// </summary>
+        public override string Name => "YANDEX";
 
         /// <summary>
         /// Метод для получения геоокординат по адресу
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
         /// <param name="address">Строка адреса для поиска</param>
-        public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
+        public override void GetGeoCod(Action<GeoCod, Exception> callback, string address)
         {
-            Exception error = null;
-            GeoCod geocod = null;
-
-            if (!string.IsNullOrEmpty(address))
+            base.GetGeoCod((g, e) =>
             {
-                GetJsonString((s, e) =>
-                {
-                    error = e;
-                    if (e == null && !string.IsNullOrEmpty(s))
-                    {
-                        ParserJson((g, er) =>
-                        {
-                            error = er;
-                            if (error == null)
-                            {
-                                geocod = g;
-                            }
-                        }, s);
-                    }
-                }, address);
-            }
-            else
-            {
-                error = new ArgumentNullException("Значение адреса пусто");
-            }
-
-            callback(geocod, error);
-        }
-
-        public string GetUrlRequest(string address)
-        {
-            return $"{_url}?geocode={address}&format=json";
+                callback(g, e);
+            }, address);
         }
 
         /// <summary>
-        /// Метод для получения json ответа от яндекса
+        /// Метод для формирования урла с веб запросом
         /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметроми строка, ошибка</param>
-        /// <param name="address">Строка адреса для поиска координат</param>
-        private void GetJsonString(Action<string, Exception> callback, string address)
+        /// <param name="address">Адрес для вебзапроса</param>
+        /// <returns>Урл для вебзапроса</returns>
+        public override string GetUrlRequest(string address)
         {
-            Exception error = null;
-            string json = string.Empty;
-            string url = GetUrlRequest(address);
-
-            try
-            {
-                WebRequest request = WebRequest.Create(url);
-                request.Headers.Add("Content-Encoding: gzip, deflate, br");
-                request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    using (Stream dataStream = response.GetResponseStream())
-                    {
-                        if (dataStream != null)
-                        {
-                            using (StreamReader reader = new StreamReader(dataStream))
-                            {
-                                json = reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (WebException wex)
-            {
-                if(wex.Message == _errorWebRequest429)
-                {
-                    error = new Exception(_textForError429, wex);
-                }
-                else
-                {
-                    error = wex;
-                }
-            }
-
-            catch (Exception ex)
-            {
-                error = ex;
-            }
-
-            callback(json, error);
+            return $"{_url}{address}&format=json";
         }
 
         /// <summary>
@@ -125,7 +55,7 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
         /// <param name="json">Строка json</param>
-        private void ParserJson(Action<GeoCod, Exception> callback, string json)
+        protected override void ParserJson(Action<GeoCod, Exception> callback, string json)
         {
             Exception error = null;
             GeoCod geocod = null;

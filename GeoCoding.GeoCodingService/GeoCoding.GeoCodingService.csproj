@@ -49,6 +49,7 @@
     <Compile Include="Data\SputnikJson.cs" />
     <Compile Include="Data\SputnikJsonOldFormat.cs" />
     <Compile Include="Data\YandexRusGisJson.cs" />
+    <Compile Include="GeoService.cs" />
     <Compile Include="IGeoCodingService.cs" />
     <Compile Include="MainGeoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
