@@ -376,9 +376,10 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Ошибки">
-                    <DataGrid ItemsSource="{Binding Customers}" 
-                              Style="{StaticResource DataGridErrors}" 
-                              ScrollViewer.CanContentScroll="True">
+                    <DataGrid
+                        ItemsSource="{Binding Customers}"
+                        ScrollViewer.CanContentScroll="True"
+                        Style="{StaticResource DataGridErrors}">
                         <DataGrid.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.Panel>
@@ -470,7 +471,7 @@
                 </Grid.RowDefinitions>
 
                 <!--  Статистика  -->
-                <uc:Statistics  Grid.Row="0"/>
+                <uc:Statistics Grid.Row="0" />
 
                 <StackPanel Grid.Row="1" Orientation="Vertical">
                     <TextBlock

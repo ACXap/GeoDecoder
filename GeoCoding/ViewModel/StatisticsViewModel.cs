@@ -53,6 +53,7 @@ namespace GeoCoding
         public void Stop()
         {
             _timer.Stop();
+            GetStat(null, null);
         }
         private void GetStat(object sender, EventArgs e)
         {

@@ -216,11 +216,11 @@ namespace GeoCoding
         /// <summary>
         /// Статистика по выполненному геокодированию
         /// </summary>
-       // public Statistics Statistics
-       // {
-           // get => _statistics;
-           // set => Set(ref _statistics, value);
-       // }
+        // public Statistics Statistics
+        // {
+        // get => _statistics;
+        // set => Set(ref _statistics, value);
+        // }
 
         /// <summary>
         /// Представление коллекции
@@ -297,7 +297,10 @@ namespace GeoCoding
                         {
                             if (er == null)
                             {
-                                SetFileInput(f);
+                                if (!string.IsNullOrEmpty(f))
+                                {
+                                    SetFileInput(f);
+                                }
                             }
                             else
                             {
@@ -477,7 +480,7 @@ namespace GeoCoding
                             var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
                             if (a.Length > 0)
                             {
-                                if(a[0].Contains(".ini"))
+                                if (a[0].Contains(".ini"))
                                 {
                                     GetSettingsFromFile(a[0], _ftpSettings, _bdSettings);
                                 }
@@ -493,7 +496,7 @@ namespace GeoCoding
         {
             _model.GetSettingsFromFile(e =>
                 {
-                    if(e!=null)
+                    if (e != null)
                     {
                         NotificationPlainText(_headerNotificationError, e.Message);
                     }
@@ -548,7 +551,7 @@ namespace GeoCoding
                     Customers.Filter = CustomerFilter;
 
                     // Обновляем статистику
-                   // UpdateStatistics();
+                    // UpdateStatistics();
                     // Оповещаем о создании коллекции
                     // NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
                 }
@@ -642,7 +645,7 @@ namespace GeoCoding
             {
                 str = Environment.CurrentDirectory;
             }
-            if(str == "Статистика")
+            if (str == "Статистика")
             {
                 str = _filesSettings.FolderStatistics;
             }
@@ -762,7 +765,7 @@ namespace GeoCoding
         private void SaveStatistics()
         {
             var nameFile = SetDefNameFileStatistics();
-            if(_stat.IsSave)
+            if (_stat.IsSave)
             {
                 NotificationPlainText("Статистика уже был сохранена", "В статистике с последнего раза ничего не изменилось");
                 return;
@@ -806,12 +809,14 @@ namespace GeoCoding
 
                 _model.GetAllGeoCod((r, i, e) =>
                 {
+                    IsStartGeoCoding = false;
+                    _stat.Stop();
+                    Customers.Refresh();
+
                     if (e == null)
                     {
                         // Оповещаем о завершении получении координат
                         NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
-
-                        //Customers.Refresh();
 
                         if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
                         {
@@ -838,13 +843,6 @@ namespace GeoCoding
                         // Оповещаем если были ошибки и номер на котором была остановка
                         NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
                     }
-
-                    Customers.Refresh();
-
-                    // Прекращаем отображение
-                    IsStartGeoCoding = false;
-                    _stat.Stop();
-
                 }, data);
             }
             else
@@ -910,7 +908,7 @@ namespace GeoCoding
                                 Customers.Filter = CustomerFilter;
 
                                 // Обновляем статистику
-                               // UpdateStatistics();
+                                // UpdateStatistics();
                                 // Оповещаем о создании коллекции
                                 // NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
                             }
@@ -1017,7 +1015,7 @@ namespace GeoCoding
         _commandSaveStatistics ?? (_commandSaveStatistics = new RelayCommand(
                     () =>
                     {
-                        if(!_stat.IsSave)
+                        if (!_stat.IsSave)
                         {
                             SaveStatistics();
                         }
@@ -1025,8 +1023,8 @@ namespace GeoCoding
                         {
                             NotificationPlainText("Уже сохранено все", "С последнего раза ничего не изменилось");
                         }
-                       
-                    }, ()=> _stat!=null && _stat.Statistics!=null));
+
+                    }, () => _stat != null && _stat.Statistics != null));
 
     }
 }
