@@ -472,10 +472,28 @@ namespace GeoCoding
                             var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
                             if (a.Length > 0)
                             {
-                                SetFileInput(a[0]);
+                                if(a[0].Contains(".ini"))
+                                {
+                                    GetSettingsFromFile(a[0], _ftpSettings, _bdSettings);
+                                }
+                                else
+                                {
+                                    SetFileInput(a[0]);
+                                }
                             }
                         }
                     }));
+
+        private void GetSettingsFromFile(string file, FTPSettings ftp, BDSettings bd)
+        {
+            _model.GetSettingsFromFile(e =>
+                {
+                    if(e!=null)
+                    {
+                        NotificationPlainText(_headerNotificationError, e.Message);
+                    }
+                }, file, ftp, bd);
+        }
 
         /// <summary>
         /// Команда для сохранения настроек
@@ -644,10 +662,7 @@ namespace GeoCoding
                 GetDataFromFile();
             }
 
-            // if (string.IsNullOrEmpty(_filesSettings.FileOutput))
-            // {
             FilesSettings.FileOutput = SetDefNameFileOutput();
-            // }
 
             if (_collectionGeoCod != null && _collectionGeoCod.Any() && _geoCodSettings.CanGeoCodAfterGetFile)
             {
@@ -885,7 +900,7 @@ namespace GeoCoding
                             }
                         }, _bdSettings, _bdSettings.SQLQuery);
 
-                    }, ()=> !string.IsNullOrEmpty(_bdSettings.SQLQuery)));
+                    }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery)));
 
         private RelayCommand _commandCheckConnect;
         public RelayCommand CommandCheckConnect =>
@@ -908,7 +923,7 @@ namespace GeoCoding
                                 _bdSettings.Error = string.Empty;
                             }
                         }, _bdSettings);
-                    }, ()=> !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect==StatusConnect.ConnectNow));
+                    }, () => !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect == StatusConnect.ConnectNow));
 
         private RelayCommand _commandCheckConnectFtp;
         public RelayCommand CommandCheckConnectFtp =>
@@ -932,7 +947,7 @@ namespace GeoCoding
                             }
                         }, _ftpSettings);
 
-                    }, ()=> !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect==StatusConnect.ConnectNow));
+                    }, () => !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect == StatusConnect.ConnectNow));
 
         public ReadOnlyObservableCollection<GeoCodingService.IGeoCodingService> CollectionGeoService => GeoCodingService.MainGeoService.GetAllService();
 

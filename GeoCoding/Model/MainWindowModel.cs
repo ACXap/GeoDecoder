@@ -445,6 +445,59 @@ namespace GeoCoding
             _cts.Cancel();
         }
 
+        public void GetSettingsFromFile(Action<Exception> callback, string file, FTPSettings ftp, BDSettings bd)
+        {
+            Exception error = null;
+            List<string> data = null;
+            _fileService.GetData((d, e) =>
+            {
+                error = e;
+                if (e == null && d != null)
+                {
+                    data = d.ToList();
+                }
+            }, file);
+
+            foreach(var str in data)
+            {
+                if(str[0] =='#')
+                {
+                    continue;
+                }
+                var s = str.Split('=');
+                switch (s[0])
+                {
+                    case "FtpServer":
+                        ftp.Server = s[1];
+                        break;
+                    case "FtpPort":
+                        int.TryParse(s[1], out int i);
+                        ftp.Port = i;
+                        break;
+                    case "FtpOutput":
+                        ftp.FolderOutput = s[1];
+                        break;
+                    case "FtpInput":
+                        ftp.FolderInput = s[1];
+                        break;
+                    case "BdServer":
+                        bd.Server = s[1];
+                        break;
+                    case "BdName":
+                        bd.BDName = s[1];
+                        break;
+                    case "BdPort":
+                        int.TryParse(s[1], out int k);
+                        bd.Port = k;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            callback(error);
+        }
+
         /// <summary>
         /// Метод для открытия папки
         /// </summary>
@@ -536,7 +589,7 @@ namespace GeoCoding
                 {
                     data.Qcode = 1;
                 }
-                else if(data.Precision == PrecisionType.None)
+                else if (data.Precision == PrecisionType.None)
                 {
                     data.Qcode = 0;
                 }
