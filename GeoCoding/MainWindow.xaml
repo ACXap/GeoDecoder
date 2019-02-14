@@ -470,7 +470,21 @@
                 </Grid.RowDefinitions>
 
                 <!--  Статистика  -->
-                <GroupBox Margin="3" Header="Статистика">
+                <GroupBox Margin="3">
+                    <GroupBox.HeaderTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Controls:ContentControlEx Content="Статистика" ContentCharacterCasing="Upper" VerticalAlignment="Center" />
+                                <Button Command="{Binding DataContext.CommandOpenFolder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" CommandParameter="Статистика">
+                                    <Button.Template>
+                                        <ControlTemplate>
+                                            <TextBlock Style="{StaticResource TextBlockFolder}" Margin="5,0"/>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </GroupBox.HeaderTemplate>
                     <uc:Statistics />
                 </GroupBox>
 

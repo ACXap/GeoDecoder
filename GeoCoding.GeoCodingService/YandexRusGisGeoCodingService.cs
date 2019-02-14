@@ -76,7 +76,7 @@ namespace GeoCoding.GeoCodingService
                     }
                     else
                     {
-                        geocod = GetGeo(null, 1);
+                        geocod = GetGeo(null, list.Count);
                     }
                 }
             }

@@ -96,18 +96,21 @@ namespace GeoCoding.GeoCodingService
                 SputnikJsonOldFormat a = JsonConvert.DeserializeObject<SputnikJsonOldFormat>(json);
                 byte countFound = (byte)a.Result.Count;
 
-                var g = a.Result.Where(x => x.FullMatch && x.Type == "house");
-                if (g.Count() == 1)
+                if (a.Result.Count == 1)
                 {
-                    geocod = GetGeo(g.FirstOrDefault());
-                    geocod.CountResult = 1;
+                    geocod = GetGeo(a.Result[0], 1);
                 }
                 else
                 {
-                    geocod = new GeoCod()
+                    var o = a.Result.Where(x => x.FullMatch && x.Type == "house");
+                    if (o.Count() == 1)
                     {
-                        CountResult = countFound
-                    };
+                        geocod = GetGeo(o.FirstOrDefault(), 1);
+                    }
+                    else
+                    {
+                        geocod = GetGeo(null, a.Result.Count);
+                    }
                 }
             }
             catch (Exception ex)
@@ -118,16 +121,22 @@ namespace GeoCoding.GeoCodingService
             callback(geocod, error);
         }
 
-        private GeoCod GetGeo(Result g)
+        private GeoCod GetGeo(Result g, int coutResult)
         {
-            return new GeoCod()
+            if(g!=null)
             {
-                Text = g.DisplayName,
-                Kind = g.Type,
-                Precision = g.FullMatch.ToString(),
-                Latitude = g.Position.Lat.ToString(),
-                Longitude = g.Position.Lon.ToString()
-            };
+                return new GeoCod()
+                {
+                    Text = g.DisplayName,
+                    Kind = g.Type,
+                    Precision = g.FullMatch.ToString(),
+                    Latitude = g.Position.Lat.ToString(),
+                    Longitude = g.Position.Lon.ToString(),
+                    CountResult = (byte)coutResult
+                };
+            }
+            return new GeoCod() { CountResult = (byte)coutResult };
+            
         }
 
         public string GetUrlRequest(string address)

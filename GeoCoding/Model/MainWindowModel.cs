@@ -530,7 +530,7 @@ namespace GeoCoding
                         if (statistics.NotGeoCoding == 0)
                         {
                             var time = (data.Max(x => x.DateTimeGeoCod) - data.Min(x => x.DateTimeGeoCod)).TotalSeconds;
-                            statistics.TimeGeoCod = Math.Ceiling(time);
+                            statistics.TimeGeoCod = TimeSpan.FromSeconds(time);
                         }
                     }
                     catch (Exception ex)

@@ -1,4 +1,6 @@
-﻿namespace GeoCoding
+﻿using System;
+
+namespace GeoCoding
 {
     /// <summary>
     /// Класс для хранения статистики
@@ -40,6 +42,6 @@
         /// <summary>
         /// Время геокодирования в секундах
         /// </summary>
-        public double TimeGeoCod { get; set; }
+        public TimeSpan TimeGeoCod { get; set; }
     }
 }

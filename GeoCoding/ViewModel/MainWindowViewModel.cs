@@ -637,6 +637,10 @@ namespace GeoCoding
             {
                 str = Environment.CurrentDirectory;
             }
+            if(str == "Статистика")
+            {
+                str = _filesSettings.FolderStatistics;
+            }
             _model.OpenFolder(e =>
             {
                 if (e != null)
