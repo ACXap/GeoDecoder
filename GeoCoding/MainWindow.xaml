@@ -475,13 +475,22 @@
                         <DataTemplate>
                             <Grid>
                                 <Controls:ContentControlEx Content="Статистика" ContentCharacterCasing="Upper" VerticalAlignment="Center" />
-                                <Button Command="{Binding DataContext.CommandOpenFolder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" CommandParameter="Статистика">
-                                    <Button.Template>
-                                        <ControlTemplate>
-                                            <TextBlock Style="{StaticResource TextBlockFolder}" Margin="5,0"/>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Command="{Binding DataContext.CommandSaveStatistics, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
+                                        <Button.Template>
+                                            <ControlTemplate>
+                                                <TextBlock Style="{StaticResource TextBlockSave}" Margin="5,0"/>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Command="{Binding DataContext.CommandOpenFolder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" CommandParameter="Статистика">
+                                        <Button.Template>
+                                            <ControlTemplate>
+                                                <TextBlock Style="{StaticResource TextBlockFolder}" Margin="5,0"/>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </StackPanel>
                             </Grid>
                         </DataTemplate>
                     </GroupBox.HeaderTemplate>

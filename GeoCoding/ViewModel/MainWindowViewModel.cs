@@ -91,7 +91,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения статистики
         /// </summary>
-        private Statistics _statistics;
+       // private Statistics _statistics;
 
         /// <summary>
         /// Поле для хранения запущена ли процедура декодирования
@@ -191,7 +191,7 @@ namespace GeoCoding
             set
             {
                 Set("CollectionGeoCod", ref _collectionGeoCod, value);
-                _stat.Init(value);
+                _stat.Init(value, _model);
             }
         }
 
@@ -216,11 +216,11 @@ namespace GeoCoding
         /// <summary>
         /// Статистика по выполненному геокодированию
         /// </summary>
-        public Statistics Statistics
-        {
-            get => _statistics;
-            set => Set(ref _statistics, value);
-        }
+       // public Statistics Statistics
+       // {
+           // get => _statistics;
+           // set => Set(ref _statistics, value);
+       // }
 
         /// <summary>
         /// Представление коллекции
@@ -387,6 +387,7 @@ namespace GeoCoding
                             if (er == null)
                             {
                                 Customers.Refresh();
+                                _stat.UpdateStatisticsCollection();
                                 // Оповещаем после окончания геокодирования
                             }
                             else
@@ -547,7 +548,7 @@ namespace GeoCoding
                     Customers.Filter = CustomerFilter;
 
                     // Обновляем статистику
-                    UpdateStatistics();
+                   // UpdateStatistics();
                     // Оповещаем о создании коллекции
                     // NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
                 }
@@ -572,27 +573,27 @@ namespace GeoCoding
         /// <summary>
         /// Метод для получения статистики
         /// </summary>
-        private void UpdateStatistics()
-        {
-            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-            {
-                _model.UpdateStatistic((s, e) =>
-                {
-                    if (e == null)
-                    {
-                        Statistics = s;
+        //private void UpdateStatistics()
+        //{
+        //    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+        //    {
+        //        _model.UpdateStatistic((s, e) =>
+        //        {
+        //            if (e == null)
+        //            {
+        //                Statistics = s;
 
-                        //DispatcherHelper.CheckBeginInvokeOnUI(() =>
-                        //{
-                        //    if (Customers != null)
-                        //    {
-                        //        Customers.Refresh();
-                        //    }
-                        //});
-                    }
-                }, _collectionGeoCod);
-            }
-        }
+        //                //DispatcherHelper.CheckBeginInvokeOnUI(() =>
+        //                //{
+        //                //    if (Customers != null)
+        //                //    {
+        //                //        Customers.Refresh();
+        //                //    }
+        //                //});
+        //            }
+        //        }, _collectionGeoCod);
+        //    }
+        //}
 
         /// <summary>
         /// Фильтрация для представления коллекции
@@ -761,13 +762,22 @@ namespace GeoCoding
         private void SaveStatistics()
         {
             var nameFile = SetDefNameFileStatistics();
+            if(_stat.IsSave)
+            {
+                NotificationPlainText("Статистика уже был сохранена", "В статистике с последнего раза ничего не изменилось");
+                return;
+            }
             _model.SaveStatistics(e =>
             {
                 if (e != null)
                 {
                     NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{nameFile}");
                 }
-            }, _statistics, _filesSettings, nameFile);
+                else
+                {
+                    _stat.IsSave = true;
+                }
+            }, _stat.Statistics, _filesSettings, nameFile);
         }
 
         private void GetAllGeoCod()
@@ -869,11 +879,11 @@ namespace GeoCoding
             });
             Stat = new StatisticsViewModel();
 
-            Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
-            {
-                // Обновляем статистику
-                UpdateStatistics();
-            });
+            //Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
+            //{
+            //    // Обновляем статистику
+            //    UpdateStatistics();
+            //});
         }
 
         private RelayCommand _myCommand;
@@ -900,7 +910,7 @@ namespace GeoCoding
                                 Customers.Filter = CustomerFilter;
 
                                 // Обновляем статистику
-                                UpdateStatistics();
+                               // UpdateStatistics();
                                 // Оповещаем о создании коллекции
                                 // NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
                             }
@@ -1002,6 +1012,21 @@ namespace GeoCoding
             set => Set(ref _stat, value);
         }
 
+        private RelayCommand _commandSaveStatistics;
+        public RelayCommand CommandSaveStatistics =>
+        _commandSaveStatistics ?? (_commandSaveStatistics = new RelayCommand(
+                    () =>
+                    {
+                        if(!_stat.IsSave)
+                        {
+                            SaveStatistics();
+                        }
+                        else
+                        {
+                            NotificationPlainText("Уже сохранено все", "С последнего раза ничего не изменилось");
+                        }
+                       
+                    }, ()=> _stat!=null && _stat.Statistics!=null));
 
     }
 }

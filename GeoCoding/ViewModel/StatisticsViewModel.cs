@@ -12,10 +12,14 @@ namespace GeoCoding
         private DateTime _timeStart;
         private DispatcherTimer _timer;
         private ObservableCollection<EntityGeoCod> _collection;
+        private MainWindowModel _model;
+        public bool IsSave { get; set; } = false;
+
         /// <summary>
         /// Поле для хранения статистики
         /// </summary>
         private Statistics _statistics;
+
         /// <summary>
         /// Статистика по выполненному геокодированию
         /// </summary>
@@ -24,12 +28,13 @@ namespace GeoCoding
             get => _statistics;
             set => Set(ref _statistics, value);
         }
-        public void Init(ObservableCollection<EntityGeoCod> collection, int interval = 1)
+        public void Init(ObservableCollection<EntityGeoCod> collection, MainWindowModel model, int interval = 1)
         {
             _interval = interval;
             _collection = collection;
+            _model = model;
             Statistics = new Statistics();
-            GetStatColl();
+            UpdateStatisticsCollection();
 
             if (_timer == null)
             {
@@ -43,6 +48,7 @@ namespace GeoCoding
         {
             _timer.Start();
             _timeStart = DateTime.Now;
+            GetStat(null, null);
         }
         public void Stop()
         {
@@ -50,10 +56,10 @@ namespace GeoCoding
         }
         private void GetStat(object sender, EventArgs e)
         {
-            GetStatColl();
-            _statistics.TimeGeoCod = TimeSpan.FromSeconds((DateTime.Now-_timeStart).TotalSeconds);
+            UpdateStatisticsCollection();
+            _statistics.TimeGeoCod = TimeSpan.FromSeconds((DateTime.Now - _timeStart).TotalSeconds);
         }
-        private void GetStatColl()
+        public void UpdateStatisticsCollection()
         {
             _statistics.AllEntity = _collection.Count;
             _statistics.OK = _collection.Count(x => x.Status == StatusType.OK);
@@ -63,6 +69,7 @@ namespace GeoCoding
             _statistics.House = _collection.Count(x => x.Kind == KindType.House);
             _statistics.Exact = _collection.Count(x => x.Precision == PrecisionType.Exact);
             _statistics.NotFound = _collection.Count(x => x.CountResult == 0);
+            IsSave = false;
         }
     }
 }
