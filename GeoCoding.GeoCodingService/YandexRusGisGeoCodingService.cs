@@ -99,14 +99,14 @@ namespace GeoCoding.GeoCodingService
                     Precision = geo.Precision,
                     Latitude = geo.PosY.ToString().Replace(',', '.'),
                     Longitude = geo.PosX.ToString().Replace(',', '.'),
-                    CountResult = (byte)countResult
+                    CountResult = countResult
                 };
             }
             else
             {
                 return new GeoCod()
                 {
-                    CountResult = (byte)countResult
+                    CountResult = countResult
                 };
             }
         }

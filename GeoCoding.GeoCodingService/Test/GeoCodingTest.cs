@@ -19,7 +19,7 @@ namespace GeoCoding.GeoCodingService.Test
 
             GeoCod geocod = new GeoCod()
             {
-                CountResult = (byte)rnd.Next(0, 5),
+                CountResult = rnd.Next(0, 5),
                 Latitude = $"{rnd.Next(0,120)}.{rnd.Next(0,900000)}",
                 Longitude = $"{rnd.Next(0, 120)}.{rnd.Next(0, 900000)}",
                 Text = "",

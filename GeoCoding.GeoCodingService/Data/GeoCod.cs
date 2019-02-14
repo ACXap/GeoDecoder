@@ -28,6 +28,6 @@
         /// <summary>
         /// Количество результатов по искомому адресу
         /// </summary>
-        public byte CountResult { get; set; }
+        public int CountResult { get; set; }
     }
 }

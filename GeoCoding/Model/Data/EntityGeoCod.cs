@@ -118,11 +118,11 @@ namespace GeoCoding
             set => Set(ref _precision, value);
         }
 
-        private byte _countResult = 0;
+        private int _countResult = 0;
         /// <summary>
         /// Количество найденных координат для данного адреса, должно быть 1.
         /// </summary>
-        public byte CountResult
+        public int CountResult
         {
             get => _countResult;
             set => Set(ref _countResult, value);

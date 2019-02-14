@@ -94,7 +94,7 @@ namespace GeoCoding.GeoCodingService
             try
             {
                 SputnikJsonOldFormat a = JsonConvert.DeserializeObject<SputnikJsonOldFormat>(json);
-                byte countFound = (byte)a.Result.Count;
+                int countFound = a.Result.Count;
 
                 if (a.Result.Count == 1)
                 {
@@ -132,10 +132,10 @@ namespace GeoCoding.GeoCodingService
                     Precision = g.FullMatch.ToString(),
                     Latitude = g.Position.Lat.ToString(),
                     Longitude = g.Position.Lon.ToString(),
-                    CountResult = (byte)coutResult
+                    CountResult = coutResult
                 };
             }
-            return new GeoCod() { CountResult = (byte)coutResult };
+            return new GeoCod() { CountResult = coutResult };
             
         }
 

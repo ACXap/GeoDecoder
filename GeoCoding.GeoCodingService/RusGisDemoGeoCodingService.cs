@@ -122,7 +122,7 @@ namespace GeoCoding.GeoCodingService
                     }
                     else
                     {
-                        geocod = new GeoCod() { CountResult = (byte)a.Count };
+                        geocod = new GeoCod() { CountResult = a.Count };
                     }
                 }
                 else

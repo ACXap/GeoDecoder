@@ -64,7 +64,7 @@ namespace GeoCoding.GeoCodingService
             {
                 JObject a = JObject.Parse(json);
                 var countFound = (string)((JValue)a["response"]["GeoObjectCollection"]["metaDataProperty"]["GeocoderResponseMetaData"]["found"]).Value;
-                if (byte.TryParse(countFound, out byte count))
+                if (int.TryParse(countFound, out int count))
                 {
                     if (count == 1)
                     {
