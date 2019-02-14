@@ -308,7 +308,7 @@ namespace GeoCoding
                                 NotificationPlainText(_headerNotificationError, er.Message);
                             }
                         }, defName);
-                    }));
+                    }, ()=>!_isStartGeoCoding));
 
         /// <summary>
         /// Команда для выбора файла для сохранения (получения полного имени файла для сохранения)
@@ -376,7 +376,7 @@ namespace GeoCoding
                     {
                         // Получаем данные из файла
                         GetDataFromFile();
-                    }, () => !string.IsNullOrEmpty(_filesSettings.FileInput)));
+                    }, () => !string.IsNullOrEmpty(_filesSettings.FileInput) && !_isStartGeoCoding));
 
         /// <summary>
         /// Команда для геокодирования объекта

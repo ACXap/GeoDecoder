@@ -482,13 +482,8 @@
                     <ComboBox
                         Margin="5,2"
                         ItemsSource="{Binding CollectionGeoService}"
-                        SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                        SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource ComboBoxGeoService}" />
                 </StackPanel>
 
                 <!--  Запуск геокодирования  -->

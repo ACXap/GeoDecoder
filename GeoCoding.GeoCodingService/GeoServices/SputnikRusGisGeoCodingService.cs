@@ -5,17 +5,14 @@ using System.Linq;
 
 namespace GeoCoding.GeoCodingService
 {
-    /// <summary>
-    /// Реализация интерфейса IGeoCodingService
-    /// </summary>
-    public class YandexRusGisGeoCodingService : GeoService, IGeoCodingService
+    class SputnikRusGisGeoCodingService : GeoService, IGeoCodingService
     {
         #region PrivateConst
         /// <summary>
         /// Ссылка на геокодер яндексаРусГис
         /// </summary>
         protected override string _url => @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
-        
+
         /// <summary>
         /// Ошибка при привышении лимита в сутки
         /// </summary>
@@ -25,20 +22,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Название геосервиса
         /// </summary>
-        public override string Name => "YandexRusGis";
-
-        /// <summary>
-        /// Метод для получения геоокординат по адресу
-        /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
-        /// <param name="address">Строка адреса для поиска</param>
-        public override void GetGeoCod(Action<GeoCod, Exception> callback, string address)
-        {
-            base.GetGeoCod((g, e) =>
-            {
-                callback(g, e);
-            }, address);
-        }
+        public string Name => "SputnikRusGis";
 
         /// <summary>
         /// Метод для формирования урла с веб запросом
@@ -47,7 +31,7 @@ namespace GeoCoding.GeoCodingService
         /// <returns>Урл для вебзапроса</returns>
         public override string GetUrlRequest(string address)
         {
-            return $"{_url}{address}&geoCoderType=YANDEX";
+            return $"{_url}{address}&geoCoderType=SPUTNIC";
         }
 
         /// <summary>
@@ -62,14 +46,14 @@ namespace GeoCoding.GeoCodingService
 
             try
             {
-                List<YandexRusGisJson> list = JsonConvert.DeserializeObject<List<YandexRusGisJson>>(json);
+                List<RusGisJson> list = JsonConvert.DeserializeObject<List<RusGisJson>>(json);
                 if (list.Count == 1)
                 {
                     geocod = GetGeo(list.FirstOrDefault(), 1);
                 }
                 else
                 {
-                    var a = list.Where(x => x.Precision == "exact");
+                    var a = list.Where(x => x.Precision == "true" && x.Kind == "house");
                     if (a.Count() == 1)
                     {
                         geocod = GetGeo(a.FirstOrDefault(), 1);
@@ -88,9 +72,9 @@ namespace GeoCoding.GeoCodingService
             callback(geocod, error);
         }
 
-        private GeoCod GetGeo(YandexRusGisJson geo, int countResult)
+        private GeoCod GetGeo(RusGisJson geo, int countResult)
         {
-            if(geo!=null)
+            if (geo != null)
             {
                 return new GeoCod()
                 {

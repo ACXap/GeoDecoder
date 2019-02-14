@@ -136,7 +136,6 @@ namespace GeoCoding.GeoCodingService
                 };
             }
             return new GeoCod() { CountResult = coutResult };
-            
         }
 
         public string GetUrlRequest(string address)
