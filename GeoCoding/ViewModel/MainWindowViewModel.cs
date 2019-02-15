@@ -97,6 +97,11 @@ namespace GeoCoding
         private bool _isStartGeoCoding = false;
 
         /// <summary>
+        /// Поле для хранения ссылки на текущий выбранный геосервис
+        /// </summary>
+        private GeoCodingService.IGeoCodingService _currentGeoService;
+
+        /// <summary>
         /// Поле для хранения ссылки на настройки геокодирования
         /// </summary>
         private GeoCodSettings _geoCodSettings;
@@ -110,6 +115,11 @@ namespace GeoCoding
         /// Поле для хранения ссылки на настройки БД
         /// </summary>
         private BDSettings _bdSettings;
+
+        /// <summary>
+        /// Поле для хранения статистики
+        /// </summary>
+        private StatisticsViewModel _stat;
 
         /// <summary>
         /// Поле для хранения ссылки на текущую тему оформления
@@ -176,6 +186,31 @@ namespace GeoCoding
         /// </summary>
         private RelayCommand _commandSaveSettings;
 
+        /// <summary>
+        /// Поле для хранения ссылки на команду сохранение статистики
+        /// </summary>
+        private RelayCommand _commandSaveStatistics;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду копирования ссылки на запрос
+        /// </summary>
+        private RelayCommand<EntityGeoCod> _commandCopyRequest;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду проверки соединения с фтп-сервером
+        /// </summary>
+        private RelayCommand _commandCheckConnectFtp;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду проверки соединения с базой
+        /// </summary>
+        private RelayCommand _commandCheckConnect;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду получения данных из базы данных
+        /// </summary>
+        private RelayCommand _commandGetDataFromBD;
+
         #endregion PrivateFields
 
         #region PublicPropertys
@@ -189,7 +224,7 @@ namespace GeoCoding
             set
             {
                 Set("CollectionGeoCod", ref _collectionGeoCod, value);
-                _stat.Init(value, _model);
+                _stat.Init(value);
             }
         }
 
@@ -212,21 +247,26 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Статистика по выполненному геокодированию
-        /// </summary>
-        // public Statistics Statistics
-        // {
-        // get => _statistics;
-        // set => Set(ref _statistics, value);
-        // }
-
-        /// <summary>
         /// Представление коллекции
         /// </summary>
         public ICollectionView Customers
         {
             get => _customerView;
             set => Set(ref _customerView, value);
+        }
+
+        /// <summary>
+        /// Текущий геосервис
+        /// </summary>
+        public GeoCodingService.IGeoCodingService CurrentGeoService
+        {
+            get => _currentGeoService;
+            set
+            {
+                _geoCodSettings.GeoService = value.Name;
+                _model.SetGeoService(value);
+                Set(ref _currentGeoService, value);
+            }
         }
 
         /// <summary>
@@ -257,6 +297,15 @@ namespace GeoCoding
         }
 
         /// <summary>
+        /// Статистика выполнения геокодирования
+        /// </summary>
+        public StatisticsViewModel Stat
+        {
+            get => _stat;
+            set => Set(ref _stat, value);
+        }
+
+        /// <summary>
         /// Текущая тема оформления окна
         /// </summary>
         public Theme ColorTheme
@@ -273,6 +322,11 @@ namespace GeoCoding
         /// Коллекция всех возможных тем оформления окна
         /// </summary>
         public System.Collections.Generic.IReadOnlyCollection<Theme> ListTheme => ThemeManager.Themes;
+
+        /// <summary>
+        /// Коллекция всех возможных геосервисов
+        /// </summary>
+        public ReadOnlyObservableCollection<GeoCodingService.IGeoCodingService> CollectionGeoService => GeoCodingService.MainGeoService.AllService;
 
         #endregion PublicPropertys
 
@@ -324,7 +378,6 @@ namespace GeoCoding
                         {
                             defName = _filesSettings.FileOutput;
                         }
-
 
                         _model.SetFileForSave((file, error) =>
                         {
@@ -389,7 +442,6 @@ namespace GeoCoding
                             {
                                 Customers.Refresh();
                                 _stat.UpdateStatisticsCollection();
-                                // Оповещаем после окончания геокодирования
                             }
                             else
                             {
@@ -525,6 +577,126 @@ namespace GeoCoding
                         }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, ColorTheme.Name);
                     }));
 
+        /// <summary>
+        /// Команда для сохранения статистики
+        /// </summary>
+        public RelayCommand CommandSaveStatistics =>
+        _commandSaveStatistics ?? (_commandSaveStatistics = new RelayCommand(
+                    () =>
+                    {
+                        if (!_stat.IsSave)
+                        {
+                            SaveStatistics();
+                        }
+                        else
+                        {
+                            NotificationPlainText("Уже сохранено все", "С последнего раза ничего не изменилось");
+                        }
+
+                    }, () => _stat != null && _stat.Statistics != null));
+
+        /// <summary>
+        /// Команда для копирования ссылки на запрос
+        /// </summary>
+        public RelayCommand<EntityGeoCod> CommandCopyRequest =>
+        _commandCopyRequest ?? (_commandCopyRequest = new RelayCommand<EntityGeoCod>(
+                    obj =>
+                    {
+                        try
+                        {
+                            Clipboard.SetText(_currentGeoService.GetUrlRequest(obj.Address), TextDataFormat.UnicodeText);
+                        }
+                        catch (Exception ex)
+                        {
+                            NotificationPlainText(_headerNotificationError, ex.Message);
+                        }
+                    }));
+
+        /// <summary>
+        /// Команда для проверки соединения с базой
+        /// </summary>
+        public RelayCommand CommandCheckConnect =>
+        _commandCheckConnect ?? (_commandCheckConnect = new RelayCommand(
+                    () =>
+                    {
+                        _bdSettings.StatusConnect = StatusConnect.ConnectNow;
+                        _bdSettings.Error = string.Empty;
+                        _model.ConnectBDAsync(e =>
+                        {
+                            if (e != null)
+                            {
+                                NotificationPlainText(_headerNotificationError, e.Message);
+                                _bdSettings.StatusConnect = StatusConnect.Error;
+                                _bdSettings.Error = e.Message;
+                            }
+                            else
+                            {
+                                _bdSettings.StatusConnect = StatusConnect.OK;
+                                _bdSettings.Error = string.Empty;
+                            }
+                        }, _bdSettings);
+                    }, () => !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect == StatusConnect.ConnectNow));
+
+        /// <summary>
+        /// Команда для проверки соединения с фтп-сервером
+        /// </summary>
+        public RelayCommand CommandCheckConnectFtp =>
+        _commandCheckConnectFtp ?? (_commandCheckConnectFtp = new RelayCommand(
+                    () =>
+                    {
+                        _ftpSettings.StatusConnect = StatusConnect.ConnectNow;
+                        _ftpSettings.Error = string.Empty;
+                        _model.ConnectFTPAsync(e =>
+                        {
+                            if (e != null)
+                            {
+                                NotificationPlainText(_headerNotificationError, e.Message);
+                                _ftpSettings.StatusConnect = StatusConnect.Error;
+                                _ftpSettings.Error = e.Message;
+                            }
+                            else
+                            {
+                                FTPSettings.StatusConnect = StatusConnect.OK;
+                                _ftpSettings.Error = string.Empty;
+                            }
+                        }, _ftpSettings);
+
+                    }, () => !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect == StatusConnect.ConnectNow));
+
+        /// <summary>
+        /// Команда для получения данных из базы данных
+        /// </summary>
+        public RelayCommand CommandGetDataFromBD =>
+        _commandGetDataFromBD ?? (_commandGetDataFromBD = new RelayCommand(
+                    () =>
+                    {
+                        _model.GetDataFromBD((data, error) =>
+                        {
+                            if (error == null)
+                            {
+                                // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
+                                if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                                {
+                                    _collectionGeoCod.Clear();
+                                    _collectionGeoCod = null;
+                                }
+                                // Создаем коллекцию с данными
+                                CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
+
+                                // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
+                                Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
+                                Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
+                                Customers.Filter = CustomerFilter;
+                            }
+                            else
+                            {
+                                // Оповещаем если были ошибки
+                                NotificationPlainText(_headerNotificationError, error.Message);
+                            }
+                        }, _bdSettings, _bdSettings.SQLQuery);
+
+                    }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery)));
+
         #endregion PublicCommands
 
         #region PrivateMethod
@@ -551,11 +723,6 @@ namespace GeoCoding
                     Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
                     Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
                     Customers.Filter = CustomerFilter;
-
-                    // Обновляем статистику
-                    // UpdateStatistics();
-                    // Оповещаем о создании коллекции
-                    // NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
                 }
                 else
                 {
@@ -574,31 +741,6 @@ namespace GeoCoding
         {
             await dialogCoordinator.ShowMessageAsync(this, header, message);
         }
-
-        /// <summary>
-        /// Метод для получения статистики
-        /// </summary>
-        //private void UpdateStatistics()
-        //{
-        //    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-        //    {
-        //        _model.UpdateStatistic((s, e) =>
-        //        {
-        //            if (e == null)
-        //            {
-        //                Statistics = s;
-
-        //                //DispatcherHelper.CheckBeginInvokeOnUI(() =>
-        //                //{
-        //                //    if (Customers != null)
-        //                //    {
-        //                //        Customers.Refresh();
-        //                //    }
-        //                //});
-        //            }
-        //        }, _collectionGeoCod);
-        //    }
-        //}
 
         /// <summary>
         /// Фильтрация для представления коллекции
@@ -861,6 +1003,8 @@ namespace GeoCoding
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
+            Stat = new StatisticsViewModel();
+
             _model.GetSettings((e, f, g, ftp, bds, c) =>
             {
                 if (e == null)
@@ -877,156 +1021,6 @@ namespace GeoCoding
                     NotificationPlainText(_headerNotificationError, e.Message);
                 }
             });
-            Stat = new StatisticsViewModel();
-
-            //Messenger.Default.Register<PropertyChangedMessage<StatusType>>(this, obj =>
-            //{
-            //    // Обновляем статистику
-            //    UpdateStatistics();
-            //});
         }
-
-        private RelayCommand _myCommand;
-        public RelayCommand MyCommand =>
-        _myCommand ?? (_myCommand = new RelayCommand(
-                    () =>
-                    {
-                        _model.GetDataFromDB((data, error) =>
-                        {
-                            if (error == null)
-                            {
-                                // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
-                                if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-                                {
-                                    _collectionGeoCod.Clear();
-                                    _collectionGeoCod = null;
-                                }
-                                // Создаем коллекцию с данными
-                                CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
-
-                                // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
-                                Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
-                                Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
-                                Customers.Filter = CustomerFilter;
-
-                                // Обновляем статистику
-                                // UpdateStatistics();
-                                // Оповещаем о создании коллекции
-                                // NotificationPlainText(_headerNotificationDataProcessed, $"{_allAddress} {_collectionGeoCod.Count}");
-                            }
-                            else
-                            {
-                                // Оповещаем если были ошибки
-                                NotificationPlainText(_headerNotificationError, error.Message);
-                            }
-                        }, _bdSettings, _bdSettings.SQLQuery);
-
-                    }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery)));
-
-        private RelayCommand _commandCheckConnect;
-        public RelayCommand CommandCheckConnect =>
-        _commandCheckConnect ?? (_commandCheckConnect = new RelayCommand(
-                    () =>
-                    {
-                        _bdSettings.StatusConnect = StatusConnect.ConnectNow;
-                        _bdSettings.Error = string.Empty;
-                        _model.ConnectBDAsync(e =>
-                        {
-                            if (e != null)
-                            {
-                                NotificationPlainText(_headerNotificationError, e.Message);
-                                _bdSettings.StatusConnect = StatusConnect.Error;
-                                _bdSettings.Error = e.Message;
-                            }
-                            else
-                            {
-                                _bdSettings.StatusConnect = StatusConnect.OK;
-                                _bdSettings.Error = string.Empty;
-                            }
-                        }, _bdSettings);
-                    }, () => !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect == StatusConnect.ConnectNow));
-
-        private RelayCommand _commandCheckConnectFtp;
-        public RelayCommand CommandCheckConnectFtp =>
-        _commandCheckConnectFtp ?? (_commandCheckConnectFtp = new RelayCommand(
-                    () =>
-                    {
-                        _ftpSettings.StatusConnect = StatusConnect.ConnectNow;
-                        _ftpSettings.Error = string.Empty;
-                        _model.ConnectFTPAsync(e =>
-                        {
-                            if (e != null)
-                            {
-                                NotificationPlainText(_headerNotificationError, e.Message);
-                                _ftpSettings.StatusConnect = StatusConnect.Error;
-                                _ftpSettings.Error = e.Message;
-                            }
-                            else
-                            {
-                                FTPSettings.StatusConnect = StatusConnect.OK;
-                                _ftpSettings.Error = string.Empty;
-                            }
-                        }, _ftpSettings);
-
-                    }, () => !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect == StatusConnect.ConnectNow));
-
-        public ReadOnlyObservableCollection<GeoCodingService.IGeoCodingService> CollectionGeoService => GeoCodingService.MainGeoService.GetAllService();
-
-        private GeoCodingService.IGeoCodingService _currentGeoService;
-        /// <summary>
-        /// Текущий геосервис
-        /// </summary>
-        public GeoCodingService.IGeoCodingService CurrentGeoService
-        {
-            get => _currentGeoService;
-            set
-            {
-                _geoCodSettings.GeoService = value.Name;
-                _model.SetGeoService(value);
-                Set(ref _currentGeoService, value);
-            }
-        }
-
-        private RelayCommand<EntityGeoCod> _commandCopyRequest;
-        public RelayCommand<EntityGeoCod> CommandCopyRequest =>
-        _commandCopyRequest ?? (_commandCopyRequest = new RelayCommand<EntityGeoCod>(
-                    obj =>
-                    {
-                        try
-                        {
-                            Clipboard.SetText(_currentGeoService.GetUrlRequest(obj.Address), TextDataFormat.UnicodeText);
-                        }
-                        catch (Exception ex)
-                        {
-                            NotificationPlainText(_headerNotificationError, ex.Message);
-                        }
-                    }));
-
-        private StatisticsViewModel _stat;
-        /// <summary>
-        /// 
-        /// </summary>
-        public StatisticsViewModel Stat
-        {
-            get => _stat;
-            set => Set(ref _stat, value);
-        }
-
-        private RelayCommand _commandSaveStatistics;
-        public RelayCommand CommandSaveStatistics =>
-        _commandSaveStatistics ?? (_commandSaveStatistics = new RelayCommand(
-                    () =>
-                    {
-                        if (!_stat.IsSave)
-                        {
-                            SaveStatistics();
-                        }
-                        else
-                        {
-                            NotificationPlainText("Уже сохранено все", "С последнего раза ничего не изменилось");
-                        }
-
-                    }, () => _stat != null && _stat.Statistics != null));
-
     }
 }

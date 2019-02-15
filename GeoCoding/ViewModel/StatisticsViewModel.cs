@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
 
@@ -11,15 +11,12 @@ namespace GeoCoding
         private int _interval;
         private DateTime _timeStart;
         private DispatcherTimer _timer;
-        private ObservableCollection<EntityGeoCod> _collection;
-        private MainWindowModel _model;
+        private IEnumerable<EntityGeoCod> _collection;
         public bool IsSave { get; set; } = false;
-
         /// <summary>
         /// Поле для хранения статистики
         /// </summary>
         private Statistics _statistics;
-
         /// <summary>
         /// Статистика по выполненному геокодированию
         /// </summary>
@@ -28,11 +25,10 @@ namespace GeoCoding
             get => _statistics;
             set => Set(ref _statistics, value);
         }
-        public void Init(ObservableCollection<EntityGeoCod> collection, MainWindowModel model, int interval = 1)
+        public void Init(IEnumerable<EntityGeoCod> collection, int interval = 1)
         {
             _interval = interval;
             _collection = collection;
-            _model = model;
             Statistics = new Statistics();
             UpdateStatisticsCollection();
 
@@ -62,7 +58,7 @@ namespace GeoCoding
         }
         public void UpdateStatisticsCollection()
         {
-            _statistics.AllEntity = _collection.Count;
+            _statistics.AllEntity = _collection.Count();
             _statistics.OK = _collection.Count(x => x.Status == StatusType.OK);
             _statistics.NotGeoCoding = _collection.Count(x => x.Status == StatusType.NotGeoCoding);
             _statistics.GeoCodingNow = _collection.Count(x => x.Status == StatusType.GeoCodingNow);
