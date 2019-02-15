@@ -36,15 +36,15 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Controls:ContentControlEx Grid.Row="0"
                         VerticalAlignment="Center" HorizontalAlignment="Center"
                         Content="Стоп"
                         ContentCharacterCasing="Upper" />
-                            <TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center"/>
-                            <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" HorizontalAlignment="Stretch" Margin="4" VerticalAlignment="Center" EllipseDiameter="8"/>
+                            <TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
+                            <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" HorizontalAlignment="Stretch" VerticalAlignment="Center" EllipseDiameter="8"/>
                         </Grid>
                     </Setter.Value>
                 </Setter>
