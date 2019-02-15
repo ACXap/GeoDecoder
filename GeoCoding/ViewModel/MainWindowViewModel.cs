@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using GalaSoft.MvvmLight.Threading;
 
 namespace GeoCoding
 {
@@ -678,11 +679,11 @@ namespace GeoCoding
                                 if(data.Any())
                                 {
                                     // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
-                                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-                                    {
-                                        _collectionGeoCod.Clear();
-                                        _collectionGeoCod = null;
-                                    }
+                                    //if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                                    //{
+                                    //    _collectionGeoCod.Clear();
+                                    //    _collectionGeoCod = null;
+                                    //}
                                     // Создаем коллекцию с данными
                                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
 
