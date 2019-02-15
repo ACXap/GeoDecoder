@@ -61,18 +61,24 @@ namespace GeoCoding.FTPService
             string name = Path.GetFileName(nameFile);
             string data = string.Empty;
 
-            FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create($"{conSettings.Server}:{conSettings.Port}{conSettings.FolderOutput}");
-            ftpRequest.Credentials = new NetworkCredential(conSettings.Login, conSettings.Password);
-            ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
-
-            using (FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse())
+            try
             {
-                using (StreamReader sr = new StreamReader(ftpResponse.GetResponseStream()))
+                FtpWebRequest ftpRequest = (FtpWebRequest)WebRequest.Create($"{conSettings.Server}:{conSettings.Port}{conSettings.FolderOutput}");
+                ftpRequest.Credentials = new NetworkCredential(conSettings.Login, conSettings.Password);
+                ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
+
+                using (FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse())
                 {
-                    data = sr.ReadToEnd();
+                    using (StreamReader sr = new StreamReader(ftpResponse.GetResponseStream()))
+                    {
+                        data = sr.ReadToEnd();
+                    }
                 }
             }
+            catch (Exception ex)
+            {
 
+            }
             List<string> list = data.Split('\n').ToList();
             bool exist = true;
             int i = 1;

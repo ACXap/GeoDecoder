@@ -24,11 +24,7 @@ namespace GeoCoding.Helpers
             Exception error = null;
             string result = string.Empty;
 
-            if (string.IsNullOrEmpty(data))
-            {
-                //error = new ArgumentNullException();
-            }
-            else
+            if (!string.IsNullOrEmpty(data))
             {
                 try
                 {
@@ -55,11 +51,7 @@ namespace GeoCoding.Helpers
             Exception error = null;
             string result = string.Empty;
 
-            if (string.IsNullOrEmpty(data))
-            {
-                //error = new ArgumentNullException();
-            }
-            else
+            if (!string.IsNullOrEmpty(data))
             {
                 try
                 {
