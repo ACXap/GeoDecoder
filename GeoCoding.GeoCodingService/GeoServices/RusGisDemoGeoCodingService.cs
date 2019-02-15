@@ -11,7 +11,7 @@ namespace GeoCoding.GeoCodingService
     {
         private const string _url = @"https://capex.cloud.rt.ru/view/rest/gp/geocoding?geocode=";
 
-        public string Name => "RusGeoDemo";
+        public string Name => "RusGisDemo";
 
         /// <summary>
         /// Метод для получения геоокординат по адресу

@@ -1,7 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using GalaSoft.MvvmLight.Messaging;
-using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using System;
