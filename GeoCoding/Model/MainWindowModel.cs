@@ -46,7 +46,7 @@ namespace GeoCoding
                                                              $"{_charSplit}OK{_charSplit}Error{_charSplit}NotGeoCoding{_charSplit}GeoCodingNow{_charSplit}House" +
                                                                 $"{_charSplit}Exact{_charSplit}NotFound{_charSplit}TimeGeoCod";
         private CancellationTokenSource _cts;
-        private bool _isStartUpdateStatistic = false;
+        //private bool _isStartUpdateStatistic = false;
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -502,46 +502,46 @@ namespace GeoCoding
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром статистика, ошибка</param>
         /// <param name="data">Множество объектов по которым считается статистика</param>
-        public async void UpdateStatistic(Action<Statistics, Exception> callback, IEnumerable<EntityGeoCod> data)
-        {
-            Exception error = null;
-            Statistics statistics = null;
+        //public async void UpdateStatistic(Action<Statistics, Exception> callback, IEnumerable<EntityGeoCod> data)
+        //{
+        //    Exception error = null;
+        //    Statistics statistics = null;
 
-            if (!_isStartUpdateStatistic)
-            {
-                _isStartUpdateStatistic = true;
-                await Task.Factory.StartNew(() =>
-                {
-                    try
-                    {
-                        statistics = new Statistics()
-                        {
-                            AllEntity = data.Count(),
-                            OK = data.Count(x => x.Status == StatusType.OK),
-                            NotGeoCoding = data.Count(x => x.Status == StatusType.NotGeoCoding),
-                            GeoCodingNow = data.Count(x => x.Status == StatusType.GeoCodingNow),
-                            Error = data.Count(x => x.Status == StatusType.Error),
-                            House = data.Count(x => x.Kind == KindType.House),
-                            Exact = data.Count(x => x.Precision == PrecisionType.Exact),
-                            NotFound = data.Count(x => x.CountResult == 0)
-                        };
-                        // надо переделывать время выполнения. если два раза один и тот же список отправлять, то время очень разное
-                        if (statistics.NotGeoCoding == 0)
-                        {
-                            var time = (data.Max(x => x.DateTimeGeoCod) - data.Min(x => x.DateTimeGeoCod)).TotalSeconds;
-                            statistics.TimeGeoCod = TimeSpan.FromSeconds(time);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        error = ex;
-                    }
+        //    if (!_isStartUpdateStatistic)
+        //    {
+        //        _isStartUpdateStatistic = true;
+        //        await Task.Factory.StartNew(() =>
+        //        {
+        //            try
+        //            {
+        //                statistics = new Statistics()
+        //                {
+        //                    AllEntity = data.Count(),
+        //                    OK = data.Count(x => x.Status == StatusType.OK),
+        //                    NotGeoCoding = data.Count(x => x.Status == StatusType.NotGeoCoding),
+        //                    GeoCodingNow = data.Count(x => x.Status == StatusType.GeoCodingNow),
+        //                    Error = data.Count(x => x.Status == StatusType.Error),
+        //                    House = data.Count(x => x.Kind == KindType.House),
+        //                    Exact = data.Count(x => x.Precision == PrecisionType.Exact),
+        //                    NotFound = data.Count(x => x.CountResult == 0)
+        //                };
+        //                // надо переделывать время выполнения. если два раза один и тот же список отправлять, то время очень разное
+        //                if (statistics.NotGeoCoding == 0)
+        //                {
+        //                    var time = (data.Max(x => x.DateTimeGeoCod) - data.Min(x => x.DateTimeGeoCod)).TotalSeconds;
+        //                    statistics.TimeGeoCod = TimeSpan.FromSeconds(time);
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                error = ex;
+        //            }
 
-                    _isStartUpdateStatistic = false;
-                    callback(statistics, error);
-                });
-            }
-        }
+        //            _isStartUpdateStatistic = false;
+        //            callback(statistics, error);
+        //        });
+        //    }
+        //}
 
         /// <summary>
         /// Метод для установки свойств объекта
