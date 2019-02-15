@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace GeoCoding.GeoCodingService
@@ -76,6 +75,7 @@ namespace GeoCoding.GeoCodingService
 
             callback(geocod, error);
         }
+
         private GeoCod GetGeo(FeatureMember geo, int coutResult)
         {
             if (geo != null)
