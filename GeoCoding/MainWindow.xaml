@@ -281,21 +281,39 @@
             <!--  Индикация работы геокодирования  -->
             <StackPanel
                 Grid.Column="0"
-                HorizontalAlignment="Right"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Panel.ZIndex="1"
-                Orientation="Horizontal"
-                Visibility="{Binding IsStartGeoCoding, Converter={StaticResource BooleanToVisibilityConverter}}">
+                Orientation="Horizontal">
+                <StackPanel.Style>
+                    <Style TargetType="{x:Type StackPanel}">
+                        <Style.Resources>
+                            <Storyboard x:Key="flashAnimation" >
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1" To="0" AutoReverse="True" Duration="0:0:0.5" RepeatBehavior="Forever" />
+                            </Storyboard>
+                        </Style.Resources>
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsStartGeoCoding}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard Name="flash" Storyboard="{StaticResource flashAnimation}" />
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <StopStoryboard BeginStoryboardName="flash"/>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
 
-                <!--  Подпись к индикации процесса геокодирования  -->
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <!--Подпись к индикации процесса геокодирования-->
                 <TextBlock
                     FontSize="35"
                     FontWeight="Bold"
                     Foreground="Red"
-                    Text="Идет обработка данных..." />
-
-                <!--  Прогрессбар для процесса геокодирования  -->
-                <Controls:ProgressRing IsActive="{Binding IsStartGeoCoding}" />
+                    Text="Идет обработка данных..."/>
             </StackPanel>
 
             <!--  Данные  -->

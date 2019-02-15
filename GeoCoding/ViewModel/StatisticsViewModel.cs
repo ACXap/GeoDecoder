@@ -12,6 +12,7 @@ namespace GeoCoding
         private DateTime _timeStart;
         private DispatcherTimer _timer;
         private IEnumerable<EntityGeoCod> _collection;
+
         public bool IsSave { get; set; } = false;
         /// <summary>
         /// Поле для хранения статистики
@@ -25,6 +26,7 @@ namespace GeoCoding
             get => _statistics;
             set => Set(ref _statistics, value);
         }
+
         public void Init(IEnumerable<EntityGeoCod> collection, int interval = 1)
         {
             _interval = interval;
@@ -66,6 +68,7 @@ namespace GeoCoding
             _statistics.House = _collection.Count(x => x.Kind == KindType.House);
             _statistics.Exact = _collection.Count(x => x.Precision == PrecisionType.Exact);
             _statistics.NotFound = _collection.Count(x => x.CountResult == 0);
+            _statistics.Percent = ((_statistics.AllEntity -_statistics.NotGeoCoding) / (double)_statistics.AllEntity) * 100;
             IsSave = false;
         }
     }

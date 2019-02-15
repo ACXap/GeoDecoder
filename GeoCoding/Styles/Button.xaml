@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:local="clr-namespace:GeoCoding">
 
     <Style
@@ -15,15 +15,39 @@
         x:Key="ButtonStopStart"
         BasedOn="{StaticResource ButtonMainStyle}"
         TargetType="{x:Type Button}">
-        <Setter Property="Content" Value="Геокодировать" />
         <Setter Property="Command" Value="{Binding CommandGetAllGeoCod}" />
         <Setter Property="Height" Value="80" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Content">
+            <Setter.Value>
+                    <Controls:ContentControlEx
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Content="Геокодировать"
+                        ContentCharacterCasing="Upper" />
+            </Setter.Value>
+        </Setter>
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsStartGeoCoding}" Value="True">
-                <Setter Property="Content" Value="Стоп" />
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="2*"/>
+                            </Grid.RowDefinitions>
+                            <Controls:ContentControlEx Grid.Row="0"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Content="Стоп"
+                        ContentCharacterCasing="Upper" />
+                            <TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center"/>
+                            <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" HorizontalAlignment="Stretch" Margin="4" VerticalAlignment="Center" EllipseDiameter="8"/>
+                        </Grid>
+                    </Setter.Value>
+                </Setter>
                 <Setter Property="Command" Value="{Binding CommandStopGeoCoding}" />
             </DataTrigger>
         </Style.Triggers>

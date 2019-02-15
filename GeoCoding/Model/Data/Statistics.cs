@@ -90,5 +90,15 @@ namespace GeoCoding
             get => _timeGeoCod;
             set => Set(ref _timeGeoCod, value);
         }
+
+        private double _percent;
+        /// <summary>
+        /// Процент выполненого геокодирования
+        /// </summary>
+        public double Percent
+        {
+            get => _percent;
+            set => Set(ref _percent, value);
+        }
     }
 }
