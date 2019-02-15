@@ -26,11 +26,6 @@ namespace GeoCoding.GeoCodingService
         protected virtual string _url { get; }
 
         /// <summary>
-        /// Название геосервиса
-        /// </summary>
-        public virtual string Name => "Имя сервиса";
-
-        /// <summary>
         /// Метод для формирования урла с веб запросом
         /// </summary>
         /// <param name="address">Адрес для вебзапроса</param>
@@ -50,7 +45,6 @@ namespace GeoCoding.GeoCodingService
             Exception error = null;
             string json = string.Empty;
             string url = GetUrlRequest(address);
-            string a = _errorWebRequestLimit;
 
             try
             {

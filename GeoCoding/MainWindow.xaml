@@ -228,7 +228,6 @@
                         <!--  Выбор файла для сохранения  -->
                         <Button
                             Grid.Column="0"
-                            VerticalAlignment="Top"
                             Command="{Binding CommandSetFileOutput}"
                             Content="Выбрать файл для сохранения"
                             Style="{StaticResource ButtonMainStyle}" />
@@ -303,11 +302,6 @@
             <TabControl Grid.Column="0">
                 <TabItem Header="Данные">
                     <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMainAll}">
-                        <!--<DataGrid.RowDetailsTemplate>
-                            <DataTemplate>
-                                <uc:InformationEntity Background="Transparent"/>
-                            </DataTemplate>
-                        </DataGrid.RowDetailsTemplate>-->
                         <DataGrid.Columns>
 
                             <!--  Колонка статуса  -->
@@ -376,9 +370,10 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Ошибки">
-                    <DataGrid ItemsSource="{Binding Customers}" 
-                              Style="{StaticResource DataGridErrors}" 
-                              ScrollViewer.CanContentScroll="True">
+                    <DataGrid
+                        ItemsSource="{Binding Customers}"
+                        ScrollViewer.CanContentScroll="True"
+                        Style="{StaticResource DataGridErrors}">
                         <DataGrid.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.Panel>
@@ -470,7 +465,7 @@
                 </Grid.RowDefinitions>
 
                 <!--  Статистика  -->
-                <uc:Statistics  Grid.Row="0"/>
+                <uc:Statistics Grid.Row="0" />
 
                 <StackPanel Grid.Row="1" Orientation="Vertical">
                     <TextBlock
@@ -481,13 +476,8 @@
                     <ComboBox
                         Margin="5,2"
                         ItemsSource="{Binding CollectionGeoService}"
-                        SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                        SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource ComboBoxGeoService}" />
                 </StackPanel>
 
                 <!--  Запуск геокодирования  -->

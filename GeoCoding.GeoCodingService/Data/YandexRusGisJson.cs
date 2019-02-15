@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GeoCoding.GeoCodingService
 {
-    public class YandexRusGisJson
+    public class RusGisJson
     {
         [JsonProperty("requestAddress")]
         public string RequestAddress { get; set; }

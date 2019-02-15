@@ -50,14 +50,15 @@
     <Compile Include="Data\SputnikJsonOldFormat.cs" />
     <Compile Include="Data\YandexRusGisJson.cs" />
     <Compile Include="GeoService.cs" />
+    <Compile Include="GeoServices\SputnikRusGisGeoCodingService.cs" />
     <Compile Include="IGeoCodingService.cs" />
     <Compile Include="MainGeoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RusGisDemoGeoCodingService.cs" />
-    <Compile Include="SputnikGeoCodingService.cs" />
+    <Compile Include="GeoServices\RusGisDemoGeoCodingService.cs" />
+    <Compile Include="GeoServices\SputnikGeoCodingService.cs" />
     <Compile Include="Test\GeoCodingTest.cs" />
-    <Compile Include="YandexGeoCodingService.cs" />
-    <Compile Include="YandexRusGisGeoCodingService.cs" />
+    <Compile Include="GeoServices\YandexGeoCodingService.cs" />
+    <Compile Include="GeoServices\YandexRusGisGeoCodingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

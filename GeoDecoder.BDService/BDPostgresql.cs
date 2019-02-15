@@ -85,11 +85,11 @@ namespace GeoCoding.BDService
                     {
                         error = ex;
                     }
-                    finally
-                    {
-                        con.Close();
-                        con.Dispose();
-                    }
+                    //finally
+                    //{
+                    //    con.Close();
+                    //    con.Dispose();
+                    //}
                 }
             }
             catch (Exception ex)

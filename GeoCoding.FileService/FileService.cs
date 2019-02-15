@@ -119,7 +119,7 @@ namespace GeoCoding.FileService
                 Filter = _filterForSaveFile,
                 AddExtension = true,
                 DefaultExt = _extensionFileForSave,
-                InitialDirectory = defaultName,
+                InitialDirectory = Path.GetDirectoryName(defaultName),
                 Title = _titleFileSaveDialog,
                 FileName = defaultName
             };
