@@ -497,6 +497,10 @@ namespace GeoCoding
                     {
                         NotificationPlainText(_headerNotificationError, e.Message);
                     }
+                    else
+                    {
+                        NotificationPlainText("Успех", "Настройки применены успешно");
+                    }
                 }, file, ftp, bd);
         }
 
