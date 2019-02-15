@@ -36,8 +36,7 @@ namespace GeoCoding
         private readonly IFileService _fileService = new FileService.FileService();
         private readonly IBDService _bdService = new BDPostgresql();
         private readonly IFtpService _ftpService = new FtpService();
-        private IGeoCodingService _geoCodingService; //= new YandexGeoCodingService();
-        //private readonly IGeoCodingService _geoCodingService = new GeoCodingService.Test.GeoCodingTest();
+        private IGeoCodingService _geoCodingService;
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private readonly string _nameColumnErrorFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}error";
@@ -552,6 +551,9 @@ namespace GeoCoding
         private void SetDataGeoCod(EntityGeoCod data, GeoCod geocod)
         {
             data.CountResult = geocod.CountResult;
+            data.AddressWeb = geocod.Text;
+            data.Latitude = geocod.Latitude;
+            data.Longitude = geocod.Longitude;
 
             if (geocod.CountResult == 1)
             {
@@ -581,10 +583,6 @@ namespace GeoCoding
                     data.Precision = PrecisionType.Other;
                 }
 
-                data.AddressWeb = geocod.Text;
-                data.Latitude = geocod.Latitude;
-                data.Longitude = geocod.Longitude;
-
                 if (data.Precision == PrecisionType.Exact)
                 {
                     data.Qcode = 1;
@@ -597,6 +595,12 @@ namespace GeoCoding
                 {
                     data.Qcode = 2;
                 }
+            }
+            else
+            {
+                data.Kind = KindType.None;
+                data.Precision = PrecisionType.None;
+                data.Qcode = 0;
             }
         }
 

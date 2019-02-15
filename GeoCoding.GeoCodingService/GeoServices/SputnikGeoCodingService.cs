@@ -123,15 +123,15 @@ namespace GeoCoding.GeoCodingService
 
         private GeoCod GetGeo(Result g, int coutResult)
         {
-            if(g!=null)
+            if (g != null)
             {
                 return new GeoCod()
                 {
                     Text = g.DisplayName,
                     Kind = g.Type,
                     Precision = g.FullMatch.ToString(),
-                    Latitude = g.Position.Lat.ToString(),
-                    Longitude = g.Position.Lon.ToString(),
+                    Latitude = g.Position.Lat.ToString().Replace(',', '.'),
+                    Longitude = g.Position.Lon.ToString().Replace(',', '.'),
                     CountResult = coutResult
                 };
             }
