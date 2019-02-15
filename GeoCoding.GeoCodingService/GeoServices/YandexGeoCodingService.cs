@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,54 +46,26 @@ namespace GeoCoding.GeoCodingService
         {
             Exception error = null;
             GeoCod geocod = null;
-
+            
             try
             {
-                JObject a = JObject.Parse(json);
-                var countFound = (string)((JValue)a["response"]["GeoObjectCollection"]["metaDataProperty"]["GeocoderResponseMetaData"]["found"]).Value;
-                if (int.TryParse(countFound, out int count))
+                YandexJson ya = JsonConvert.DeserializeObject<YandexJson>(json);
+                var list = ya.Response.GeoObjectCollection.FeatureMember;
+
+                if(list.Count == 1)
                 {
-                    if (count == 1)
+                    geocod = GetGeo(list[0], 1);
+                }
+                else
+                {
+                    var l = list.Where(x => x.GeoObject.MetaDataProperty.GeocoderMetaData.Precision == "exact");
+                    if(l.Count() ==1)
                     {
-                        geocod = new GeoCod
-                        {
-                            Kind = (string)((JValue)a["response"]["GeoObjectCollection"]["featureMember"].First["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["kind"]).Value,
-                            Precision = (string)((JValue)a["response"]["GeoObjectCollection"]["featureMember"].First["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["precision"]).Value,
-                            Text = (string)((JValue)a["response"]["GeoObjectCollection"]["featureMember"].First["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["text"]).Value,
-                            CountResult = count
-                        };
-                        var point = ((JValue)a["response"]["GeoObjectCollection"]["featureMember"].First["GeoObject"]["Point"]["pos"]).Value.ToString().Split(' ');
-                        geocod.Latitude = point[1];
-                        geocod.Longitude = point[0];
+                        geocod = GetGeo(l.FirstOrDefault(), 1);
                     }
                     else
                     {
-                        var list = new List<GeoCod>();
-
-                        var ad = a["response"]["GeoObjectCollection"]["featureMember"].Children();
-                        foreach (var item in ad)
-                        {
-                            var g = new GeoCod()
-                            {
-                                Kind = (string)((JValue)item["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["kind"]).Value,
-                                Precision = (string)((JValue)item["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["precision"]).Value,
-                                Text = (string)((JValue)item["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["text"]).Value
-                            };
-                            var point = ((JValue)item["GeoObject"]["Point"]["pos"]).Value.ToString().Split(' ');
-                            g.Latitude = point[1];
-                            g.Longitude = point[0];
-                            list.Add(g);
-                        }
-                        var e = list.Where(x => x.Precision == "exact");
-                        if (e.Any() && e.Count() == 1)
-                        {
-                            geocod = e.First();
-                            geocod.CountResult = 1;
-                        }
-                        else
-                        {
-                            geocod = new GeoCod() { CountResult = count };
-                        }
+                        geocod = GetGeo(null, list.Count);
                     }
                 }
             }
@@ -103,6 +75,24 @@ namespace GeoCoding.GeoCodingService
             }
 
             callback(geocod, error);
+        }
+        private GeoCod GetGeo(FeatureMember geo, int coutResult)
+        {
+            if (geo != null)
+            {
+                var g = geo.GeoObject.MetaDataProperty.GeocoderMetaData;
+                var p = geo.GeoObject.Point.Pos.Split(' ');
+                return new GeoCod()
+                {
+                    Text = g.Text,
+                    Kind = g.Kind,
+                    Precision = g.Precision,
+                    Latitude = p[1],
+                    Longitude = p[0],
+                    CountResult = coutResult
+                };
+            }
+            return new GeoCod() { CountResult = coutResult };
         }
     }
 }

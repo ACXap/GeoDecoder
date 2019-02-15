@@ -1,92 +1,29 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Linq;
-using System.Net;
 
 namespace GeoCoding.GeoCodingService
 {
-    public class SputnikGeoCodingService : IGeoCodingService
+    public class SputnikGeoCodingService : GeoService, IGeoCodingService
     {
-        private const string _url = @"http://search.maps.sputnik.ru/search?q=";
+        #region PrivateConst
+        /// <summary>
+        /// Ссылка на геокодер яндекса
+        /// </summary>
+        protected override string _url => @"http://search.maps.sputnik.ru/search?q=";
+        #endregion PrivateConst
 
+        /// <summary>
+        /// Название геосервиса
+        /// </summary>
         public string Name => "Sputnik";
 
         /// <summary>
-        /// Метод для получения геоокординат по адресу
+        /// Метод преобразования json в объекты
         /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
-        /// <param name="address">Строка адреса для поиска</param>
-        public void GetGeoCod(Action<GeoCod, Exception> callback, string address)
-        {
-            Exception error = null;
-            GeoCod geocod = null;
-
-            if (!string.IsNullOrEmpty(address))
-            {
-                GetJsonString((s, e) =>
-                {
-                    error = e;
-                    if (e == null && !string.IsNullOrEmpty(s))
-                    {
-                        ParserJson((g, er) =>
-                        {
-                            error = er;
-                            if (error == null)
-                            {
-                                geocod = g;
-                            }
-                        }, s);
-                    }
-                }, address);
-            }
-            else
-            {
-                error = new ArgumentNullException();
-            }
-
-            callback(geocod, error);
-        }
-
-        /// <summary>
-        /// Метод для получения json ответа от sputnik
-        /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметроми строка, ошибка</param>
-        /// <param name="address">Строка адреса для поиска координат</param>
-        private void GetJsonString(Action<string, Exception> callback, string address)
-        {
-            Exception error = null;
-            string json = string.Empty;
-            string url = GetUrlRequest(address);
-
-            try
-            {
-                WebRequest request = WebRequest.Create(url);
-                request.Headers.Add("Content-Encoding: gzip, deflate, br");
-                request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    using (Stream dataStream = response.GetResponseStream())
-                    {
-                        if (dataStream != null)
-                        {
-                            using (StreamReader reader = new StreamReader(dataStream))
-                            {
-                                json = reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                error = ex;
-            }
-
-            callback(json, error);
-        }
-
-        private void ParserJson(Action<GeoCod, Exception> callback, string json)
+        /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
+        /// <param name="json">Строка json</param>
+        protected override void ParserJson(Action<GeoCod, Exception> callback, string json)
         {
             Exception error = null;
             GeoCod geocod = null;
@@ -94,7 +31,6 @@ namespace GeoCoding.GeoCodingService
             try
             {
                 SputnikJsonOldFormat a = JsonConvert.DeserializeObject<SputnikJsonOldFormat>(json);
-                int countFound = a.Result.Count;
 
                 if (a.Result.Count == 1)
                 {
@@ -130,17 +66,12 @@ namespace GeoCoding.GeoCodingService
                     Text = g.DisplayName,
                     Kind = g.Type,
                     Precision = g.FullMatch.ToString(),
-                    Latitude = g.Position.Lat.ToString().Replace(',', '.'),
-                    Longitude = g.Position.Lon.ToString().Replace(',', '.'),
+                    Latitude = g.Position.Lat.ToString(),
+                    Longitude = g.Position.Lon.ToString(),
                     CountResult = coutResult
                 };
             }
             return new GeoCod() { CountResult = coutResult };
-        }
-
-        public string GetUrlRequest(string address)
-        {
-            return $"{_url}{address}";
         }
     }
 }

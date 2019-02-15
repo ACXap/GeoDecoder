@@ -502,8 +502,8 @@ namespace GeoCoding
         {
             data.CountResult = geocod.CountResult;
             data.AddressWeb = geocod.Text;
-            data.Latitude = geocod.Latitude;
-            data.Longitude = geocod.Longitude;
+            data.Latitude = geocod.Latitude?.Replace(',', '.');
+            data.Longitude = geocod.Longitude?.Replace(',', '.');
 
             if (geocod.CountResult == 1)
             {

@@ -81,8 +81,8 @@ namespace GeoCoding.GeoCodingService
                     Text = geo.Text,
                     Kind = geo.Kind,
                     Precision = geo.Precision,
-                    Latitude = geo.PosY.ToString().Replace(',', '.'),
-                    Longitude = geo.PosX.ToString().Replace(',', '.'),
+                    Latitude = geo.PosY.ToString(),
+                    Longitude = geo.PosX.ToString(),
                     CountResult = countResult
                 };
             }
