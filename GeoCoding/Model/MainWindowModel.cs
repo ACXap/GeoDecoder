@@ -453,9 +453,9 @@ namespace GeoCoding
                 }
             }, file);
 
-            foreach(var str in data)
+            foreach (var str in data)
             {
-                if(str[0] =='#')
+                if (str[0] == '#')
                 {
                     continue;
                 }
@@ -919,14 +919,16 @@ namespace GeoCoding
             });
         }
 
-        public void GetDataFromBD(Action<IEnumerable<EntityGeoCod>, Exception> callback, BDSettings bds, string query)
+        public async void GetDataFromBDAsync(Action<IEnumerable<EntityGeoCod>, Exception> callback, BDSettings bds, string query)
         {
             Exception error = null;
             List<EntityGeoCod> data = new List<EntityGeoCod>();
 
-            _bdService.ExecuteUserQuery((d, e) =>
+            await Task.Factory.StartNew(() =>
             {
-                if (e == null)
+                _bdService.ExecuteUserQuery((d, e) =>
+                {
+                    if (e == null)
                 {
                     foreach (var item in d)
                     {
@@ -953,20 +955,21 @@ namespace GeoCoding
                         data.Add(a);
                     }
                 }
-                else
+                    else
                 {
                     error = e;
                 }
-            }, new BDService.ConnectionSettings()
-            {
-                Server = bds.Server,
-                BDName = bds.BDName,
-                Port = bds.Port,
-                Login = bds.Login,
-                Password = bds.Password
-            }, query);
+                }, new BDService.ConnectionSettings()
+                {
+                    Server = bds.Server,
+                    BDName = bds.BDName,
+                    Port = bds.Port,
+                    Login = bds.Login,
+                    Password = bds.Password
+                }, query);
 
-            callback(data, error);
+                callback(data, error);
+            });
         }
 
         public async void ConnectFTPAsync(Action<Exception> callback, FTPSettings ftps)

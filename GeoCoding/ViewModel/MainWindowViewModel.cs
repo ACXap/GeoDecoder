@@ -670,32 +670,41 @@ namespace GeoCoding
         _commandGetDataFromBD ?? (_commandGetDataFromBD = new RelayCommand(
                     () =>
                     {
-                        _model.GetDataFromBD((data, error) =>
+                        IsStartGetDataFromBD = true;
+                        _model.GetDataFromBDAsync((data, error) =>
                         {
                             if (error == null)
                             {
-                                // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
-                                if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                                if(data.Any())
                                 {
-                                    _collectionGeoCod.Clear();
-                                    _collectionGeoCod = null;
-                                }
-                                // Создаем коллекцию с данными
-                                CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
+                                    // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
+                                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                                    {
+                                        _collectionGeoCod.Clear();
+                                        _collectionGeoCod = null;
+                                    }
+                                    // Создаем коллекцию с данными
+                                    CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
 
-                                // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
-                                Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
-                                Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
-                                Customers.Filter = CustomerFilter;
+                                    // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
+                                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
+                                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
+                                    Customers.Filter = CustomerFilter;
+                                }
+                                else
+                                {
+                                    NotificationPlainText("Данных нет", "Запрос ничего не вернул");
+                                }
                             }
                             else
                             {
                                 // Оповещаем если были ошибки
                                 NotificationPlainText(_headerNotificationError, error.Message);
                             }
+                            IsStartGetDataFromBD = false;
                         }, _bdSettings, _bdSettings.SQLQuery);
 
-                    }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery)));
+                    }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery) && !_isStartGetDataFromBD));
 
         #endregion PublicCommands
 
@@ -996,6 +1005,20 @@ namespace GeoCoding
         }
 
         #endregion PrivateMethod
+
+
+
+        private bool _isStartGetDataFromBD = false;
+        /// <summary>
+        /// Запущено ли получение данных из БД
+        /// </summary>
+        public bool IsStartGetDataFromBD
+        {
+            get => _isStartGetDataFromBD;
+            set => Set(ref _isStartGetDataFromBD, value);
+        }
+
+
 
         /// <summary>
         /// Конструктор по умолчанию

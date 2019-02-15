@@ -85,11 +85,6 @@ namespace GeoCoding.BDService
                     {
                         error = ex;
                     }
-                    //finally
-                    //{
-                    //    con.Close();
-                    //    con.Dispose();
-                    //}
                 }
             }
             catch (Exception ex)
@@ -107,7 +102,7 @@ namespace GeoCoding.BDService
         /// <returns>Строка подключения</returns>
         private string SetConnectionString(ConnectionSettings conSettings)
         {
-            return $"Server={conSettings.Server};Port={conSettings.Port};User Id={conSettings.Login};Password={conSettings.Password};Database={conSettings.BDName};Timeout=0";
+            return $"Server={conSettings.Server};Port={conSettings.Port};User Id={conSettings.Login};Password={conSettings.Password};Database={conSettings.BDName};Timeout=300;CommandTimeout=300;";
         }
     }
 }
