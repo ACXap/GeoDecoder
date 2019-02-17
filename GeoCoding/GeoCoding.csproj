@@ -110,6 +110,9 @@
     <Compile Include="UserControls\Statistics.xaml.cs">
       <DependentUpon>Statistics.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\WorkIndication.xaml.cs">
+      <DependentUpon>WorkIndication.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\StatisticsViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -175,6 +178,10 @@
     <Page Include="UserControls\Statistics.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\WorkIndication.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
