@@ -21,6 +21,11 @@
             Command="{Binding DataContext.CommandCopyAddress, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
             CommandParameter="{Binding}"
             Header="Копировать адрес" />
+        <Separator />
+        <MenuItem
+            Command="{Binding DataContext.CommandClearCollection, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Очистить коллекцию" />
     </ContextMenu>
 
     <Style

@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using GalaSoft.MvvmLight.Threading;
 
 namespace GeoCoding
 {
@@ -1007,8 +1006,6 @@ namespace GeoCoding
 
         #endregion PrivateMethod
 
-
-
         private bool _isStartGetDataFromBD = false;
         /// <summary>
         /// Запущено ли получение данных из БД
@@ -1019,7 +1016,15 @@ namespace GeoCoding
             set => Set(ref _isStartGetDataFromBD, value);
         }
 
-
+        private RelayCommand _commandClearCollection;
+        public RelayCommand CommandClearCollection =>
+            _commandClearCollection ?? (_commandClearCollection = new RelayCommand(() =>
+            {
+                if(_collectionGeoCod!=null && _collectionGeoCod.Any())
+                {
+                    _collectionGeoCod.Clear();
+                }
+            },()=> _collectionGeoCod!=null && _collectionGeoCod.Any()));
 
         /// <summary>
         /// Конструктор по умолчанию
