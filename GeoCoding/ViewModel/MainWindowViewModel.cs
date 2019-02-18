@@ -440,19 +440,27 @@ namespace GeoCoding
         _commandGetGeoCod ?? (_commandGetGeoCod = new RelayCommand<EntityGeoCod>(
                     geocod =>
                     {
-                        _geoCodingModel.GetGeoCod(er =>
+                        if(!string.IsNullOrEmpty(geocod.Address))
                         {
-                            if (er == null)
+                            _geoCodingModel.GetGeoCod(er =>
                             {
-                                Customers.Refresh();
-                                _stat.UpdateStatisticsCollection();
-                            }
-                            else
-                            {
-                                // Оповещаем если были ошибки
-                                NotificationPlainText(_headerNotificationError, er.Message);
-                            }
-                        }, geocod);
+                                if (er == null)
+                                {
+                                    Customers.Refresh();
+                                    _stat.UpdateStatisticsCollection();
+                                }
+                                else
+                                {
+                                    // Оповещаем если были ошибки
+                                    NotificationPlainText(_headerNotificationError, er.Message);
+                                }
+                            }, geocod);
+                        }
+                        else
+                        {
+                            NotificationPlainText(_headerNotificationError, "Адрес пуст");
+                        }
+                        
                     }));
 
         /// <summary>
@@ -484,7 +492,7 @@ namespace GeoCoding
                     () =>
                     {
                         // Останавливаем процесс
-                        _model.StopGet();
+                        _geoCodingModel.StopGet();
                     }));
 
         /// <summary>
@@ -957,6 +965,8 @@ namespace GeoCoding
                 data = _collectionGeoCod.Where(x => x.Status == StatusType.Error || x.Status == StatusType.NotGeoCoding);
             }
 
+            data = data.Where(x => !string.IsNullOrEmpty(x.Address));
+
             int coutData = data.Count();
             if (coutData > 0)
             {
@@ -1048,17 +1058,15 @@ namespace GeoCoding
 
         #endregion PrivateMethod
 
-
-        private bool _isOpenExpander = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsOpenExpander
-        {
-            get => _isOpenExpander;
-            set => Set(ref _isOpenExpander, value);
-        }
-
+        //private bool _isOpenExpander = false;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public bool IsOpenExpander
+        //{
+        //    get => _isOpenExpander;
+        //    set => Set(ref _isOpenExpander, value);
+        //}
 
         private EntityGeoCod _currentGeoCod;
         /// <summary>
@@ -1077,8 +1085,7 @@ namespace GeoCoding
                     {
                         if (obj != null && obj.AddedItems != null && obj.AddedItems.Count > 0)
                         {
-                            var item = obj.AddedItems[0] as GeoCod;
-                            if (item != null)
+                            if (obj.AddedItems[0] is GeoCod item)
                             {
                                 _currentGeoCod.MainGeoCod = item;
                                 _currentGeoCod.Error = string.Empty;
