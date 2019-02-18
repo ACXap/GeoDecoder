@@ -15,9 +15,7 @@
         </Style>
     </d:DesignerProperties.DesignStyle>
 
-    <StackPanel
-        Panel.ZIndex="1"
-        Orientation="Horizontal">
+    <StackPanel Panel.ZIndex="1" Orientation="Horizontal">
         <StackPanel.Style>
             <Style TargetType="{x:Type StackPanel}">
                 <Style.Resources>
@@ -42,7 +40,6 @@
                             <StopStoryboard BeginStoryboardName="flash" />
                         </DataTrigger.ExitActions>
                     </DataTrigger>
-
                 </Style.Triggers>
             </Style>
         </StackPanel.Style>

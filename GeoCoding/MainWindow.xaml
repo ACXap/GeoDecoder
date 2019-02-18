@@ -280,7 +280,8 @@
 
             <!--  Индикация работы геокодирования  -->
             <uc:WorkIndication
-                HorizontalAlignment="Center" Panel.ZIndex="1"
+                HorizontalAlignment="Center"
+                Panel.ZIndex="1"
                 IsActive="{Binding IsStartGeoCoding}"
                 Text="Идет обработка данных..." />
 
@@ -358,7 +359,8 @@
                 <TabItem Header="Ошибки">
                     <DataGrid
                         ItemsSource="{Binding Customers}"
-                        ScrollViewer.CanContentScroll="True" SelectedItem="{Binding CurrentGeoCod}"
+                        ScrollViewer.CanContentScroll="True"
+                        SelectedItem="{Binding CurrentGeoCod}"
                         Style="{StaticResource DataGridErrors}">
                         <DataGrid.GroupStyle>
                             <GroupStyle>
@@ -416,41 +418,52 @@
                             </DataGridTemplateColumn>
 
                             <!--  Варианты координат  -->
-                            <DataGridTemplateColumn Header="Варианты" Width="500">
+                            <DataGridTemplateColumn Width="500" Header="Варианты">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ComboBox ItemsSource="{Binding ListGeoCod}">
                                             <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
-                                                    <cmd:EventToCommand PassEventArgsToCommand="True" Command="{Binding DataContext.CommandSelectMainGeo, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
+                                                    <cmd:EventToCommand Command="{Binding DataContext.CommandSelectMainGeo, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" PassEventArgsToCommand="True" />
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                             <ComboBox.Style>
-                                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MetroComboBox}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                <Style BasedOn="{StaticResource MetroComboBox}" TargetType="{x:Type ComboBox}">
+                                                    <Setter Property="Visibility" Value="Visible" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding ListGeoCod}" Value="{x:Null}">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                            <Setter Property="Visibility" Value="Collapsed" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </ComboBox.Style>
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                   <Grid>
+                                                    <Grid>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition />
                                                             <ColumnDefinition />
-                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition />
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition/>
-                                                            <RowDefinition/>
+                                                            <RowDefinition />
+                                                            <RowDefinition />
                                                         </Grid.RowDefinitions>
 
-                                                        <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding AddressWeb}"/>
-                                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" FontWeight="Bold"/>
-                                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="5,0" Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
+                                                        <TextBlock
+                                                            Grid.Column="0"
+                                                            Grid.ColumnSpan="3"
+                                                            Text="{Binding AddressWeb}" />
+                                                        <TextBlock
+                                                            Grid.Row="1"
+                                                            Grid.Column="0"
+                                                            FontWeight="Bold"
+                                                            Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+                                                        <TextBlock
+                                                            Grid.Row="1"
+                                                            Grid.Column="1"
+                                                            Margin="5,0"
+                                                            Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
                                                     </Grid>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
