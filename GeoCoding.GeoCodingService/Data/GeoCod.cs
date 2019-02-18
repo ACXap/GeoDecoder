@@ -25,9 +25,5 @@
         /// Широта
         /// </summary>
         public string Latitude { get; set; }
-        /// <summary>
-        /// Количество результатов по искомому адресу
-        /// </summary>
-        public int CountResult { get; set; }
     }
 }

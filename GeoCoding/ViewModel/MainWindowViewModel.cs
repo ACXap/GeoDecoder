@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace GeoCoding
@@ -363,7 +364,7 @@ namespace GeoCoding
                                 NotificationPlainText(_headerNotificationError, er.Message);
                             }
                         }, defName);
-                    }, ()=>!_isStartGeoCoding));
+                    }, () => !_isStartGeoCoding));
 
         /// <summary>
         /// Команда для выбора файла для сохранения (получения полного имени файла для сохранения)
@@ -678,7 +679,7 @@ namespace GeoCoding
                         {
                             if (error == null)
                             {
-                                if(data.Any())
+                                if (data.Any())
                                 {
                                     // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
                                     //if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
@@ -963,6 +964,44 @@ namespace GeoCoding
                 IsStartGeoCoding = true;
                 _stat.Start();
 
+                _geoCodingModel.GetAllGeoCod((r, i, e) =>
+                {
+                    IsStartGeoCoding = false;
+                    _stat.Stop();
+                    Customers.Refresh();
+
+                    if (e == null)
+                    {
+                        // Оповещаем о завершении получении координат
+                        NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
+
+                        if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
+                        {
+                            SaveData();
+                            SaveErrors();
+                        }
+
+                        if (_geoCodSettings.CanSaveDataAsTemp && coutData > 0)
+                        {
+                            SaveTemp();
+                        }
+                        if (_geoCodSettings.CanSaveStatistics)
+                        {
+                            SaveStatistics();
+                        }
+                    }
+                    else if (e.Message == _errorCancel)
+                    {
+                        // Оповещаем если сами отменили
+                        NotificationPlainText(_headerNotificationCancel, e.Message);
+                    }
+                    else
+                    {
+                        // Оповещаем если были ошибки и номер на котором была остановка
+                        NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
+                    }
+                }, data);
+
                 //_model.GetAllGeoCod((r, i, e) =>
                 //{
                 //    IsStartGeoCoding = false;
@@ -1009,6 +1048,35 @@ namespace GeoCoding
 
         #endregion PrivateMethod
 
+
+        private EntityGeoCod _currentGeoCod;
+        /// <summary>
+        /// 
+        /// </summary>
+        public EntityGeoCod CurrentGeoCod
+        {
+            get => _currentGeoCod;
+            set => Set(ref _currentGeoCod, value);
+        }
+
+        private RelayCommand<SelectionChangedEventArgs> _commandSelectMainGeo;
+        public RelayCommand<SelectionChangedEventArgs> CommandSelectMainGeo =>
+        _commandSelectMainGeo ?? (_commandSelectMainGeo = new RelayCommand<SelectionChangedEventArgs>(
+                    obj =>
+                    {
+                        if (obj != null && obj.AddedItems != null && obj.AddedItems.Count > 0)
+                        {
+                            var item = obj.AddedItems[0] as GeoCod;
+                            if (item != null)
+                            {
+                                _currentGeoCod.MainGeoCod = item;
+                                _currentGeoCod.Error = string.Empty;
+                                _currentGeoCod.Status = StatusType.OK;
+                                _customerView.Refresh();
+                            }
+                        }
+                    }));
+
         private bool _isStartGetDataFromBD = false;
         /// <summary>
         /// Запущено ли получение данных из БД
@@ -1023,11 +1091,11 @@ namespace GeoCoding
         public RelayCommand CommandClearCollection =>
             _commandClearCollection ?? (_commandClearCollection = new RelayCommand(() =>
             {
-                if(_collectionGeoCod!=null && _collectionGeoCod.Any())
+                if (_collectionGeoCod != null && _collectionGeoCod.Any())
                 {
                     _collectionGeoCod.Clear();
                 }
-            },()=> _collectionGeoCod!=null && _collectionGeoCod.Any()));
+            }, () => _collectionGeoCod != null && _collectionGeoCod.Any()));
 
         /// <summary>
         /// Конструктор по умолчанию

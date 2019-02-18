@@ -21,7 +21,6 @@ namespace GeoCoding.GeoCodingService.Test
             {
                  new GeoCod()
                  {
-                    CountResult = _rnd.Next(0, 5),
                     Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
                     Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
                     Text = "",
@@ -30,7 +29,6 @@ namespace GeoCoding.GeoCodingService.Test
                  },
                  new GeoCod()
                  {
-                    CountResult = _rnd.Next(0, 5),
                     Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
                     Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
                     Text = "",
@@ -39,7 +37,6 @@ namespace GeoCoding.GeoCodingService.Test
                  },
                  new GeoCod()
                  {
-                    CountResult = _rnd.Next(0, 5),
                     Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
                     Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
                     Text = "",

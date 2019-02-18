@@ -15,7 +15,7 @@ namespace GeoCoding.GeoCodingService
         /// Ссылка на геокодер яндекса
         /// </summary>
         protected override string _url => @"https://geocode-maps.yandex.ru/1.x/?geocode=";
-        
+
         /// <summary>
         /// Ошибка при привышении лимита в сутки
         /// </summary>
@@ -46,32 +46,16 @@ namespace GeoCoding.GeoCodingService
         {
             Exception error = null;
             IEnumerable<GeoCod> data = null;
-            
+
             try
             {
                 YandexJson ya = JsonConvert.DeserializeObject<YandexJson>(json);
                 var list = ya.Response.GeoObjectCollection.FeatureMember;
 
-                data = list.Select(x=>
+                data = list.Select(x =>
                 {
                     return GetGeo(x);
                 }).ToList();
-                //if(list.Count == 1)
-                //{
-                //    geocod = GetGeo(list[0], 1);
-                //}
-                //else
-                //{
-                //    var l = list.Where(x => x.GeoObject.MetaDataProperty.GeocoderMetaData.Precision == "exact");
-                //    if(l.Count() ==1)
-                //    {
-                //        geocod = GetGeo(l.FirstOrDefault(), 1);
-                //    }
-                //    else
-                //    {
-                //        geocod = GetGeo(null, list.Count);
-                //    }
-                //}
             }
             catch (Exception ex)
             {
@@ -83,21 +67,16 @@ namespace GeoCoding.GeoCodingService
 
         private GeoCod GetGeo(FeatureMember geo)
         {
-            //if (geo != null)
-           // {
-                var g = geo.GeoObject.MetaDataProperty.GeocoderMetaData;
-                var p = geo.GeoObject.Point.Pos.Split(' ');
-                return new GeoCod()
-                {
-                    Text = g.Text,
-                    Kind = g.Kind,
-                    Precision = g.Precision,
-                    Latitude = p[1],
-                    Longitude = p[0],
-                    //CountResult = coutResult
-                };
-           // }
-           // return new GeoCod() { CountResult = coutResult };
+            var g = geo.GeoObject.MetaDataProperty.GeocoderMetaData;
+            var p = geo.GeoObject.Point.Pos.Split(' ');
+            return new GeoCod()
+            {
+                Text = g.Text,
+                Kind = g.Kind,
+                Precision = g.Precision,
+                Latitude = p[1],
+                Longitude = p[0],
+            };
         }
     }
 }

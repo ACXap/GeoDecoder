@@ -47,19 +47,19 @@
         <TextBlock
             Grid.Row="2"
             Grid.Column="2"
-            Text="{Binding AddressWeb}" />
+            Text="{Binding MainGeoCod.AddressWeb}" />
         <TextBlock
             Grid.Row="3"
             Grid.Column="2"
-            Text="{Binding Longitude}" />
+            Text="{Binding MainGeoCod.Longitude}" />
         <TextBlock
             Grid.Row="4"
             Grid.Column="2"
-            Text="{Binding Latitude}" />
+            Text="{Binding MainGeoCod.Latitude}" />
         <TextBlock
             Grid.Row="5"
             Grid.Column="2"
-            Text="{Binding Qcode}" />
+            Text="{Binding MainGeoCod.Qcode}" />
         <TextBlock
             Grid.Row="6"
             Grid.Column="2"
@@ -75,11 +75,11 @@
         <TextBlock
             Grid.Row="9"
             Grid.Column="2"
-            Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+            Text="{Binding MainGeoCod.Kind, Converter={StaticResource ConverterKindTypeToString}}" />
         <TextBlock
             Grid.Row="10"
             Grid.Column="2"
-            Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
+            Text="{Binding MainGeoCod.Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
         <TextBlock
             Grid.Row="11"
             Grid.Column="2"

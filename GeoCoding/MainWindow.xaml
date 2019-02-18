@@ -358,7 +358,7 @@
                 <TabItem Header="Ошибки">
                     <DataGrid
                         ItemsSource="{Binding Customers}"
-                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.CanContentScroll="True" SelectedItem="{Binding CurrentGeoCod}"
                         Style="{StaticResource DataGridErrors}">
                         <DataGrid.GroupStyle>
                             <GroupStyle>
@@ -415,8 +415,52 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <!--  Колонка адреса  -->
-                            <DataGridTemplateColumn Header="Ошибка" SortMemberPath="Error">
+                            <!--  Варианты координат  -->
+                            <DataGridTemplateColumn Header="Варианты" Width="500">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox ItemsSource="{Binding ListGeoCod}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="SelectionChanged">
+                                                    <cmd:EventToCommand PassEventArgsToCommand="True" Command="{Binding DataContext.CommandSelectMainGeo, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            <ComboBox.Style>
+                                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MetroComboBox}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ListGeoCod}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBox.Style>
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition />
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        
+                                                        <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding AddressWeb}"/>
+                                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+                                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="5,0" Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--  Колонка ошибка  -->
+                            <!--<DataGridTemplateColumn Header="Ошибка" SortMemberPath="Error">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
@@ -425,7 +469,7 @@
                                             TextWrapping="Wrap" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                            </DataGridTemplateColumn>-->
 
                             <!--  Колонка кол. результатов  -->
                             <DataGridTemplateColumn Header="Кол.результатов" SortMemberPath="CountResult">

@@ -12,6 +12,9 @@ namespace GeoCoding
     {
         private const string _errorGeoCodNotFound = "Адрес не найден";
         private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
+        private const string _errorLimit = "Ваш лимит исчерпан";
+        private const string _errorLotOfMistakes = "Очень много ошибок при обработке данных. Обработка прекращена";
+        private const int _maxCountError = 100;
 
         private IGeoCodingService _geoCodingService;
 
@@ -25,57 +28,130 @@ namespace GeoCoding
         public async void GetGeoCod(Action<Exception> callback, EntityGeoCod data)
         {
             Exception error = null;
-            string errorMsg = string.Empty;
-
+           
             await Task.Factory.StartNew(() =>
             {
-                data.Status = StatusType.GeoCodingNow;
+                error = SetGeoCod(data);
+            });
 
-                _geoCodingService.GetGeoCod((d, e) =>
+            callback(error);
+        }
+
+        private Exception SetGeoCod(EntityGeoCod data)
+        {
+            Exception error = null;
+            string errorMsg = string.Empty;
+
+            data.Status = StatusType.GeoCodingNow;
+
+            _geoCodingService.GetGeoCod((d, e) =>
+            {
+                error = e;
+                if (e == null)
                 {
-                    error = e;
-                    if (e == null)
+                    data.ListGeoCod = GetListGeoCod(d);
+                    data.CountResult = data.ListGeoCod != null ? data.ListGeoCod.Count : 0;
+
+                    if (data.ListGeoCod != null && data.ListGeoCod.Any())
                     {
-                        data.ListGeoCod = GetListGeoCod(d);
+                        data.MainGeoCod = GetMainGeoCod(data.ListGeoCod);
+                    }
 
-                        if (data.ListGeoCod != null && data.ListGeoCod.Any())
-                        {
-                            data.MainGeoCod = GetMainGeoCod(data.ListGeoCod);
-                        }
-
-                        data.CountResult = data.ListGeoCod != null ? data.ListGeoCod.Count : 0;
-
-                        if (data.MainGeoCod != null)
-                        {
-                            data.Status = StatusType.OK;
-                            data.Error = string.Empty;
-                        }
-
+                    if (data.MainGeoCod != null)
+                    {
+                        data.Status = StatusType.OK;
+                        data.Error = string.Empty;
+                    }
+                    else
+                    {
                         if (data.CountResult == 0)
                         {
                             errorMsg = _errorGeoCodNotFound;
                         }
-                        if(data.CountResult>1 && data.MainGeoCod==null)
+                        if (data.CountResult > 1 && data.MainGeoCod == null)
                         {
                             errorMsg = _errorGeoCodFoundResultMoreOne;
                         }
+
+                        if (!string.IsNullOrEmpty(errorMsg))
+                        {
+                            SetError(data, errorMsg);
+                        }
                     }
-                    else
+                }
+                else
+                {
+                    data.Error = e.Message;
+                    data.Status = StatusType.Error;
+                }
+
+                data.DateTimeGeoCod = DateTime.Now;
+
+            }, data.Address);
+
+            return error;
+        }
+
+        public async void GetAllGeoCod(Action<bool, long?, Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
+        {
+            Exception error = null;
+            bool result = false;
+            long? indexStop = 0;
+            int countError = 0;
+
+            _cts = new CancellationTokenSource();
+            ParallelOptions po = new ParallelOptions
+            {
+                CancellationToken = _cts.Token,
+                MaxDegreeOfParallelism = 5
+            };
+
+            await Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
                     {
-                        data.Error = e.Message;
-                        data.Status = StatusType.Error;
-                    }
+                        po.CancellationToken.ThrowIfCancellationRequested();
 
-                    if (!string.IsNullOrEmpty(errorMsg))
-                    {
-                        SetError(data, errorMsg);
-                    }
-                    data.DateTimeGeoCod = DateTime.Now;
+                        var e = SetGeoCod(data);
 
-                }, data.Address);
-            });
+                        if (e != null)
+                        {
+                            error = e;
+                            if (e.Message == _errorLimit)
+                            {
+                                pl.Break();
+                            }
+                            else
+                            {
+                                if (countError++ >= _maxCountError)
+                                {
+                                    error = new Exception(_errorLotOfMistakes);
+                                    pl.Break();
+                                }
+                            }
+                        }
+                    });
 
-            callback(error);
+                    result = parallelResult.IsCompleted;
+                    indexStop = parallelResult.LowestBreakIteration;
+                }
+                catch (OperationCanceledException c)
+                {
+                    error = c;
+                }
+                catch (Exception ex)
+                {
+                    error = ex;
+                }
+                finally
+                {
+                    _cts.Dispose();
+                }
+            }, _cts.Token);
+
+            callback(result, indexStop, error);
         }
 
         /// <summary>
