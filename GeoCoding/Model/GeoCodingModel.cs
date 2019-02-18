@@ -127,7 +127,7 @@ namespace GeoCoding
 
                         if (e != null)
                         {
-                            error = e;
+                            //error = e;
                             if (e.Message == _errorLimit)
                             {
                                 pl.Break();
