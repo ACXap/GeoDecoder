@@ -14,6 +14,7 @@ namespace GeoCoding
         {
             if (!string.IsNullOrEmpty(str) && str.Length > 0)
             {
+                str = str.ToLower();
                 var chars = str.ToCharArray();
                 chars[0] = char.ToUpper(chars[0]);
                 return new string(chars);
