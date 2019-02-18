@@ -312,7 +312,7 @@
                             <DataGridTemplateColumn Header="Широта">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Latitude}" />
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Latitude}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -321,7 +321,7 @@
                             <DataGridTemplateColumn Header="Долгота">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Longitude}" />
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Longitude}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -330,7 +330,7 @@
                             <DataGridTemplateColumn Header="Вид объекта" SortMemberPath="Kind">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Kind, Converter={StaticResource ConverterKindTypeToString}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -339,7 +339,7 @@
                             <DataGridTemplateColumn Header="Качество" SortMemberPath="Precision">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -348,7 +348,7 @@
                             <DataGridTemplateColumn Header="Qcode" SortMemberPath="Qcode">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center" Text="{Binding Qcode}" />
+                                        <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Qcode}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

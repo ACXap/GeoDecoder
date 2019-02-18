@@ -19,7 +19,7 @@ namespace GeoCoding.GeoCodingService
         //public GeoObjectCollectionMetaDataProperty MetaDataProperty { get; set; }
 
         [JsonProperty("featureMember")]
-        public List<FeatureMember> FeatureMember { get; set; }
+        public IEnumerable<FeatureMember> FeatureMember { get; set; }
     }
 
     //public partial class GeoObjectCollectionMetaDataProperty

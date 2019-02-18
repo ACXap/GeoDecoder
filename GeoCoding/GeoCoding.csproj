@@ -87,6 +87,7 @@
     <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
+    <Compile Include="Model\Data\GeoCod.cs" />
     <Compile Include="Model\Data\Settings\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
     <Compile Include="Model\Data\Settings\FilesSettings.cs" />

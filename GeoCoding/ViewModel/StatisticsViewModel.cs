@@ -65,8 +65,8 @@ namespace GeoCoding
             _statistics.NotGeoCoding = _collection.Count(x => x.Status == StatusType.NotGeoCoding);
             _statistics.GeoCodingNow = _collection.Count(x => x.Status == StatusType.GeoCodingNow);
             _statistics.Error = _collection.Count(x => x.Status == StatusType.Error);
-            _statistics.House = _collection.Count(x => x.Kind == KindType.House);
-            _statistics.Exact = _collection.Count(x => x.Precision == PrecisionType.Exact);
+            _statistics.House = _collection.Count(x => x.MainGeoCod?.Kind == KindType.House);
+            _statistics.Exact = _collection.Count(x => x.MainGeoCod?.Precision == PrecisionType.Exact);
             _statistics.NotFound = _collection.Count(x => x.CountResult == 0);
             _statistics.Percent = ((_statistics.AllEntity - _statistics.NotGeoCoding - _statistics.GeoCodingNow) / (double)_statistics.AllEntity) * 100;
             IsSave = false;

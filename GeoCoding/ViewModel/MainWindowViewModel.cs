@@ -66,6 +66,8 @@ namespace GeoCoding
         /// </summary>
         private readonly MainWindowModel _model;
 
+        private readonly GeoCodingModel _geoCodingModel;
+
         /// <summary>
         /// Поле для хранения ссылки на координатора диалогов
         /// </summary>
@@ -265,6 +267,7 @@ namespace GeoCoding
             {
                 _geoCodSettings.GeoService = value.Name;
                 _model.SetGeoService(value);
+                _geoCodingModel.SetGeoService(value);
                 Set(ref _currentGeoService, value);
             }
         }
@@ -436,7 +439,7 @@ namespace GeoCoding
         _commandGetGeoCod ?? (_commandGetGeoCod = new RelayCommand<EntityGeoCod>(
                     geocod =>
                     {
-                        _model.GetGeoCod(er =>
+                        _geoCodingModel.GetGeoCod(er =>
                         {
                             if (er == null)
                             {
@@ -960,43 +963,43 @@ namespace GeoCoding
                 IsStartGeoCoding = true;
                 _stat.Start();
 
-                _model.GetAllGeoCod((r, i, e) =>
-                {
-                    IsStartGeoCoding = false;
-                    _stat.Stop();
-                    Customers.Refresh();
+                //_model.GetAllGeoCod((r, i, e) =>
+                //{
+                //    IsStartGeoCoding = false;
+                //    _stat.Stop();
+                //    Customers.Refresh();
 
-                    if (e == null)
-                    {
-                        // Оповещаем о завершении получении координат
-                        NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
+                //    if (e == null)
+                //    {
+                //        // Оповещаем о завершении получении координат
+                //        NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
 
-                        if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
-                        {
-                            SaveData();
-                            SaveErrors();
-                        }
+                //        if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
+                //        {
+                //            SaveData();
+                //            SaveErrors();
+                //        }
 
-                        if (_geoCodSettings.CanSaveDataAsTemp && coutData > 0)
-                        {
-                            SaveTemp();
-                        }
-                        if (_geoCodSettings.CanSaveStatistics)
-                        {
-                            SaveStatistics();
-                        }
-                    }
-                    else if (e.Message == _errorCancel)
-                    {
-                        // Оповещаем если сами отменили
-                        NotificationPlainText(_headerNotificationCancel, e.Message);
-                    }
-                    else
-                    {
-                        // Оповещаем если были ошибки и номер на котором была остановка
-                        NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
-                    }
-                }, data);
+                //        if (_geoCodSettings.CanSaveDataAsTemp && coutData > 0)
+                //        {
+                //            SaveTemp();
+                //        }
+                //        if (_geoCodSettings.CanSaveStatistics)
+                //        {
+                //            SaveStatistics();
+                //        }
+                //    }
+                //    else if (e.Message == _errorCancel)
+                //    {
+                //        // Оповещаем если сами отменили
+                //        NotificationPlainText(_headerNotificationCancel, e.Message);
+                //    }
+                //    else
+                //    {
+                //        // Оповещаем если были ошибки и номер на котором была остановка
+                //        NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
+                //    }
+                //}, data);
             }
             else
             {
@@ -1033,6 +1036,7 @@ namespace GeoCoding
         {
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
+            _geoCodingModel = new GeoCodingModel();
 
             _model.GetSettings((e, f, g, ftp, bds, c) =>
             {

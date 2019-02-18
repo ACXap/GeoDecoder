@@ -145,85 +145,85 @@ namespace GeoCoding
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром: ошибка</param>
         /// <param name="data">Объект для которого нужны координаты</param>
-        public async void GetGeoCod(Action<Exception> callback, EntityGeoCod data)
-        {
-            Exception error = null;
+        //public async void GetGeoCod(Action<Exception> callback, EntityGeoCod data)
+        //{
+        //    Exception error = null;
 
-            await Task.Factory.StartNew(() =>
-            {
-                error = GetGeo(data);
-            });
+        //    await Task.Factory.StartNew(() =>
+        //    {
+        //        error = GetGeo(data);
+        //    });
 
-            callback(error);
-        }
+        //    callback(error);
+        //}
 
         /// <summary>
         /// Метод для получения координат для множества объектов
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром: завершился ли процесс, на каком номере завершился, ошибка</param>
         /// <param name="collectionGeoCod">Множество объектов</param>
-        public async void GetAllGeoCod(Action<bool, long?, Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
-        {
-            Exception error = null;
-            bool result = false;
-            long? indexStop = 0;
-            int countError = 0;
+        //public async void GetAllGeoCod(Action<bool, long?, Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
+        //{
+        //    Exception error = null;
+        //    bool result = false;
+        //    long? indexStop = 0;
+        //    int countError = 0;
 
-            _cts = new CancellationTokenSource();
-            ParallelOptions po = new ParallelOptions
-            {
-                CancellationToken = _cts.Token,
-                MaxDegreeOfParallelism = 5
-            };
+        //    _cts = new CancellationTokenSource();
+        //    ParallelOptions po = new ParallelOptions
+        //    {
+        //        CancellationToken = _cts.Token,
+        //        MaxDegreeOfParallelism = 5
+        //    };
 
-            await Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
-                    {
-                        po.CancellationToken.ThrowIfCancellationRequested();
+        //    await Task.Factory.StartNew(() =>
+        //    {
+        //        try
+        //        {
+        //            var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
+        //            {
+        //                po.CancellationToken.ThrowIfCancellationRequested();
 
-                        var e = GetGeo(data);
+        //                var e = GetGeo(data);
 
-                        if (e != null)
-                        {
-                            error = e;
+        //                if (e != null)
+        //                {
+        //                    error = e;
 
-                            if (e.Message == "Ваш лимит исчерпан")
-                            {
-                                pl.Break();
-                            }
-                            else
-                            {
-                                if (countError++ >= _maxCountError)
-                                {
-                                    error = new Exception(_errorLotOfMistakes);
-                                    pl.Break();
-                                }
-                            }
-                        }
-                    });
+        //                    if (e.Message == "Ваш лимит исчерпан")
+        //                    {
+        //                        pl.Break();
+        //                    }
+        //                    else
+        //                    {
+        //                        if (countError++ >= _maxCountError)
+        //                        {
+        //                            error = new Exception(_errorLotOfMistakes);
+        //                            pl.Break();
+        //                        }
+        //                    }
+        //                }
+        //            });
 
-                    result = parallelResult.IsCompleted;
-                    indexStop = parallelResult.LowestBreakIteration;
-                }
-                catch (OperationCanceledException c)
-                {
-                    error = c;
-                }
-                catch (Exception ex)
-                {
-                    error = ex;
-                }
-                finally
-                {
-                    _cts.Dispose();
-                }
-            }, _cts.Token);
+        //            result = parallelResult.IsCompleted;
+        //            indexStop = parallelResult.LowestBreakIteration;
+        //        }
+        //        catch (OperationCanceledException c)
+        //        {
+        //            error = c;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            error = ex;
+        //        }
+        //        finally
+        //        {
+        //            _cts.Dispose();
+        //        }
+        //    }, _cts.Token);
 
-            callback(result, indexStop, error);
-        }
+        //    callback(result, indexStop, error);
+        //}
 
         /// <summary>
         /// Метод для сохранения данных в файл
@@ -242,7 +242,7 @@ namespace GeoCoding
 
                 list.AddRange(data.Where(y => y.Status == StatusType.OK).Select(x =>
                   {
-                      return $"{x.GlobalID}{_charSplit}{x.Latitude}{_charSplit}{x.Longitude}{_charSplit}{x.Qcode}";
+                      return $"{x.GlobalID}{_charSplit}{x.MainGeoCod.Latitude}{_charSplit}{x.MainGeoCod.Longitude}{_charSplit}{x.MainGeoCod.Qcode}";
                   }));
 
                 _fileService.SaveData(er =>
@@ -279,7 +279,7 @@ namespace GeoCoding
 
                         list.AddRange(item.Where(y => y.Status == StatusType.OK).Select(x =>
                         {
-                            return $"{x.GlobalID}{_charSplit}{x.Latitude}{_charSplit}{x.Longitude}{_charSplit}{x.Qcode}";
+                            return $"{x.GlobalID}{_charSplit}{x.MainGeoCod.Latitude}{_charSplit}{x.MainGeoCod.Longitude}{_charSplit}{x.MainGeoCod.Qcode}";
                         }));
 
                         _fileService.SaveData(er =>
@@ -352,9 +352,9 @@ namespace GeoCoding
 
                 list.AddRange(data.Select(x =>
                 {
-                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.AddressWeb}{_charSplit}{x.Longitude}{_charSplit}{x.Latitude}" +
-                    $"{_charSplit}{x.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.Kind}" +
-                    $"{_charSplit}{x.Precision}{_charSplit}{x.CountResult}";
+                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.MainGeoCod.AddressWeb}{_charSplit}{x.MainGeoCod.Longitude}{_charSplit}{x.MainGeoCod.Latitude}" +
+                    $"{_charSplit}{x.MainGeoCod.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.MainGeoCod.Kind}" +
+                    $"{_charSplit}{x.MainGeoCod.Precision}{_charSplit}{x.CountResult}";
                 }));
 
                 _fileService.SaveData(er =>
@@ -498,61 +498,61 @@ namespace GeoCoding
         /// </summary>
         /// <param name="data">Объект</param>
         /// <param name="geocod">Свойства объекта</param>
-        private void SetDataGeoCod(EntityGeoCod data, GeoCod geocod)
-        {
-            data.CountResult = geocod.CountResult;
-            data.AddressWeb = geocod.Text;
-            data.Latitude = geocod.Latitude?.Replace(',', '.');
-            data.Longitude = geocod.Longitude?.Replace(',', '.');
+        //private void SetDataGeoCod(EntityGeoCod data, GeoCod geocod)
+        //{
+        //    data.CountResult = geocod.CountResult;
+        //    data.AddressWeb = geocod.Text;
+        //    data.Latitude = geocod.Latitude?.Replace(',', '.');
+        //    data.Longitude = geocod.Longitude?.Replace(',', '.');
 
-            if (geocod.CountResult == 1)
-            {
-                if (Enum.TryParse(geocod.Kind?.ToUpperFistChar(), out KindType kind))
-                {
-                    data.Kind = kind;
-                }
-                else if (geocod.Kind == "place")
-                {
-                    data.Kind = KindType.Locality;
-                }
+        //    if (geocod.CountResult == 1)
+        //    {
+        //        if (Enum.TryParse(geocod.Kind?.ToUpperFistChar(), out KindType kind))
+        //        {
+        //            data.Kind = kind;
+        //        }
+        //        else if (geocod.Kind == "place")
+        //        {
+        //            data.Kind = KindType.Locality;
+        //        }
 
-                if (Enum.TryParse(geocod.Precision?.ToUpperFistChar(), out PrecisionType precision))
-                {
-                    data.Precision = precision;
-                }
-                else if (string.IsNullOrEmpty(geocod.Precision))
-                {
-                    data.Precision = PrecisionType.None;
-                }
-                else if (geocod.Precision?.ToLower() == "true")
-                {
-                    data.Precision = PrecisionType.Exact;
-                }
-                else
-                {
-                    data.Precision = PrecisionType.Other;
-                }
+        //        if (Enum.TryParse(geocod.Precision?.ToUpperFistChar(), out PrecisionType precision))
+        //        {
+        //            data.Precision = precision;
+        //        }
+        //        else if (string.IsNullOrEmpty(geocod.Precision))
+        //        {
+        //            data.Precision = PrecisionType.None;
+        //        }
+        //        else if (geocod.Precision?.ToLower() == "true")
+        //        {
+        //            data.Precision = PrecisionType.Exact;
+        //        }
+        //        else
+        //        {
+        //            data.Precision = PrecisionType.Other;
+        //        }
 
-                if (data.Precision == PrecisionType.Exact)
-                {
-                    data.Qcode = 1;
-                }
-                else if (data.Precision == PrecisionType.None)
-                {
-                    data.Qcode = 0;
-                }
-                else
-                {
-                    data.Qcode = 2;
-                }
-            }
-            else
-            {
-                data.Kind = KindType.None;
-                data.Precision = PrecisionType.None;
-                data.Qcode = 0;
-            }
-        }
+        //        if (data.Precision == PrecisionType.Exact)
+        //        {
+        //            data.Qcode = 1;
+        //        }
+        //        else if (data.Precision == PrecisionType.None)
+        //        {
+        //            data.Qcode = 0;
+        //        }
+        //        else
+        //        {
+        //            data.Qcode = 2;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        data.Kind = KindType.None;
+        //        data.Precision = PrecisionType.None;
+        //        data.Qcode = 0;
+        //    }
+        //}
 
         /// <summary>
         /// Метод преобразования строки в объект EntityGeoCod
@@ -667,62 +667,62 @@ namespace GeoCoding
         /// </summary>
         /// <param name="data">Объект</param>
         /// <returns>Возвращает ошибку</returns>
-        private Exception GetGeo(EntityGeoCod data)
-        {
-            Exception error = null;
+        //private Exception GetGeo(EntityGeoCod data)
+        //{
+        //    Exception error = null;
 
-            string errorMsg = string.Empty;
-            data.Status = StatusType.GeoCodingNow;
+        //    string errorMsg = string.Empty;
+        //    data.Status = StatusType.GeoCodingNow;
 
-            _geoCodingService.GetGeoCod((geocod, er) =>
-            {
-                error = er;
-                if (error == null)
-                {
-                    if (geocod != null)
-                    {
-                        SetDataGeoCod(data, geocod);
-                        if (data.CountResult == 1)
-                        {
-                            if (data.Kind == KindType.None && data.Precision == PrecisionType.None)
-                            {
-                                data.Error = "Нет совпадений";
-                                data.Status = StatusType.Error;
-                            }
-                            else
-                            {
-                                data.Status = StatusType.OK;
-                                data.Error = string.Empty;
-                            }
-                        }
-                        else if (data.CountResult == 0)
-                        {
-                            errorMsg = _errorGeoCodNotFound;
-                        }
-                        else
-                        {
-                            errorMsg = _errorGeoCodFoundResultMoreOne;
-                        }
-                    }
-                    else
-                    {
-                        errorMsg = _errorGeoCodResponsEmpty;
-                    }
-                }
-                else
-                {
-                    errorMsg = er.Message;
-                }
+        //    _geoCodingService.GetGeoCod((geocod, er) =>
+        //    {
+        //        error = er;
+        //        if (error == null)
+        //        {
+        //            if (geocod != null)
+        //            {
+        //                SetDataGeoCod(data, geocod);
+        //                if (data.CountResult == 1)
+        //                {
+        //                    if (data.Kind == KindType.None && data.Precision == PrecisionType.None)
+        //                    {
+        //                        data.Error = "Нет совпадений";
+        //                        data.Status = StatusType.Error;
+        //                    }
+        //                    else
+        //                    {
+        //                        data.Status = StatusType.OK;
+        //                        data.Error = string.Empty;
+        //                    }
+        //                }
+        //                else if (data.CountResult == 0)
+        //                {
+        //                    errorMsg = _errorGeoCodNotFound;
+        //                }
+        //                else
+        //                {
+        //                    errorMsg = _errorGeoCodFoundResultMoreOne;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                errorMsg = _errorGeoCodResponsEmpty;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            errorMsg = er.Message;
+        //        }
 
-                if (!string.IsNullOrEmpty(errorMsg))
-                {
-                    SetError(data, errorMsg);
-                }
-                data.DateTimeGeoCod = DateTime.Now;
+        //        if (!string.IsNullOrEmpty(errorMsg))
+        //        {
+        //            SetError(data, errorMsg);
+        //        }
+        //        data.DateTimeGeoCod = DateTime.Now;
 
-            }, data.Address);
-            return error;
-        }
+        //    }, data.Address);
+        //    return error;
+        //}
 
         /// <summary>
         /// Метод для получения настроек приложения

@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
+using System.Collections.Generic;
 
 namespace GeoCoding
 {
@@ -26,46 +27,6 @@ namespace GeoCoding
         {
             get => _address;
             set => Set(ref _address, value);
-        }
-
-        private string _addressWeb = string.Empty;
-        /// <summary>
-        /// Адрес объекта полученный после геокодирования
-        /// </summary>
-        public string AddressWeb
-        {
-            get => _addressWeb;
-            set => Set(ref _addressWeb, value);
-        }
-
-        private string _longitude = string.Empty;
-        /// <summary>
-        /// Долгота - данные для базы
-        /// </summary>
-        public string Longitude
-        {
-            get => _longitude;
-            set => Set(ref _longitude, value);
-        }
-
-        private string _latitude = string.Empty;
-        /// <summary>
-        /// Широта - данные для базы
-        /// </summary>
-        public string Latitude
-        {
-            get => _latitude;
-            set => Set(ref _latitude, value);
-        }
-
-        private byte _qCode;
-        /// <summary>
-        /// Качество полученных геокоординат - данные для базы
-        /// </summary>
-        public byte Qcode
-        {
-            get => _qCode;
-            set => Set(ref _qCode, value);
         }
 
         private string _error = string.Empty;
@@ -98,24 +59,24 @@ namespace GeoCoding
             set => Set(ref _dateTimeGeoCod, value, true);
         }
 
-        private KindType _kind;
+        private GeoCod _mainGeoCod;
         /// <summary>
-        /// Тип объекта
+        /// Выбранные координаты для адреса
         /// </summary>
-        public KindType Kind
+        public GeoCod MainGeoCod
         {
-            get => _kind;
-            set => Set(ref _kind, value);
+            get => _mainGeoCod;
+            set => Set(ref _mainGeoCod, value);
         }
 
-        private PrecisionType _precision;
+        private List<GeoCod> _listGeoCod;
         /// <summary>
-        /// Точность соответствия запроса и результата
+        /// Коллекция координат
         /// </summary>
-        public PrecisionType Precision
+        public List<GeoCod> ListGeoCod
         {
-            get => _precision;
-            set => Set(ref _precision, value);
+            get => _listGeoCod;
+            set => Set(ref _listGeoCod, value);
         }
 
         private int _countResult = 0;

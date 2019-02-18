@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GeoCoding.GeoCodingService
@@ -41,45 +42,49 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
         /// <param name="json">Строка json</param>
-        protected override void ParserJson(Action<GeoCod, Exception> callback, string json)
+        protected override void ParserJson(Action<IEnumerable<GeoCod>, Exception> callback, string json)
         {
             Exception error = null;
-            GeoCod geocod = null;
+            IEnumerable<GeoCod> data = null;
             
             try
             {
                 YandexJson ya = JsonConvert.DeserializeObject<YandexJson>(json);
                 var list = ya.Response.GeoObjectCollection.FeatureMember;
 
-                if(list.Count == 1)
+                data = list.Select(x=>
                 {
-                    geocod = GetGeo(list[0], 1);
-                }
-                else
-                {
-                    var l = list.Where(x => x.GeoObject.MetaDataProperty.GeocoderMetaData.Precision == "exact");
-                    if(l.Count() ==1)
-                    {
-                        geocod = GetGeo(l.FirstOrDefault(), 1);
-                    }
-                    else
-                    {
-                        geocod = GetGeo(null, list.Count);
-                    }
-                }
+                    return GetGeo(x);
+                }).ToList();
+                //if(list.Count == 1)
+                //{
+                //    geocod = GetGeo(list[0], 1);
+                //}
+                //else
+                //{
+                //    var l = list.Where(x => x.GeoObject.MetaDataProperty.GeocoderMetaData.Precision == "exact");
+                //    if(l.Count() ==1)
+                //    {
+                //        geocod = GetGeo(l.FirstOrDefault(), 1);
+                //    }
+                //    else
+                //    {
+                //        geocod = GetGeo(null, list.Count);
+                //    }
+                //}
             }
             catch (Exception ex)
             {
                 error = ex;
             }
 
-            callback(geocod, error);
+            callback(data, error);
         }
 
-        private GeoCod GetGeo(FeatureMember geo, int coutResult)
+        private GeoCod GetGeo(FeatureMember geo)
         {
-            if (geo != null)
-            {
+            //if (geo != null)
+           // {
                 var g = geo.GeoObject.MetaDataProperty.GeocoderMetaData;
                 var p = geo.GeoObject.Point.Pos.Split(' ');
                 return new GeoCod()
@@ -89,10 +94,10 @@ namespace GeoCoding.GeoCodingService
                     Precision = g.Precision,
                     Latitude = p[1],
                     Longitude = p[0],
-                    CountResult = coutResult
+                    //CountResult = coutResult
                 };
-            }
-            return new GeoCod() { CountResult = coutResult };
+           // }
+           // return new GeoCod() { CountResult = coutResult };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
@@ -89,17 +90,17 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
         /// <param name="json">Строка json</param>
-        protected abstract void ParserJson(Action<GeoCod, Exception> callback, string json);
+        protected abstract void ParserJson(Action<IEnumerable<GeoCod>, Exception> callback, string json);
 
         /// <summary>
         /// Метод для получения геоокординат по адресу
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
         /// <param name="address">Строка адреса для поиска</param>
-        public virtual void GetGeoCod(Action<GeoCod, Exception> callback, string address)
+        public virtual void GetGeoCod(Action<IEnumerable<GeoCod>, Exception> callback, string address)
         {
             Exception error = null;
-            GeoCod geocod = null;
+            IEnumerable<GeoCod> data = null;
 
             if (!string.IsNullOrEmpty(address))
             {
@@ -108,12 +109,12 @@ namespace GeoCoding.GeoCodingService
                     error = e;
                     if (e == null && !string.IsNullOrEmpty(s))
                     {
-                        ParserJson((g, er) =>
+                        ParserJson((d, er) =>
                         {
                             error = er;
                             if (error == null)
                             {
-                                geocod = g;
+                                data = d;
                             }
                         }, s);
                     }
@@ -124,7 +125,7 @@ namespace GeoCoding.GeoCodingService
                 error = new ArgumentNullException(_textAddressEmpty);
             }
 
-            callback(geocod, error);
+            callback(data, error);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GeoCoding.GeoCodingService
 {
@@ -13,7 +14,7 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами найденные данные о адресе и ошибка</param>
         /// <param name="address">Искомый адрес</param>
-        void GetGeoCod(Action<GeoCod, Exception> callback, string address);
+        void GetGeoCod(Action<IEnumerable<GeoCod>, Exception> callback, string address);
 
         /// <summary>
         /// Метод для формирования урла с веб запросом
