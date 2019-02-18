@@ -1,98 +1,75 @@
-﻿//using Newtonsoft.Json;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-//namespace GeoCoding.GeoCodingService
-//{
-//    class SputnikRusGisGeoCodingService : GeoService, IGeoCodingService
-//    {
-//        #region PrivateConst
-//        /// <summary>
-//        /// Ссылка на геокодер яндексаРусГис
-//        /// </summary>
-//        protected override string _url => @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
+namespace GeoCoding.GeoCodingService
+{
+    internal class SputnikRusGisGeoCodingService : GeoService, IGeoCodingService
+    {
+        #region PrivateConst
+        /// <summary>
+        /// Ссылка на геокодер яндексаРусГис
+        /// </summary>
+        protected override string _url => @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
 
-//        /// <summary>
-//        /// Ошибка при привышении лимита в сутки
-//        /// </summary>
-//        protected override string _errorWebRequestLimit => "Удаленный сервер возвратил ошибку: (500) Внутренняя ошибка сервера.";
-//        #endregion PrivateConst
+        /// <summary>
+        /// Ошибка при привышении лимита в сутки
+        /// </summary>
+        protected override string _errorWebRequestLimit => "Удаленный сервер возвратил ошибку: (500) Внутренняя ошибка сервера.";
+        #endregion PrivateConst
 
-//        /// <summary>
-//        /// Название геосервиса
-//        /// </summary>
-//        public string Name => "SputnikRusGis";
+        /// <summary>
+        /// Название геосервиса
+        /// </summary>
+        public string Name => "SputnikRusGis";
 
-//        /// <summary>
-//        /// Метод для формирования урла с веб запросом
-//        /// </summary>
-//        /// <param name="address">Адрес для вебзапроса</param>
-//        /// <returns>Урл для вебзапроса</returns>
-//        public override string GetUrlRequest(string address)
-//        {
-//            return $"{_url}{address}&geoCoderType=SPUTNIC";
-//        }
+        /// <summary>
+        /// Метод для формирования урла с веб запросом
+        /// </summary>
+        /// <param name="address">Адрес для вебзапроса</param>
+        /// <returns>Урл для вебзапроса</returns>
+        public override string GetUrlRequest(string address)
+        {
+            return $"{_url}{address}&geoCoderType=SPUTNIC";
+        }
 
-//        /// <summary>
-//        /// Метод преобразования json в объекты
-//        /// </summary>
-//        /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
-//        /// <param name="json">Строка json</param>
-//        protected override void ParserJson(Action<GeoCod, Exception> callback, string json)
-//        {
-//            Exception error = null;
-//            GeoCod geocod = null;
+        /// <summary>
+        /// Метод преобразования json в объекты
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
+        /// <param name="json">Строка json</param>
+        protected override void ParserJson(Action<IEnumerable<GeoCod>, Exception> callback, string json)
+        {
+            Exception error = null;
+            IEnumerable<GeoCod> data = null;
 
-//            try
-//            {
-//                List<RusGisJson> list = JsonConvert.DeserializeObject<List<RusGisJson>>(json);
-//                if (list.Count == 1)
-//                {
-//                    geocod = GetGeo(list.FirstOrDefault(), 1);
-//                }
-//                else
-//                {
-//                    var a = list.Where(x => x.Precision == "true" && x.Kind == "house");
-//                    if (a.Count() == 1)
-//                    {
-//                        geocod = GetGeo(a.FirstOrDefault(), 1);
-//                    }
-//                    else
-//                    {
-//                        geocod = GetGeo(null, list.Count);
-//                    }
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                error = ex;
-//            }
+            try
+            {
+                List<RusGisJson> list = JsonConvert.DeserializeObject<List<RusGisJson>>(json);
+                data = list.Select(x =>
+                {
+                    return GetGeo(x);
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
 
-//            callback(geocod, error);
-//        }
+            callback(data, error);
+        }
 
-//        private GeoCod GetGeo(RusGisJson geo, int countResult)
-//        {
-//            if (geo != null)
-//            {
-//                return new GeoCod()
-//                {
-//                    Text = geo.Text,
-//                    Kind = geo.Kind,
-//                    Precision = geo.Precision,
-//                    Latitude = geo.PosY.ToString(),
-//                    Longitude = geo.PosX.ToString(),
-//                    CountResult = countResult
-//                };
-//            }
-//            else
-//            {
-//                return new GeoCod()
-//                {
-//                    CountResult = countResult
-//                };
-//            }
-//        }
-//    }
-//}
+        private GeoCod GetGeo(RusGisJson geo)
+        {
+            return new GeoCod()
+            {
+                Text = geo.Text,
+                Kind = geo.Kind,
+                Precision = geo.Precision,
+                Latitude = geo.PosY.ToString(),
+                Longitude = geo.PosX.ToString(),
+            };
+        }
+    }
+}

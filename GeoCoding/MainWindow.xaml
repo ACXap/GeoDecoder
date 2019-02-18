@@ -373,7 +373,7 @@
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander IsExpanded="False">
+                                                    <Expander IsExpanded="{Binding DataContext.IsOpenExpander, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
                                                         <Expander.Header>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock

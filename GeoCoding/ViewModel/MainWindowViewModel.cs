@@ -1049,6 +1049,17 @@ namespace GeoCoding
         #endregion PrivateMethod
 
 
+        private bool _isOpenExpander = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsOpenExpander
+        {
+            get => _isOpenExpander;
+            set => Set(ref _isOpenExpander, value);
+        }
+
+
         private EntityGeoCod _currentGeoCod;
         /// <summary>
         /// 
@@ -1073,6 +1084,7 @@ namespace GeoCoding
                                 _currentGeoCod.Error = string.Empty;
                                 _currentGeoCod.Status = StatusType.OK;
                                 _customerView.Refresh();
+                                _stat.UpdateStatisticsCollection();
                             }
                         }
                     }));
