@@ -36,6 +36,11 @@ namespace GeoCoding
             callback(error);
         }
 
+        /// <summary>
+        /// Функция для получения координат для объекта
+        /// </summary>
+        /// <param name="data">Объект</param>
+        /// <returns>Возвращает ошибку</returns>
         private Exception SetGeoCod(EntityGeoCod data)
         {
             Exception error = null;
@@ -91,6 +96,11 @@ namespace GeoCoding
             return error;
         }
 
+        /// <summary>
+        /// Метод для получения координат для множества объектов
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром: завершился ли процесс, на каком номере завершился, ошибка</param>
+        /// <param name="collectionGeoCod">Множество объектов</param>
         public async void GetAllGeoCod(Action<bool, long?, Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
         {
             Exception error = null;
