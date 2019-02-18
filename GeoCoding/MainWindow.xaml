@@ -437,7 +437,7 @@
                                             </ComboBox.Style>
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid>
+                                                   <Grid>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition />
                                                             <ColumnDefinition />
@@ -447,9 +447,9 @@
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        
+
                                                         <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding AddressWeb}"/>
-                                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+                                                        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" FontWeight="Bold"/>
                                                         <TextBlock Grid.Column="1" Grid.Row="1" Margin="5,0" Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
                                                     </Grid>
                                                 </DataTemplate>
