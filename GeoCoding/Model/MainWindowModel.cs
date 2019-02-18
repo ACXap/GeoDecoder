@@ -437,7 +437,7 @@ namespace GeoCoding
         /// </summary>
         public void StopGet()
         {
-            _cts.Cancel();
+            _cts?.Cancel();
         }
 
         public void GetSettingsFromFile(Action<Exception> callback, string file, FTPSettings ftp, BDSettings bd)
@@ -1011,6 +1011,10 @@ namespace GeoCoding
             };
         }
 
+        /// <summary>
+        /// Метод установки текущего геосериса
+        /// </summary>
+        /// <param name="geoService">Ссылка на геосервис</param>
         public void SetGeoService(IGeoCodingService geoService)
         {
             _geoCodingService = geoService;

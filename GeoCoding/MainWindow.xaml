@@ -280,8 +280,7 @@
 
             <!--  Индикация работы геокодирования  -->
             <uc:WorkIndication
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
+                HorizontalAlignment="Center" Panel.ZIndex="1"
                 IsActive="{Binding IsStartGeoCoding}"
                 Text="Идет обработка данных..." />
 
