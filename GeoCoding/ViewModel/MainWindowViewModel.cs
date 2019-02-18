@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using GalaSoft.MvvmLight.Threading;
 
 namespace GeoCoding
 {
@@ -227,7 +228,7 @@ namespace GeoCoding
             set
             {
                 Set("CollectionGeoCod", ref _collectionGeoCod, value);
-                _stat.Init(value);
+                DispatcherHelper.CheckBeginInvokeOnUI(()=>_stat.Init(value));
             }
         }
 
@@ -689,12 +690,6 @@ namespace GeoCoding
                             {
                                 if (data.Any())
                                 {
-                                    // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
-                                    //if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-                                    //{
-                                    //    _collectionGeoCod.Clear();
-                                    //    _collectionGeoCod = null;
-                                    //}
                                     // Создаем коллекцию с данными
                                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
 
@@ -732,11 +727,11 @@ namespace GeoCoding
                 if (error == null)
                 {
                     // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
-                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-                    {
-                        _collectionGeoCod.Clear();
-                        _collectionGeoCod = null;
-                    }
+                    //if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                    //{
+                    //    _collectionGeoCod.Clear();
+                    //    _collectionGeoCod = null;
+                    //}
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
 
@@ -1011,44 +1006,6 @@ namespace GeoCoding
                         NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
                     }
                 }, data);
-
-                //_model.GetAllGeoCod((r, i, e) =>
-                //{
-                //    IsStartGeoCoding = false;
-                //    _stat.Stop();
-                //    Customers.Refresh();
-
-                //    if (e == null)
-                //    {
-                //        // Оповещаем о завершении получении координат
-                //        NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
-
-                //        if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
-                //        {
-                //            SaveData();
-                //            SaveErrors();
-                //        }
-
-                //        if (_geoCodSettings.CanSaveDataAsTemp && coutData > 0)
-                //        {
-                //            SaveTemp();
-                //        }
-                //        if (_geoCodSettings.CanSaveStatistics)
-                //        {
-                //            SaveStatistics();
-                //        }
-                //    }
-                //    else if (e.Message == _errorCancel)
-                //    {
-                //        // Оповещаем если сами отменили
-                //        NotificationPlainText(_headerNotificationCancel, e.Message);
-                //    }
-                //    else
-                //    {
-                //        // Оповещаем если были ошибки и номер на котором была остановка
-                //        NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
-                //    }
-                //}, data);
             }
             else
             {
@@ -1057,16 +1014,6 @@ namespace GeoCoding
         }
 
         #endregion PrivateMethod
-
-        //private bool _isOpenExpander = false;
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public bool IsOpenExpander
-        //{
-        //    get => _isOpenExpander;
-        //    set => Set(ref _isOpenExpander, value);
-        //}
 
         private EntityGeoCod _currentGeoCod;
         /// <summary>
