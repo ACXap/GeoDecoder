@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -208,7 +207,7 @@ namespace GeoCoding
                     {
                         data.Kind = kind;
                     }
-                    else if (g.Kind == "place")
+                    else if (g.Kind == "place" || g.Kind == "suburb")
                     {
                         data.Kind = KindType.Locality;
                     }
