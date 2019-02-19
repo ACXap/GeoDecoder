@@ -44,14 +44,6 @@ namespace GeoCoding
         /// </summary>
         private const string _messageSaveData = "Сохранение данных в файл завершено успешно";
         /// <summary>
-        /// Сообщение об отмене операции
-        /// </summary>
-        private const string _messageCancel = "Процесс завершен на:";
-        /// <summary>
-        /// Сообщение об отмене операции
-        /// </summary>
-        private const string _messageCancelEntity = "элементе";
-        /// <summary>
         /// Всего адресов
         /// </summary>
         private const string _allAddress = "Всего адресов:";
@@ -1063,7 +1055,7 @@ namespace GeoCoding
                     else
                     {
                         // Оповещаем если были ошибки и номер на котором была остановка
-                        NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{_messageCancel} {i} {_messageCancelEntity}");
+                        NotificationPlainText(_headerNotificationError, $"{e.Message}");
                     }
 
                     if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
