@@ -155,7 +155,7 @@ namespace GeoCoding
 
                 list.AddRange(data.Where(y => y.Status == StatusType.OK).Select(x =>
                   {
-                      return $"{x.GlobalID}{_charSplit}{x.MainGeoCod.Latitude}{_charSplit}{x.MainGeoCod.Longitude}{_charSplit}{x.MainGeoCod.Qcode}";
+                      return $"{x.GlobalID}{_charSplit}{x.MainGeoCod?.Latitude}{_charSplit}{x.MainGeoCod?.Longitude}{_charSplit}{x.MainGeoCod?.Qcode}";
                   }));
 
                 _fileService.SaveData(er =>
@@ -192,7 +192,7 @@ namespace GeoCoding
 
                         list.AddRange(item.Where(y => y.Status == StatusType.OK).Select(x =>
                         {
-                            return $"{x.GlobalID}{_charSplit}{x.MainGeoCod.Latitude}{_charSplit}{x.MainGeoCod.Longitude}{_charSplit}{x.MainGeoCod.Qcode}";
+                            return $"{x.GlobalID}{_charSplit}{x.MainGeoCod?.Latitude}{_charSplit}{x.MainGeoCod?.Longitude}{_charSplit}{x.MainGeoCod?.Qcode}";
                         }));
 
                         _fileService.SaveData(er =>
