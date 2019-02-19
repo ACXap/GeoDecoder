@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro;
 using MahApps.Metro.Controls.Dialogs;
 using System;
@@ -9,7 +10,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using GalaSoft.MvvmLight.Threading;
 
 namespace GeoCoding
 {
@@ -68,6 +68,9 @@ namespace GeoCoding
         /// </summary>
         private readonly MainWindowModel _model;
 
+        /// <summary>
+        /// Поле для хранения ссылки на модельгеокодирования
+        /// </summary>
         private readonly GeoCodingModel _geoCodingModel;
 
         /// <summary>
@@ -86,19 +89,24 @@ namespace GeoCoding
         private ICollectionView _customerView;
 
         /// <summary>
+        /// Поле для хранения выделенного адреса
+        /// </summary>
+        private EntityGeoCod _currentGeoCod;
+
+        /// <summary>
         /// Поле для хранения настроек входного и выходного файла
         /// </summary>
         private FilesSettings _filesSettings;
 
         /// <summary>
-        /// Поле для хранения статистики
-        /// </summary>
-       // private Statistics _statistics;
-
-        /// <summary>
         /// Поле для хранения запущена ли процедура декодирования
         /// </summary>
         private bool _isStartGeoCoding = false;
+
+        /// <summary>
+        /// Поле для хранения запущено ли получение данных из БД
+        /// </summary>
+        private bool _isStartGetDataFromBD = false;
 
         /// <summary>
         /// Поле для хранения ссылки на текущий выбранный геосервис
@@ -201,6 +209,11 @@ namespace GeoCoding
         private RelayCommand<EntityGeoCod> _commandCopyRequest;
 
         /// <summary>
+        /// Поле для хранения ссылки на команду копирования глобалАйДи в буфер
+        /// </summary>
+        private RelayCommand<EntityGeoCod> _commandCopyGlobalId;
+
+        /// <summary>
         /// Поле для хранения ссылки на команду проверки соединения с фтп-сервером
         /// </summary>
         private RelayCommand _commandCheckConnectFtp;
@@ -214,6 +227,16 @@ namespace GeoCoding
         /// Поле для хранения ссылки на команду получения данных из базы данных
         /// </summary>
         private RelayCommand _commandGetDataFromBD;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду очистки коллекции
+        /// </summary>
+        private RelayCommand _commandClearCollection;
+
+        /// <summary>
+        /// Поле для хранения команды обработки выбора варианта геокодирования
+        /// </summary>
+        private RelayCommand<SelectionChangedEventArgs> _commandSelectMainGeo;
 
         #endregion PrivateFields
 
@@ -251,12 +274,30 @@ namespace GeoCoding
         }
 
         /// <summary>
+        /// Запущено ли получение данных из БД
+        /// </summary>
+        public bool IsStartGetDataFromBD
+        {
+            get => _isStartGetDataFromBD;
+            set => Set(ref _isStartGetDataFromBD, value);
+        }
+
+        /// <summary>
         /// Представление коллекции
         /// </summary>
         public ICollectionView Customers
         {
             get => _customerView;
             set => Set(ref _customerView, value);
+        }
+
+        /// <summary>
+        /// Текущий выделенный адрес
+        /// </summary>
+        public EntityGeoCod CurrentGeoCod
+        {
+            get => _currentGeoCod;
+            set => Set(ref _currentGeoCod, value);
         }
 
         /// <summary>
@@ -514,6 +555,23 @@ namespace GeoCoding
         }));
 
         /// <summary>
+        /// Команда копирования глобалАйДи в буфер
+        /// </summary>
+        public RelayCommand<EntityGeoCod> CommandCopyGlpobalId =>
+        _commandCopyGlobalId ?? (_commandCopyGlobalId = new RelayCommand<EntityGeoCod>(
+                    obj =>
+                    {
+                        try
+                        {
+                            Clipboard.SetText(obj.GlobalID.ToString(), TextDataFormat.UnicodeText);
+                        }
+                        catch (Exception ex)
+                        {
+                            NotificationPlainText(_headerNotificationError, ex.Message);
+                        }
+                    }));
+
+        /// <summary>
         /// Команда открыть адрес в браузере
         /// </summary>
         public RelayCommand<EntityGeoCod> CommandOpenInBrowser =>
@@ -554,21 +612,6 @@ namespace GeoCoding
                             }
                         }
                     }));
-
-        private void GetSettingsFromFile(string file, FTPSettings ftp, BDSettings bd)
-        {
-            _model.GetSettingsFromFile(e =>
-                {
-                    if (e != null)
-                    {
-                        NotificationPlainText(_headerNotificationError, e.Message);
-                    }
-                    else
-                    {
-                        NotificationPlainText("Успех", "Настройки применены успешно");
-                    }
-                }, file, ftp, bd);
-        }
 
         /// <summary>
         /// Команда для сохранения настроек
@@ -712,6 +755,38 @@ namespace GeoCoding
                         }, _bdSettings, _bdSettings.SQLQuery);
 
                     }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery) && !_isStartGetDataFromBD));
+
+        /// <summary>
+        /// Команда очистки коллекции
+        /// </summary>
+        public RelayCommand CommandClearCollection =>
+            _commandClearCollection ?? (_commandClearCollection = new RelayCommand(() =>
+            {
+                if (_collectionGeoCod != null && _collectionGeoCod.Any())
+                {
+                    _collectionGeoCod.Clear();
+                }
+            }, () => _collectionGeoCod != null && _collectionGeoCod.Any() && !_isStartGeoCoding));
+
+        /// <summary>
+        /// Команда обработки выбора варианта геокодирования
+        /// </summary>
+        public RelayCommand<SelectionChangedEventArgs> CommandSelectMainGeo =>
+        _commandSelectMainGeo ?? (_commandSelectMainGeo = new RelayCommand<SelectionChangedEventArgs>(
+                    obj =>
+                    {
+                        if (obj != null && obj.AddedItems != null && obj.AddedItems.Count > 0)
+                        {
+                            if (obj.AddedItems[0] is GeoCod item)
+                            {
+                                _currentGeoCod.MainGeoCod = item;
+                                _currentGeoCod.Error = string.Empty;
+                                _currentGeoCod.Status = StatusType.OK;
+                                _customerView.Refresh();
+                                _stat.UpdateStatisticsCollection();
+                            }
+                        }
+                    }));
 
         #endregion PublicCommands
 
@@ -1013,71 +1088,22 @@ namespace GeoCoding
             }
         }
 
-        #endregion PrivateMethod
-
-        private EntityGeoCod _currentGeoCod;
-        /// <summary>
-        /// 
-        /// </summary>
-        public EntityGeoCod CurrentGeoCod
+        private void GetSettingsFromFile(string file, FTPSettings ftp, BDSettings bd)
         {
-            get => _currentGeoCod;
-            set => Set(ref _currentGeoCod, value);
-        }
-
-        private RelayCommand<SelectionChangedEventArgs> _commandSelectMainGeo;
-        public RelayCommand<SelectionChangedEventArgs> CommandSelectMainGeo =>
-        _commandSelectMainGeo ?? (_commandSelectMainGeo = new RelayCommand<SelectionChangedEventArgs>(
-                    obj =>
-                    {
-                        if (obj != null && obj.AddedItems != null && obj.AddedItems.Count > 0)
-                        {
-                            if (obj.AddedItems[0] is GeoCod item)
-                            {
-                                _currentGeoCod.MainGeoCod = item;
-                                _currentGeoCod.Error = string.Empty;
-                                _currentGeoCod.Status = StatusType.OK;
-                                _customerView.Refresh();
-                                _stat.UpdateStatisticsCollection();
-                            }
-                        }
-                    }));
-
-        private bool _isStartGetDataFromBD = false;
-        /// <summary>
-        /// Запущено ли получение данных из БД
-        /// </summary>
-        public bool IsStartGetDataFromBD
-        {
-            get => _isStartGetDataFromBD;
-            set => Set(ref _isStartGetDataFromBD, value);
-        }
-
-        private RelayCommand _commandClearCollection;
-        public RelayCommand CommandClearCollection =>
-            _commandClearCollection ?? (_commandClearCollection = new RelayCommand(() =>
+            _model.GetSettingsFromFile(e =>
             {
-                if (_collectionGeoCod != null && _collectionGeoCod.Any())
+                if (e != null)
                 {
-                    _collectionGeoCod.Clear();
+                    NotificationPlainText(_headerNotificationError, e.Message);
                 }
-            }, () => _collectionGeoCod != null && _collectionGeoCod.Any() && !_isStartGeoCoding));
+                else
+                {
+                    NotificationPlainText("Успех", "Настройки применены успешно");
+                }
+            }, file, ftp, bd);
+        }
 
-        private RelayCommand<EntityGeoCod> _commandCopyGlobalId;
-        public RelayCommand<EntityGeoCod> CommandCopyGlpobalId =>
-        _commandCopyGlobalId ?? (_commandCopyGlobalId = new RelayCommand<EntityGeoCod>(
-                    obj =>
-                    {
-                        try
-                        {
-                            Clipboard.SetText(obj.GlobalID.ToString(), TextDataFormat.UnicodeText);
-                        }
-                        catch (Exception ex)
-                        {
-                            NotificationPlainText(_headerNotificationError, ex.Message);
-                        }
-                    }));
-
+        #endregion PrivateMethod
 
         /// <summary>
         /// Конструктор по умолчанию
