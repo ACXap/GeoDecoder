@@ -7,6 +7,7 @@ namespace GeoCoding.GeoCodingService
 {
     public abstract class GeoService : IGeoCodingService
     {
+        #region ProtectedFields
         /// <summary>
         /// Сообщение по поводу превышения лимита в сутки
         /// </summary>
@@ -19,6 +20,7 @@ namespace GeoCoding.GeoCodingService
         /// Текст ошибки, если запрос вернул пустоту
         /// </summary>
         protected virtual string _textJsonEmpty => "Запрос вернул пустоту";
+        #endregion ProtectedFields
 
         /// <summary>
         /// Ошибка при привышении лимита в сутки
