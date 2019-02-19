@@ -40,6 +40,18 @@ namespace GeoCoding
         /// </summary>
         private const string _headerNotificationSettingsSave = "Настройки сохранены успешно";
         /// <summary>
+        /// Заголовок окна при запуске процесса геокодирования с пустой коллекцией 
+        /// </summary>
+        private const string _headerNotificationErrorDataEmpty = "Нечего обрабатывать";
+        /// <summary>
+        /// Заголовок окна при попытке сохранения статистики которая уже сохранена была
+        /// </summary>
+        private const string _headerNotificationStatAlreadySave = "Статистика уже был сохранена";
+        /// <summary>
+        /// Текст сообщения при попытке сохранить статистику которая уже сохранена
+        /// </summary>
+        private const string _notificationStatAlreadySave = "В статистике с последнего раза ничего не изменилось";
+        /// <summary>
         /// Сообщение об отмене операции
         /// </summary>
         private const string _errorCancel = "Операция была отменена.";
@@ -765,13 +777,13 @@ namespace GeoCoding
         /// Команда очистки коллекции
         /// </summary>
         public RelayCommand CommandClearCollection =>
-            _commandClearCollection ?? (_commandClearCollection = new RelayCommand(() =>
-            {
-                if (_collectionGeoCod != null && _collectionGeoCod.Any())
-                {
-                    _collectionGeoCod.Clear();
-                }
-            }, () => _collectionGeoCod != null && _collectionGeoCod.Any() && !_isStartGeoCoding));
+        _commandClearCollection ?? (_commandClearCollection = new RelayCommand(() =>
+                    {
+                        if (_collectionGeoCod != null && _collectionGeoCod.Any())
+                        {
+                            _collectionGeoCod.Clear();
+                        }
+                    }, () => _collectionGeoCod != null && _collectionGeoCod.Any() && !_isStartGeoCoding));
 
         /// <summary>
         /// Команда обработки выбора варианта геокодирования
@@ -1007,7 +1019,7 @@ namespace GeoCoding
         {
             if (_stat.IsSave)
             {
-                NotificationPlainText("Статистика уже был сохранена", "В статистике с последнего раза ничего не изменилось");
+                NotificationPlainText(_headerNotificationStatAlreadySave, _notificationStatAlreadySave);
                 return;
             }
 
@@ -1094,7 +1106,7 @@ namespace GeoCoding
             }
             else
             {
-                NotificationPlainText("Нечего обрабатывать", "");
+                NotificationPlainText(_headerNotificationErrorDataEmpty, null);
             }
         }
 
