@@ -1063,6 +1063,22 @@ namespace GeoCoding
                 }
             }, () => _collectionGeoCod != null && _collectionGeoCod.Any() && !_isStartGeoCoding));
 
+        private RelayCommand<EntityGeoCod> _commandCopyGlobalId;
+        public RelayCommand<EntityGeoCod> CommandCopyGlpobalId =>
+        _commandCopyGlobalId ?? (_commandCopyGlobalId = new RelayCommand<EntityGeoCod>(
+                    obj =>
+                    {
+                        try
+                        {
+                            Clipboard.SetText(obj.GlobalID.ToString(), TextDataFormat.UnicodeText);
+                        }
+                        catch (Exception ex)
+                        {
+                            NotificationPlainText(_headerNotificationError, ex.Message);
+                        }
+                    }));
+
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>

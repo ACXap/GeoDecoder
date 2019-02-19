@@ -121,8 +121,6 @@ namespace GeoCoding
                 {
                     var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
                     {
-                        po.CancellationToken.ThrowIfCancellationRequested();
-
                         var e = SetGeoCod(data);
 
                         if (e != null)
