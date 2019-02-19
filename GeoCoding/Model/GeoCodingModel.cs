@@ -234,7 +234,18 @@ namespace GeoCoding
                     }
                     else
                     {
-                        data.Precision = PrecisionType.Other;
+                        if(data.Kind == KindType.Street)
+                        {
+                            data.Precision = PrecisionType.Street;
+                        }
+                        else if(data.Kind == KindType.House)
+                        {
+                            data.Precision = PrecisionType.Near;
+                        }
+                        else
+                        {
+                            data.Precision = PrecisionType.Other;
+                        }
                     }
 
                     if (data.Precision == PrecisionType.Exact)

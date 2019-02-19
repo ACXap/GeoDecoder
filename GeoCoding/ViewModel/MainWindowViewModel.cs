@@ -479,7 +479,7 @@ namespace GeoCoding
                             SaveTemp();
                         }
 
-                    }, () => !string.IsNullOrEmpty(_filesSettings.FileOutput) && _collectionGeoCod != null));
+                    }, () => !string.IsNullOrEmpty(_filesSettings.FileOutput) && _collectionGeoCod != null && _collectionGeoCod.Any()));
 
         /// <summary>
         /// Команда получения данных из файла

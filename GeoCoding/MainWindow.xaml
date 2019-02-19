@@ -328,7 +328,7 @@
                             </DataGridTemplateColumn>
 
                             <!--  Колонка вид объекта  -->
-                            <DataGridTemplateColumn Header="Вид объекта" SortMemberPath="Kind">
+                            <DataGridTemplateColumn Header="Вид объекта" SortMemberPath="MainGeoCod.Kind">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Kind, Converter={StaticResource ConverterKindTypeToString}}" />
@@ -337,7 +337,7 @@
                             </DataGridTemplateColumn>
 
                             <!--  Колонка качество  -->
-                            <DataGridTemplateColumn Header="Качество" SortMemberPath="Precision">
+                            <DataGridTemplateColumn Header="Качество" SortMemberPath="MainGeoCod.Precision">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
@@ -346,7 +346,7 @@
                             </DataGridTemplateColumn>
 
                             <!--  Колонка качество для базы  -->
-                            <DataGridTemplateColumn Header="Qcode" SortMemberPath="Qcode">
+                            <DataGridTemplateColumn Header="Qcode" SortMemberPath="MainGeoCod.Qcode">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Qcode}" />
