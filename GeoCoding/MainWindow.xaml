@@ -44,7 +44,7 @@
         <Controls:WindowCommands>
 
             <!--  Кнопка открытия папки программы  -->
-            <Button Command="{Binding CommandOpenFolder}" CommandParameter="Папка программы">
+            <Button Command="{Binding CommandOpenFolder}" CommandParameter="AppFolder">
                 <TextBlock Style="{StaticResource TextBlockFolder}" ToolTip="Папка программы" />
             </Button>
 

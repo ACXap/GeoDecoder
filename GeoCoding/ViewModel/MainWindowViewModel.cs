@@ -873,11 +873,11 @@ namespace GeoCoding
         /// <param name="str">Путь к файлу или папке</param>
         private void OpenFolder(string str)
         {
-            if (str == "Папка программы")
+            if (str == "AppFolder")
             {
                 str = Environment.CurrentDirectory;
             }
-            if (str == "Статистика")
+            if (str == "StatFolder")
             {
                 str = _filesSettings.FolderStatistics;
             }

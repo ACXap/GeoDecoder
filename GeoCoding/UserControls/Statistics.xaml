@@ -30,7 +30,7 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
-                        <Button Command="{Binding DataContext.CommandOpenFolder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" CommandParameter="Статистика">
+                        <Button Command="{Binding DataContext.CommandOpenFolder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" CommandParameter="StatFolder">
                             <Button.Template>
                                 <ControlTemplate>
                                     <TextBlock Margin="5,0" Style="{StaticResource TextBlockFolder}" />
