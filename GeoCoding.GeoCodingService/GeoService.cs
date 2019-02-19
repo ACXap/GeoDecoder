@@ -15,19 +15,21 @@ namespace GeoCoding.GeoCodingService
         /// Текст сообщения о пустом адресе
         /// </summary>
         protected virtual string _textAddressEmpty => "Значение адреса пусто";
-
+        /// <summary>
+        /// Текст ошибки, если запрос вернул пустоту
+        /// </summary>
         protected virtual string _textJsonEmpty => "Запрос вернул пустоту";
 
         /// <summary>
         /// Ошибка при привышении лимита в сутки
         /// </summary>
         protected virtual string _errorWebRequestLimit { get; }
-       
+
         /// <summary>
         /// Ссылка на геокодер
         /// </summary>
         protected virtual string _url { get; }
-        
+
         /// <summary>
         /// Имя геосервиса
         /// </summary>
@@ -114,20 +116,23 @@ namespace GeoCoding.GeoCodingService
                 GetJsonString((s, e) =>
                 {
                     error = e;
-                    if (e == null && !string.IsNullOrEmpty(s))
+                    if (e == null)
                     {
-                        ParserJson((d, er) =>
+                        if (!string.IsNullOrEmpty(s))
                         {
-                            error = er;
-                            if (error == null)
+                            ParserJson((d, er) =>
                             {
-                                data = d;
-                            }
-                        }, s);
-                    }
-                    else if(e==null && string.IsNullOrEmpty(s))
-                    {
-                        error = new Exception(_textJsonEmpty);
+                                error = er;
+                                if (error == null)
+                                {
+                                    data = d;
+                                }
+                            }, s);
+                        }
+                        else
+                        {
+                            error = new Exception(_textJsonEmpty);
+                        }
                     }
                 }, address);
             }
