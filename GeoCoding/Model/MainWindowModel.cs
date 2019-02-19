@@ -265,9 +265,9 @@ namespace GeoCoding
 
                 list.AddRange(data.Select(x =>
                 {
-                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.MainGeoCod.AddressWeb}{_charSplit}{x.MainGeoCod.Longitude}{_charSplit}{x.MainGeoCod.Latitude}" +
-                    $"{_charSplit}{x.MainGeoCod.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.MainGeoCod.Kind}" +
-                    $"{_charSplit}{x.MainGeoCod.Precision}{_charSplit}{x.CountResult}";
+                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.MainGeoCod?.AddressWeb}{_charSplit}{x.MainGeoCod?.Longitude}{_charSplit}{x.MainGeoCod?.Latitude}" +
+                    $"{_charSplit}{x.MainGeoCod?.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.MainGeoCod?.Kind}" +
+                    $"{_charSplit}{x.MainGeoCod?.Precision}{_charSplit}{x.CountResult}";
                 }));
 
                 _fileService.SaveData(er =>
