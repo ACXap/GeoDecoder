@@ -5,7 +5,7 @@ using System.Net;
 
 namespace GeoCoding.GeoCodingService
 {
-    public abstract class GeoService
+    public abstract class GeoService : IGeoCodingService
     {
         /// <summary>
         /// Сообщение по поводу превышения лимита в сутки
@@ -25,6 +25,8 @@ namespace GeoCoding.GeoCodingService
         /// Ссылка на геокодер
         /// </summary>
         protected virtual string _url { get; }
+
+        public virtual string Name { get; }
 
         /// <summary>
         /// Метод для формирования урла с веб запросом

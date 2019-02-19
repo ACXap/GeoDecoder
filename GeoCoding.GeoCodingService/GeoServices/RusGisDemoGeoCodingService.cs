@@ -17,7 +17,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Название геосервиса
         /// </summary>
-        public string Name => "RusGisDemo";
+        public override string Name => "RusGisDemo";
 
         /// <summary>
         /// Метод преобразования json в объекты

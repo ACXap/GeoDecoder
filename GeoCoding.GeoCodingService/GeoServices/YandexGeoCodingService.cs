@@ -25,7 +25,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Название геосервиса
         /// </summary>
-        public string Name => "YANDEX";
+        public override string Name => "YANDEX";
 
         /// <summary>
         /// Метод для формирования урла с веб запросом

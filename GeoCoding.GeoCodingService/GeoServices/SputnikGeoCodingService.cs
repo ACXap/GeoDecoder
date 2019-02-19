@@ -17,7 +17,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Название геосервиса
         /// </summary>
-        public string Name => "Sputnik";
+        public override string Name => "Sputnik";
 
         /// <summary>
         /// Метод преобразования json в объекты

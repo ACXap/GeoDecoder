@@ -22,7 +22,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Название геосервиса
         /// </summary>
-        public string Name => "SputnikRusGis";
+        public override string Name => "SputnikRusGis";
 
         /// <summary>
         /// Метод для формирования урла с веб запросом

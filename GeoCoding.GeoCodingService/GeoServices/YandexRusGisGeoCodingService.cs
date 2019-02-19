@@ -25,7 +25,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Название геосервиса
         /// </summary>
-        public string Name => "YandexRusGis";
+        public override string Name => "YandexRusGis";
 
         /// <summary>
         /// Метод для формирования урла с веб запросом
