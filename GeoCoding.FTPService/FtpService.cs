@@ -74,26 +74,26 @@ namespace GeoCoding.FTPService
                         data = sr.ReadToEnd();
                     }
                 }
-            }
-            catch (Exception ex)
-            {
+                List<string> list = data.Split('\n').ToList();
+                bool exist = true;
+                int i = 1;
 
+                while (exist)
+                {
+                    var a = list.Count(x => x.Trim('\r') == name);
+                    if (a > 0)
+                    {
+                        name = $"{Path.GetFileNameWithoutExtension(name)}_{i++}{Path.GetExtension(name)}";
+                    }
+                    else
+                    {
+                        exist = false;
+                    }
+                }
             }
-            List<string> list = data.Split('\n').ToList();
-            bool exist = true;
-            int i = 1;
-
-            while (exist)
+            catch 
             {
-                var a = list.Count(x => x.Trim('\r') == name);
-                if (a > 0)
-                {
-                    name = $"{Path.GetFileNameWithoutExtension(name)}_{i++}{Path.GetExtension(name)}";
-                }
-                else
-                {
-                    exist = false;
-                }
+                name = Path.GetRandomFileName() + Path.GetExtension(name);
             }
 
             return name;
