@@ -36,9 +36,17 @@ namespace GeoCoding
         /// </summary>
         private const string _headerNotificationSaveData = "Сохранение файла";
         /// <summary>
+        /// Заголовок оповещения при успешном сохранении настроек
+        /// </summary>
+        private const string _headerNotificationSettingsSave = "Настройки сохранены успешно";
+        /// <summary>
         /// Сообщение об отмене операции
         /// </summary>
         private const string _errorCancel = "Операция была отменена.";
+        /// <summary>
+        /// Текст сообщения если адрес пустой при геокодировании
+        /// </summary>
+        private const string _errorAddressEmpty = "Адрес пуст";
         /// <summary>
         /// Сообщение об успешности записи в файл
         /// </summary>
@@ -246,7 +254,7 @@ namespace GeoCoding
             get => _collectionGeoCod;
             set
             {
-                Set("CollectionGeoCod", ref _collectionGeoCod, value);
+                Set(ref _collectionGeoCod, value);
                 DispatcherHelper.CheckBeginInvokeOnUI(() => _stat.Init(value));
             }
         }
@@ -257,7 +265,7 @@ namespace GeoCoding
         public FilesSettings FilesSettings
         {
             get => _filesSettings;
-            set => Set("FilesSettings", ref _filesSettings, value);
+            set => Set(ref _filesSettings, value);
         }
 
         /// <summary>
@@ -266,7 +274,7 @@ namespace GeoCoding
         public bool IsStartGeoCoding
         {
             get => _isStartGeoCoding;
-            set => Set("IsStartGeoCoding", ref _isStartGeoCoding, value);
+            set => Set(ref _isStartGeoCoding, value);
         }
 
         /// <summary>
@@ -412,6 +420,7 @@ namespace GeoCoding
                     () =>
                     {
                         string defName = string.Empty;
+
                         if (string.IsNullOrEmpty(_filesSettings.FileOutput))
                         {
                             defName = SetDefNameFileOutput();
@@ -496,7 +505,7 @@ namespace GeoCoding
                         }
                         else
                         {
-                            NotificationPlainText(_headerNotificationError, "Адрес пуст");
+                            NotificationPlainText(_headerNotificationError, _errorAddressEmpty);
                         }
 
                     }));
@@ -519,7 +528,6 @@ namespace GeoCoding
                     () =>
                     {
                         GetAllGeoCod();
-
                     }, () => _collectionGeoCod != null && _collectionGeoCod.Count > 0));
 
         /// <summary>
@@ -538,52 +546,51 @@ namespace GeoCoding
         /// </summary>
         public RelayCommand<EntityGeoCod> CommandCopyAddress =>
         _commandCopyAddress ?? (_commandCopyAddress = new RelayCommand<EntityGeoCod>(
-        obj =>
-        {
-            try
-            {
-                Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
-            }
-            catch (Exception ex)
-            {
-                NotificationPlainText(_headerNotificationError, ex.Message);
-            }
-        }));
+                obj =>
+                {
+                    try
+                    {
+                        Clipboard.SetText(obj.Address, TextDataFormat.UnicodeText);
+                    }
+                    catch (Exception ex)
+                    {
+                        NotificationPlainText(_headerNotificationError, ex.Message);
+                    }
+                }));
 
         /// <summary>
         /// Команда копирования глобалАйДи в буфер
         /// </summary>
         public RelayCommand<EntityGeoCod> CommandCopyGlpobalId =>
         _commandCopyGlobalId ?? (_commandCopyGlobalId = new RelayCommand<EntityGeoCod>(
-                    obj =>
-                    {
-                        try
-                        {
-                            Clipboard.SetText(obj.GlobalID.ToString(), TextDataFormat.UnicodeText);
-                        }
-                        catch (Exception ex)
-                        {
-                            NotificationPlainText(_headerNotificationError, ex.Message);
-                        }
-                    }));
+                 obj =>
+                 {
+                     try
+                     {
+                         Clipboard.SetText(obj.GlobalID.ToString(), TextDataFormat.UnicodeText);
+                     }
+                     catch (Exception ex)
+                     {
+                         NotificationPlainText(_headerNotificationError, ex.Message);
+                     }
+                 }));
 
         /// <summary>
         /// Команда открыть адрес в браузере
         /// </summary>
         public RelayCommand<EntityGeoCod> CommandOpenInBrowser =>
-          _commandOpenInBrowser ?? (_commandOpenInBrowser = new RelayCommand<EntityGeoCod>(
-          obj =>
-          {
-              try
-              {
-                  System.Diagnostics.Process.Start(_currentGeoService.GetUrlRequest(obj.Address));
-              }
-              catch (Exception ex)
-              {
-                  NotificationPlainText(_headerNotificationError, ex.Message);
-              }
-
-          }));
+        _commandOpenInBrowser ?? (_commandOpenInBrowser = new RelayCommand<EntityGeoCod>(
+                  obj =>
+                  {
+                      try
+                      {
+                          System.Diagnostics.Process.Start(_currentGeoService.GetUrlRequest(obj.Address));
+                      }
+                      catch (Exception ex)
+                      {
+                          NotificationPlainText(_headerNotificationError, ex.Message);
+                      }
+                  }));
 
         /// <summary>
         /// Команда обработки перетаскивания файлов на окно программы
@@ -620,7 +627,7 @@ namespace GeoCoding
                         {
                             if (e == null)
                             {
-                                NotificationPlainText("Настройки сохранены успешно", "");
+                                NotificationPlainText(_headerNotificationSettingsSave, null);
                             }
                             else
                             {
@@ -717,32 +724,42 @@ namespace GeoCoding
                         IsStartGetDataFromBD = true;
                         _model.GetDataFromBDAsync((data, error) =>
                         {
-                            if (error == null)
-                            {
-                                if (data.Any())
-                                {
-                                    // Создаем коллекцию с данными
-                                    CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
-
-                                    // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
-                                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
-                                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
-                                    Customers.Filter = CustomerFilter;
-                                }
-                                else
-                                {
-                                    NotificationPlainText("Данных нет", "Запрос ничего не вернул");
-                                }
-                            }
-                            else
-                            {
-                                // Оповещаем если были ошибки
-                                NotificationPlainText(_headerNotificationError, error.Message);
-                            }
+                            CreateCollection(data, error);
                             IsStartGetDataFromBD = false;
                         }, _bdSettings, _bdSettings.SQLQuery);
 
                     }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery) && !_isStartGetDataFromBD));
+
+        /// <summary>
+        /// Метод для создание коллекции из листа данных из файла или БД
+        /// </summary>
+        /// <param name="data">Лист данных</param>
+        /// <param name="error">Ошибки</param>
+        private void CreateCollection(System.Collections.Generic.IEnumerable<EntityGeoCod> data, Exception error)
+        {
+            if (error == null)
+            {
+                if (data.Any())
+                {
+                    // Создаем коллекцию с данными
+                    CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
+
+                    // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
+                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
+                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
+                    Customers.Filter = CustomerFilter;
+                }
+                else
+                {
+                    NotificationPlainText("Данных нет", null);
+                }
+            }
+            else
+            {
+                // Оповещаем если были ошибки
+                NotificationPlainText(_headerNotificationError, error.Message);
+            }
+        }
 
         /// <summary>
         /// Команда очистки коллекции
@@ -787,21 +804,7 @@ namespace GeoCoding
         {
             _model.GetDataFromFile((list, error) =>
             {
-                if (error == null)
-                {
-                    // Создаем коллекцию с данными
-                    CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
-
-                    // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
-                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
-                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
-                    Customers.Filter = CustomerFilter;
-                }
-                else
-                {
-                    // Оповещаем если были ошибки
-                    NotificationPlainText(_headerNotificationError, error.Message);
-                }
+                CreateCollection(list, error);
             }, _filesSettings.FileInput);
         }
 
