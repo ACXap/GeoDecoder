@@ -16,6 +16,8 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         protected virtual string _textAddressEmpty => "Значение адреса пусто";
 
+        protected virtual string _textJsonEmpty => "Запрос вернул пустоту";
+
         /// <summary>
         /// Ошибка при привышении лимита в сутки
         /// </summary>
@@ -25,7 +27,10 @@ namespace GeoCoding.GeoCodingService
         /// Ссылка на геокодер
         /// </summary>
         protected virtual string _url { get; }
-
+        
+        /// <summary>
+        /// Имя геосервиса
+        /// </summary>
         public virtual string Name { get; }
 
         /// <summary>
@@ -119,6 +124,10 @@ namespace GeoCoding.GeoCodingService
                                 data = d;
                             }
                         }, s);
+                    }
+                    else if(e==null && string.IsNullOrEmpty(s))
+                    {
+                        error = new Exception(_textJsonEmpty);
                     }
                 }, address);
             }
