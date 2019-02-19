@@ -51,6 +51,10 @@ namespace GeoCoding
         /// Сообщение о завершении обработки объектов
         /// </summary>
         private const string _processedcompleted = "Обработка завершилась. Всего обработано:";
+        /// <summary>
+        /// Сообщение о успешном применении настроек из файла
+        /// </summary>
+        private const string _settingsGood = "Настройки применены успешно";
         #endregion PrivateConst
 
         #region PrivateFields
@@ -632,15 +636,7 @@ namespace GeoCoding
         _commandSaveStatistics ?? (_commandSaveStatistics = new RelayCommand(
                     () =>
                     {
-                        if (!_stat.IsSave)
-                        {
-                            SaveStatistics();
-                        }
-                        else
-                        {
-                            NotificationPlainText("Уже сохранено все", "С последнего раза ничего не изменилось");
-                        }
-
+                        SaveStatistics();
                     }, () => _stat != null && _stat.Statistics != null));
 
         /// <summary>
@@ -793,12 +789,6 @@ namespace GeoCoding
             {
                 if (error == null)
                 {
-                    // Если коллекция данных уже есть, освобождаем и уничтожаем, можно конечно спросить о нужности данных???
-                    //if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-                    //{
-                    //    _collectionGeoCod.Clear();
-                    //    _collectionGeoCod = null;
-                    //}
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(list);
 
@@ -929,6 +919,10 @@ namespace GeoCoding
             return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
         }
 
+        /// <summary>
+        /// Метод для получения имени файла с ошибками
+        /// </summary>
+        /// <returns>Имя файла</returns>
         private string SetDefNameFileErrors()
         {
             string defName = string.Empty;
@@ -942,6 +936,10 @@ namespace GeoCoding
             return defName;
         }
 
+        /// <summary>
+        /// Метод для получения имени файла для временных данных
+        /// </summary>
+        /// <returns>Имя файла</returns>
         private string SetDefNameFileTemp()
         {
             string defName = string.Empty;
@@ -954,11 +952,18 @@ namespace GeoCoding
             return defName;
         }
 
+        /// <summary>
+        /// Метод для получения имени файла статистики по умолчанию
+        /// </summary>
+        /// <returns>Имя файла</returns>
         private string SetDefNameFileStatistics()
         {
             return $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
         }
 
+        /// <summary>
+        /// Метод для сохранения файла с ошибками
+        /// </summary>
         private void SaveErrors()
         {
             if (_collectionGeoCod != null && _collectionGeoCod.Count(x => x.Status == StatusType.Error) > 0)
@@ -974,6 +979,9 @@ namespace GeoCoding
             }
         }
 
+        /// <summary>
+        /// Метод для сохранения временных файлов
+        /// </summary>
         private void SaveTemp()
         {
             if (_collectionGeoCod != null && _collectionGeoCod.Any())
@@ -989,14 +997,18 @@ namespace GeoCoding
             }
         }
 
+        /// <summary>
+        /// Метод для сохранения статистики
+        /// </summary>
         private void SaveStatistics()
         {
-            var nameFile = SetDefNameFileStatistics();
             if (_stat.IsSave)
             {
                 NotificationPlainText("Статистика уже был сохранена", "В статистике с последнего раза ничего не изменилось");
                 return;
             }
+
+            var nameFile = SetDefNameFileStatistics();
             _model.SaveStatistics(e =>
             {
                 if (e != null)
@@ -1010,6 +1022,9 @@ namespace GeoCoding
             }, _stat.Statistics, _filesSettings, nameFile);
         }
 
+        /// <summary>
+        /// Метод для получения координат для всей коллекции 
+        /// </summary>
         private void GetAllGeoCod()
         {
             System.Collections.Generic.IEnumerable<EntityGeoCod> data = null;
@@ -1080,6 +1095,12 @@ namespace GeoCoding
             }
         }
 
+        /// <summary>
+        /// Метод для настройки программ из файла настроек
+        /// </summary>
+        /// <param name="file">Имя файла с настройками</param>
+        /// <param name="ftp">Ссылка на настройки фтп</param>
+        /// <param name="bd">Сылка на настройки БД</param>
         private void GetSettingsFromFile(string file, FTPSettings ftp, BDSettings bd)
         {
             _model.GetSettingsFromFile(e =>
@@ -1090,7 +1111,7 @@ namespace GeoCoding
                 }
                 else
                 {
-                    NotificationPlainText("Успех", "Настройки применены успешно");
+                    NotificationPlainText(_headerNotificationDataProcessed, _settingsGood);
                 }
             }, file, ftp, bd);
         }
