@@ -156,7 +156,7 @@ namespace GeoCoding
                 }
                 finally
                 {
-                    _cts.Dispose();
+                    _cts?.Dispose();
                 }
             }, _cts.Token);
 

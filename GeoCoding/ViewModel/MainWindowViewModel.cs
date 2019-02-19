@@ -1061,7 +1061,7 @@ namespace GeoCoding
                 {
                     _collectionGeoCod.Clear();
                 }
-            }, () => _collectionGeoCod != null && _collectionGeoCod.Any()));
+            }, () => _collectionGeoCod != null && _collectionGeoCod.Any() && !_isStartGeoCoding));
 
         /// <summary>
         /// Конструктор по умолчанию
