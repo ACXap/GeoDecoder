@@ -375,7 +375,10 @@
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander IsExpanded="True">
+                                                    <Expander>
+                                                        <i:Interaction.Behaviors>
+                                                            <local:PersistGroupExpandedStateBehavior GroupName="{Binding Path=Name}" />
+                                                        </i:Interaction.Behaviors>
                                                         <Expander.Header>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock
@@ -422,11 +425,11 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ComboBox ItemsSource="{Binding ListGeoCod}">
-                                            <i:Interaction.Triggers>
+                                            <!--<i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
                                                     <cmd:EventToCommand Command="{Binding DataContext.CommandSelectMainGeo, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" PassEventArgsToCommand="True" />
                                                 </i:EventTrigger>
-                                            </i:Interaction.Triggers>
+                                            </i:Interaction.Triggers>-->
                                             <ComboBox.Style>
                                                 <Style BasedOn="{StaticResource MetroComboBox}" TargetType="{x:Type ComboBox}">
                                                     <Setter Property="Visibility" Value="Visible" />

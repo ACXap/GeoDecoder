@@ -743,37 +743,6 @@ namespace GeoCoding
                     }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery) && !_isStartGetDataFromBD));
 
         /// <summary>
-        /// Метод для создание коллекции из листа данных из файла или БД
-        /// </summary>
-        /// <param name="data">Лист данных</param>
-        /// <param name="error">Ошибки</param>
-        private void CreateCollection(System.Collections.Generic.IEnumerable<EntityGeoCod> data, Exception error)
-        {
-            if (error == null)
-            {
-                if (data.Any())
-                {
-                    // Создаем коллекцию с данными
-                    CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
-
-                    // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
-                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
-                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
-                    Customers.Filter = CustomerFilter;
-                }
-                else
-                {
-                    NotificationPlainText("Данных нет", null);
-                }
-            }
-            else
-            {
-                // Оповещаем если были ошибки
-                NotificationPlainText(_headerNotificationError, error.Message);
-            }
-        }
-
-        /// <summary>
         /// Команда очистки коллекции
         /// </summary>
         public RelayCommand CommandClearCollection =>
@@ -799,7 +768,8 @@ namespace GeoCoding
                                 _currentGeoCod.MainGeoCod = item;
                                 _currentGeoCod.Error = string.Empty;
                                 _currentGeoCod.Status = StatusType.OK;
-                                _customerView.Refresh();
+                               
+                                //_customerView.Refresh(); 
                                 _stat.UpdateStatisticsCollection();
                             }
                         }
@@ -1129,6 +1099,37 @@ namespace GeoCoding
                     NotificationPlainText(_headerNotificationDataProcessed, _settingsGood);
                 }
             }, file, ftp, bd);
+        }
+
+        /// <summary>
+        /// Метод для создание коллекции из листа данных из файла или БД
+        /// </summary>
+        /// <param name="data">Лист данных</param>
+        /// <param name="error">Ошибки</param>
+        private void CreateCollection(System.Collections.Generic.IEnumerable<EntityGeoCod> data, Exception error)
+        {
+            if (error == null)
+            {
+                if (data.Any())
+                {
+                    // Создаем коллекцию с данными
+                    CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
+
+                    // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
+                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
+                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
+                    Customers.Filter = CustomerFilter;
+                }
+                else
+                {
+                    NotificationPlainText("Данных нет", null);
+                }
+            }
+            else
+            {
+                // Оповещаем если были ошибки
+                NotificationPlainText(_headerNotificationError, error.Message);
+            }
         }
 
         #endregion PrivateMethod
