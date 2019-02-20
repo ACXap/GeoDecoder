@@ -60,16 +60,19 @@ namespace GeoCoding
         }
         public void UpdateStatisticsCollection()
         {
-            _statistics.AllEntity = _collection.Count();
-            _statistics.OK = _collection.Count(x => x.Status == StatusType.OK);
-            _statistics.NotGeoCoding = _collection.Count(x => x.Status == StatusType.NotGeoCoding);
-            _statistics.GeoCodingNow = _collection.Count(x => x.Status == StatusType.GeoCodingNow);
-            _statistics.Error = _collection.Count(x => x.Status == StatusType.Error);
-            _statistics.House = _collection.Count(x => x.MainGeoCod?.Kind == KindType.House);
-            _statistics.Exact = _collection.Count(x => x.MainGeoCod?.Precision == PrecisionType.Exact);
-            _statistics.NotFound = _collection.Count(x => x.CountResult == 0);
-            _statistics.Percent = ((_statistics.AllEntity - _statistics.NotGeoCoding - _statistics.GeoCodingNow) / (double)_statistics.AllEntity) * 100;
-            IsSave = false;
+            if (_collection != null)
+            {
+                _statistics.AllEntity = _collection.Count();
+                _statistics.OK = _collection.Count(x => x.Status == StatusType.OK);
+                _statistics.NotGeoCoding = _collection.Count(x => x.Status == StatusType.NotGeoCoding);
+                _statistics.GeoCodingNow = _collection.Count(x => x.Status == StatusType.GeoCodingNow);
+                _statistics.Error = _collection.Count(x => x.Status == StatusType.Error);
+                _statistics.House = _collection.Count(x => x.MainGeoCod?.Kind == KindType.House);
+                _statistics.Exact = _collection.Count(x => x.MainGeoCod?.Precision == PrecisionType.Exact);
+                _statistics.NotFound = _collection.Count(x => x.CountResult == 0);
+                _statistics.Percent = ((_statistics.AllEntity - _statistics.NotGeoCoding - _statistics.GeoCodingNow) / (double)_statistics.AllEntity) * 100;
+                IsSave = false;
+            }
         }
     }
 }

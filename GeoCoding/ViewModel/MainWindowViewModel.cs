@@ -505,7 +505,7 @@ namespace GeoCoding
                             {
                                 if (er == null)
                                 {
-                                    Customers.Refresh();
+                                    Customers?.Refresh();
                                     _stat.UpdateStatisticsCollection();
                                 }
                                 else
@@ -1133,6 +1133,17 @@ namespace GeoCoding
         }
 
         #endregion PrivateMethod
+
+
+        private EntityGeoCod _singlGeoCod = new EntityGeoCod();
+        /// <summary>
+        /// Объект для одиночного геокодирования
+        /// </summary>
+        public EntityGeoCod SingleGeoCod
+        {
+            get => _singlGeoCod;
+            set => Set(ref _singlGeoCod, value);
+        }
 
         /// <summary>
         /// Конструктор по умолчанию

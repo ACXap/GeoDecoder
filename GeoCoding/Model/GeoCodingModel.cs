@@ -27,6 +27,7 @@ namespace GeoCoding
         public async void GetGeoCod(Action<Exception> callback, EntityGeoCod data)
         {
             Exception error = null;
+            data.MainGeoCod = null;
            
             await Task.Factory.StartNew(() =>
             {

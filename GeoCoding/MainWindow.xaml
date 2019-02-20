@@ -90,7 +90,6 @@
 
                     <!--  Панель работы с входным файлом  -->
                     <Border
-                        Grid.Column="0"
                         Padding="5"
                         BorderBrush="{DynamicResource AccentColorBrush}"
                         BorderThickness="1">
@@ -191,6 +190,42 @@
                         </Grid>
                     </Border>
                 </TabItem>
+
+                <TabItem Header="Адрес">
+                    <Border Padding="5"
+                        BorderBrush="{DynamicResource AccentColorBrush}"
+                        BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Адрес" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Grid.Row="0" VerticalContentAlignment="Center" Text="{Binding SingleGeoCod.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Controls:TextBoxHelper.ClearTextButton="True"/>
+
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Вариант" FontWeight="Bold" VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding SingleGeoCod.MainGeoCod.AddressWeb}" BorderThickness="0" VerticalContentAlignment="Center" IsReadOnly="True" />
+
+                            <StackPanel Grid.Column="0" Grid.ColumnSpan="2"  Grid.Row="2" Orientation="Horizontal" >
+                                <TextBlock Text="Широта:" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
+                                <TextBox Text="{Binding SingleGeoCod.MainGeoCod.Latitude}" Width="70" BorderThickness="0" VerticalContentAlignment="Center"/>
+                                <TextBlock Text="Долгота:" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
+                                <TextBox Text="{Binding SingleGeoCod.MainGeoCod.Longitude}" Width="70" BorderThickness="0"  VerticalContentAlignment="Center"/>
+
+                                <TextBlock Text="Количество" VerticalAlignment="Center" Margin="5" FontWeight="Bold"/>
+                                <TextBox Text="{Binding SingleGeoCod.CountResult}" BorderThickness="0"  VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" Content="Геокодировать" Command="{Binding CommandGetGeoCod}" CommandParameter="{Binding SingleGeoCod}"/>
+                        </Grid>
+                    </Border>
+                </TabItem>
+                
             </TabControl>
 
             <!--  Панель работы с выходным файлом  -->
@@ -376,9 +411,9 @@
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type GroupItem}">
                                                     <Expander>
-                                                        <i:Interaction.Behaviors>
+                                                        <!--<i:Interaction.Behaviors>
                                                             <local:PersistGroupExpandedStateBehavior GroupName="{Binding Path=Name}" />
-                                                        </i:Interaction.Behaviors>
+                                                        </i:Interaction.Behaviors>-->
                                                         <Expander.Header>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock
@@ -425,11 +460,11 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ComboBox ItemsSource="{Binding ListGeoCod}">
-                                            <!--<i:Interaction.Triggers>
+                                            <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="SelectionChanged">
                                                     <cmd:EventToCommand Command="{Binding DataContext.CommandSelectMainGeo, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" PassEventArgsToCommand="True" />
                                                 </i:EventTrigger>
-                                            </i:Interaction.Triggers>-->
+                                            </i:Interaction.Triggers>
                                             <ComboBox.Style>
                                                 <Style BasedOn="{StaticResource MetroComboBox}" TargetType="{x:Type ComboBox}">
                                                     <Setter Property="Visibility" Value="Visible" />
