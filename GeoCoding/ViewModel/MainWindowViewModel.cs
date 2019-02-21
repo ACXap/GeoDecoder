@@ -324,6 +324,7 @@ namespace GeoCoding
             get => _currentGeoService;
             set
             {
+                _geoCodSettings.GeoService = value;
                 _geoCodingModel.SetGeoService(value);
                 Set(ref _currentGeoService, value);
             }

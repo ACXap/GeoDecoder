@@ -24,9 +24,10 @@ namespace GeoCoding.GeoCodingService
                 new RusGisDemoGeoCodingService(),
                 new Test.GeoCodingTest()
             }));
-
+        /// <summary>
+        /// Свойство для получения коллекции всех имен геосервисов
+        /// </summary>
         public static ReadOnlyCollection<string> AllNameService => new ReadOnlyCollection<string>(AllService.Select(x => x.Name).ToList());
-
         /// <summary>
         /// Метод получения геокодера по имени, если не найден возвращает первый из коллекции
         /// </summary>

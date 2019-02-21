@@ -295,7 +295,11 @@ namespace GeoCoding
 
             callback(error);
         }
-        
+        /// <summary>
+        /// Метод для получения урл-адреса запроса
+        /// </summary>
+        /// <param name="address">Адрес</param>
+        /// <returns>Возвращает ссылку на запрос</returns>
         public string GetUrlRequest(string address)
         {
             return _geoCodingService.GetUrlRequest(address);
