@@ -739,7 +739,7 @@ namespace GeoCoding
                             IsStartGetDataFromBD = false;
                         }, _bdSettings, _bdSettings.SQLQuery);
 
-                    }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery) && !_isStartGetDataFromBD));
+                    }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery) && !_isStartGetDataFromBD && !_isStartGeoCoding));
 
         /// <summary>
         /// Команда очистки коллекции
