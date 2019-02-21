@@ -5,7 +5,7 @@ using System.Windows.Shell;
 
 namespace GeoCoding
 {
-    public class ConverterStartGeoToProgress : IValueConverter
+    public class ConverterStatGeoToProgress : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

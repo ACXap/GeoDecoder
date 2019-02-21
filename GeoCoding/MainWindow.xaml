@@ -24,7 +24,7 @@
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:ConverterStatToProgress x:Key="ConverterStatToProgress"/>
-        <local:ConverterStartGeoToProgress x:Key="ConverterStartGeoToProgress"/>
+        <local:ConverterStatGeoToProgress x:Key="ConverterStartGeoToProgress"/>
     </Controls:MetroWindow.Resources>
 
     <!--  Датаконтекст/ViewModel окна  -->
@@ -39,7 +39,7 @@
         </DataTemplate>
     </Controls:MetroWindow.IconTemplate>
 
-    <!-- Отображение процесса геокодирования на панеле задач-->
+    <!-- Отображение процесса геокодирования на панели задач-->
     <Controls:MetroWindow.TaskbarItemInfo>
         <TaskbarItemInfo
             ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}" 
@@ -52,13 +52,20 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
 
-            <ToggleButton x:Name="tbOpenHelp" Cursor="Hand">
-                <TextBlock Style="{StaticResource TextBlockHelp}" ToolTip="Помощь"/>
+            <!-- Кнопка открытия помощи -->
+            <ToggleButton 
+                x:Name="tbOpenHelp" 
+                Cursor="Hand" 
+                ToolTip="Помощь">
+                <TextBlock Style="{StaticResource TextBlockHelp}"/>
             </ToggleButton>
             
             <!--  Кнопка открытия папки программы  -->
-            <Button Command="{Binding CommandOpenFolder}" CommandParameter="AppFolder">
-                <TextBlock Style="{StaticResource TextBlockFolder}" ToolTip="Папка программы" />
+            <Button 
+                Command="{Binding CommandOpenFolder}" 
+                CommandParameter="AppFolder"
+                ToolTip="Папка программы">
+                <TextBlock Style="{StaticResource TextBlockFolder}"  />
             </Button>
 
             <!--  Кнопка открытия настроек  -->
@@ -66,9 +73,7 @@
                 Name="tbOpenSettings"
                 Cursor="Hand"
                 ToolTip="Настройки">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource TextBlockSettings}" />
-                </StackPanel>
+                <TextBlock Style="{StaticResource TextBlockSettings}" />
             </ToggleButton>
 
         </Controls:WindowCommands>
@@ -204,6 +209,7 @@
                     </Border>
                 </TabItem>
 
+                <!-- Геокодирование одиночного адреса-->
                 <TabItem Header="Адрес">
                     <Border Padding="5"
                         BorderBrush="{DynamicResource AccentColorBrush}"
@@ -663,7 +669,8 @@
             </Controls:Flyout>
         
             <!-- Окно с помощью-->
-            <Controls:Flyout IsOpen="{Binding ElementName=tbOpenHelp, Path=IsChecked}"
+            <Controls:Flyout 
+                IsOpen="{Binding ElementName=tbOpenHelp, Path=IsChecked}"
                 Position="Right" MaxWidth="900"
                 MaxHeight="500"
                 Header="Помощь" Style="{StaticResource FlyoutStyleMain}">
