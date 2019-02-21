@@ -22,7 +22,6 @@ namespace GeoCoding.GeoCodingService
                 new RusGisDemoGeoCodingService(),
                 new Test.GeoCodingTest()
             }));
-
         /// <summary>
         /// Метод получения геокодера по имени, если не найден возвращает первый из коллекции
         /// </summary>

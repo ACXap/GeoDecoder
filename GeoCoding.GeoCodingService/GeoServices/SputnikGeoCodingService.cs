@@ -31,7 +31,7 @@ namespace GeoCoding.GeoCodingService
 
             try
             {
-                SputnikJsonOldFormat a = JsonConvert.DeserializeObject<SputnikJsonOldFormat>(json);
+                SputnikJson a = JsonConvert.DeserializeObject<SputnikJson>(json);
 
                 data = a.Result.Select(x =>
                 {

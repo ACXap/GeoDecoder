@@ -52,6 +52,10 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
 
+            <ToggleButton x:Name="tbOpenHelp" Cursor="Hand">
+                <TextBlock Style="{StaticResource TextBlockHelp}" ToolTip="Помощь"/>
+            </ToggleButton>
+            
             <!--  Кнопка открытия папки программы  -->
             <Button Command="{Binding CommandOpenFolder}" CommandParameter="AppFolder">
                 <TextBlock Style="{StaticResource TextBlockFolder}" ToolTip="Папка программы" />
@@ -656,6 +660,18 @@
                 <!--  >Юзер-контрол для отображения запроса пользовательского sql-запроса  -->
                 <uc:FlyoutSql />
 
+            </Controls:Flyout>
+        
+            <!-- Окно с помощью-->
+            <Controls:Flyout IsOpen="{Binding ElementName=tbOpenHelp, Path=IsChecked}"
+                Position="Right" MaxWidth="900"
+                MaxHeight="500"
+                Header="Помощь" Style="{StaticResource FlyoutStyleMain}">
+                <FlowDocumentScrollViewer Margin="5">
+                    <i:Interaction.Behaviors>
+                        <local:FlowDocumentFromFile FileName="ЧитайМеня.txt"/>
+                    </i:Interaction.Behaviors>
+                </FlowDocumentScrollViewer>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>

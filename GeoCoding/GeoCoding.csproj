@@ -88,6 +88,7 @@
     <Compile Include="Converters\ConverterStartGeoToProgress.cs" />
     <Compile Include="Converters\ConverterStatToProgress.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
+    <Compile Include="Helpers\FlowDocumentFromFile.cs" />
     <Compile Include="Helpers\PersistGroupExpandedStateBehavior.cs" />
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
     <Compile Include="Model\Data\GeoCod.cs" />

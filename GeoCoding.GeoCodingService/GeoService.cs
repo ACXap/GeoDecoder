@@ -5,6 +5,9 @@ using System.Net;
 
 namespace GeoCoding.GeoCodingService
 {
+    /// <summary>
+    /// Абстрактный класс для реализации основного функционала геокодирования, реализует интерфейс IGeoCodingService
+    /// </summary>
     public abstract class GeoService : IGeoCodingService
     {
         #region ProtectedFields

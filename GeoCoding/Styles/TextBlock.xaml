@@ -18,6 +18,12 @@
         <Setter Property="FontSize" Value="22" />
     </Style>
 
+    <Style x:Key="TextBlockHelp" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+        <Setter Property="Text" Value="{StaticResource FontAwesomeHelp}"/>
+        <Setter Property="FontSize" Value="22"/>
+    </Style>
+    
     <Style x:Key="TextBlockBaseClick" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
         <Setter Property="HorizontalAlignment" Value="Right" />

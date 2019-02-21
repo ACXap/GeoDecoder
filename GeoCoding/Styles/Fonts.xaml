@@ -15,5 +15,6 @@
     <system:String x:Key="FontAwesomeFolderClose">&#xf07b;</system:String>
     <system:String x:Key="FontAwesomeSettings">&#xf013;</system:String>
     <system:String x:Key="FontAwesomeSaveStatistics">&#xf0c7;</system:String>
+    <system:String x:Key="FontAwesomeHelp">&#xf128;</system:String>
 
 </ResourceDictionary>

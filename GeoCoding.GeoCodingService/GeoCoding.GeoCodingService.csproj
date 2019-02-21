@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="Data\GeoCod.cs" />
     <Compile Include="Data\SputnikJson.cs" />
-    <Compile Include="Data\SputnikJsonOldFormat.cs" />
     <Compile Include="Data\RusGisJson.cs" />
     <Compile Include="Data\YandexJson.cs" />
     <Compile Include="GeoService.cs" />

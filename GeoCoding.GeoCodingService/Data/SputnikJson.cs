@@ -1,83 +1,84 @@
-﻿//using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
-//namespace GeoCoding.GeoCodingService
-//{
-//        public class Meta
-//        {
-//            public string version { get; set; }
-//            public string format { get; set; }
-//        }
+namespace GeoCoding.GeoCodingService
+{
+    public class Meta
+    {
+        [JsonProperty("found")]
+        public long Found { get; set; }
 
-//        public class Viewport
-//        {
-//            public double TopLat { get; set; }
-//            public double TopLon { get; set; }
-//            public double BotLat { get; set; }
-//            public double BotLon { get; set; }
-//        }
+        [JsonProperty("shown")]
+        public long Shown { get; set; }
 
-//        public class AddressComponent
-//        {
-//            public string type { get; set; }
-//            public string value { get; set; }
-//        }
+        [JsonProperty("version")]
+        public string Version { get; set; }
 
-//        public class Properties
-//        {
-//            public int id { get; set; }
-//            public string type { get; set; }
-//            public string description { get; set; }
-//            public string display_name { get; set; }
-//            public string title { get; set; }
-//            public List<AddressComponent> address_components { get; set; }
-//            public string fias_id { get; set; }
-//            public bool full_match { get; set; }
-//            public object poi_types { get; set; }
-//        }
+        [JsonProperty("format")]
+        public string Format { get; set; }
+    }
 
-//        public class Geometry2
-//        {
-//            public string type { get; set; }
-//            public List<double> coordinates { get; set; }
-//        }
+    public class Position
+    {
+        [JsonProperty("lat")]
+        public double Lat { get; set; }
 
-//        public class Geometry
-//        {
-//            public string type { get; set; }
-//            public List<Geometry2> geometries { get; set; }
-//        }
+        [JsonProperty("lon")]
+        public double Lon { get; set; }
+    }
 
-//        public class Feature
-//        {
-//            public string type { get; set; }
-//            public Properties properties { get; set; }
-//            public Geometry geometry { get; set; }
-//        }
+    public class Result
+    {
+            [JsonProperty("id")]
+            public long Id { get; set; }
 
-//        public class Address
-//        {
-//            public string type { get; set; }
-//            public List<Feature> features { get; set; }
-//        }
+            [JsonProperty("type")]
+            public string Type { get; set; }
 
-//        public class Result
-//        {
-//            public string priority { get; set; }
-//            public Viewport viewport { get; set; }
-//            public List<Address> address { get; set; }
-//        }
+            [JsonProperty("description")]
+            public string Description { get; set; }
 
-//        public class Typo
-//        {
-//            public string OriginalQuery { get; set; }
-//            public string FixedQuery { get; set; }
-//            public int Rank { get; set; }
-//        }
+            [JsonProperty("display_name")]
+            public string DisplayName { get; set; }
 
-//        public class SputnikJsonRootObject
-//        {
-//            public Meta meta { get; set; }
-//            public Result result { get; set; }
-//            public Typo typo { get; set; }
-//        }
-//}
+            [JsonProperty("title")]
+            public string Title { get; set; }
+
+            [JsonProperty("fias_id", NullValueHandling = NullValueHandling.Ignore)]
+            public Guid? FiasId { get; set; }
+
+            [JsonProperty("SortScore")]
+            public double SortScore { get; set; }
+
+            [JsonProperty("full_match")]
+            public bool FullMatch { get; set; }
+
+            [JsonProperty("position")]
+            public Position Position { get; set; }
+    }
+
+    public class Typo
+    {
+        [JsonProperty("OriginalQuery")]
+        public string OriginalQuery { get; set; }
+
+        [JsonProperty("FixedQuery")]
+        public string FixedQuery { get; set; }
+
+        [JsonProperty("Rank")]
+        public long Rank { get; set; }
+    }
+
+    public class SputnikJson
+    {
+        [JsonProperty("meta")]
+        public Meta Meta { get; set; }
+
+        [JsonProperty("result")]
+        public List<Result> Result { get; set; }
+
+        [JsonProperty("typo")]
+        public Typo Typo { get; set; }
+    }
+}
