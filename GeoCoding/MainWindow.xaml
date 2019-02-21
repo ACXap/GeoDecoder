@@ -104,7 +104,7 @@
             <TabControl Grid.Column="0" Controls:TabControlHelper.Underlined="SelectedTabItem">
 
                 <!--  Работа с файлами  -->
-                <TabItem Header="Файл">
+                <TabItem Header="Файл" ToolTip="Работа с файлами данных">
 
                     <!--  Панель работы с входным файлом  -->
                     <Border
@@ -134,7 +134,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!--  Кнопка получения данных  -->
-                                <Button
+                                <Button ToolTip="Считать данные из файла в таблицу данных"
                                     Grid.Column="0"
                                     HorizontalAlignment="Left"
                                     Command="{Binding CommandGetDataFromFile}"
@@ -145,20 +145,20 @@
                                 <StackPanel Grid.Column="1" Orientation="Vertical">
 
                                     <!--  Выбор входного файла на ФТП-сервере  -->
-                                    <CheckBox
+                                    <CheckBox ToolTip="Если настроена работа с ФТП, то откроется папка на ФТП-сервере"
                                         Margin="5"
                                         Content="Файл на FTP сервере"
                                         IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" />
 
                                     <!--  После выбора файла с данными, данные получаем сразу  -->
-                                    <CheckBox
+                                    <CheckBox ToolTip="После выбора файла с данными, таблица с данными заполнится сразу"
                                         Margin="5,0,5,0"
                                         Content="Данные получить сразу"
                                         IsChecked="{Binding FilesSettings.CanGetDataOnce}" />
                                 </StackPanel>
 
                                 <!--  Выбор файла с данными, открываем проводник  -->
-                                <Button
+                                <Button ToolTip="Открытие диалога выбора файла с данными"
                                     Grid.Column="2"
                                     Command="{Binding CommandGetFile}"
                                     Content="Выбрать файл с данными"
@@ -169,7 +169,7 @@
                 </TabItem>
 
                 <!--  Работа с базой данных  -->
-                <TabItem Header="БД">
+                <TabItem Header="БД" ToolTip="Работа с базой данных">
 
                     <!--  Панель работы с базой данных  -->
                     <Border
@@ -201,7 +201,7 @@
                                     x:Name="tbSql"
                                     Grid.Column="2"
                                     Margin="5"
-                                    Padding="15"
+                                    Padding="15" ToolTip="Открытие окна для написания своего запроса"
                                     HorizontalAlignment="Right"
                                     Content="Свой запрос" />
                             </Grid>
@@ -210,7 +210,7 @@
                 </TabItem>
 
                 <!-- Геокодирование одиночного адреса-->
-                <TabItem Header="Адрес">
+                <TabItem Header="Адрес" ToolTip="Геокодирование одиночного адреса">
                     <Border Padding="5"
                         BorderBrush="{DynamicResource AccentColorBrush}"
                         BorderThickness="1">
