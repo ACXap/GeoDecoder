@@ -1165,7 +1165,7 @@ namespace GeoCoding
                     FTPSettings = ftp;
                     BDSettings = bds;
                     ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
-                    CurrentGeoService = CollectionGeoService.FirstOrDefault(x => x.Name == g.GeoService);
+                    CurrentGeoService = GeoCodingService.MainGeoService.GetServiceByName(g.GeoService);
                 }
                 else
                 {
