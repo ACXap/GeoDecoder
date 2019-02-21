@@ -28,12 +28,11 @@ namespace GeoCoding
 
         private void SetDoc()
         {
-            Control control = FindControl();
+            FlowDocumentScrollViewer control = AssociatedObject;
 
             if (control == null)
             {
-                throw new Exception(
-                    "Behavior needs to be attached to an Expander that is contained inside an ItemsControl");
+                throw new Exception("Чот упало в помощи");
             }
 
             Paragraph paragraph = new Paragraph();
@@ -46,24 +45,7 @@ namespace GeoCoding
                 paragraph.Inlines.Add($"А нет файла помощи. Незачем было удалять файл: {FileName}");
             }
             
-            ((FlowDocumentScrollViewer)control).Document = new FlowDocument(paragraph);
-        }
-
-        private Control FindControl()
-        {
-            DependencyObject current = AssociatedObject;
-
-            while (current != null && !(current is Control))
-            {
-                current = VisualTreeHelper.GetParent(current);
-            }
-
-            if (current == null)
-            {
-                return null;
-            }
-
-            return current as Control;
+            control.Document = new FlowDocument(paragraph);
         }
 
         protected override void OnDetaching()
