@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace GeoCoding.GeoCodingService
@@ -8,12 +10,12 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Поле для хранения коллекции геосервисов
         /// </summary>
-        private static ReadOnlyObservableCollection<IGeoCodingService> _allService;
+        private static ReadOnlyCollection<IGeoCodingService> _allService;
         /// <summary>
         /// Свойство для получения коллекции всех геокодеров
         /// </summary>
-        public static ReadOnlyObservableCollection<IGeoCodingService> AllService =>
-            _allService ?? (_allService = new ReadOnlyObservableCollection<IGeoCodingService>(new ObservableCollection<IGeoCodingService>()
+        public static ReadOnlyCollection<IGeoCodingService> AllService =>
+            _allService ?? (_allService = new ReadOnlyCollection<IGeoCodingService>(new List<IGeoCodingService>()
             {
                 new YandexGeoCodingService(),
                 new YandexRusGisGeoCodingService(),
@@ -22,6 +24,9 @@ namespace GeoCoding.GeoCodingService
                 new RusGisDemoGeoCodingService(),
                 new Test.GeoCodingTest()
             }));
+
+        public static ReadOnlyCollection<string> AllNameService => new ReadOnlyCollection<string>(AllService.Select(x => x.Name).ToList());
+
         /// <summary>
         /// Метод получения геокодера по имени, если не найден возвращает первый из коллекции
         /// </summary>

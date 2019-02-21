@@ -6,14 +6,10 @@ using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Markup;
 
 namespace GeoCoding
 {
@@ -392,7 +388,7 @@ namespace GeoCoding
         /// <summary>
         /// Коллекция всех возможных геосервисов
         /// </summary>
-        public ReadOnlyObservableCollection<GeoCodingService.IGeoCodingService> CollectionGeoService => GeoCodingService.MainGeoService.AllService;
+        public ReadOnlyCollection<GeoCodingService.IGeoCodingService> CollectionGeoService => GeoCodingService.MainGeoService.AllService;
 
         #endregion PublicPropertys
 

@@ -663,7 +663,7 @@
                 Position="Left"
                 Style="{StaticResource FlyoutStyleMain}">
 
-                <!--  >Юзер-контрол для отображения запроса пользовательского sql-запроса  -->
+                <!-- Юзер-контрол для отображения запроса пользовательского sql-запроса  -->
                 <uc:FlyoutSql />
 
             </Controls:Flyout>
