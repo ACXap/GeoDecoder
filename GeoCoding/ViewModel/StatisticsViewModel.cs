@@ -6,18 +6,40 @@ using System.Windows.Threading;
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для работы со статистикой
+    /// </summary>
     public class StatisticsViewModel : ViewModelBase
     {
-        private int _interval;
-        private DateTime _timeStart;
-        private DispatcherTimer _timer;
-        private IEnumerable<EntityGeoCod> _collection;
-
-        public bool IsSave { get; set; } = false;
+        #region PrivateFields
         /// <summary>
         /// Поле для хранения статистики
         /// </summary>
         private Statistics _statistics;
+        /// <summary>
+        /// Интервал работы таймера
+        /// </summary>
+        private int _interval;
+        /// <summary>
+        /// Время начала работы таймера
+        /// </summary>
+        private DateTime _timeStart;
+        /// <summary>
+        /// Сам таймер
+        /// </summary>
+        private DispatcherTimer _timer;
+        /// <summary>
+        /// Коллекция для подсчета статистики
+        /// </summary>
+        private IEnumerable<EntityGeoCod> _collection;
+
+        #endregion PrivateFields
+
+        #region PublicProperty
+        /// <summary>
+        /// Была ли сохранена статистика
+        /// </summary>
+        public bool IsSave { get; set; } = false;
         /// <summary>
         /// Статистика по выполненному геокодированию
         /// </summary>
@@ -26,7 +48,14 @@ namespace GeoCoding
             get => _statistics;
             set => Set(ref _statistics, value);
         }
+        #endregion PublicProperty
 
+        #region PublicMethod
+        /// <summary>
+        /// Метод инициализации таймера
+        /// </summary>
+        /// <param name="collection">Коллекция для счета статистики</param>
+        /// <param name="interval">Интервал работы таймера (по умолчанию 1сек.)</param>
         public void Init(IEnumerable<EntityGeoCod> collection, int interval = 1)
         {
             _interval = interval;
@@ -42,22 +71,26 @@ namespace GeoCoding
                 };
             }
         }
+        /// <summary>
+        /// Метод запуска таймера
+        /// </summary>
         public void Start()
         {
             _timer.Start();
             _timeStart = DateTime.Now;
             GetStat(null, null);
         }
+        /// <summary>
+        /// Метод остановки таймера
+        /// </summary>
         public void Stop()
         {
             _timer.Stop();
             GetStat(null, null);
         }
-        private void GetStat(object sender, EventArgs e)
-        {
-            UpdateStatisticsCollection();
-            _statistics.TimeGeoCod = TimeSpan.FromSeconds((DateTime.Now - _timeStart).TotalSeconds);
-        }
+        /// <summary>
+        /// Метод обновления статистики по коллекции
+        /// </summary>
         public void UpdateStatisticsCollection()
         {
             if (_collection != null)
@@ -74,5 +107,20 @@ namespace GeoCoding
                 IsSave = false;
             }
         }
+
+        #endregion PublicMethod
+
+        #region PrivateMethod
+        /// <summary>
+        /// Метод обновления статистики
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GetStat(object sender, EventArgs e)
+        {
+            UpdateStatisticsCollection();
+            _statistics.TimeGeoCod = TimeSpan.FromSeconds((DateTime.Now - _timeStart).TotalSeconds);
+        }
+        #endregion PrivateMethod
     }
 }
