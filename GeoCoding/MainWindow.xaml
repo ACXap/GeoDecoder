@@ -24,7 +24,7 @@
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:ConverterStatToProgress x:Key="ConverterStatToProgress"/>
-        <local:ConverterStatGeoToProgress x:Key="ConverterStartGeoToProgress"/>
+        <local:ConverterStatGeoToProgressState x:Key="ConverterStartGeoToProgress"/>
     </Controls:MetroWindow.Resources>
 
     <!--  Датаконтекст/ViewModel окна  -->
@@ -104,7 +104,7 @@
             <TabControl Grid.Column="0" Controls:TabControlHelper.Underlined="SelectedTabItem">
 
                 <!--  Работа с файлами  -->
-                <TabItem Header="Файл" ToolTip="Работа с файлами данных">
+                <TabItem Header="Файл">
 
                     <!--  Панель работы с входным файлом  -->
                     <Border
@@ -169,7 +169,7 @@
                 </TabItem>
 
                 <!--  Работа с базой данных  -->
-                <TabItem Header="БД" ToolTip="Работа с базой данных">
+                <TabItem Header="БД">
 
                     <!--  Панель работы с базой данных  -->
                     <Border
@@ -210,7 +210,7 @@
                 </TabItem>
 
                 <!-- Геокодирование одиночного адреса-->
-                <TabItem Header="Адрес" ToolTip="Геокодирование одиночного адреса">
+                <TabItem Header="Адрес">
                     <Border Padding="5"
                         BorderBrush="{DynamicResource AccentColorBrush}"
                         BorderThickness="1">

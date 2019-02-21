@@ -85,7 +85,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ConverterKintTypeToString.cs" />
     <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
-    <Compile Include="Converters\ConverterStatGeoToProgress.cs" />
+    <Compile Include="Converters\ConverterStatGeoToProgressState.cs" />
     <Compile Include="Converters\ConverterStatToProgress.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
     <Compile Include="Helpers\FlowDocumentFromFile.cs" />
