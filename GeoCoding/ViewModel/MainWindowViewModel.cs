@@ -1134,7 +1134,9 @@ namespace GeoCoding
 
         #endregion PrivateMethod
 
-
+        /// <summary>
+        /// Поле для хранения объекта для одиночного геокодирования
+        /// </summary>
         private EntityGeoCod _singlGeoCod = new EntityGeoCod();
         /// <summary>
         /// Объект для одиночного геокодирования
