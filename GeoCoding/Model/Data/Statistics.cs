@@ -100,5 +100,15 @@ namespace GeoCoding
             get => _percent;
             set => Set(ref _percent, value);
         }
+
+        private string _geoServiceName = string.Empty;
+        /// <summary>
+        /// Название геосервиса
+        /// </summary>
+        public string GeoServiceName
+        {
+            get => _geoServiceName;
+            set => Set(ref _geoServiceName, value);
+        }
     }
 }

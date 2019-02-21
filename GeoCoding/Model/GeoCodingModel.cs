@@ -210,9 +210,9 @@ namespace GeoCoding
         /// Метод установки текущего геосериса
         /// </summary>
         /// <param name="geoService">Ссылка на геосервис</param>
-        public void SetGeoService(IGeoCodingService geoService)
+        public void SetGeoService(string nameService)
         {
-            _geoCodingService = geoService;
+            _geoCodingService = MainGeoService.GetServiceByName(nameService);
         }
         /// <summary>
         /// Метод для получения координат для множества объектов
@@ -294,6 +294,11 @@ namespace GeoCoding
             });
 
             callback(error);
+        }
+        
+        public string GetUrlRequest(string address)
+        {
+            return _geoCodingService.GetUrlRequest(address);
         }
         #endregion PublicMethod
     }

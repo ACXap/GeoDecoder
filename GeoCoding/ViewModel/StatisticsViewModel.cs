@@ -32,7 +32,6 @@ namespace GeoCoding
         /// Коллекция для подсчета статистики
         /// </summary>
         private IEnumerable<EntityGeoCod> _collection;
-
         #endregion PrivateFields
 
         #region PublicProperty
@@ -40,6 +39,7 @@ namespace GeoCoding
         /// Была ли сохранена статистика
         /// </summary>
         public bool IsSave { get; set; } = false;
+
         /// <summary>
         /// Статистика по выполненному геокодированию
         /// </summary>
@@ -74,11 +74,12 @@ namespace GeoCoding
         /// <summary>
         /// Метод запуска таймера
         /// </summary>
-        public void Start()
+        public void Start(string nameGeoService)
         {
             _timer.Start();
             _timeStart = DateTime.Now;
             GetStat(null, null);
+            _statistics.GeoServiceName = nameGeoService;
         }
         /// <summary>
         /// Метод остановки таймера

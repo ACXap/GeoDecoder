@@ -127,7 +127,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения ссылки на текущий выбранный геосервис
         /// </summary>
-        private GeoCodingService.IGeoCodingService _currentGeoService;
+        private string _currentGeoService;
 
         /// <summary>
         /// Поле для хранения ссылки на настройки геокодирования
@@ -319,13 +319,11 @@ namespace GeoCoding
         /// <summary>
         /// Текущий геосервис
         /// </summary>
-        public GeoCodingService.IGeoCodingService CurrentGeoService
+        public string CurrentGeoService
         {
             get => _currentGeoService;
             set
             {
-                _geoCodSettings.GeoService = value.Name;
-                _model.SetGeoService(value);
                 _geoCodingModel.SetGeoService(value);
                 Set(ref _currentGeoService, value);
             }
@@ -388,7 +386,7 @@ namespace GeoCoding
         /// <summary>
         /// Коллекция всех возможных геосервисов
         /// </summary>
-        public ReadOnlyCollection<GeoCodingService.IGeoCodingService> CollectionGeoService => GeoCodingService.MainGeoService.AllService;
+        public ReadOnlyCollection<string> CollectionGeoService => GeoCodingService.MainGeoService.AllNameService;
 
         #endregion PublicPropertys
 
@@ -596,7 +594,7 @@ namespace GeoCoding
                   {
                       try
                       {
-                          System.Diagnostics.Process.Start(_currentGeoService.GetUrlRequest(obj.Address));
+                          System.Diagnostics.Process.Start(_geoCodingModel.GetUrlRequest(obj.Address));
                       }
                       catch (Exception ex)
                       {
@@ -667,7 +665,7 @@ namespace GeoCoding
                     {
                         try
                         {
-                            Clipboard.SetText(_currentGeoService.GetUrlRequest(obj.Address), TextDataFormat.UnicodeText);
+                            Clipboard.SetText(_geoCodingModel.GetUrlRequest(obj.Address), TextDataFormat.UnicodeText);
                         }
                         catch (Exception ex)
                         {
@@ -1034,7 +1032,7 @@ namespace GeoCoding
             {
                 // Отображаем индикацию работы процесса
                 IsStartGeoCoding = true;
-                _stat.Start();
+                _stat.Start(_currentGeoService);
 
                 _geoCodingModel.GetAllGeoCod((r, i, e) =>
                 {
@@ -1165,7 +1163,7 @@ namespace GeoCoding
                     FTPSettings = ftp;
                     BDSettings = bds;
                     ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
-                    CurrentGeoService = GeoCodingService.MainGeoService.GetServiceByName(g.GeoService);
+                    CurrentGeoService = g.GeoService;
                 }
                 else
                 {
