@@ -382,7 +382,7 @@ namespace GeoCoding
         /// <summary>
         /// Коллекция всех возможных тем оформления окна
         /// </summary>
-        public System.Collections.Generic.IReadOnlyCollection<Theme> ListTheme => ThemeManager.Themes;
+        public ReadOnlyCollection<Theme> ListTheme => ThemeManager.Themes;
 
         /// <summary>
         /// Коллекция всех возможных геосервисов
