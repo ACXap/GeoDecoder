@@ -64,10 +64,6 @@ namespace GeoCoding
         /// </summary>
         private const string _messageSaveData = "Сохранение данных в файл завершено успешно";
         /// <summary>
-        /// Всего адресов
-        /// </summary>
-        private const string _allAddress = "Всего адресов:";
-        /// <summary>
         /// Сообщение о завершении обработки объектов
         /// </summary>
         private const string _processedcompleted = "Обработка завершилась. Всего обработано:";
