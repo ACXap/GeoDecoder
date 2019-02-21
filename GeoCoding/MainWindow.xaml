@@ -25,6 +25,8 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
         <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
+        <local:ConverterStatToProgress x:Key="ConverterStatToProgress"/>
+        <local:ConverterStartGeoToProgress x:Key="ConverterStartGeoToProgress"/>
     </Controls:MetroWindow.Resources>
 
     <!--  Датаконтекст/ViewModel окна  -->
@@ -39,6 +41,15 @@
         </DataTemplate>
     </Controls:MetroWindow.IconTemplate>
 
+    <!-- Отображение процесса геокодирования на панеле задач-->
+    <Controls:MetroWindow.TaskbarItemInfo>
+        <TaskbarItemInfo
+            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}" 
+            ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}">
+        </TaskbarItemInfo>
+        
+    </Controls:MetroWindow.TaskbarItemInfo>
+    
     <!--  Панель команд на заголовке окна  -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>

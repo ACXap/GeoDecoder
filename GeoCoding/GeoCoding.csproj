@@ -85,6 +85,8 @@
     </ApplicationDefinition>
     <Compile Include="Converters\ConverterKintTypeToString.cs" />
     <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
+    <Compile Include="Converters\ConverterStartGeoToProgress.cs" />
+    <Compile Include="Converters\ConverterStatToProgress.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
     <Compile Include="Helpers\PersistGroupExpandedStateBehavior.cs" />
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
