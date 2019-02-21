@@ -667,7 +667,7 @@
                 Position="Right" MaxWidth="900"
                 MaxHeight="500"
                 Header="Помощь" Style="{StaticResource FlyoutStyleMain}">
-                <FlowDocumentScrollViewer Margin="5">
+                <FlowDocumentScrollViewer Margin="5" >
                     <i:Interaction.Behaviors>
                         <local:FlowDocumentFromFile FileName="ЧитайМеня.txt"/>
                     </i:Interaction.Behaviors>

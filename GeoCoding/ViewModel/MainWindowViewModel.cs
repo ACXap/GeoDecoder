@@ -1151,18 +1151,6 @@ namespace GeoCoding
             set => Set(ref _singlGeoCod, value);
         }
 
-
-        //private FlowDocument _help;
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public FlowDocument Help
-        //{
-        //    get => _help;
-        //    set => Set(ref _help, value);
-        //}
-
-
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1171,11 +1159,6 @@ namespace GeoCoding
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
             _geoCodingModel = new GeoCodingModel();
-
-            //Paragraph paragraph = new Paragraph();
-            //paragraph.Inlines.Add(File.ReadAllText("ЧитайМеня.txt", Encoding.Default));
-
-            //Help = new FlowDocument(paragraph);
 
             _model.GetSettings((e, f, g, ftp, bds, c) =>
             {
