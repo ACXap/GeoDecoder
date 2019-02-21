@@ -23,6 +23,10 @@
                 <ResourceDictionary Source="Styles/Progress.xaml" />
                 <ResourceDictionary Source="Styles/ComboBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- Конвертеры-->
+            <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
+            <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

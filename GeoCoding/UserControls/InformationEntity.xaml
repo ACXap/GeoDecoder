@@ -12,10 +12,6 @@
             <Setter Property="Background" Value="White" />
         </Style>
     </d:DesignerProperties.DesignStyle>
-    <UserControl.Resources>
-        <l:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
-        <l:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />

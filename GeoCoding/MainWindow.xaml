@@ -23,8 +23,6 @@
     <!--  Ресурсы окна, в основном конвертеры  -->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
-        <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
         <local:ConverterStatToProgress x:Key="ConverterStatToProgress"/>
         <local:ConverterStartGeoToProgress x:Key="ConverterStartGeoToProgress"/>
     </Controls:MetroWindow.Resources>
