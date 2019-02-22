@@ -593,20 +593,28 @@
                     <!--  Геокодировать все объекты в таблице данных  -->
                     <RadioButton
                         Margin="10,2,2,5"
-                        Content="Все"
+                        Content="Все" ToolTip="Будут геокодированы все адреса в таблице"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" />
 
                     <!--  Геокодировать только объекты со статусом "Ошибка"  -->
                     <RadioButton
                         Margin="10,2,2,5"
-                        Content="С ошибками"
+                        Content="С ошибками" ToolTip="Будут геокодированы все адреса геокодированные с ошибками"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" />
 
                     <!--  Геокодировать только объекты со статусом "Негеокодирован"  -->
                     <RadioButton
-                        Margin="10,2,2,5"
+                        Margin="10,2,2,5" 
                         Content="Негеокодированные"
-                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
+                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}">
+                        <RadioButton.ToolTip>
+                            <TextBlock>
+                                Будут геокодированы все негеокодированные адреса,
+                            <LineBreak /> 
+                            включая адреса геокодированные с ошибками
+                            </TextBlock> 
+                        </RadioButton.ToolTip>
+                    </RadioButton>
 
                     <TextBlock
                         Margin="5,1,1,1"
