@@ -57,6 +57,7 @@
                 <RowDefinition />
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock
                 Grid.Row="0"
@@ -130,6 +131,14 @@
                 Grid.Row="8"
                 Grid.Column="2"
                 Text="{Binding Statistics.TimeGeoCod, StringFormat={}{0:hh}:{0:mm}:{0:ss}}" />
+            <TextBlock
+                Grid.Row="9"
+                Grid.Column="0"
+                Text="Время осталось:" />
+            <TextBlock
+                Grid.Row="9"
+                Grid.Column="2"
+                Text="{Binding Statistics.TimeLeftGeoCod, StringFormat={}{0:hh}:{0:mm}:{0:ss}}" />
         </Grid>
     </GroupBox>
 </UserControl>

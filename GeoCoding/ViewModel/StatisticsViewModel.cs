@@ -121,6 +121,10 @@ namespace GeoCoding
         {
             UpdateStatisticsCollection();
             _statistics.TimeGeoCod = TimeSpan.FromSeconds((DateTime.Now - _timeStart).TotalSeconds);
+            if (_statistics.Percent > 0)
+            {
+                _statistics.TimeLeftGeoCod = TimeSpan.FromSeconds(((100 / _statistics.Percent) * _statistics.TimeGeoCod.TotalSeconds) - _statistics.TimeGeoCod.TotalSeconds);
+            }
         }
         #endregion PrivateMethod
     }

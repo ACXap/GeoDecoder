@@ -91,6 +91,17 @@ namespace GeoCoding
             set => Set(ref _timeGeoCod, value);
         }
 
+
+        private TimeSpan _timeLeftGeoCod;
+        /// <summary>
+        /// 
+        /// </summary>
+        public TimeSpan TimeLeftGeoCod
+        {
+            get => _timeLeftGeoCod;
+            set => Set(ref _timeLeftGeoCod, value);
+        }
+
         private double _percent;
         /// <summary>
         /// Процент выполненого геокодирования

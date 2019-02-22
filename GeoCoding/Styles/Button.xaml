@@ -25,7 +25,7 @@
             <Setter.Value>
                     <Controls:ContentControlEx
                         VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Content="Геокодировать"
+                        Content="Геокодировать"  ToolTip="Запустить геокодирование"
                         ContentCharacterCasing="Upper" />
             </Setter.Value>
         </Setter>
@@ -41,7 +41,7 @@
                             </Grid.RowDefinitions>
                             <Controls:ContentControlEx Grid.Row="0"
                         VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Content="Стоп"
+                        Content="Стоп" ToolTip="Остановить геокодирование"
                         ContentCharacterCasing="Upper" />
                             <TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
                             <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" EllipseDiameter="7"/>

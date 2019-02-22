@@ -573,7 +573,7 @@
                         FontWeight="Bold"
                         Text="Геокодер:" />
 
-                    <ComboBox
+                    <ComboBox ToolTip="Выбор геокодера"
                         Margin="5,2"
                         ItemsSource="{Binding CollectionGeoService}"
                         SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -581,40 +581,52 @@
                 </StackPanel>
 
                 <!--  Запуск геокодирования  -->
-                <Button Grid.Row="2" Style="{StaticResource ButtonStopStart}" />
+                <Button Grid.Row="2" Style="{StaticResource ButtonStopStart}"/>
 
                 <!--  Настройки геокодирования  -->
                 <StackPanel Grid.Row="3" Orientation="Vertical">
 
-                    <TextBlock
+                    <StackPanel  Orientation="Vertical">
+                        <StackPanel.Style>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Setter Property="IsEnabled" Value="True"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsStartGeoCoding}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock
                         Margin="5,1,1,1"
                         FontWeight="Bold"
                         Text="Что геокодируем:" />
-                    <!--  Геокодировать все объекты в таблице данных  -->
-                    <RadioButton
+                        <!--  Геокодировать все объекты в таблице данных  -->
+                        <RadioButton
                         Margin="10,2,2,5"
                         Content="Все" ToolTip="Будут геокодированы все адреса в таблице"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}" />
 
-                    <!--  Геокодировать только объекты со статусом "Ошибка"  -->
-                    <RadioButton
+                        <!--  Геокодировать только объекты со статусом "Ошибка"  -->
+                        <RadioButton
                         Margin="10,2,2,5"
                         Content="С ошибками" ToolTip="Будут геокодированы все адреса геокодированные с ошибками"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}" />
 
-                    <!--  Геокодировать только объекты со статусом "Негеокодирован"  -->
-                    <RadioButton
+                        <!--  Геокодировать только объекты со статусом "Негеокодирован" и "Ошибка" -->
+                        <RadioButton
                         Margin="10,2,2,5" 
                         Content="Негеокодированные"
                         IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}">
-                        <RadioButton.ToolTip>
-                            <TextBlock>
+                            <RadioButton.ToolTip>
+                                <TextBlock>
                                 Будут геокодированы все негеокодированные адреса,
                             <LineBreak /> 
                             включая адреса геокодированные с ошибками
-                            </TextBlock> 
-                        </RadioButton.ToolTip>
-                    </RadioButton>
+                                </TextBlock>
+                            </RadioButton.ToolTip>
+                        </RadioButton>
+                    </StackPanel>
 
                     <TextBlock
                         Margin="5,1,1,1"
