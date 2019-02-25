@@ -941,6 +941,47 @@ namespace GeoCoding
             return $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
         }
 
+        private string SetDefName(NameFilesType nameFilesType)
+        {
+            string defName = string.Empty;
+            switch (nameFilesType)
+            {
+                case NameFilesType.Output:
+                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                    {
+                        defName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
+                    }
+                    else
+                    {
+                        defName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
+                    }
+                    break;
+
+                case NameFilesType.Errors:
+                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                    {
+                        int countError = _collectionGeoCod.Count(x => x.Status == StatusType.Error);
+                        defName = $"{_filesSettings.FolderErrors}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Errors_{countError}.csv";
+                    }
+                    break;
+
+                case NameFilesType.Temp:
+                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+                    {
+                        defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
+                    }
+                    break;
+
+                case NameFilesType.Statistics:
+                    defName = $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
+                    break;
+                default:
+                    break;
+            }
+
+            return defName;
+        }
+
         /// <summary>
         /// Метод для сохранения файла с ошибками
         /// </summary>

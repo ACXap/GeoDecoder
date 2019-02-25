@@ -91,6 +91,7 @@
     <Compile Include="Helpers\FlowDocumentFromFile.cs" />
     <Compile Include="Helpers\PersistGroupExpandedStateBehavior.cs" />
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
+    <Compile Include="Model\Data\Enumeration\NameFilesType.cs" />
     <Compile Include="Model\Data\GeoCod.cs" />
     <Compile Include="Model\Data\Settings\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
