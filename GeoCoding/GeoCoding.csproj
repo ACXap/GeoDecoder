@@ -101,6 +101,7 @@
     <Compile Include="Model\Data\Settings\GeoCodSettings.cs" />
     <Compile Include="Model\Data\Enumeration\KindType.cs" />
     <Compile Include="Model\Data\Enumeration\PrecisionType.cs" />
+    <Compile Include="Model\Data\Settings\NotificationSettings.cs" />
     <Compile Include="Model\Data\Statistics.cs" />
     <Compile Include="Model\Data\Enumeration\StatusConnect.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />

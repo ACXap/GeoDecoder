@@ -4,5 +4,11 @@
     {
         Error,
         Ok,
+        Cancel,
+        SettingsSave,
+        SaveData,
+        StatAlreadySave,
+        DataProcessed,
+        DataEmpty
     }
 }

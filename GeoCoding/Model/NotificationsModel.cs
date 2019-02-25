@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls.Dialogs;
+﻿using System;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace GeoCoding
 {
@@ -19,45 +20,29 @@ namespace GeoCoding
             await dialogCoordinator.ShowMessageAsync(this, header, body);
         }
 
-        public async void Notification(NotificationType notificationType)
+        public void Notification(NotificationType notificationType)
         {
-            switch (notificationType)
-            {
-                case NotificationType.Error:
-                    await dialogCoordinator.ShowMessageAsync(this, _headerError, _bodyError);
-                    break;
-                case NotificationType.Ok:
-                    await dialogCoordinator.ShowMessageAsync(this, _headerOk, _bodyOk);
-                    break;
-                default:
-                    break;
-            }
+            throw new NotImplementedException();
         }
 
         public void Notification(NotificationType notificationType, string header, string body)
         {
-            switch (notificationType)
-            {
-                case NotificationType.Error:
-                    break;
-                case NotificationType.Ok:
-                    break;
-                default:
-                    break;
-            }
+            throw new NotImplementedException();
         }
 
         public void Notification(NotificationType notificationType, string body)
         {
-            switch (notificationType)
-            {
-                case NotificationType.Error:
-                    break;
-                case NotificationType.Ok:
-                    break;
-                default:
-                    break;
-            }
+            throw new NotImplementedException();
+        }
+
+        public void Notification(NotificationType notificationType, Exception error)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Notification(NotificationType notificationType, string body, Exception error)
+        {
+            throw new NotImplementedException();
         }
     }
 }
