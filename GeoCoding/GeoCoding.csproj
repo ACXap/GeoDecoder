@@ -92,6 +92,7 @@
     <Compile Include="Helpers\PersistGroupExpandedStateBehavior.cs" />
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
     <Compile Include="Model\Data\Enumeration\NameFilesType.cs" />
+    <Compile Include="Model\Data\Enumeration\NotificationType.cs" />
     <Compile Include="Model\Data\GeoCod.cs" />
     <Compile Include="Model\Data\Settings\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
@@ -104,7 +105,9 @@
     <Compile Include="Model\Data\Enumeration\StatusConnect.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />
     <Compile Include="Model\GeoCodingModel.cs" />
+    <Compile Include="Model\Interfaces\INotifications.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
+    <Compile Include="Model\NotificationsModel.cs" />
     <Compile Include="UserControls\FlyoutSql.xaml.cs">
       <DependentUpon>FlyoutSql.xaml</DependentUpon>
     </Compile>

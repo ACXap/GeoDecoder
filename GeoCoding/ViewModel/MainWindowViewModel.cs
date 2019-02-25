@@ -1182,6 +1182,7 @@ namespace GeoCoding
             get => _singlGeoCod;
             set => Set(ref _singlGeoCod, value);
         }
+        public INotifications Notifications { get; }
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -1191,6 +1192,7 @@ namespace GeoCoding
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
             _geoCodingModel = new GeoCodingModel();
+            Notifications = new NotificationsModel();
 
             _model.GetSettings((e, f, g, ftp, bds, c) =>
             {
