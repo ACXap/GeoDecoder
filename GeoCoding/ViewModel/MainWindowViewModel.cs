@@ -404,6 +404,9 @@ namespace GeoCoding
                         }
                         _model.GetFile((f, er) =>
                         {
+                            // Оповещаем если ошибка
+                            Notifications.Notification(NotificationType.Error, er, false);
+
                             if (er == null)
                             {
                                 if (!string.IsNullOrEmpty(f))
@@ -411,11 +414,12 @@ namespace GeoCoding
                                     SetFileInput(f);
                                 }
                             }
-                            else
-                            {
-                                // Оповещаем, если были ошибки
-                                NotificationPlainText(_headerNotificationError, er.Message);
-                            }
+
+                            //else
+                            //{
+                            //    // Оповещаем, если были ошибки
+                            //    NotificationPlainText(_headerNotificationError, er.Message);
+                            //}
                         }, defName);
                     }, () => !_isStartGeoCoding));
 
@@ -439,6 +443,8 @@ namespace GeoCoding
 
                         _model.SetFileForSave((file, error) =>
                         {
+                            Notifications.Notification(NotificationType.Error, error, false);
+
                             if (error == null)
                             {
                                 if (!string.IsNullOrEmpty(file))
@@ -447,11 +453,11 @@ namespace GeoCoding
                                     FilesSettings.FileOutput = file;
                                 }
                             }
-                            else
-                            {
-                                // Оповещаем, если были ошибки
-                                NotificationPlainText(_headerNotificationError, error.Message);
-                            }
+                            //else
+                            //{
+                            //    // Оповещаем, если были ошибки
+                            //    NotificationPlainText(_headerNotificationError, error.Message);
+                            //}
                         }, defName);
                     }));
 
@@ -498,21 +504,24 @@ namespace GeoCoding
                         {
                             _geoCodingModel.GetGeoCod(er =>
                             {
+                                Notifications.Notification(NotificationType.Error, er, false);
+
                                 if (er == null)
                                 {
                                     Customers?.Refresh();
                                     _stat.UpdateStatisticsCollection();
                                 }
-                                else
-                                {
-                                    // Оповещаем если были ошибки
-                                    NotificationPlainText(_headerNotificationError, er.Message);
-                                }
+                                //else
+                                //{
+                                //    // Оповещаем если были ошибки
+                                //    NotificationPlainText(_headerNotificationError, er.Message);
+                                //}
                             }, geocod);
                         }
                         else
                         {
-                            NotificationPlainText(_headerNotificationError, _errorAddressEmpty);
+                            Notifications.Notification(NotificationType.Error, _errorAddressEmpty);
+                           // NotificationPlainText(_headerNotificationError, _errorAddressEmpty);
                         }
 
                     }));
@@ -561,7 +570,8 @@ namespace GeoCoding
                     }
                     catch (Exception ex)
                     {
-                        NotificationPlainText(_headerNotificationError, ex.Message);
+                        Notifications.Notification(NotificationType.Error, ex.Message);
+                        //NotificationPlainText(_headerNotificationError, ex.Message);
                     }
                 }));
 
@@ -578,7 +588,8 @@ namespace GeoCoding
                      }
                      catch (Exception ex)
                      {
-                         NotificationPlainText(_headerNotificationError, ex.Message);
+                         Notifications.Notification(NotificationType.Error, ex.Message);
+                         //NotificationPlainText(_headerNotificationError, ex.Message);
                      }
                  }));
 
@@ -595,7 +606,8 @@ namespace GeoCoding
                       }
                       catch (Exception ex)
                       {
-                          NotificationPlainText(_headerNotificationError, ex.Message);
+                          Notifications.Notification(NotificationType.Error, ex.Message);
+                          //NotificationPlainText(_headerNotificationError, ex.Message);
                       }
                   }));
 
@@ -632,14 +644,15 @@ namespace GeoCoding
                     {
                         _model.SaveSettings(e =>
                         {
-                            if (e == null)
-                            {
-                                NotificationPlainText(_headerNotificationSettingsSave, null);
-                            }
-                            else
-                            {
-                                NotificationPlainText(_headerNotificationError, e.Message);
-                            }
+                            Notifications.Notification(NotificationType.SettingsSave, e, true);
+                            //if (e == null)
+                            //{
+                            //    NotificationPlainText(_headerNotificationSettingsSave, null);
+                            //}
+                            //else
+                            //{
+                            //    NotificationPlainText(_headerNotificationError, e.Message);
+                            //}
                         }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, ColorTheme.Name);
                     }));
 
@@ -666,7 +679,8 @@ namespace GeoCoding
                         }
                         catch (Exception ex)
                         {
-                            NotificationPlainText(_headerNotificationError, ex.Message);
+                            Notifications.Notification(NotificationType.Error, ex);
+                           // NotificationPlainText(_headerNotificationError, ex.Message);
                         }
                     }));
 
@@ -683,7 +697,8 @@ namespace GeoCoding
                         {
                             if (e != null)
                             {
-                                NotificationPlainText(_headerNotificationError, e.Message);
+                                Notifications.Notification(NotificationType.Error, e);
+                                //NotificationPlainText(_headerNotificationError, e.Message);
                                 _bdSettings.StatusConnect = StatusConnect.Error;
                                 _bdSettings.Error = e.Message;
                             }
@@ -708,7 +723,8 @@ namespace GeoCoding
                         {
                             if (e != null)
                             {
-                                NotificationPlainText(_headerNotificationError, e.Message);
+                                Notifications.Notification(NotificationType.Error, e);
+                                // NotificationPlainText(_headerNotificationError, e.Message);
                                 _ftpSettings.StatusConnect = StatusConnect.Error;
                                 _ftpSettings.Error = e.Message;
                             }
@@ -790,10 +806,10 @@ namespace GeoCoding
         /// </summary>
         /// <param name="header">Заголовок оповещения</param>
         /// <param name="message">Сообщение оповещения</param>
-        private async void NotificationPlainText(string header, string message)
-        {
-            await dialogCoordinator.ShowMessageAsync(this, header, message);
-        }
+        //private async void NotificationPlainText(string header, string message)
+        //{
+        //    await dialogCoordinator.ShowMessageAsync(this, header, message);
+        //}
 
         /// <summary>
         /// Фильтрация для представления коллекции
@@ -815,20 +831,21 @@ namespace GeoCoding
 
             _model.SaveData(error =>
             {
+                Notifications.Notification(NotificationType.SaveData, error, true);
                 if (error == null)
                 {
                     // Оповещаем о успешности записи
-                    NotificationPlainText(_headerNotificationSaveData, _messageSaveData);
+                    //NotificationPlainText(_headerNotificationSaveData, _messageSaveData);
                     if (_geoCodSettings.CanOpenFolderAfter)
                     {
                         OpenFolder(_filesSettings.FileOutput);
                     }
                 }
-                else
-                {
-                    // Оповещаем если были ошибки
-                    NotificationPlainText(_headerNotificationError, error.Message);
-                }
+                //else
+                //{
+                //    // Оповещаем если были ошибки
+                //    NotificationPlainText(_headerNotificationError, error.Message);
+                //}
             }, _collectionGeoCod, _filesSettings.FileOutput, parSize, _filesSettings.CanCopyFileOutputToFtp, _ftpSettings);
         }
 
@@ -848,11 +865,12 @@ namespace GeoCoding
             }
             _model.OpenFolder(e =>
             {
-                if (e != null)
-                {
-                    // Оповещаем если были ошибки
-                    NotificationPlainText(_headerNotificationError, e.Message);
-                }
+                Notifications.Notification(NotificationType.Error, e);
+                //if (e != null)
+                //{
+                //    // Оповещаем если были ошибки
+                //    NotificationPlainText(_headerNotificationError, e.Message);
+                //}
             }, str);
         }
 
@@ -992,10 +1010,11 @@ namespace GeoCoding
                 var nameFile = SetDefNameFileErrors();
                 _model.SaveError(error =>
                 {
-                    if (error != null)
-                    {
-                        NotificationPlainText(_headerNotificationError, $"{error.Message}\n\r{nameFile}");
-                    }
+                    Notifications.Notification(NotificationType.Error, error);
+                    //if (error != null)
+                    //{
+                    //    NotificationPlainText(_headerNotificationError, $"{error.Message}\n\r{nameFile}");
+                    //}
                 }, _collectionGeoCod.Where(x => x.Status == StatusType.Error), nameFile);
             }
         }
@@ -1010,10 +1029,11 @@ namespace GeoCoding
                 var nameFile = SetDefNameFileTemp();
                 _model.SaveTemp(error =>
                 {
-                    if (error != null)
-                    {
-                        NotificationPlainText(_headerNotificationError, $"{error.Message}\n\r{nameFile}");
-                    }
+                    Notifications.Notification(NotificationType.Error, error);
+                    //if (error != null)
+                    //{
+                    //    NotificationPlainText(_headerNotificationError, $"{error.Message}\n\r{nameFile}");
+                    //}
                 }, _collectionGeoCod, nameFile);
             }
         }
@@ -1025,21 +1045,27 @@ namespace GeoCoding
         {
             if (_stat.IsSave)
             {
-                NotificationPlainText(_headerNotificationStatAlreadySave, _notificationStatAlreadySave);
+                Notifications.Notification(NotificationType.StatAlreadySave);
+                //NotificationPlainText(_headerNotificationStatAlreadySave, _notificationStatAlreadySave);
                 return;
             }
 
             var nameFile = SetDefNameFileStatistics();
             _model.SaveStatistics(e =>
             {
-                if (e != null)
-                {
-                    NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{nameFile}");
-                }
-                else
+                Notifications.Notification(NotificationType.Error, e);
+                if(e==null)
                 {
                     _stat.IsSave = true;
                 }
+                //if (e != null)
+                //{
+                //    NotificationPlainText(_headerNotificationError, $"{e.Message}\n\r{nameFile}");
+                //}
+                //else
+                //{
+                //    _stat.IsSave = true;
+                //}
             }, _stat.Statistics, _filesSettings, nameFile);
         }
 
@@ -1078,20 +1104,25 @@ namespace GeoCoding
                     _stat.Stop();
                     Customers.Refresh();
 
+
+
                     if (e == null)
                     {
                         // Оповещаем о завершении получении координат
-                        NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
+                        //NotificationPlainText(_headerNotificationDataProcessed, $"{_processedcompleted} {coutData}");
+                        Notifications.Notification(NotificationType.DataProcessed, $"{_processedcompleted} {coutData}");
                     }
                     else if (e.Message == _errorCancel)
                     {
                         // Оповещаем если сами отменили
-                        NotificationPlainText(_headerNotificationCancel, e.Message);
+                        //NotificationPlainText(_headerNotificationCancel, e.Message);
+                        Notifications.Notification(NotificationType.Cancel);
                     }
                     else
                     {
                         // Оповещаем если были ошибки и номер на котором была остановка
-                        NotificationPlainText(_headerNotificationError, $"{e.Message}");
+                        //NotificationPlainText(_headerNotificationError, e.Message);
+                        Notifications.Notification(NotificationType.Error, e.Message);
                     }
 
                     if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
@@ -1112,7 +1143,8 @@ namespace GeoCoding
             }
             else
             {
-                NotificationPlainText(_headerNotificationErrorDataEmpty, null);
+                Notifications.Notification(NotificationType.DataEmpty);
+                //NotificationPlainText(_headerNotificationErrorDataEmpty, null);
             }
         }
 
@@ -1126,14 +1158,15 @@ namespace GeoCoding
         {
             _model.GetSettingsFromFile(e =>
             {
-                if (e != null)
-                {
-                    NotificationPlainText(_headerNotificationError, e.Message);
-                }
-                else
-                {
-                    NotificationPlainText(_headerNotificationDataProcessed, _settingsGood);
-                }
+                Notifications.Notification(NotificationType.DataProcessed, _settingsGood, e);
+                //if (e != null)
+                //{
+                //    NotificationPlainText(_headerNotificationError, e.Message);
+                //}
+                //else
+                //{
+                //    NotificationPlainText(_headerNotificationDataProcessed, _settingsGood);
+                //}
             }, file, ftp, bd);
         }
 
@@ -1144,6 +1177,8 @@ namespace GeoCoding
         /// <param name="error">Ошибки</param>
         private void CreateCollection(System.Collections.Generic.IEnumerable<EntityGeoCod> data, Exception error)
         {
+            Notifications.Notification(NotificationType.Error, error);
+
             if (error == null)
             {
                 if (data.Any())
@@ -1158,14 +1193,16 @@ namespace GeoCoding
                 }
                 else
                 {
-                    NotificationPlainText("Данных нет", null);
+                    Notifications.Notification(NotificationType.DataEmpty);
+                    //NotificationPlainText("Данных нет", null);
                 }
             }
-            else
-            {
-                // Оповещаем если были ошибки
-                NotificationPlainText(_headerNotificationError, error.Message);
-            }
+            //else
+            //{
+            //    // Оповещаем если были ошибки
+            //    //NotificationPlainText(_headerNotificationError, error.Message);
+            //    Notifications.Notification(NotificationType.Error)
+            //}
         }
 
         #endregion PrivateMethod
@@ -1182,8 +1219,20 @@ namespace GeoCoding
             get => _singlGeoCod;
             set => Set(ref _singlGeoCod, value);
         }
-        public INotifications Notifications { get; }
 
+        public INotifications Notifications { get; private set; }
+
+
+        private NotificationSettings _notificationSettings;
+        /// <summary>
+        /// 
+        /// </summary>
+        public NotificationSettings NotificationSettings
+        {
+            get => _notificationSettings;
+            set => Set(ref _notificationSettings, value);
+        }
+        
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1192,9 +1241,8 @@ namespace GeoCoding
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
             _geoCodingModel = new GeoCodingModel();
-            Notifications = new NotificationsModel();
-
-            _model.GetSettings((e, f, g, ftp, bds, c) =>
+            
+            _model.GetSettings((e, f, g, ftp, bds, ns, c) =>
             {
                 if (e == null)
                 {
@@ -1204,10 +1252,14 @@ namespace GeoCoding
                     BDSettings = bds;
                     ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
                     CurrentGeoService = g.GeoService;
+                    NotificationSettings = ns;
+
+                    Notifications = new NotificationsModel(ns);
                 }
                 else
                 {
-                    NotificationPlainText(_headerNotificationError, e.Message);
+                    Notifications = new NotificationsModel(new NotificationSettings());
+                    Notifications.Notification(NotificationType.Error, e);
                 }
             });
         }

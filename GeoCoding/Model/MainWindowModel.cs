@@ -508,7 +508,7 @@ namespace GeoCoding
         /// Метод для получения настроек приложения
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: ошибка, настройки файлов, настройки геокодирования, настройки фтп-сервера</param>
-        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, BDSettings, string> callback)
+        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, BDSettings, NotificationSettings, string> callback)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
@@ -590,7 +590,9 @@ namespace GeoCoding
                 }
             }, p.BDPassword);
 
-            callback(error, f, g, ftp, bds, color);
+            NotificationSettings ns = new NotificationSettings();
+
+            callback(error, f, g, ftp, bds, ns, color);
         }
 
         /// <summary>

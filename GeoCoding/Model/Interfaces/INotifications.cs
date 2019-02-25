@@ -29,11 +29,12 @@ namespace GeoCoding
         /// <param name="body">Сообщение</param>
         void Notification(NotificationType notificationType, string body);
         /// <summary>
-        /// Оповещение по виду работы, с ошибкой выполнения, при error==null, сообщение об успехе, иначе об ошибке
+        /// Оповещение по виду работы, с ошибкой выполнения, при error==null, сообщение об успехе если разрешено, иначе об ошибке
         /// </summary>
         /// <param name="notificationType">Вид работы</param>
         /// <param name="error">Ошибка</param>
-        void Notification(NotificationType notificationType, Exception error);
+        /// <param name="canNotificationOnErrorNull">Оповещать об успехе, если ошибка null</param>
+        void Notification(NotificationType notificationType, Exception error, bool canNotificationOnErrorNull = false);
         /// <summary>
         /// Оповещение по виду работы, с ошибкой выполнения, и текстом сообщения, при error==null, сообщение об успехе, иначе об ошибке
         /// </summary>

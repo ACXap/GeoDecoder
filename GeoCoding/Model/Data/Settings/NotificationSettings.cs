@@ -4,17 +4,17 @@ namespace GeoCoding
 {
     public class NotificationSettings : ViewModelBase
     {
-        private bool _canNotificationSaveSettings = false;
+        private bool _canNotificationSaveSettings = true;
         /// <summary>
         /// Оповещать ли о успешном сохранении настроек
         /// </summary>
-        public bool MyProperty
+        public bool CanNotificationSaveSettings
         {
             get => _canNotificationSaveSettings;
             set => Set(ref _canNotificationSaveSettings, value);
         }
 
-        private bool _canNotificationSaveData = false;
+        private bool _canNotificationSaveData = true;
         /// <summary>
         /// Оповещать ли о сохранении файла
         /// </summary>
@@ -24,7 +24,7 @@ namespace GeoCoding
             set => Set(ref _canNotificationSaveData, value);
         }
 
-        private bool _canNotificationProcessCancel = false;
+        private bool _canNotificationProcessCancel = true;
         /// <summary>
         /// Оповещать ли об отмене операции
         /// </summary>
@@ -44,7 +44,7 @@ namespace GeoCoding
             set => Set(ref _canNotificationDataProcessed , value);
         }
 
-        private bool _canNotificationDataEmpty = false;
+        private bool _canNotificationDataEmpty = true;
         /// <summary>
         /// Оповещать о отсутствии данных
         /// </summary>
@@ -54,7 +54,7 @@ namespace GeoCoding
             set => Set(ref _canNotificationDataEmpty, value);
         }
 
-        private bool _canNotificationStatAlreadySave = false;
+        private bool _canNotificationStatAlreadySave = true;
         /// <summary>
         /// Оповещать если уже статистика была сохранена
         /// </summary>
