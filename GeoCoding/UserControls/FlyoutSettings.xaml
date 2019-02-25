@@ -432,7 +432,17 @@
                 </ScrollViewer>
 
             </TabItem>
-            <TabItem Header="Оповещения" />
+            <TabItem Header="Оповещения">
+                <WrapPanel Orientation="Vertical" Margin="5">
+                    <CheckBox Content="Оповещать только об ошибках" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationOnlyError}"/>
+                    <CheckBox Content="Оповещать о сохранении данных" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveData}"/>
+                    <CheckBox Content="Оповещать о окончании процесса" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataProcessed}"/>
+                    <CheckBox Content="Оповещать об отмене процесса пользователем" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationProcessCancel}"/>
+                    <CheckBox Content="Оповещать об отсутствии данных для обработки" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataEmpty}"/>
+                    <CheckBox Content="Оповещать о уже сохраненной статистики" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}"/>
+                    <CheckBox Content="Оповещать об успехе сохранения настроек" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}"/>
+                </WrapPanel>
+            </TabItem>
             <TabItem Header="Общие">
                 <Grid>
                     <Grid.RowDefinitions>

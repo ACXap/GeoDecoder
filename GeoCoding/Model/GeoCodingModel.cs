@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace GeoCoding
 {
     /// <summary>
-    /// Класс для рабты с геокодированием
+    /// Класс для работы с геокодированием
     /// </summary>
     public class GeoCodingModel
     {
