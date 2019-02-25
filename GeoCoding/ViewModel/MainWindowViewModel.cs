@@ -18,38 +18,10 @@ namespace GeoCoding
     public class MainWindowViewModel : ViewModelBase
     {
         #region PrivateConst
-        /// <summary>
-        /// Заголовок оповещения с ошибками
-        /// </summary>
-        private const string _headerNotificationError = "Ошибка";
-        /// <summary>
-        /// Заголовок оповещения с отмененной операцией
-        /// </summary>
-        private const string _headerNotificationCancel = "Обработка прекращена";
-        /// <summary>
-        /// Заголовок оповещения по завершению обработки данных
-        /// </summary>
-        private const string _headerNotificationDataProcessed = "Данные обработаны";
-        /// <summary>
-        /// Заголовок оповещения по завершению обработки данных
-        /// </summary>
-        private const string _headerNotificationSaveData = "Сохранение файла";
-        /// <summary>
-        /// Заголовок оповещения при успешном сохранении настроек
-        /// </summary>
-        private const string _headerNotificationSettingsSave = "Настройки сохранены успешно";
-        /// <summary>
-        /// Заголовок окна при запуске процесса геокодирования с пустой коллекцией 
-        /// </summary>
-        private const string _headerNotificationErrorDataEmpty = "Нечего обрабатывать";
-        /// <summary>
-        /// Заголовок окна при попытке сохранения статистики которая уже сохранена была
-        /// </summary>
-        private const string _headerNotificationStatAlreadySave = "Статистика уже был сохранена";
-        /// <summary>
-        /// Текст сообщения при попытке сохранить статистику которая уже сохранена
-        /// </summary>
-        private const string _notificationStatAlreadySave = "В статистике с последнего раза ничего не изменилось";
+        ///// <summary>
+        ///// Текст сообщения при попытке сохранить статистику которая уже сохранена
+        ///// </summary>
+        //private const string _notificationStatAlreadySave = "В статистике с последнего раза ничего не изменилось";
         /// <summary>
         /// Сообщение об отмене операции
         /// </summary>
@@ -58,10 +30,10 @@ namespace GeoCoding
         /// Текст сообщения если адрес пустой при геокодировании
         /// </summary>
         private const string _errorAddressEmpty = "Адрес пуст";
-        /// <summary>
-        /// Сообщение об успешности записи в файл
-        /// </summary>
-        private const string _messageSaveData = "Сохранение данных в файл завершено успешно";
+        ///// <summary>
+        ///// Сообщение об успешности записи в файл
+        ///// </summary>
+        //private const string _messageSaveData = "Сохранение данных в файл завершено успешно";
         /// <summary>
         /// Сообщение о завершении обработки объектов
         /// </summary>

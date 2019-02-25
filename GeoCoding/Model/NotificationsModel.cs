@@ -7,18 +7,40 @@ namespace GeoCoding
     {
 
         #region PrivateField
+        ///// <summary>
+        ///// Заголовок оповещения с ошибками
+        ///// </summary>
         private const string _headerError = "Ошибка";
+
         private const string _bodyError = "Процесс завершен с ошибкой";
+        /// <summary>
+        /// Заголовок оповещения по завершению обработки данных
+        /// </summary>
         private const string _headerOk = "Успех";
         private const string _bodyOk = "Процесс завершен успешно";
+        /// <summary>
+        /// Заголовок оповещения с отмененной операцией
+        /// </summary>
         private const string _headerCancel = "Отмена";
         private const string _bodyCancel = "Операция была отменена пользователем";
+        ///// <summary>
+        ///// Заголовок оповещения при успешном сохранении настроек
+        ///// </summary>
         private const string _headerSaveSettings = "Сохранение настроек";
         private const string _bodySaveSettings = "Настройки успешно сохранены в файле";
+        /// <summary>
+        /// Заголовок оповещения по завершению записи данных
+        /// </summary>
         private const string _headerSaveData = "Сохранение данных";
         private const string _bodySaveData = "Данные успешно сохранены в файле";
+        /// <summary>
+        /// Заголовок оповещения при пустой коллекции для обработки
+        /// </summary>
         private const string _headerDataEmpty = "Данных нет";
         private const string _bodyDataEmpty = "Для обработки нет данных";
+        /// <summary>
+        /// Заголовок оповещения при повторном сохранении статистики
+        /// </summary>
         private const string _headerStatAlreadySave = "Статистика уже сохранена";
         private const string _bodyStatAlreadySave = "С последнего сохранения статистики, в ней ничего не изменилось";
         #endregion PrivateField
