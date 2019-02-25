@@ -590,7 +590,16 @@ namespace GeoCoding
                 }
             }, p.BDPassword);
 
-            NotificationSettings ns = new NotificationSettings();
+            NotificationSettings ns = new NotificationSettings()
+            {
+                CanNotificationDataEmpty = p.CanNotificationDataEmpty,
+                CanNotificationDataProcessed = p.CanNotificationDataProcessed,
+                CanNotificationOnlyError = p.CanNotificationOnlyError,
+                CanNotificationProcessCancel = p.CanNotificationProcessCancel,
+                CanNotificationSaveData = p.CanNotificationSaveData,
+                CanNotificationSaveSettings = p.CanNotificationSaveSettings,
+                CanNotificationStatAlreadySave = p.CanNotificationStatAlreadySave
+            };
 
             callback(error, f, g, ftp, bds, ns, color);
         }
@@ -602,7 +611,7 @@ namespace GeoCoding
         /// <param name="filesSettings">Настройки файлов</param>
         /// <param name="ftpSettings">Настройки фтп-сервера</param>
         /// <param name="geoCodSettings">Настройки геокодирования</param>
-        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, BDSettings bdSettings, string color)
+        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, BDSettings bdSettings, NotificationSettings ns, string color)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
@@ -667,6 +676,14 @@ namespace GeoCoding
                     p.BDPassword = d;
                 }
             }, bdSettings.Password);
+
+            p.CanNotificationProcessCancel = ns.CanNotificationProcessCancel;
+            p.CanNotificationDataEmpty = ns.CanNotificationDataEmpty;
+            p.CanNotificationDataProcessed = ns.CanNotificationDataProcessed;
+            p.CanNotificationSaveData = ns.CanNotificationSaveData;
+            p.CanNotificationSaveSettings = ns.CanNotificationSaveSettings;
+            p.CanNotificationStatAlreadySave = ns.CanNotificationStatAlreadySave;
+            p.CanNotificationOnlyError = ns.CanNotificationOnlyError;
 
             try
             {

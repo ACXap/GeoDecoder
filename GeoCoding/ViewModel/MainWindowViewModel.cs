@@ -653,7 +653,7 @@ namespace GeoCoding
                             //{
                             //    NotificationPlainText(_headerNotificationError, e.Message);
                             //}
-                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, ColorTheme.Name);
+                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, ColorTheme.Name);
                     }));
 
         /// <summary>

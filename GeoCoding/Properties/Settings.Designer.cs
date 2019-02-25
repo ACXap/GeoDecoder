@@ -379,5 +379,89 @@ namespace GeoCoding.Properties {
                 this["GeoService"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanNotificationSaveSettings {
+            get {
+                return ((bool)(this["CanNotificationSaveSettings"]));
+            }
+            set {
+                this["CanNotificationSaveSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanNotificationSaveData {
+            get {
+                return ((bool)(this["CanNotificationSaveData"]));
+            }
+            set {
+                this["CanNotificationSaveData"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanNotificationProcessCancel {
+            get {
+                return ((bool)(this["CanNotificationProcessCancel"]));
+            }
+            set {
+                this["CanNotificationProcessCancel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CanNotificationDataProcessed {
+            get {
+                return ((bool)(this["CanNotificationDataProcessed"]));
+            }
+            set {
+                this["CanNotificationDataProcessed"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CanNotificationDataEmpty {
+            get {
+                return ((bool)(this["CanNotificationDataEmpty"]));
+            }
+            set {
+                this["CanNotificationDataEmpty"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanNotificationStatAlreadySave {
+            get {
+                return ((bool)(this["CanNotificationStatAlreadySave"]));
+            }
+            set {
+                this["CanNotificationStatAlreadySave"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanNotificationOnlyError {
+            get {
+                return ((bool)(this["CanNotificationOnlyError"]));
+            }
+            set {
+                this["CanNotificationOnlyError"] = value;
+            }
+        }
     }
 }
