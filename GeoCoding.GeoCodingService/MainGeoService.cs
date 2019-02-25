@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -29,7 +28,7 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         public static ReadOnlyCollection<string> AllNameService => new ReadOnlyCollection<string>(AllService.Select(x => x.Name).ToList());
         /// <summary>
-        /// Метод получения геокодера по имени, если не найден возвращает первый из коллекции
+        /// Метод получения геокодера по имени, если не найден, возвращает первый из коллекции
         /// </summary>
         /// <param name="name">Имя геосервиса</param>
         /// <returns>Геосервис</returns>

@@ -1019,7 +1019,7 @@ namespace GeoCoding
             }
             else if (_geoCodSettings.CanGeoCodGetNotGeo)
             {
-                data = _collectionGeoCod.Where(x => x.Status == StatusType.Error || x.Status == StatusType.NotGeoCoding);
+                data = _collectionGeoCod.Where(x=> x.Status == StatusType.NotGeoCoding);
             }
 
             data = data.Where(x => !string.IsNullOrEmpty(x.Address));
@@ -1080,7 +1080,7 @@ namespace GeoCoding
         /// </summary>
         /// <param name="file">Имя файла с настройками</param>
         /// <param name="ftp">Ссылка на настройки фтп</param>
-        /// <param name="bd">Сылка на настройки БД</param>
+        /// <param name="bd">Ссылка на настройки БД</param>
         private void GetSettingsFromFile(string file, FTPSettings ftp, BDSettings bd)
         {
             _model.GetSettingsFromFile(e =>

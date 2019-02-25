@@ -617,15 +617,7 @@
                         <RadioButton
                         Margin="10,2,2,5" 
                         Content="Негеокодированные"
-                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}">
-                            <RadioButton.ToolTip>
-                                <TextBlock>
-                                Будут геокодированы все негеокодированные адреса,
-                            <LineBreak /> 
-                            включая адреса геокодированные с ошибками
-                                </TextBlock>
-                            </RadioButton.ToolTip>
-                        </RadioButton>
+                        IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" ToolTip="Будут геокодированы все негеокодированные адреса"/>
                     </StackPanel>
 
                     <TextBlock
