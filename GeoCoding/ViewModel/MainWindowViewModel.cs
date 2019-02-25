@@ -88,7 +88,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения ссылки на координатора диалогов
         /// </summary>
-        private readonly IDialogCoordinator dialogCoordinator = DialogCoordinator.Instance;
+       // private readonly IDialogCoordinator dialogCoordinator = DialogCoordinator.Instance;
 
         /// <summary>
         /// Поле для хранения ссылки на коллекцию с данными
@@ -405,7 +405,7 @@ namespace GeoCoding
                         _model.GetFile((f, er) =>
                         {
                             // Оповещаем если ошибка
-                            Notifications.Notification(NotificationType.Error, er, false);
+                            Notifications.Notification(NotificationType.Error, er);
 
                             if (er == null)
                             {
@@ -443,7 +443,7 @@ namespace GeoCoding
 
                         _model.SetFileForSave((file, error) =>
                         {
-                            Notifications.Notification(NotificationType.Error, error, false);
+                            Notifications.Notification(NotificationType.Error, error);
 
                             if (error == null)
                             {
@@ -504,7 +504,7 @@ namespace GeoCoding
                         {
                             _geoCodingModel.GetGeoCod(er =>
                             {
-                                Notifications.Notification(NotificationType.Error, er, false);
+                                Notifications.Notification(NotificationType.Error, er);
 
                                 if (er == null)
                                 {
