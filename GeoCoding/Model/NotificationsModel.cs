@@ -3,74 +3,85 @@ using System;
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для отображения оповещений
+    /// </summary>
     public class NotificationsModel : INotifications
     {
-
-        #region PrivateField
-        ///// <summary>
-        ///// Заголовок оповещения с ошибками
-        ///// </summary>
+        #region PrivateConst
+        /// <summary>
+        /// Заголовок оповещения с ошибками
+        /// </summary>
         private const string _headerError = "Ошибка";
-
+        /// <summary>
+        /// Текст оповещения об ошибке в работе
+        /// </summary>
         private const string _bodyError = "Процесс завершен с ошибкой";
         /// <summary>
         /// Заголовок оповещения по завершению обработки данных
         /// </summary>
         private const string _headerOk = "Успех";
+        /// <summary>
+        /// Текст оповещения об успешности работы
+        /// </summary>
         private const string _bodyOk = "Процесс завершен успешно";
         /// <summary>
         /// Заголовок оповещения с отмененной операцией
         /// </summary>
         private const string _headerCancel = "Отмена";
+        /// <summary>
+        /// Текст оповещения об отмене работы пользователем
+        /// </summary>
         private const string _bodyCancel = "Операция была отменена пользователем";
         ///// <summary>
         ///// Заголовок оповещения при успешном сохранении настроек
         ///// </summary>
         private const string _headerSaveSettings = "Сохранение настроек";
+        /// <summary>
+        /// Текст оповещения об успешности записи настроек в файл
+        /// </summary>
         private const string _bodySaveSettings = "Настройки успешно сохранены в файле";
         /// <summary>
         /// Заголовок оповещения по завершению записи данных
         /// </summary>
         private const string _headerSaveData = "Сохранение данных";
+        /// <summary>
+        /// Текст оповещения об успешности записи в файл
+        /// </summary>
         private const string _bodySaveData = "Данные успешно сохранены в файле";
         /// <summary>
         /// Заголовок оповещения при пустой коллекции для обработки
         /// </summary>
         private const string _headerDataEmpty = "Данных нет";
+        /// <summary>
+        /// Текст оповещения об отсутствии данных в коллекции
+        /// </summary>
         private const string _bodyDataEmpty = "Для обработки нет данных";
         /// <summary>
         /// Заголовок оповещения при повторном сохранении статистики
         /// </summary>
         private const string _headerStatAlreadySave = "Статистика уже сохранена";
+        /// <summary>
+        /// Текст сообщения при попытке сохранить статистику которая уже сохранена
+        /// </summary>
         private const string _bodyStatAlreadySave = "С последнего сохранения статистики, в ней ничего не изменилось";
-        #endregion PrivateField
+        #endregion PrivateConst
 
-        #region PublicProperties
-        #endregion PublicProperties
-
-        #region PrivateMethod
-        #endregion PrivateMethod
-
-        #region PublicMethod
-        #endregion PublicMethod
-
+        #region PrivateField
         /// <summary>
         /// Поле для хранения ссылки на координатора диалогов
         /// </summary>
-        private readonly IDialogCoordinator dialogCoordinator = DialogCoordinator.Instance;
+        private readonly IDialogCoordinator _dialogCoordinator = DialogCoordinator.Instance;
         /// <summary>
         /// Поле для хранения ссылки на настройки оповещений
         /// </summary>
-        private readonly NotificationSettings notificationSettings;
+        private readonly NotificationSettings _notificationSettings;
+        #endregion PrivateField
 
-        public NotificationsModel(NotificationSettings settings)
-        {
-            notificationSettings = settings;
-        }
-
+        #region PublicMethod
         public async void Notification(string header, string body)
         {
-            await dialogCoordinator.ShowMessageAsync(this, header, body);
+            await _dialogCoordinator.ShowMessageAsync(this, header, body);
         }
 
         public void Notification(NotificationType notificationType)
@@ -84,37 +95,37 @@ namespace GeoCoding
                     Notification(_headerOk, _bodyOk);
                     break;
                 case NotificationType.Cancel:
-                    if (notificationSettings.CanNotificationProcessCancel)
+                    if (_notificationSettings.CanNotificationProcessCancel)
                     {
                         Notification(_headerCancel, _bodyCancel);
                     }
                     break;
                 case NotificationType.SettingsSave:
-                    if (notificationSettings.CanNotificationSaveSettings)
+                    if (_notificationSettings.CanNotificationSaveSettings)
                     {
                         Notification(_headerSaveSettings, _bodySaveSettings);
                     }
                     break;
                 case NotificationType.SaveData:
-                    if (notificationSettings.CanNotificationSaveData)
+                    if (_notificationSettings.CanNotificationSaveData)
                     {
                         Notification(_headerSaveData, _bodySaveData);
                     }
                     break;
                 case NotificationType.StatAlreadySave:
-                    if (notificationSettings.CanNotificationStatAlreadySave)
+                    if (_notificationSettings.CanNotificationStatAlreadySave)
                     {
                         Notification(_headerStatAlreadySave, _bodyStatAlreadySave);
                     }
                     break;
                 case NotificationType.DataProcessed:
-                    if (notificationSettings.CanNotificationDataProcessed)
+                    if (_notificationSettings.CanNotificationDataProcessed)
                     {
                         Notification(_headerOk, _bodyOk);
                     }
                     break;
                 case NotificationType.DataEmpty:
-                    if (notificationSettings.CanNotificationDataEmpty)
+                    if (_notificationSettings.CanNotificationDataEmpty)
                     {
                         Notification(_headerDataEmpty, _bodyDataEmpty);
                     }
@@ -133,37 +144,37 @@ namespace GeoCoding
                 case NotificationType.Ok:
                     break;
                 case NotificationType.Cancel:
-                    if (!notificationSettings.CanNotificationProcessCancel)
+                    if (!_notificationSettings.CanNotificationProcessCancel)
                     {
                         return;
                     }
                     break;
                 case NotificationType.SettingsSave:
-                    if (!notificationSettings.CanNotificationSaveSettings)
+                    if (!_notificationSettings.CanNotificationSaveSettings)
                     {
                         return;
                     }
                     break;
                 case NotificationType.SaveData:
-                    if (!notificationSettings.CanNotificationSaveData)
+                    if (!_notificationSettings.CanNotificationSaveData)
                     {
                         return;
                     }
                     break;
                 case NotificationType.StatAlreadySave:
-                    if (!notificationSettings.CanNotificationStatAlreadySave)
+                    if (!_notificationSettings.CanNotificationStatAlreadySave)
                     {
                         return;
                     }
                     break;
                 case NotificationType.DataProcessed:
-                    if (!notificationSettings.CanNotificationDataProcessed)
+                    if (!_notificationSettings.CanNotificationDataProcessed)
                     {
                         return;
                     }
                     break;
                 case NotificationType.DataEmpty:
-                    if (!notificationSettings.CanNotificationDataEmpty)
+                    if (!_notificationSettings.CanNotificationDataEmpty)
                     {
                         return;
                     }
@@ -188,42 +199,42 @@ namespace GeoCoding
                     header = _headerOk;
                     break;
                 case NotificationType.Cancel:
-                    if (!notificationSettings.CanNotificationProcessCancel)
+                    if (!_notificationSettings.CanNotificationProcessCancel)
                     {
                         return;
                     }
                     header = _headerCancel;
                     break;
                 case NotificationType.SettingsSave:
-                    if (!notificationSettings.CanNotificationSaveSettings)
+                    if (!_notificationSettings.CanNotificationSaveSettings)
                     {
                         return;
                     }
                     header = _headerSaveSettings;
                     break;
                 case NotificationType.SaveData:
-                    if (!notificationSettings.CanNotificationSaveData)
+                    if (!_notificationSettings.CanNotificationSaveData)
                     {
                         return;
                     }
                     header = _headerSaveData;
                     break;
                 case NotificationType.StatAlreadySave:
-                    if (!notificationSettings.CanNotificationStatAlreadySave)
+                    if (!_notificationSettings.CanNotificationStatAlreadySave)
                     {
                         return;
                     }
                     header = _headerStatAlreadySave;
                     break;
                 case NotificationType.DataProcessed:
-                    if (!notificationSettings.CanNotificationDataProcessed)
+                    if (!_notificationSettings.CanNotificationDataProcessed)
                     {
                         return;
                     }
                     header = _headerOk;
                     break;
                 case NotificationType.DataEmpty:
-                    if (!notificationSettings.CanNotificationDataEmpty)
+                    if (!_notificationSettings.CanNotificationDataEmpty)
                     {
                         return;
                     }
@@ -244,7 +255,7 @@ namespace GeoCoding
             }
             else
             {
-                if(canNotificationOnErrorNull)
+                if (canNotificationOnErrorNull)
                 {
                     Notification(notificationType);
                 }
@@ -261,6 +272,12 @@ namespace GeoCoding
             {
                 Notification(notificationType, body);
             }
+        }
+        #endregion PublicMethod
+
+        public NotificationsModel(NotificationSettings settings)
+        {
+            _notificationSettings = settings;
         }
     }
 }
