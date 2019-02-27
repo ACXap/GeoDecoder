@@ -225,6 +225,8 @@ namespace GeoCoding
         /// </summary>
         private RelayCommand<SelectionChangedEventArgs> _commandSelectMainGeo;
 
+        private readonly object _lock = new object();
+
         #endregion PrivateFields
 
         #region PublicPropertys
@@ -244,6 +246,7 @@ namespace GeoCoding
             {
                 Set(ref _collectionGeoCod, value);
                 DispatcherHelper.CheckBeginInvokeOnUI(() => _stat.Init(value));
+              //  BindingOperations.EnableCollectionSynchronization(_collectionGeoCod, _lock);
             }
         }
 
@@ -1097,10 +1100,12 @@ namespace GeoCoding
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
 
                     ///TODO падает иногда из за потоков
+                    System.Diagnostics.Debug.WriteLine(System.Threading.Thread.CurrentThread.ManagedThreadId);
 
                     // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
                     Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
-                    Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
+                    System.Diagnostics.Debug.WriteLine(System.Threading.Thread.CurrentThread.ManagedThreadId);
+                    DispatcherHelper.CheckBeginInvokeOnUI(()=> Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error")));
                     Customers.Filter = CustomerFilter;
                 }
                 else

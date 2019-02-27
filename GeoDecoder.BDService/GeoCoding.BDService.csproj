@@ -58,6 +58,7 @@
     <Compile Include="Data\Entity.cs" />
     <Compile Include="IBDService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\BDTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

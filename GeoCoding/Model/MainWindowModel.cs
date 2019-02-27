@@ -35,6 +35,7 @@ namespace GeoCoding
 
         private readonly IFileService _fileService = new FileService.FileService();
         private readonly IBDService _bdService = new BDPostgresql();
+        //private readonly IBDService _bdService = new BDTest();
         private readonly IFtpService _ftpService = new FtpService();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
