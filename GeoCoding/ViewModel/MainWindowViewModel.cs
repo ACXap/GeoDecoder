@@ -1096,6 +1096,8 @@ namespace GeoCoding
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
 
+                    ///TODO падает иногда из за потоков
+
                     // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
                     Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
                     Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error"));
