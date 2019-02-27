@@ -18,22 +18,27 @@ namespace GeoCoding
     public class MainWindowViewModel : ViewModelBase
     {
         #region PrivateConst
+
         /// <summary>
         /// Сообщение об отмене операции
         /// </summary>
         private const string _errorCancel = "Операция была отменена.";
+
         /// <summary>
         /// Текст сообщения если адрес пустой при геокодировании
         /// </summary>
         private const string _errorAddressEmpty = "Адрес пуст";
+
         /// <summary>
         /// Сообщение о завершении обработки объектов
         /// </summary>
         private const string _processedcompleted = "Обработка завершилась. Всего обработано:";
+
         /// <summary>
         /// Сообщение о успешном применении настроек из файла
         /// </summary>
         private const string _settingsGood = "Настройки применены успешно";
+
         #endregion PrivateConst
 
         #region PrivateFields
@@ -223,6 +228,7 @@ namespace GeoCoding
         #endregion PrivateFields
 
         #region PublicPropertys
+
         /// <summary>
         /// Модель работы с оповещениями
         /// </summary>
@@ -460,7 +466,6 @@ namespace GeoCoding
                         {
                             SaveTemp();
                         }
-
                     }, () => !string.IsNullOrEmpty(_filesSettings.FileOutput) && _collectionGeoCod != null && _collectionGeoCod.Any()));
 
         /// <summary>
@@ -498,7 +503,6 @@ namespace GeoCoding
                         {
                             _notifications.Notification(NotificationType.Error, _errorAddressEmpty);
                         }
-
                     }));
 
         /// <summary>
@@ -695,7 +699,6 @@ namespace GeoCoding
                                 _ftpSettings.Error = string.Empty;
                             }
                         }, _ftpSettings);
-
                     }, () => !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect == StatusConnect.ConnectNow));
 
         /// <summary>
@@ -711,7 +714,6 @@ namespace GeoCoding
                             CreateCollection(data, error);
                             IsStartGetDataFromBD = false;
                         }, _bdSettings, _bdSettings.SQLQuery);
-
                     }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery) && !_isStartGetDataFromBD && !_isStartGeoCoding));
 
         /// <summary>
@@ -931,6 +933,7 @@ namespace GeoCoding
                 case NameFilesType.Statistics:
                     defName = $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
                     break;
+
                 default:
                     break;
             }
@@ -991,7 +994,7 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Метод для получения координат для всей коллекции 
+        /// Метод для получения координат для всей коллекции
         /// </summary>
         private void GetAllGeoCod()
         {

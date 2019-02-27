@@ -14,6 +14,7 @@ namespace GeoCoding
     public class MainWindowModel
     {
         #region PrivateConst
+
         private const char _charSplit = ';';
         private const string _errorIsNotFirstStringNameColumn = "Первая строка данных не название столбцов. Обработка прекращена.";
         private const string _errorLotOfMistakes = "Очень много ошибок при обработке данных. Обработка прекращена";
@@ -29,6 +30,7 @@ namespace GeoCoding
         private const int _globalIDColumnIndexLoadFile = 0;
         private const int _addressColumnIndexLoadFile = 1;
         private const int _maxCountError = 100;
+
         #endregion PrivateConst
 
         private readonly IFileService _fileService = new FileService.FileService();
@@ -37,8 +39,10 @@ namespace GeoCoding
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private readonly string _nameColumnErrorFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}error";
+
         private readonly string _nameColumnTempFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}AddressWeb{_charSplit}Longitude{_charSplit}Latitude" +
                                                          $"{_charSplit}Qcode{_charSplit}Error{_charSplit}Status{_charSplit}DateTimeGeoCod{_charSplit}Kind{_charSplit}Precision{_charSplit}CountResult";
+
         private readonly string _nameColumnStatisticsFile = $"DateTime{_charSplit}User{_charSplit}System{_charSplit}FileInput{_charSplit}FileOutput{_charSplit}FileError{_charSplit}AllEntity" +
                                                              $"{_charSplit}OK{_charSplit}Error{_charSplit}NotGeoCoding{_charSplit}GeoCodingNow{_charSplit}House" +
                                                                 $"{_charSplit}Exact{_charSplit}NotFound{_charSplit}TimeGeoCod";
@@ -55,12 +59,7 @@ namespace GeoCoding
             foreach (var item in nameFolders)
             {
                 _fileService.CreateFolder(e =>
-                {
-                    if (e == null)
-                    {
-
-                    }
-                }, $"{path}/{item}");
+                {                }, $"{path}/{item}");
             }
         }
 
@@ -213,7 +212,6 @@ namespace GeoCoding
                 {
                     error = ex;
                 }
-
             }
 
             callback(error);
@@ -368,26 +366,33 @@ namespace GeoCoding
                     case "FtpServer":
                         ftp.Server = s[1];
                         break;
+
                     case "FtpPort":
                         int.TryParse(s[1], out int i);
                         ftp.Port = i;
                         break;
+
                     case "FtpOutput":
                         ftp.FolderOutput = s[1];
                         break;
+
                     case "FtpInput":
                         ftp.FolderInput = s[1];
                         break;
+
                     case "BdServer":
                         bd.Server = s[1];
                         break;
+
                     case "BdName":
                         bd.BDName = s[1];
                         break;
+
                     case "BdPort":
                         int.TryParse(s[1], out int k);
                         bd.Port = k;
                         break;
+
                     default:
                         break;
                 }
@@ -728,36 +733,36 @@ namespace GeoCoding
                 _bdService.ExecuteUserQuery((d, e) =>
                 {
                     if (e == null)
-                {
-                    foreach (var item in d)
                     {
-                        var a = new EntityGeoCod();
+                        foreach (var item in d)
+                        {
+                            var a = new EntityGeoCod();
 
-                        if (item.OrponId == 0)
-                        {
-                            SetError(a, _errorIsFormatIDWrong);
-                        }
-                        else
-                        {
-                            a.GlobalID = item.OrponId;
-                        }
+                            if (item.OrponId == 0)
+                            {
+                                SetError(a, _errorIsFormatIDWrong);
+                            }
+                            else
+                            {
+                                a.GlobalID = item.OrponId;
+                            }
 
-                        if (string.IsNullOrEmpty(item.Address))
-                        {
-                            SetError(a, _errorIsAddressEmpty);
-                        }
-                        else
-                        {
-                            a.Address = item.Address;
-                        }
+                            if (string.IsNullOrEmpty(item.Address))
+                            {
+                                SetError(a, _errorIsAddressEmpty);
+                            }
+                            else
+                            {
+                                a.Address = item.Address;
+                            }
 
-                        data.Add(a);
+                            data.Add(a);
+                        }
                     }
-                }
                     else
-                {
-                    error = e;
-                }
+                    {
+                        error = e;
+                    }
                 }, new BDService.ConnectionSettings()
                 {
                     Server = bds.Server,
