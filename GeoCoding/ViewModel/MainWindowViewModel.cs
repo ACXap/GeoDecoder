@@ -245,8 +245,13 @@ namespace GeoCoding
             set
             {
                 Set(ref _collectionGeoCod, value);
-                DispatcherHelper.CheckBeginInvokeOnUI(() => _stat.Init(value));
-              //  BindingOperations.EnableCollectionSynchronization(_collectionGeoCod, _lock);
+                DispatcherHelper.CheckBeginInvokeOnUI(() =>
+                {
+                    _stat.Init(value);
+                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
+                    DispatcherHelper.CheckBeginInvokeOnUI(() => Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error")));
+                    Customers.Filter = CustomerFilter;
+                });
             }
         }
 
@@ -1098,15 +1103,6 @@ namespace GeoCoding
                 {
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
-
-                    ///TODO падает иногда из за потоков
-                    System.Diagnostics.Debug.WriteLine(System.Threading.Thread.CurrentThread.ManagedThreadId);
-
-                    // Создаем представление, группируем по ошибкам и отбираем только объекты с ошибками
-                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
-                    System.Diagnostics.Debug.WriteLine(System.Threading.Thread.CurrentThread.ManagedThreadId);
-                    DispatcherHelper.CheckBeginInvokeOnUI(()=> Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error")));
-                    Customers.Filter = CustomerFilter;
                 }
                 else
                 {
