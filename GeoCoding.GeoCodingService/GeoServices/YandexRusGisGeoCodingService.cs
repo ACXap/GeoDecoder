@@ -17,9 +17,13 @@ namespace GeoCoding.GeoCodingService
         protected override string _url => @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
 
         /// <summary>
-        /// Ошибка при привышении лимита в сутки
+        /// Ошибка при превышении лимита в сутки
         /// </summary>
         protected override string _errorWebRequestLimit => "Удаленный сервер возвратил ошибку: (500) Внутренняя ошибка сервера.";
+        /// <summary>
+        /// Ошибка если привешено время ожидания (скорее всего сайт упал)
+        /// </summary>
+        protected override string _errorWebRequestTimeIsUp => "Удаленный сервер возвратил ошибку: (504) Истекло время ожидания шлюза.";
         #endregion PrivateConst
 
         /// <summary>

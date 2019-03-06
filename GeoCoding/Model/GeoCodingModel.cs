@@ -16,6 +16,7 @@ namespace GeoCoding
         private const string _errorGeoCodNotFound = "Адрес не найден";
         private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
         private const string _errorLimit = "Ваш лимит исчерпан";
+        private const string _errorTimeIsUp = "Скорее всего упал сайт";
         private const string _errorLotOfMistakes = "Очень много ошибок при обработке данных. Обработка прекращена";
         private const int _maxCountError = 100;
         private IGeoCodingService _geoCodingService;
@@ -244,7 +245,7 @@ namespace GeoCoding
                         if (e != null)
                         {
                             //error = e;
-                            if (e.Message == _errorLimit)
+                            if (e.Message == _errorLimit && e.Message == _errorTimeIsUp)
                             {
                                 pl.Break();
                             }

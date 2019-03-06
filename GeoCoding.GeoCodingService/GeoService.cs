@@ -16,6 +16,10 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         protected virtual string _textLimit => "Ваш лимит исчерпан";
         /// <summary>
+        /// Сообщение по поводу превышения времени ожидания
+        /// </summary>
+        protected virtual string _textTimeIsUp => "Скорее всего упал сайт";
+        /// <summary>
         /// Текст сообщения о пустом адресе
         /// </summary>
         protected virtual string _textAddressEmpty => "Значение адреса пусто";
@@ -29,6 +33,10 @@ namespace GeoCoding.GeoCodingService
         /// Ошибка при привышении лимита в сутки
         /// </summary>
         protected virtual string _errorWebRequestLimit { get; }
+        /// <summary>
+        /// Ошибка если привешено время ожидания (скорее всего сайт упал)
+        /// </summary>
+        protected virtual string _errorWebRequestTimeIsUp { get; }
 
         /// <summary>
         /// Ссылка на геокодер
@@ -85,6 +93,18 @@ namespace GeoCoding.GeoCodingService
                 if (wex.Message == _errorWebRequestLimit)
                 {
                     error = new Exception(_textLimit, wex);
+                }
+                else if (wex.Response != null && wex.Response is HttpWebResponse)
+                {
+                    var a = (HttpWebResponse)wex.Response;
+                    if (a.StatusCode == HttpStatusCode.GatewayTimeout)
+                    {
+                        error = new Exception(_textTimeIsUp, wex);
+                    }
+                    else
+                    {
+                        error = wex;
+                    }
                 }
                 else
                 {

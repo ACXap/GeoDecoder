@@ -48,32 +48,18 @@
         <Setter Property="ToolTip" Value="Сохранить статистику" />
     </Style>
     
-    <!--<Style x:Key="TextBlockElapsedTime" TargetType="{x:Type TextBlock}">
-        <Setter Property="Text" Value="{Binding ElapsedTime, StringFormat=\{0:D\}мс}"/>
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding ElapsedTime}" Value="0">
-                <Setter Property="Text" Value="-"/>
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>-->
-
-    <!--<Style x:Key="TextBlockPause" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="16"/>
-        <Setter Property="Foreground" Value="Gray"/>
-        <Setter Property="Visibility" Value="Collapsed"/>
-        <Setter Property="Margin" Value="10,0,0,0"/>
-        <Setter Property="ToolTip" Value="Сервис не проверяется вместе со всеми"/>
-        <Setter Property="Text" Value="{StaticResource FontAwesomePause}"/>
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding CanUpdateWithAll}" Value="false">
-                <Setter Property="Visibility" Value="Visible"/>
-           </DataTrigger>
-        </Style.Triggers>
-    </Style>-->
-
     <Style x:Key="TextBlockStatus" TargetType="{x:Type TextBlock}">
+        <Style.Resources>
+            <Storyboard x:Key="flashAnimation">
+                <DoubleAnimation
+                            AutoReverse="True"
+                            RepeatBehavior="Forever"
+                            Storyboard.TargetProperty="Opacity"
+                            From="1"
+                            To="0"
+                            Duration="0:0:0.5" />
+            </Storyboard>
+        </Style.Resources>
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
@@ -96,6 +82,12 @@
             <Trigger Property="Tag" Value="{x:Static local:StatusType.GeoCodingNow}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeCheckNow}" />
                 <Setter Property="ToolTip" Value="Геокодируется в данный момент" />
+                <Trigger.EnterActions>
+                    <BeginStoryboard Name="flash" Storyboard="{StaticResource flashAnimation}" />
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <StopStoryboard BeginStoryboardName="flash" />
+                </Trigger.ExitActions>
             </Trigger>
         </Style.Triggers>
     </Style>
