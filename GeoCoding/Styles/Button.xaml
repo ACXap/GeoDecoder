@@ -50,6 +50,28 @@
                 </Setter>
                 <Setter Property="Command" Value="{Binding CommandStopGeoCoding}" />
             </DataTrigger>
+
+            <DataTrigger Binding="{Binding IsRequestedStop}" Value="True">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Controls:ContentControlEx Grid.Row="0"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Content="Останавливаем" ToolTip="Завершаются все запущеные процессы"
+                        ContentCharacterCasing="Upper" />
+                            <TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
+                            <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" EllipseDiameter="7"/>
+                        </Grid>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Command" Value="{Binding CommandStopGeoCoding}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 

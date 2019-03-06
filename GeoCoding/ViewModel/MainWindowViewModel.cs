@@ -279,7 +279,11 @@ namespace GeoCoding
         public bool IsStartGeoCoding
         {
             get => _isStartGeoCoding;
-            set => Set(ref _isStartGeoCoding, value);
+            set
+            {
+                Set(ref _isStartGeoCoding, value);
+                IsRequestedStop = false;
+            }
         }
 
         /// <summary>
@@ -542,6 +546,7 @@ namespace GeoCoding
                     {
                         // Останавливаем процесс
                         _geoCodingModel.StopGet();
+                        IsRequestedStop = true;
                     }));
 
         /// <summary>
@@ -1112,6 +1117,18 @@ namespace GeoCoding
         }
 
         #endregion PrivateMethod
+
+
+        private bool _isRequestedStop = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsRequestedStop
+        {
+            get => _isRequestedStop;
+            set => Set(ref _isRequestedStop, value);
+        }
+
 
         /// <summary>
         /// Конструктор по умолчанию

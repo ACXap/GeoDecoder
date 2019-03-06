@@ -36,5 +36,25 @@ namespace GeoCoding.UserControls
 
         public static readonly DependencyProperty TextColorProperty =
             DependencyProperty.Register("TextColor", typeof(Brush ), typeof(WorkIndication), new PropertyMetadata(Brushes.Red));
+
+
+        public string TextAlternative
+        {
+            get { return (string)GetValue(TextAlternativeProperty); }
+            set { SetValue(TextAlternativeProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextAlternativeProperty =
+            DependencyProperty.Register("TextAlternative", typeof(string), typeof(WorkIndication), new PropertyMetadata(null));
+
+        public bool IsShowTextAlternative
+        {
+            get { return (bool)GetValue(IsShowTextAlternativeProperty); }
+            set { SetValue(IsShowTextAlternativeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsShowTextAlternative.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsShowTextAlternativeProperty =
+            DependencyProperty.Register("IsShowTextAlternative", typeof(bool), typeof(WorkIndication), new PropertyMetadata(false));
     }
 }

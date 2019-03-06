@@ -334,7 +334,9 @@
                 HorizontalAlignment="Center" VerticalAlignment="Top"
                 Panel.ZIndex="1"
                 IsActive="{Binding IsStartGeoCoding}"
-                Text="Идет обработка данных..." />
+                Text="Идет обработка данных..." 
+                TextAlternative="Идет завершения процессов. Подождите..." 
+                IsShowTextAlternative="{Binding IsRequestedStop}"/>
 
             <!--  Данные  -->
             <TabControl Grid.Column="0">
