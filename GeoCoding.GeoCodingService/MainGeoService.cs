@@ -21,6 +21,7 @@ namespace GeoCoding.GeoCodingService
                 new SputnikGeoCodingService(),
                 new SputnikRusGisGeoCodingService(),
                 new RusGisDemoGeoCodingService(),
+                new HereRusGisGeoCodingService(),
                 new Test.GeoCodingTest()
             }));
         /// <summary>

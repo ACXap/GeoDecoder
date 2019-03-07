@@ -149,6 +149,14 @@ namespace GeoCoding
                     {
                         data.Kind = KindType.Locality;
                     }
+                    else if(g.Kind == "houseNumber")
+                    {
+                        data.Kind = KindType.House;
+                    }
+                    else if(g.Kind == "street")
+                    {
+                        data.Kind = KindType.Street;
+                    }
 
                     if (Enum.TryParse(g.Precision?.ToUpperFistChar(), out PrecisionType precision))
                     {
@@ -159,6 +167,10 @@ namespace GeoCoding
                         data.Precision = PrecisionType.None;
                     }
                     else if (g.Precision?.ToLower() == "true")
+                    {
+                        data.Precision = PrecisionType.Exact;
+                    }
+                    else if(g.Precision == "1.0")
                     {
                         data.Precision = PrecisionType.Exact;
                     }
