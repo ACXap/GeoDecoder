@@ -57,6 +57,8 @@ namespace GeoCoding.GeoCodingService
         public double County { get; set; }
         public double District { get; set; }
         public double State { get; set; }
+        public double Subdistrict { get; set; }
+        public double Building { get; set; }
     }
 
     public class DescriptionConverter : JsonConverter
