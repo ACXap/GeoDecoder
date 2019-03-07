@@ -22,124 +22,128 @@
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" Controls:TabControlHelper.Underlined="TabPanel">
             <TabItem Header="Файлы и папки">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <GroupBox Grid.Row="0" Header="папки для файлов">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="5" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <TextBlock
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="папки для файлов">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Text="Папка для входящих файлов" />
-                            <TextBox
+                                <TextBox
                                 Grid.Row="0"
                                 Grid.Column="2"
                                 Style="{StaticResource TextBoxFolderOpen}"
                                 Text="{Binding FilesSettings.FolderInput}" />
-                            <TextBlock
+                                <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Text="Папка для исходящих файлов" />
-                            <TextBox
+                                <TextBox
                                 Grid.Row="1"
                                 Grid.Column="2"
                                 Style="{StaticResource TextBoxFolderOpen}"
                                 Text="{Binding FilesSettings.FolderOutput}" />
-                            <TextBlock
+                                <TextBlock
                                 Grid.Row="2"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Text="Папка для временных файлов" />
-                            <TextBox
+                                <TextBox
                                 Grid.Row="2"
                                 Grid.Column="2"
                                 Style="{StaticResource TextBoxFolderOpen}"
                                 Text="{Binding FilesSettings.FolderTemp}" />
-                            <TextBlock
+                                <TextBlock
                                 Grid.Row="3"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Text="Папка для статистики" />
-                            <TextBox
+                                <TextBox
                                 Grid.Row="3"
                                 Grid.Column="2"
                                 Style="{StaticResource TextBoxFolderOpen}"
                                 Text="{Binding FilesSettings.FolderStatistics}" />
-                            <TextBlock
+                                <TextBlock
                                 Grid.Row="4"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
                                 Text="Папка для ошибок" />
-                            <TextBox
+                                <TextBox
                                 Grid.Row="4"
                                 Grid.Column="2"
                                 Style="{StaticResource TextBoxFolderOpen}"
                                 Text="{Binding FilesSettings.FolderErrors}" />
-                        </Grid>
-                    </GroupBox>
-                    <WrapPanel
+                            </Grid>
+                        </GroupBox>
+                        <WrapPanel
                         Grid.Row="1"
                         Margin="0,10,0,0"
                         Orientation="Vertical">
-                        <CheckBox
+                            <CheckBox
                             Grid.Row="3"
                             Grid.Column="2"
                             Margin="5"
                             Content="Загружать данные из файла сразу"
                             IsChecked="{Binding FilesSettings.CanGetDataOnce}" />
-                        <CheckBox
+                            <CheckBox
                             Grid.Row="6"
                             Grid.Column="2"
                             Margin="5"
                             Content="Файл находится на FTP сервере"
                             IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" />
-                        <CheckBox
+                            <CheckBox
                             Grid.Row="7"
                             Grid.Column="2"
                             Margin="5"
                             Content="Скопировать выходной файл на FTP сервер"
                             IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp}" />
-                        <WrapPanel Orientation="Horizontal">
-                            <CheckBox
+                            <WrapPanel Orientation="Horizontal">
+                                <CheckBox
                                 Grid.Row="4"
                                 Grid.Column="2"
                                 Margin="5"
                                 Content="Разбить файл на части (по строкам)"
                                 IsChecked="{Binding FilesSettings.CanBreakFileOutput}" />
-                            <TextBlock
+                                <TextBlock
                                 Grid.Row="5"
                                 Grid.Column="0"
                                 Margin="20,0,0,0"
                                 VerticalAlignment="Center"
                                 Text="Количество строк" />
-                            <TextBox
+                                <TextBox
                                 Grid.Row="5"
                                 Grid.Column="2"
                                 MinWidth="40"
                                 Margin="5"
                                 Text="{Binding FilesSettings.MaxSizePart, UpdateSourceTrigger=PropertyChanged}" />
+                            </WrapPanel>
                         </WrapPanel>
-                    </WrapPanel>
-                </Grid>
+                    </Grid>
+                </ScrollViewer>
+               
             </TabItem>
             <TabItem Header="FTP сервер">
-                <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="5" />
@@ -248,113 +252,116 @@
                             TextWrapping="Wrap" />
                     </WrapPanel>
                 </Grid>
-            </TabItem>
+            </ScrollViewer>
+                </TabItem>
             <TabItem Header="База данных">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
-                    <TextBlock
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Text="Сервер" />
-                    <TextBox
+                        <TextBox
                         Grid.Row="0"
                         Grid.Column="2"
                         Margin="5"
                         Text="{Binding BDSettings.Server, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                    <TextBlock
+                        <TextBlock
                         Grid.Row="1"
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Text="База данных" />
-                    <TextBox
+                        <TextBox
                         Grid.Row="1"
                         Grid.Column="2"
                         Margin="5"
                         Text="{Binding BDSettings.BDName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                    <TextBlock
+                        <TextBlock
                         Grid.Row="2"
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Text="Порт" />
-                    <TextBox
+                        <TextBox
                         Grid.Row="2"
                         Grid.Column="2"
                         Margin="5"
                         Text="{Binding BDSettings.Port, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                    <TextBlock
+                        <TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Text="Логин" />
-                    <TextBox
+                        <TextBox
                         Grid.Row="3"
                         Grid.Column="2"
                         Margin="5"
                         Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                    <TextBlock
+                        <TextBlock
                         Grid.Row="4"
                         Grid.Column="0"
                         VerticalAlignment="Center"
                         Text="Пароль" />
-                    <PasswordBox
+                        <PasswordBox
                         Grid.Row="4"
                         Grid.Column="2"
                         Margin="5"
                         Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-                    <WrapPanel
+                        <WrapPanel
                         Grid.Row="5"
                         Grid.Column="2"
                         Orientation="Horizontal">
-                        <Button
+                            <Button
                             Margin="10"
                             HorizontalAlignment="Left"
                             Command="{Binding CommandCheckConnect}"
                             Style="{StaticResource ButtonStopStartConnect}"
                             Tag="{Binding BDSettings.StatusConnect}" />
-                        <TextBlock
+                            <TextBlock
                             VerticalAlignment="Center"
                             FontWeight="Bold"
                             Text="Статус подключения:" />
-                        <TextBlock
+                            <TextBlock
                             Margin="5"
                             VerticalAlignment="Center"
                             Text="{Binding BDSettings.StatusConnect}" />
-                    </WrapPanel>
-                    <WrapPanel
+                        </WrapPanel>
+                        <WrapPanel
                         Grid.Row="6"
                         Grid.Column="2"
                         Orientation="Horizontal">
-                        <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding BDSettings.StatusConnect}" />
-                        <TextBox
+                            <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding BDSettings.StatusConnect}" />
+                            <TextBox
                             Margin="10"
                             BorderThickness="0"
                             Text="{Binding BDSettings.Error}"
                             TextWrapping="Wrap" />
-                    </WrapPanel>
+                        </WrapPanel>
 
-                </Grid>
+                    </Grid>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Геокодирование">
-                <ScrollViewer>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
@@ -433,7 +440,8 @@
 
             </TabItem>
             <TabItem Header="Оповещения">
-                <WrapPanel Orientation="Vertical" Margin="5">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <WrapPanel Orientation="Vertical" Margin="5">
                     <CheckBox Content="Оповещать только об ошибках" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationOnlyError}"/>
                     <CheckBox Content="Оповещать о сохранении данных" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveData}"/>
                     <CheckBox Content="Оповещать о окончании процесса" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataProcessed}"/>
@@ -442,9 +450,11 @@
                     <CheckBox Content="Оповещать о уже сохраненной статистики" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}"/>
                     <CheckBox Content="Оповещать об успехе сохранения настроек" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}"/>
                 </WrapPanel>
-            </TabItem>
+           </ScrollViewer>
+                </TabItem>
             <TabItem Header="Общие">
-                <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -465,7 +475,8 @@
                         </ComboBox>
                     </WrapPanel>
                 </Grid>
-            </TabItem>
+            </ScrollViewer>
+                </TabItem>
         </TabControl>
         <Button
             Grid.Row="1"

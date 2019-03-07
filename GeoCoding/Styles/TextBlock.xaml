@@ -12,16 +12,33 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="TextBlockSettings" TargetType="{x:Type TextBlock}">
+    <Style x:Key="TextBlockIconAwesome" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
-        <Setter Property="Text" Value="{StaticResource FontAwesomeSettings}" />
         <Setter Property="FontSize" Value="22" />
+        <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
-    <Style x:Key="TextBlockHelp" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}"/>
+    <Style x:Key="TextBlockSettings" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
+        <Setter Property="Text" Value="{StaticResource FontAwesomeSettings}" />
+    </Style>
+
+    <Style x:Key="TextBlockFile" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
+        <Setter Property="Text" Value="{StaticResource FontAwesomeFile}" />
+        <Setter Property="ToolTip" Value="Работа с файлом"/>
+    </Style>
+
+    <Style x:Key="TextBlockBd" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
+        <Setter Property="Text" Value="{StaticResource FontAwesomeBD}" />
+        <Setter Property="ToolTip" Value="Работа с базой данных"/>
+    </Style>
+
+    <Style x:Key="TextBlockAddress" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
+        <Setter Property="Text" Value="{StaticResource FontAwesomeAddress}" />
+        <Setter Property="ToolTip" Value="Работа с одиночным адресом"/>
+    </Style>
+
+    <Style x:Key="TextBlockHelp" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
         <Setter Property="Text" Value="{StaticResource FontAwesomeHelp}"/>
-        <Setter Property="FontSize" Value="22"/>
     </Style>
     
     <Style x:Key="TextBlockBaseClick" TargetType="{x:Type TextBlock}">
