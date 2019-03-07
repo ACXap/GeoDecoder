@@ -214,9 +214,9 @@
                     <Border Style="{StaticResource BorderMain}">
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
                                 <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
+                                <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
@@ -231,6 +231,7 @@
                             <TextBox
                                 Grid.Row="0"
                                 Grid.Column="1"
+                                Margin="2"
                                 VerticalContentAlignment="Center"
                                 Controls:TextBoxHelper.ClearTextButton="True"
                                 Text="{Binding SingleGeoCod.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -244,7 +245,6 @@
                             <TextBox
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                VerticalContentAlignment="Center"
                                 BorderThickness="0"
                                 IsReadOnly="True"
                                 Text="{Binding SingleGeoCod.MainGeoCod.AddressWeb}" />
