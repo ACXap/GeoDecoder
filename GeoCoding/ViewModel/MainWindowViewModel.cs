@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -534,7 +535,7 @@ namespace GeoCoding
         _commandGetAllGeoCod ?? (_commandGetAllGeoCod = new RelayCommand(
                     () =>
                     {
-                        GetAllGeoCod();
+                        GetAllGeoCod(_collectionGeoCod);
                     }, () => _collectionGeoCod != null && _collectionGeoCod.Count > 0));
 
         /// <summary>
@@ -846,7 +847,7 @@ namespace GeoCoding
 
             if (_collectionGeoCod != null && _collectionGeoCod.Any() && _geoCodSettings.CanGeoCodAfterGetFile)
             {
-                GetAllGeoCod();
+                GetAllGeoCod(_collectionGeoCod);
             }
         }
 
@@ -1009,24 +1010,9 @@ namespace GeoCoding
         /// <summary>
         /// Метод для получения координат для всей коллекции
         /// </summary>
-        private void GetAllGeoCod()
+        private void GetAllGeoCod(IEnumerable<EntityGeoCod> collectionItem)
         {
-            System.Collections.Generic.IEnumerable<EntityGeoCod> data = null;
-
-            if (_geoCodSettings.CanGeoCodGetAll)
-            {
-                data = _collectionGeoCod;
-            }
-            else if (_geoCodSettings.CanGeoCodGetError)
-            {
-                data = _collectionGeoCod.Where(x => x.Status == StatusType.Error);
-            }
-            else if (_geoCodSettings.CanGeoCodGetNotGeo)
-            {
-                data = _collectionGeoCod.Where(x => x.Status == StatusType.NotGeoCoding);
-            }
-
-            data = data.Where(x => !string.IsNullOrEmpty(x.Address));
+            IEnumerable<EntityGeoCod> data = GetCollectionWithFilter(collectionItem);
 
             int coutData = data.Count();
             if (coutData > 0)
@@ -1079,6 +1065,28 @@ namespace GeoCoding
             }
         }
 
+        private IEnumerable<EntityGeoCod> GetCollectionWithFilter(IEnumerable<EntityGeoCod> collectionItem)
+        {
+            IEnumerable<EntityGeoCod> data = null;
+
+            if (_geoCodSettings.CanGeoCodGetAll)
+            {
+                data = collectionItem;
+            }
+            else if (_geoCodSettings.CanGeoCodGetError)
+            {
+                data = collectionItem.Where(x => x.Status == StatusType.Error);
+            }
+            else if (_geoCodSettings.CanGeoCodGetNotGeo)
+            {
+                data = collectionItem.Where(x => x.Status == StatusType.NotGeoCoding);
+            }
+
+            data = data.Where(x => !string.IsNullOrEmpty(x.Address));
+
+            return data;
+        }
+
         /// <summary>
         /// Метод для настройки программ из файла настроек
         /// </summary>
@@ -1128,6 +1136,21 @@ namespace GeoCoding
             get => _isRequestedStop;
             set => Set(ref _isRequestedStop, value);
         }
+
+        private RelayCommand<object> _commandGetGeoCodGroup;
+        public RelayCommand<object> CommandGetGeoCodGroup =>
+            _commandGetGeoCodGroup ?? (_commandGetGeoCodGroup = new RelayCommand<object>(
+                obj =>
+            {
+                if (obj is CollectionViewGroup a)
+                {
+                    var b = a.Items;
+                    GetAllGeoCod(b.Select(x=>(EntityGeoCod)x));
+                }
+
+                // var a = obj as 
+                // GetAllGeoCod()
+            }));
 
 
         /// <summary>

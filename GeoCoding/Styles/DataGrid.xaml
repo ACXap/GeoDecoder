@@ -32,6 +32,14 @@
             Header="Очистить коллекцию" />
     </ContextMenu>
 
+    <!--<ContextMenu x:Key="ContextMenuGroup">
+        <MenuItem
+            Command="{Binding DataContext.CommandGetGeoCodGroup, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Выполнить геокодирование группы" />
+    </ContextMenu>-->
+
+
     <Style
         x:Key="DataGridMainRow"
         BasedOn="{StaticResource MetroDataGridRow}"
@@ -43,6 +51,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
 
     <Style
         x:Key="DataGridMainRowAll"

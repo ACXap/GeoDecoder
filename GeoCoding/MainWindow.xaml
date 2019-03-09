@@ -476,7 +476,15 @@
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                    <Expander>
+                                                    <Expander Tag="{Binding ElementName=metroWindow, Path=DataContext}">
+                                                        <Expander.ContextMenu>
+                                                            <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                                                <MenuItem
+                                                                    Command="{Binding CommandGetGeoCodGroup}"
+                                                                    CommandParameter="{TemplateBinding DataContext}"
+                                                                    Header="Выполнить геокодирование группы" />
+                                                            </ContextMenu>
+                                                        </Expander.ContextMenu>
                                                         <!--<i:Interaction.Behaviors>
                                                             <local:PersistGroupExpandedStateBehavior GroupName="{Binding Path=Name}" />
                                                         </i:Interaction.Behaviors>-->

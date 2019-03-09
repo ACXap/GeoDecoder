@@ -18,9 +18,9 @@ namespace GeoCoding
         private const char _charSplit = ';';
         private const string _errorIsNotFirstStringNameColumn = "Первая строка данных не название столбцов. Обработка прекращена.";
         private const string _errorLotOfMistakes = "Очень много ошибок при обработке данных. Обработка прекращена";
-        private const string _errorGeoCodResponsEmpty = "Запрос к сервису геокодирования вернул пустой ответ";
-        private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
-        private const string _errorGeoCodNotFound = "Адрес не найден";
+        //private const string _errorGeoCodResponsEmpty = "Запрос к сервису геокодирования вернул пустой ответ";
+        //private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
+        //private const string _errorGeoCodNotFound = "Адрес не найден";
         private const string _errorFileNotHaveData = "Файл не содержит обрабатываемых данных";
         private const string _errorIsFormatIDWrong = "Формат значения GlobalId неверный";
         private const string _errorIsAddressEmpty = "Значение адреса пусто";
@@ -60,7 +60,7 @@ namespace GeoCoding
             foreach (var item in nameFolders)
             {
                 _fileService.CreateFolder(e =>
-                {                }, $"{path}/{item}");
+                { }, $"{path}/{item}");
             }
         }
 
@@ -469,6 +469,77 @@ namespace GeoCoding
                         data.Add(geocod);
                     }
                 }
+                //else if (IsFirstStringNameColumnTempFile(d.First()))
+                //{
+                //    data = new List<EntityGeoCod>(d.Count());
+                //    foreach (var item in d.Skip(1))
+                //    {
+                //        if (countError >= _maxCountError)
+                //        {
+                //            error = new Exception(_errorLotOfMistakes);
+                //            data = null;
+                //            break;
+                //        }
+
+                //        EntityGeoCod geocod = new EntityGeoCod();
+                //        var s = item.Split(_charSplit);
+
+                //        try
+                //        {
+                //            if (s.Length >= 12)
+                //            {
+                //                if (int.TryParse(s[_globalIDColumnIndexLoadFile].Trim(), out int id))
+                //                {
+                //                    geocod.GlobalID = id;
+                //                }
+                //                else
+                //                {
+                //                    SetError(geocod, _errorIsFormatIDWrong);
+                //                    countError++;
+                //                }
+
+                //                if (!string.IsNullOrEmpty(s[_addressColumnIndexLoadFile]))
+                //                {
+                //                    geocod.Address = s[_addressColumnIndexLoadFile];
+                //                }
+                //                else
+                //                {
+                //                    SetError(geocod, _errorIsAddressEmpty);
+                //                    countError++;
+                //                }
+
+                //                if (!string.IsNullOrEmpty(s[2]) && !string.IsNullOrEmpty(s[3]))
+                //                {
+                //                    geocod.MainGeoCod = new GeoCod()
+                //                    {
+                //                        AddressWeb = s[2],
+                //                        Longitude = s[3],
+                //                        Latitude = s[4],
+                //                    };
+                //                }
+                //                geocod.Error = s[6];
+                //                Enum.TryParse(s[7], out StatusType a);
+                //                geocod.Status = a;
+                //                DateTime.TryParse(s[8], out DateTime dt);
+                //                geocod.DateTimeGeoCod = dt;
+                //                Enum.TryParse(s[9], out Kin a);
+
+                //                byte.TryParse(s[11], out byte c);
+                //                geocod.CountResult = c;
+                //            }
+                //            else
+                //            {
+                //                SetError(geocod, _errorIsFormatStringWrong);
+                //                countError++;
+                //            }
+                //        }
+                //        catch (Exception ex)
+                //        {
+                //            SetError(geocod, ex.Message);
+                //            countError++;
+                //        }
+                //    }
+                //}
                 else
                 {
                     error = new Exception(_errorIsNotFirstStringNameColumn);
@@ -505,6 +576,18 @@ namespace GeoCoding
                 {
                     result = true;
                 }
+            }
+
+            return result;
+        }
+
+        private bool IsFirstStringNameColumnTempFile(string fs)
+        {
+            bool result = false;
+
+            if (fs.ToLower() == _nameColumnTempFile.ToLower())
+            {
+                result = true;
             }
 
             return result;
