@@ -259,6 +259,7 @@ namespace GeoCoding
                             //error = e;
                             if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
                             {
+                                error = e;
                                 pl.Break();
                             }
                             else

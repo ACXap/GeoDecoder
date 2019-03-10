@@ -469,77 +469,80 @@ namespace GeoCoding
                         data.Add(geocod);
                     }
                 }
-                //else if (IsFirstStringNameColumnTempFile(d.First()))
-                //{
-                //    data = new List<EntityGeoCod>(d.Count());
-                //    foreach (var item in d.Skip(1))
-                //    {
-                //        if (countError >= _maxCountError)
-                //        {
-                //            error = new Exception(_errorLotOfMistakes);
-                //            data = null;
-                //            break;
-                //        }
+                else if (IsFirstStringNameColumnTempFile(d.First()))
+                {
+                    data = new List<EntityGeoCod>(d.Count());
+                    foreach (var item in d.Skip(1))
+                    {
+                        if (countError >= _maxCountError)
+                        {
+                            error = new Exception(_errorLotOfMistakes);
+                            data = null;
+                            break;
+                        }
 
-                //        EntityGeoCod geocod = new EntityGeoCod();
-                //        var s = item.Split(_charSplit);
+                        EntityGeoCod geocod = new EntityGeoCod();
+                        var s = item.Split(_charSplit);
 
-                //        try
-                //        {
-                //            if (s.Length >= 12)
-                //            {
-                //                if (int.TryParse(s[_globalIDColumnIndexLoadFile].Trim(), out int id))
-                //                {
-                //                    geocod.GlobalID = id;
-                //                }
-                //                else
-                //                {
-                //                    SetError(geocod, _errorIsFormatIDWrong);
-                //                    countError++;
-                //                }
+                        try
+                        {
+                            if (s.Length >= 12)
+                            {
+                                if (int.TryParse(s[_globalIDColumnIndexLoadFile].Trim(), out int id))
+                                {
+                                    geocod.GlobalID = id;
+                                }
+                                else
+                                {
+                                    SetError(geocod, _errorIsFormatIDWrong);
+                                    countError++;
+                                }
 
-                //                if (!string.IsNullOrEmpty(s[_addressColumnIndexLoadFile]))
-                //                {
-                //                    geocod.Address = s[_addressColumnIndexLoadFile];
-                //                }
-                //                else
-                //                {
-                //                    SetError(geocod, _errorIsAddressEmpty);
-                //                    countError++;
-                //                }
+                                if (!string.IsNullOrEmpty(s[_addressColumnIndexLoadFile]))
+                                {
+                                    geocod.Address = s[_addressColumnIndexLoadFile];
+                                }
+                                else
+                                {
+                                    SetError(geocod, _errorIsAddressEmpty);
+                                    countError++;
+                                }
 
-                //                if (!string.IsNullOrEmpty(s[2]) && !string.IsNullOrEmpty(s[3]))
-                //                {
-                //                    geocod.MainGeoCod = new GeoCod()
-                //                    {
-                //                        AddressWeb = s[2],
-                //                        Longitude = s[3],
-                //                        Latitude = s[4],
-                //                    };
-                //                }
-                //                geocod.Error = s[6];
-                //                Enum.TryParse(s[7], out StatusType a);
-                //                geocod.Status = a;
-                //                DateTime.TryParse(s[8], out DateTime dt);
-                //                geocod.DateTimeGeoCod = dt;
-                //                Enum.TryParse(s[9], out Kin a);
+                                if (!string.IsNullOrEmpty(s[2]) && !string.IsNullOrEmpty(s[3]))
+                                {
+                                    geocod.MainGeoCod = new GeoCod()
+                                    {
+                                        AddressWeb = s[2],
+                                        Longitude = s[3],
+                                        Latitude = s[4],
+                                    };
+                                }
+                                geocod.Error = s[6];
+                                Enum.TryParse(s[7], out StatusType a);
+                                geocod.Status = a;
+                                DateTime.TryParse(s[8], out DateTime dt);
+                                geocod.DateTimeGeoCod = dt;
+                                Enum.TryParse(s[9], out KindType kt);
+                                geocod.MainGeoCod.Kind = kt;
+                                Enum.TryParse(s[10], out PrecisionType pt);
+                                geocod.MainGeoCod.Precision = pt;
 
-                //                byte.TryParse(s[11], out byte c);
-                //                geocod.CountResult = c;
-                //            }
-                //            else
-                //            {
-                //                SetError(geocod, _errorIsFormatStringWrong);
-                //                countError++;
-                //            }
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            SetError(geocod, ex.Message);
-                //            countError++;
-                //        }
-                //    }
-                //}
+                                byte.TryParse(s[11], out byte c);
+                                geocod.CountResult = c;
+                            }
+                            else
+                            {
+                                SetError(geocod, _errorIsFormatStringWrong);
+                                countError++;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            SetError(geocod, ex.Message);
+                            countError++;
+                        }
+                    }
+                }
                 else
                 {
                     error = new Exception(_errorIsNotFirstStringNameColumn);

@@ -226,7 +226,7 @@ namespace GeoCoding
         /// </summary>
         private RelayCommand<SelectionChangedEventArgs> _commandSelectMainGeo;
 
-        private readonly object _lock = new object();
+        //private readonly object _lock = new object();
 
         #endregion PrivateFields
 
@@ -1106,7 +1106,7 @@ namespace GeoCoding
         /// </summary>
         /// <param name="data">Лист данных</param>
         /// <param name="error">Ошибки</param>
-        private void CreateCollection(System.Collections.Generic.IEnumerable<EntityGeoCod> data, Exception error)
+        private void CreateCollection(IEnumerable<EntityGeoCod> data, Exception error)
         {
             _notifications.Notification(NotificationType.Error, error);
 
