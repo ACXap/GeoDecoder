@@ -17,33 +17,43 @@ namespace GeoCoding.GeoCodingService.Test
             string[] kind = new string[] { "House", "Street", "Metro", "District", "Locality" };
             string[] precision = new string[] { "Exact", "Number", "Near", "Range", "Street" };
 
-            List<GeoCod> data = new List<GeoCod>()
+            List<GeoCod> data = null;
+
+            if (_rnd.Next(0, 2) == 1)
             {
-                 new GeoCod()
-                 {
-                    Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
-                    Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
-                    Text = "",
-                    Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
-                    Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
-                 },
-                 new GeoCod()
-                 {
-                    Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
-                    Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
-                    Text = "",
-                    Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
-                    Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
-                 },
-                 new GeoCod()
-                 {
-                    Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
-                    Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
-                    Text = "",
-                    Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
-                    Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
-                 }
-            };
+                data = new List<GeoCod>()
+                {
+                     new GeoCod()
+                     {
+                        Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
+                        Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
+                        Text = "",
+                        Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
+                        Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
+                     },
+                     new GeoCod()
+                     {
+                        Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
+                        Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
+                        Text = "",
+                        Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
+                        Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
+                     },
+                     new GeoCod()
+                     {
+                        Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
+                        Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
+                        Text = "",
+                        Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
+                        Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
+                     }
+                };
+            }
+            else
+            {
+                data = new List<GeoCod>();
+            }
+
 
             callback(data, error);
         }
