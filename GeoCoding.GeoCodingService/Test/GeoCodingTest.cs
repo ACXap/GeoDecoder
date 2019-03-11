@@ -21,35 +21,22 @@ namespace GeoCoding.GeoCodingService.Test
 
             if (_rnd.Next(0, 2) == 1)
             {
-                data = new List<GeoCod>()
+                data = new List<GeoCod>();
+                int count = _rnd.Next(1, 10);
+                for (int i = 0; i < count; i++)
                 {
-                     new GeoCod()
-                     {
-                        Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
+                    data.Add(new GeoCod()
+                    {
+                        Latitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
                         Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
                         Text = "",
                         Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
                         Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
-                     },
-                     new GeoCod()
-                     {
-                        Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
-                        Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
-                        Text = "",
-                        Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
-                        Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
-                     },
-                     new GeoCod()
-                     {
-                        Latitude = $"{_rnd.Next(0,120)}.{_rnd.Next(0,900000)}",
-                        Longitude = $"{_rnd.Next(0, 120)}.{_rnd.Next(0, 900000)}",
-                        Text = "",
-                        Kind = (string)kind.GetValue(_rnd.Next(kind.Length)),
-                        Precision = (string)precision.GetValue(_rnd.Next(precision.Length)),
-                     }
-                };
+                    });
+                }
+
             }
-            else if(_rnd.Next(0,5)==3)
+            else if (_rnd.Next(0, 5) == 3)
             {
                 error = new ArgumentException("Big Error");
             }
