@@ -1,7 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Threading;
-using System.Windows;
-using System.Linq;
 using System.Configuration;
+using System.Linq;
+using System.Windows;
 
 namespace GeoCoding
 {
@@ -18,7 +18,7 @@ namespace GeoCoding
             if (arg.Length > 0)
             {
                 var comp = arg.Count(x => x == "-c" || x == "-C");
-                if(comp>0)
+                if (comp > 0)
                 {
                     StartCompact();
                     return;
@@ -29,7 +29,7 @@ namespace GeoCoding
             {
                 var a = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).SectionGroups.Get("userSettings").Sections[1] as System.Configuration.ClientSettingsSection;
                 var b = bool.Parse(a.Settings.Get("CanStartCompact").Value.ValueXml.InnerText);
-                if(b)
+                if (b)
                 {
                     StartCompact();
                     return;
@@ -39,7 +39,6 @@ namespace GeoCoding
             {
 
             }
-            
 
             MainWindow win = new MainWindow
             {
