@@ -11,7 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
     x:Name="metroWindow"
-    Title="Геокодирование"
+    Title="Геокодирование" 
     Width="1200"
     SaveWindowPosition="True"
     Height="700"
@@ -21,6 +21,11 @@
     WindowButtonCommandsOverlayBehavior="Always"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <!--<i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closed">
+            <cmd:EventToCommand Command="{Binding CommandClose}" PassEventArgsToCommand="True" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>-->
     <!--  Ресурсы окна, в основном конвертеры  -->
     <Controls:MetroWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -28,6 +33,7 @@
         <local:ConverterStatGeoToProgressState x:Key="ConverterStartGeoToProgress" />
     </Controls:MetroWindow.Resources>
 
+   
     <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />

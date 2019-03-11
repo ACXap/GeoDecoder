@@ -726,6 +726,7 @@ namespace GeoCoding
                         IsStartGetDataFromBD = true;
                         _model.GetDataFromBDAsync((data, error) =>
                         {
+                            _filesSettings.FileOutput = SetDefNameFileOutput();
                             CreateCollection(data, error);
                             IsStartGetDataFromBD = false;
                         }, _bdSettings, _bdSettings.SQLQuery);
@@ -1160,6 +1161,14 @@ namespace GeoCoding
                     GetAllGeoCod(b.Select(x=>(EntityGeoCod)x), false);
                 }
             }));
+
+        //private RelayCommand<object> _commandClose;
+        //public RelayCommand<object> CommandClose =>
+        //_commandClose ?? (_commandClose = new RelayCommand<object>(
+        //            obj =>
+        //            {
+        //                var a = obj;
+        //            }));
 
 
         private bool _canStartCompact = false;

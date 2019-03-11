@@ -41,7 +41,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Метод преобразования json в объекты
         /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметроми объект, ошибка</param>
+        /// <param name="callback">Функция обратного вызова, с параметром объект, ошибка</param>
         /// <param name="json">Строка json</param>
         protected override void ParserJson(Action<IEnumerable<GeoCod>, Exception> callback, string json)
         {
