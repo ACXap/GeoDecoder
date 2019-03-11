@@ -600,12 +600,13 @@ namespace GeoCoding
         /// Метод для получения настроек приложения
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: ошибка, настройки файлов, настройки геокодирования, настройки фтп-сервера</param>
-        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, BDSettings, NotificationSettings, string> callback)
+        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, BDSettings, NotificationSettings, string, bool> callback)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
             var curDir = Environment.CurrentDirectory;
             string color = p.ColorTheme;
+            bool canStartCompact = p.CanStartCompact;
 
             FilesSettings f = new FilesSettings()
             {
@@ -693,7 +694,7 @@ namespace GeoCoding
                 CanNotificationStatAlreadySave = p.CanNotificationStatAlreadySave
             };
 
-            callback(error, f, g, ftp, bds, ns, color);
+            callback(error, f, g, ftp, bds, ns, color, canStartCompact);
         }
 
         /// <summary>
@@ -703,7 +704,7 @@ namespace GeoCoding
         /// <param name="filesSettings">Настройки файлов</param>
         /// <param name="ftpSettings">Настройки фтп-сервера</param>
         /// <param name="geoCodSettings">Настройки геокодирования</param>
-        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, BDSettings bdSettings, NotificationSettings ns, string color)
+        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, BDSettings bdSettings, NotificationSettings ns, string color, bool comp)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
@@ -722,6 +723,7 @@ namespace GeoCoding
             p.FtpFolderOutput = ftpSettings.FolderOutput;
             p.IsFileInputOnFTP = filesSettings.IsFileInputOnFTP;
             p.MaxSizePart = filesSettings.MaxSizePart;
+            p.CanStartCompact = comp;
 
             // ФТП-сервер пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>

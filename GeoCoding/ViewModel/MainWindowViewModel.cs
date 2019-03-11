@@ -635,7 +635,7 @@ namespace GeoCoding
                         _model.SaveSettings(e =>
                         {
                             _notifications.Notification(NotificationType.SettingsSave, e, true);
-                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, ColorTheme.Name);
+                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, ColorTheme.Name, _canStartCompact);
                     }));
 
         /// <summary>
@@ -1153,6 +1153,16 @@ namespace GeoCoding
             }));
 
 
+        private bool _canStartCompact = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool CanStartCompact
+        {
+            get => _canStartCompact;
+            set => Set(ref _canStartCompact, value);
+        }
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1162,7 +1172,7 @@ namespace GeoCoding
             Stat = new StatisticsViewModel();
             _geoCodingModel = new GeoCodingModel();
 
-            _model.GetSettings((e, f, g, ftp, bds, ns, c) =>
+            _model.GetSettings((e, f, g, ftp, bds, ns, c, comp) =>
             {
                 if (e == null)
                 {
@@ -1174,6 +1184,7 @@ namespace GeoCoding
                     CurrentGeoService = g.GeoService;
                     NotificationSettings = ns;
                     _notifications = new NotificationsModel(ns);
+                    CanStartCompact = comp;
                 }
                 else
                 {

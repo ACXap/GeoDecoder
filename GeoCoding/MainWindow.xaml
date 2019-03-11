@@ -100,7 +100,7 @@
             <!--  Вкладки Файл, БД  -->
             <TabControl
                 Grid.Column="0"
-                Controls:TabControlHelper.Underlined="SelectedTabItem"
+                Controls:TabControlHelper.Underlined="TabPanel"
                 TabStripPlacement="Left">
 
                 <!--  Работа с файлами  -->

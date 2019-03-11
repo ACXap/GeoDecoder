@@ -474,7 +474,8 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                     </WrapPanel>
-                </Grid>
+                        <CheckBox Content="Запускать в компактном виде" IsChecked="{Binding CanStartCompact}" Grid.Row="1" Margin="5"/>
+                    </Grid>
             </ScrollViewer>
                 </TabItem>
         </TabControl>

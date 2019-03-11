@@ -46,7 +46,7 @@
 
         <!--  Подпись к индикации процесса геокодирования  -->
         <TextBlock
-            FontSize="35"
+            FontSize="{Binding ElementName=uc, Path=Size}"
             FontWeight="Bold"
             Foreground="{Binding ElementName=uc, Path=TextColor}">
             <TextBlock.Style>

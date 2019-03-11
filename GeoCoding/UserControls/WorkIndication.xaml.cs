@@ -56,5 +56,15 @@ namespace GeoCoding.UserControls
         // Using a DependencyProperty as the backing store for IsShowTextAlternative.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsShowTextAlternativeProperty =
             DependencyProperty.Register("IsShowTextAlternative", typeof(bool), typeof(WorkIndication), new PropertyMetadata(false));
+
+        public double Size
+        {
+            get { return (double)GetValue(SizeProperty); }
+            set { SetValue(SizeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Size.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SizeProperty =
+            DependencyProperty.Register("Size", typeof(double), typeof(WorkIndication), new PropertyMetadata(35.0));
     }
 }
