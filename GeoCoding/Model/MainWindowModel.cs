@@ -476,7 +476,7 @@ namespace GeoCoding
                                 byte.TryParse(s[11], out byte c);
                                 geocod.CountResult = c;
 
-                                data.Add(geocod);
+                                
                             }
                             else
                             {
@@ -489,6 +489,8 @@ namespace GeoCoding
                             SetError(geocod, ex.Message);
                             countError++;
                         }
+
+                        data.Add(geocod);
                     }
                 }
                 else if (IsFirstStringNameColumn(d.First()))

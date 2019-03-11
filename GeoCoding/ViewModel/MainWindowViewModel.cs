@@ -1023,7 +1023,9 @@ namespace GeoCoding
             {
                 data = collectionItem;
             }
-            
+
+            data = data.Where(x => !string.IsNullOrEmpty(x.Address));
+
             int coutData = data.Count();
             if (coutData > 0)
             {
@@ -1092,7 +1094,7 @@ namespace GeoCoding
                 data = collectionItem.Where(x => x.Status == StatusType.NotGeoCoding);
             }
 
-            data = data.Where(x => !string.IsNullOrEmpty(x.Address));
+
 
             return data;
         }
