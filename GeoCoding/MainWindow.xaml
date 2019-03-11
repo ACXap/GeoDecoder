@@ -13,6 +13,7 @@
     x:Name="metroWindow"
     Title="Геокодирование"
     Width="1200"
+    SaveWindowPosition="True"
     Height="700"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource AccentColorBrush}"
@@ -41,7 +42,9 @@
 
     <!--  Отображение процесса геокодирования на панели задач  -->
     <Controls:MetroWindow.TaskbarItemInfo>
-        <TaskbarItemInfo ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}" ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}" />
+        <TaskbarItemInfo 
+            ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}" 
+            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}"/>
     </Controls:MetroWindow.TaskbarItemInfo>
 
     <!--  Панель команд на заголовке окна  -->
@@ -328,6 +331,7 @@
                             Grid.Column="0"
                             Command="{Binding CommandSetFileOutput}"
                             Content="Выбрать файл для сохранения"
+                            ToolTip="Открытие диалога выбора файла для сохранения"
                             Style="{StaticResource ButtonMainStyle}" />
 
                         <!--  Настройки для сохранения  -->
@@ -702,7 +706,7 @@
                         <CheckBox
                             Margin="10,2,2,5"
                             IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}"
-                            ToolTip="Сохранить все данные в формате для базы данных">
+                            ToolTip="После сохранения файла с результатами, откроется папка с этим файлом">
                             <TextBlock Text="Открыть папку результатов" />
                         </CheckBox>
                     </StackPanel>
