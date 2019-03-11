@@ -152,7 +152,7 @@ namespace GeoCoding.FileService
             {
                 if (Directory.Exists(Path.GetDirectoryName(file)))
                 {
-                    using (StreamWriter sw = new StreamWriter(File.Create(file), Encoding.Default))
+                    using (StreamWriter sw = new StreamWriter(File.Create(file), Encoding.UTF8))
                     {
                         foreach (var item in data)
                         {
