@@ -49,11 +49,14 @@ namespace GeoCoding.GeoCodingService.Test
                      }
                 };
             }
+            else if(_rnd.Next(0,5)==3)
+            {
+                error = new ArgumentException("Big Error");
+            }
             else
             {
                 data = new List<GeoCod>();
             }
-
 
             callback(data, error);
         }
