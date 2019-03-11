@@ -7,14 +7,14 @@
     xmlns:local="clr-namespace:GeoCoding"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Name="StatisticsControl"
-    DataContext="{Binding DataContext.Stat, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+    DataContext="{Binding DataContext, ElementName=metroWindow}"
     mc:Ignorable="d">
     <d:DesignerProperties.DesignStyle>
         <Style TargetType="UserControl">
             <Setter Property="Background" Value="White" />
         </Style>
     </d:DesignerProperties.DesignStyle>
-    <GroupBox Margin="3">
+    <GroupBox Margin="3" Name="gb">
         <GroupBox.HeaderTemplate>
             <DataTemplate>
                 <Grid>
@@ -23,14 +23,14 @@
                         Content="Статистика"
                         ContentCharacterCasing="Upper" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <Button Command="{Binding DataContext.CommandSaveStatistics, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
+                        <Button Command="{Binding ElementName=gb, Path=DataContext.CommandSaveStatistics}">
                             <Button.Template>
                                 <ControlTemplate>
                                     <TextBlock Margin="5,0" Style="{StaticResource TextBlockSave}" />
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
-                        <Button Command="{Binding DataContext.CommandOpenFolder, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" CommandParameter="StatFolder">
+                        <Button Command="{Binding DataContext.CommandOpenFolder, ElementName=gb}" CommandParameter="StatFolder">
                             <Button.Template>
                                 <ControlTemplate>
                                     <TextBlock Margin="5,0" Style="{StaticResource TextBlockFolder}" />
@@ -66,7 +66,7 @@
             <TextBlock
                 Grid.Row="0"
                 Grid.Column="2"
-                Text="{Binding Statistics.AllEntity}" />
+                Text="{Binding Stat.Statistics.AllEntity}" />
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="0"
@@ -74,7 +74,7 @@
             <TextBlock
                 Grid.Row="1"
                 Grid.Column="2"
-                Text="{Binding Statistics.OK}" />
+                Text="{Binding Stat.Statistics.OK}" />
             <TextBlock
                 Grid.Row="2"
                 Grid.Column="0"
@@ -82,7 +82,7 @@
             <TextBlock
                 Grid.Row="2"
                 Grid.Column="2"
-                Text="{Binding Statistics.Error}" />
+                Text="{Binding Stat.Statistics.Error}" />
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="0"
@@ -90,7 +90,7 @@
             <TextBlock
                 Grid.Row="3"
                 Grid.Column="2"
-                Text="{Binding Statistics.NotGeoCoding}" />
+                Text="{Binding Stat.Statistics.NotGeoCoding}" />
             <TextBlock
                 Grid.Row="4"
                 Grid.Column="0"
@@ -98,7 +98,7 @@
             <TextBlock
                 Grid.Row="4"
                 Grid.Column="2"
-                Text="{Binding Statistics.GeoCodingNow}" />
+                Text="{Binding Stat.Statistics.GeoCodingNow}" />
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="0"
@@ -106,7 +106,7 @@
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="2"
-                Text="{Binding Statistics.House}" />
+                Text="{Binding Stat.Statistics.House}" />
             <TextBlock
                 Grid.Row="6"
                 Grid.Column="0"
@@ -114,7 +114,7 @@
             <TextBlock
                 Grid.Row="6"
                 Grid.Column="2"
-                Text="{Binding Statistics.Exact}" />
+                Text="{Binding Stat.Statistics.Exact}" />
             <TextBlock
                 Grid.Row="7"
                 Grid.Column="0"
@@ -122,7 +122,7 @@
             <TextBlock
                 Grid.Row="7"
                 Grid.Column="2"
-                Text="{Binding Statistics.NotFound}" />
+                Text="{Binding Stat.Statistics.NotFound}" />
             <TextBlock
                 Grid.Row="8"
                 Grid.Column="0"
@@ -130,7 +130,7 @@
             <TextBlock
                 Grid.Row="8"
                 Grid.Column="2"
-                Text="{Binding Statistics.TimeGeoCod, StringFormat={}{0:hh}:{0:mm}:{0:ss}}" />
+                Text="{Binding Stat.Statistics.TimeGeoCod, StringFormat={}{0:hh}:{0:mm}:{0:ss}}" />
             <TextBlock
                 Grid.Row="9"
                 Grid.Column="0"
@@ -138,7 +138,7 @@
             <TextBlock
                 Grid.Row="9"
                 Grid.Column="2"
-                Text="{Binding Statistics.TimeLeftGeoCod, StringFormat={}{0:hh}:{0:mm}:{0:ss}}" />
+                Text="{Binding Stat.Statistics.TimeLeftGeoCod, StringFormat={}{0:hh}:{0:mm}:{0:ss}}" />
         </Grid>
     </GroupBox>
 </UserControl>

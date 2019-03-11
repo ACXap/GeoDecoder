@@ -246,6 +246,7 @@ namespace GeoCoding
             set
             {
                 Set(ref _collectionGeoCod, value);
+                CommandGetAllGeoCod.RaiseCanExecuteChanged();
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
                     _stat.Init(value);
@@ -1010,10 +1011,19 @@ namespace GeoCoding
         /// <summary>
         /// Метод для получения координат для всей коллекции
         /// </summary>
-        private void GetAllGeoCod(IEnumerable<EntityGeoCod> collectionItem)
+        private void GetAllGeoCod(IEnumerable<EntityGeoCod> collectionItem, bool canFilter = true)
         {
-            IEnumerable<EntityGeoCod> data = GetCollectionWithFilter(collectionItem);
+            IEnumerable<EntityGeoCod> data = null;
 
+            if (canFilter)
+            {
+                data = GetCollectionWithFilter(collectionItem);
+            }
+            else
+            {
+                data = collectionItem;
+            }
+            
             int coutData = data.Count();
             if (coutData > 0)
             {
@@ -1145,11 +1155,8 @@ namespace GeoCoding
                 if (obj is CollectionViewGroup a)
                 {
                     var b = a.Items;
-                    GetAllGeoCod(b.Select(x=>(EntityGeoCod)x));
+                    GetAllGeoCod(b.Select(x=>(EntityGeoCod)x), false);
                 }
-
-                // var a = obj as 
-                // GetAllGeoCod()
             }));
 
 

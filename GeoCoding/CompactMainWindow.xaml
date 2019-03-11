@@ -237,7 +237,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
 
             <!--  Статистика  -->
@@ -369,19 +369,6 @@
 
                 <!--  Юзер-контрол для отображения настроек приложения  -->
                 <uc:FlyoutSettings />
-            </Controls:Flyout>
-
-            <!--  Запрос к базе данных  -->
-            <Controls:Flyout
-                MaxWidth="900"
-                MaxHeight="500"
-                Header="SQL-запрос"
-                IsOpen="{Binding ElementName=tbSql, Path=IsChecked}"
-                Position="Left"
-                Style="{StaticResource FlyoutStyleMain}">
-
-                <!--  Юзер-контрол для отображения запроса пользовательского sql-запроса  -->
-                <uc:FlyoutSql />
             </Controls:Flyout>
 
             <!--  Окно с помощью  -->
