@@ -93,8 +93,8 @@
         <!--  Работа с получением данных и сохранением  -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="5*" />
             </Grid.ColumnDefinitions>
 
             <!--  Вкладки Файл, БД  -->
@@ -147,14 +147,14 @@
 
                                     <!--  Выбор входного файла на ФТП-сервере  -->
                                     <CheckBox
-                                        Margin="5"
+                                        Margin="2"
                                         Content="Файл на FTP сервере"
                                         IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
                                         ToolTip="Если настроена работа с ФТП, то откроется папка на ФТП-сервере" />
 
                                     <!--  После выбора файла с данными, данные получаем сразу  -->
                                     <CheckBox
-                                        Margin="5,0,5,0"
+                                        Margin="2,0,2,0"
                                         Content="Данные получить сразу"
                                         IsChecked="{Binding FilesSettings.CanGetDataOnce}"
                                         ToolTip="После выбора файла с данными, таблица с данными заполнится сразу" />
@@ -337,7 +337,7 @@
                         <!--  Настройки для сохранения  -->
                         <StackPanel
                             Grid.Column="1"
-                            Margin="5"
+                            Margin="2"
                             Orientation="Vertical">
 
                             <!--  Копировать ли выходной файл на ФТП-сервер  -->

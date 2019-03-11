@@ -11,7 +11,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
     x:Name="metroWindow"
-    Title="Геокодирование" SizeToContent="Height" ResizeMode="NoResize"
+    Title="Геокодирование" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
@@ -133,14 +133,14 @@
 
                             <!--  Выбор входного файла на ФТП-сервере  -->
                             <CheckBox
-                                        Margin="5"
+                                        Margin="2"
                                         Content="Файл на FTP сервере"
                                         IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
                                         ToolTip="Если настроена работа с ФТП, то откроется папка на ФТП-сервере" />
 
                             <!--  После выбора файла с данными, данные получаем сразу  -->
                             <CheckBox
-                                        Margin="5,0,5,0"
+                                        Margin="2"
                                         Content="Данные получить сразу"
                                         IsChecked="{Binding FilesSettings.CanGetDataOnce}"
                                         ToolTip="После выбора файла с данными, таблица с данными заполнится сразу" />
@@ -196,7 +196,7 @@
                         <!--  Настройки для сохранения  -->
                         <StackPanel
                             Grid.Column="1"
-                            Margin="5"
+                            Margin="2"
                             Orientation="Vertical">
 
                             <!--  Копировать ли выходной файл на ФТП-сервер  -->
@@ -264,12 +264,12 @@
                 <!--  Индикация работы геокодирования  -->
                 <uc:WorkIndication Grid.Row="1"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 Panel.ZIndex="1"
                 IsActive="{Binding IsStartGeoCoding}"
                 IsShowTextAlternative="{Binding IsRequestedStop}"
-                Text="Идет обработка данных..." Size="22"
-                TextAlternative="Идет завершения процессов. Подождите..." />
+                Text="Обработка..." Size="22"
+                TextAlternative="Завершение..." />
             </StackPanel>
             
             <!--  Настройки геокодирования  -->
