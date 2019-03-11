@@ -22,7 +22,7 @@ namespace GeoCoding.GeoCodingService.Test
             if (_rnd.Next(0, 2) == 1)
             {
                 data = new List<GeoCod>();
-                int count = _rnd.Next(1, 10);
+                int count = _rnd.Next(0, 6);
                 for (int i = 0; i < count; i++)
                 {
                     data.Add(new GeoCod()
@@ -39,10 +39,6 @@ namespace GeoCoding.GeoCodingService.Test
             else if (_rnd.Next(0, 5) == 3)
             {
                 error = new ArgumentException("Big Error");
-            }
-            else
-            {
-                data = new List<GeoCod>();
             }
 
             callback(data, error);
