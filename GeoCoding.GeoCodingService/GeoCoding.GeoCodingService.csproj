@@ -51,6 +51,7 @@
     <Compile Include="Data\YandexJson.cs" />
     <Compile Include="GeoService.cs" />
     <Compile Include="GeoServices\HereRusGisGeoCodingService.cs" />
+    <Compile Include="GeoServices\RusGisGeoCodingService.cs" />
     <Compile Include="GeoServices\SputnikRusGisGeoCodingService.cs" />
     <Compile Include="IGeoCodingService.cs" />
     <Compile Include="MainGeoService.cs" />

@@ -1,20 +1,22 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GeoCoding.GeoCodingService
 {
-    internal class SputnikRusGisGeoCodingService : GeoService, IGeoCodingService
+    public class RusGisGeoCodingService : GeoService, IGeoCodingService
     {
         #region PrivateConst
         /// <summary>
-        /// Ссылка на геокодер СпутникРусГис
+        /// Ссылка на геокодер РусГис
         /// </summary>
         protected override string _url => @"https://master.rcloud.cloud.rt.ru/api/geocoding?request=";
 
         /// <summary>
-        /// Ошибка при привышении лимита в сутки
+        /// Ошибка при превышении лимита в сутки
         /// </summary>
         protected override string _errorWebRequestLimit => "Удаленный сервер возвратил ошибку: (500) Внутренняя ошибка сервера.";
         /// <summary>
@@ -26,7 +28,7 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Название геосервиса
         /// </summary>
-        public override string Name => "SputnikRusGis";
+        public override string Name => "RusGis";
 
         /// <summary>
         /// Метод для формирования урла с веб запросом
@@ -35,7 +37,7 @@ namespace GeoCoding.GeoCodingService
         /// <returns>Урл для вебзапроса</returns>
         public override string GetUrlRequest(string address)
         {
-            return $"{_url}{address}&geoCoderType=SPUTNIC";
+            return $"{_url}{address}&geoCoderType=RUSGIS";
         }
 
         /// <summary>
