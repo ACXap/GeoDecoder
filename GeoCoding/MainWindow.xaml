@@ -142,14 +142,13 @@
                                 <!--  Кнопка получения данных  -->
                                 <Button
                                     Grid.Column="0"
-                                    HorizontalAlignment="Left"
+                                    HorizontalAlignment="Left" Content="Получить данные"
                                     Command="{Binding CommandGetDataFromFile}"
-                                    Content="Получить данные"
                                     Style="{StaticResource ButtonMainStyle}"
-                                    ToolTip="Считать данные из файла в таблицу данных" />
+                                    ToolTip="Считать данные из файла в таблицу данных"/>
 
                                 <!--  Настройки для получения данных  -->
-                                <StackPanel Grid.Column="1" Orientation="Vertical">
+                                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
 
                                     <!--  Выбор входного файла на ФТП-сервере  -->
                                     <CheckBox
@@ -169,10 +168,11 @@
                                 <!--  Выбор файла с данными, открываем проводник  -->
                                 <Button
                                     Grid.Column="2"
-                                    Command="{Binding CommandGetFile}"
-                                    Content="Выбрать файл с данными"
+                                    Command="{Binding CommandGetFile}" Content="Выбрать файл с данными"
                                     Style="{StaticResource ButtonMainStyle}"
-                                    ToolTip="Открытие диалога выбора файла с данными" />
+                                    ToolTip="Открытие диалога выбора файла с данными"/>
+
+
                             </Grid>
                         </Grid>
                     </Border>
@@ -341,7 +341,7 @@
                             Style="{StaticResource ButtonMainStyle}" />
 
                         <!--  Настройки для сохранения  -->
-                        <StackPanel
+                        <StackPanel VerticalAlignment="Center"
                             Grid.Column="1"
                             Margin="2"
                             Orientation="Vertical">
@@ -349,7 +349,7 @@
                             <!--  Копировать ли выходной файл на ФТП-сервер  -->
                             <CheckBox
                                 VerticalAlignment="Center"
-                                Content="Также скопировать данный файл на FTP сервер"
+                                Content="Cкопировать данный файл на FTP сервер"
                                 IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP сервер (если он настроен на вкладке FTP)" />
 

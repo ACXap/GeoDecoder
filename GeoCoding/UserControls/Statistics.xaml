@@ -14,14 +14,11 @@
             <Setter Property="Background" Value="White" />
         </Style>
     </d:DesignerProperties.DesignStyle>
-    <GroupBox Margin="3" Name="gb">
+    <GroupBox Margin="3" Name="gb" Header="Статистика">
         <GroupBox.HeaderTemplate>
             <DataTemplate>
                 <Grid>
-                    <Controls:ContentControlEx
-                        VerticalAlignment="Center"
-                        Content="Статистика"
-                        ContentCharacterCasing="Upper" />
+                    <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button Command="{Binding ElementName=gb, Path=DataContext.CommandSaveStatistics}">
                             <Button.Template>
