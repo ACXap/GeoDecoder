@@ -87,7 +87,6 @@
         <Setter Property="RowStyle" Value="{StaticResource DataGridMainRow}" />
         <Setter Property="EnableColumnVirtualization" Value="True" />
         <Setter Property="EnableRowVirtualization" Value="True" />
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="VirtualizingPanel.IsContainerVirtualizable" Value="True" />
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True" />

@@ -470,9 +470,8 @@
                 <TabItem Header="Ошибки">
                     <DataGrid
                         ItemsSource="{Binding Customers}"
-                        ScrollViewer.CanContentScroll="True"
                         SelectedItem="{Binding CurrentGeoCod}"
-                        Style="{StaticResource DataGridErrors}">
+                        Style="{StaticResource DataGridErrors}" ScrollViewer.CanContentScroll="True">
                         <DataGrid.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.Panel>
@@ -487,6 +486,9 @@
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type GroupItem}">
                                                     <Expander Tag="{Binding ElementName=metroWindow, Path=DataContext}">
+                                                        <i:Interaction.Behaviors>
+                                                            <local:PersistGroupExpandedStateBehavior GroupName="{Binding Path=Name}" />
+                                                        </i:Interaction.Behaviors>
                                                         <Expander.ContextMenu>
                                                             <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                                                                 <MenuItem
@@ -495,9 +497,7 @@
                                                                     Header="Выполнить геокодирование группы" />
                                                             </ContextMenu>
                                                         </Expander.ContextMenu>
-                                                        <!--<i:Interaction.Behaviors>
-                                                            <local:PersistGroupExpandedStateBehavior GroupName="{Binding Path=Name}" />
-                                                        </i:Interaction.Behaviors>-->
+                                                     
                                                         <Expander.Header>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock
