@@ -268,9 +268,10 @@ namespace GeoCoding
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
                     _stat.Init(value);
-                    Customers = new CollectionViewSource { Source = CollectionGeoCod }.View;
+                    //Customers = CollectionViewSource.GetDefaultView(_collectionGeoCod);
+                    Customers = new CollectionViewSource { Source = _collectionGeoCod }.View;
                     DispatcherHelper.CheckBeginInvokeOnUI(() => Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error")));
-                    Customers.Filter = CustomerFilter;
+                    _customerView.Filter = CustomerFilter;
                 });
             }
         }
@@ -544,7 +545,7 @@ namespace GeoCoding
 
                                 if (er == null)
                                 {
-                                    Customers?.Refresh();
+                                    _customerView?.Refresh();
                                     _stat.UpdateStatisticsCollection();
                                 }
                             }, geocod);
@@ -813,12 +814,18 @@ namespace GeoCoding
                     {
                         if (_isStartGeoCoding)
                         {
-                            obj.Cancel = true;
-                            _notifications.Notification(NotificationType.Close, "Идет процесс геокодирования. Закрытие невозможно!");
+                            if (obj != null)
+                            {
+                                obj.Cancel = true;
+                                _notifications.Notification(NotificationType.Close, "Идет процесс геокодирования. Закрытие невозможно!");
+                            }
                         }
                         else
                         {
-                            obj.Cancel = !_notifications.NotificationWithConfirmation(NotificationType.Close, "Вы уверены?");
+                            if (obj != null)
+                            {
+                                obj.Cancel = !_notifications.NotificationWithConfirmation(NotificationType.Close, "Вы уверены?");
+                            }
                         }
                     }));
 
@@ -1070,7 +1077,7 @@ namespace GeoCoding
                 {
                     IsStartGeoCoding = false;
                     _stat.Stop();
-                    Customers.Refresh();
+                    _customerView?.Refresh();
 
                     if (e == null)
                     {
