@@ -3,6 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:GeoCoding"
     xmlns:local="clr-namespace:GeoCoding.Styles">
+    
+    <!-- Контекст меню для строк основной таблицы-->
     <ContextMenu x:Key="ContextMenuRow">
         <MenuItem
             Command="{Binding DataContext.CommandGetGeoCod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
@@ -32,14 +34,7 @@
             Header="Очистить коллекцию" />
     </ContextMenu>
 
-    <!--<ContextMenu x:Key="ContextMenuGroup">
-        <MenuItem
-            Command="{Binding DataContext.CommandGetGeoCodGroup, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
-            CommandParameter="{Binding}"
-            Header="Выполнить геокодирование группы" />
-    </ContextMenu>-->
-
-
+    <!-- Стиль основной для строк -->
     <Style
         x:Key="DataGridMainRow"
         BasedOn="{StaticResource MetroDataGridRow}"
@@ -52,7 +47,7 @@
         </Setter>
     </Style>
 
-
+    <!-- Стиль для строк основной таблицы данных -->
     <Style
         x:Key="DataGridMainRowAll"
         BasedOn="{StaticResource DataGridMainRow}"
@@ -64,6 +59,7 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Стиль основной для таблиц -->
     <Style
         x:Key="DataGridMain"
         BasedOn="{StaticResource MetroDataGrid}"
@@ -73,6 +69,7 @@
         <Setter Property="IsReadOnly" Value="True" />
     </Style>
 
+    <!-- Стиль для основной таблицы данных -->
     <Style
         x:Key="DataGridMainAll"
         BasedOn="{StaticResource DataGridMain}"
@@ -80,6 +77,7 @@
         <Setter Property="RowStyle" Value="{StaticResource DataGridMainRowAll}" />
     </Style>
 
+    <!-- Стиль для таблицы с ошибками -->
     <Style
         x:Key="DataGridErrors"
         BasedOn="{StaticResource DataGridMain}"
