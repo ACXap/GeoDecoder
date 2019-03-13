@@ -475,5 +475,17 @@ namespace GeoCoding.Properties {
                 this["CanStartCompact"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CanNotificationExit {
+            get {
+                return ((bool)(this["CanNotificationExit"]));
+            }
+            set {
+                this["CanNotificationExit"] = value;
+            }
+        }
     }
 }

@@ -449,7 +449,8 @@
                     <CheckBox Content="Оповещать об отсутствии данных для обработки" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataEmpty}"/>
                     <CheckBox Content="Оповещать о уже сохраненной статистики" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}"/>
                     <CheckBox Content="Оповещать об успехе сохранения настроек" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}"/>
-                </WrapPanel>
+                        <CheckBox Content="Оповещать ли о закрытии программы" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationExit}"/>
+                    </WrapPanel>
            </ScrollViewer>
                 </TabItem>
             <TabItem Header="Общие">

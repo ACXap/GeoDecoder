@@ -633,7 +633,8 @@ namespace GeoCoding
                 CanNotificationProcessCancel = p.CanNotificationProcessCancel,
                 CanNotificationSaveData = p.CanNotificationSaveData,
                 CanNotificationSaveSettings = p.CanNotificationSaveSettings,
-                CanNotificationStatAlreadySave = p.CanNotificationStatAlreadySave
+                CanNotificationStatAlreadySave = p.CanNotificationStatAlreadySave,
+                CanNotificationExit = p.CanNotificationExit
             };
 
             callback(error, f, g, ftp, bds, ns, color, canStartCompact);
@@ -720,6 +721,7 @@ namespace GeoCoding
             p.CanNotificationSaveSettings = ns.CanNotificationSaveSettings;
             p.CanNotificationStatAlreadySave = ns.CanNotificationStatAlreadySave;
             p.CanNotificationOnlyError = ns.CanNotificationOnlyError;
+            p.CanNotificationExit = ns.CanNotificationExit;
 
             try
             {

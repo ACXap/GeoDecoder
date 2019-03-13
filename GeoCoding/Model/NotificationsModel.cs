@@ -304,6 +304,10 @@ namespace GeoCoding
                 case NotificationType.DataEmpty:
                     break;
                 case NotificationType.Close:
+                    if(!_notificationSettings.CanNotificationExit)
+                    {
+                        return true;
+                    }
                     header = _headerClose;
                     break;
                 default:

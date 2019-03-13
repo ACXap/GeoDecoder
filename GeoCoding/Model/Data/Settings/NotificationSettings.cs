@@ -127,5 +127,15 @@ namespace GeoCoding
                 }
             }
         }
+
+        private bool _canNotificationExit = false;
+        /// <summary>
+        /// Оповещать ли о закрытии
+        /// </summary>
+        public bool CanNotificationExit
+        {
+            get => _canNotificationExit;
+            set => Set(ref _canNotificationExit, value);
+        }
     }
 }
