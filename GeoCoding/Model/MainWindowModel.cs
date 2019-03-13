@@ -18,9 +18,6 @@ namespace GeoCoding
         private const char _charSplit = ';';
         private const string _errorIsNotFirstStringNameColumn = "Первая строка данных не название столбцов. Обработка прекращена.";
         private const string _errorLotOfMistakes = "Очень много ошибок при обработке данных. Обработка прекращена";
-        //private const string _errorGeoCodResponsEmpty = "Запрос к сервису геокодирования вернул пустой ответ";
-        //private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
-        //private const string _errorGeoCodNotFound = "Адрес не найден";
         private const string _errorFileNotHaveData = "Файл не содержит обрабатываемых данных";
         private const string _errorIsFormatIDWrong = "Формат значения GlobalId неверный";
         private const string _errorIsAddressEmpty = "Значение адреса пусто";
@@ -35,7 +32,6 @@ namespace GeoCoding
 
         private readonly IFileService _fileService = new FileService.FileService();
         private readonly IBDService _bdService = new BDPostgresql();
-        //private readonly IBDService _bdService = new BDTest();
         private readonly IFtpService _ftpService = new FtpService();
 
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
@@ -284,7 +280,7 @@ namespace GeoCoding
         {
             Exception error = null;
             string[] data = null;
-            string row = $"{DateTime.Now}{_charSplit}{Environment.UserName}{_charSplit}{stat.GeoServiceName}{_charSplit}{files.FileInput}{_charSplit}{files.FileOutput}{_charSplit}{_charSplit}{stat.AllEntity}" +
+            string row = $"{DateTime.Now}{_charSplit}{Environment.UserName}{_charSplit}{stat.GeoServiceName}{_charSplit}{files.FileInput}{_charSplit}{files.FileOutput}{_charSplit}{files.FileError}{_charSplit}{stat.AllEntity}" +
                 $"{_charSplit}{stat.OK}{_charSplit}{stat.Error}{_charSplit}{stat.NotGeoCoding}{_charSplit}{stat.GeoCodingNow}" +
                 $"{_charSplit}{stat.House}{_charSplit}{stat.Exact}{_charSplit}{stat.NotFound}{_charSplit}{stat.TimeGeoCod}";
 

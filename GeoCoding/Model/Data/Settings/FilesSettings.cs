@@ -18,6 +18,11 @@ namespace GeoCoding
         private string _fileOutput = string.Empty;
 
         /// <summary>
+        /// Поле для хранения имени файла для записи ошибок
+        /// </summary>
+        private string _fileError = string.Empty;
+
+        /// <summary>
         /// Поля для хранения значения копировать ли выходной файл на FTP сервер
         /// </summary>
         private bool _canCopyFileOutputToFTP = false;
@@ -78,6 +83,15 @@ namespace GeoCoding
         {
             get => _fileOutput;
             set => Set(ref _fileOutput, value);
+        }
+
+        /// <summary>
+        /// Имя файла для записи ошибок
+        /// </summary>
+        public string FileError
+        {
+            get => _fileError;
+            set => Set(ref _fileError, value);
         }
 
         /// <summary>

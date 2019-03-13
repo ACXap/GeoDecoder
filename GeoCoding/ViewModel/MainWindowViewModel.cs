@@ -624,7 +624,7 @@ namespace GeoCoding
                                 }
                             }
                         }
-                    }, obj=> !_isStartGeoCoding));
+                    }, obj => !_isStartGeoCoding));
 
         /// <summary>
         /// Команда для сохранения настроек
@@ -726,9 +726,14 @@ namespace GeoCoding
                         IsStartGetDataFromBD = true;
                         _model.GetDataFromBDAsync((data, error) =>
                         {
-                            _filesSettings.FileOutput = SetDefNameFileOutput();
+                            if (error == null)
+                            {
+                                _filesSettings.FileOutput = SetDefNameFileOutput();
+                            }
+
                             CreateCollection(data, error);
                             IsStartGetDataFromBD = false;
+
                         }, _bdSettings, _bdSettings.SQLQuery);
                     }, () => !string.IsNullOrEmpty(_bdSettings.SQLQuery) && !_isStartGetDataFromBD && !_isStartGeoCoding));
 
@@ -863,11 +868,11 @@ namespace GeoCoding
 
             if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
             {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd_h_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
             }
             else
             {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd_h_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
             }
 
             return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
@@ -884,7 +889,7 @@ namespace GeoCoding
             if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
             {
                 int countError = _collectionGeoCod.Count(x => x.Status == StatusType.Error);
-                defName = $"{_filesSettings.FolderErrors}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Errors_{countError}.csv";
+                defName = $"{_filesSettings.FolderErrors}\\{DateTime.Now.ToString("yyyy_MM_dd_h_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Errors_{countError}.csv";
             }
 
             return defName;
@@ -900,7 +905,7 @@ namespace GeoCoding
 
             if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
             {
-                defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
+                defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd_h_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
             }
 
             return defName;
@@ -915,48 +920,6 @@ namespace GeoCoding
             return $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
         }
 
-        private string SetDefName(NameFilesType nameFilesType)
-        {
-            string defName = string.Empty;
-            switch (nameFilesType)
-            {
-                case NameFilesType.Output:
-                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-                    {
-                        defName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
-                    }
-                    else
-                    {
-                        defName = $"{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
-                    }
-                    break;
-
-                case NameFilesType.Errors:
-                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-                    {
-                        int countError = _collectionGeoCod.Count(x => x.Status == StatusType.Error);
-                        defName = $"{_filesSettings.FolderErrors}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Errors_{countError}.csv";
-                    }
-                    break;
-
-                case NameFilesType.Temp:
-                    if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
-                    {
-                        defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
-                    }
-                    break;
-
-                case NameFilesType.Statistics:
-                    defName = $"{_filesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
-                    break;
-
-                default:
-                    break;
-            }
-
-            return defName;
-        }
-
         /// <summary>
         /// Метод для сохранения файла с ошибками
         /// </summary>
@@ -965,6 +928,7 @@ namespace GeoCoding
             if (_collectionGeoCod != null && _collectionGeoCod.Count(x => x.Status == StatusType.Error) > 0)
             {
                 var nameFile = SetDefNameFileErrors();
+                _filesSettings.FileError = nameFile;
                 _model.SaveError(error =>
                 {
                     _notifications.Notification(NotificationType.Error, error);
@@ -1027,8 +991,8 @@ namespace GeoCoding
 
             data = data.Where(x => !string.IsNullOrEmpty(x.Address));
 
-            int coutData = data.Count();
-            if (coutData > 0)
+            int countData = data.Count();
+            if (countData > 0)
             {
                 // Отображаем индикацию работы процесса
                 IsStartGeoCoding = true;
@@ -1043,7 +1007,7 @@ namespace GeoCoding
                     if (e == null)
                     {
                         // Оповещаем о завершении получении координат
-                        _notifications.Notification(NotificationType.DataProcessed, $"{_processedcompleted} {coutData}");
+                        _notifications.Notification(NotificationType.DataProcessed, $"{_processedcompleted} {countData}");
                     }
                     else if (e.Message == _errorCancel)
                     {
@@ -1052,17 +1016,17 @@ namespace GeoCoding
                     }
                     else
                     {
-                        // Оповещаем если были ошибки и номер на котором была остановка
+                        // Оповещаем если были ошибки
                         _notifications.Notification(NotificationType.Error, e.Message);
                     }
 
-                    if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && coutData > 0)
+                    if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && countData > 0)
                     {
                         SaveData();
                         SaveErrors();
                     }
 
-                    if (_geoCodSettings.CanSaveDataAsTemp && coutData > 0)
+                    if (_geoCodSettings.CanSaveDataAsTemp && countData > 0)
                     {
                         SaveTemp();
                     }
@@ -1094,8 +1058,6 @@ namespace GeoCoding
             {
                 data = collectionItem.Where(x => x.Status == StatusType.NotGeoCoding);
             }
-
-
 
             return data;
         }
@@ -1158,18 +1120,9 @@ namespace GeoCoding
                 if (obj is CollectionViewGroup a)
                 {
                     var b = a.Items;
-                    GetAllGeoCod(b.Select(x=>(EntityGeoCod)x), false);
+                    GetAllGeoCod(b.Select(x => (EntityGeoCod)x), false);
                 }
             }));
-
-        //private RelayCommand<object> _commandClose;
-        //public RelayCommand<object> CommandClose =>
-        //_commandClose ?? (_commandClose = new RelayCommand<object>(
-        //            obj =>
-        //            {
-        //                var a = obj;
-        //            }));
-
 
         private bool _canStartCompact = false;
         /// <summary>
