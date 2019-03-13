@@ -10,8 +10,8 @@
     xmlns:local="clr-namespace:GeoCoding"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
-    x:Name="metroWindow"
-    Title="Геокодирование" SizeToContent="WidthAndHeight" ResizeMode="CanMinimize"
+    x:Name="metroWindow" Height="430" Width="580" SizeToContent="WidthAndHeight"
+    Title="Геокодирование" ResizeMode="CanMinimize"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
@@ -104,7 +104,7 @@
                     </Grid.RowDefinitions>
 
                     <!--  Имя входного файла с данными  -->
-                    <TextBox
+                    <TextBox MaxWidth="550"
                                 Grid.Row="0"
                                 Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
                                 IsReadOnly="True"
@@ -170,7 +170,7 @@
 
                     <!--  Файл для сохранения  -->
                     <TextBox
-                        Grid.Row="0"
+                        Grid.Row="0" MaxWidth="550"
                         VerticalAlignment="Center"
                         Controls:TextBoxHelper.Watermark="Выбрать файл для сохранения"
                         IsReadOnly="True"

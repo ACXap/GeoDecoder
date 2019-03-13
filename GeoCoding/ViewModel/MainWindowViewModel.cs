@@ -868,11 +868,11 @@ namespace GeoCoding
 
             if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
             {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd_h_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
             }
             else
             {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd_h_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
+                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
             }
 
             return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
@@ -889,7 +889,7 @@ namespace GeoCoding
             if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
             {
                 int countError = _collectionGeoCod.Count(x => x.Status == StatusType.Error);
-                defName = $"{_filesSettings.FolderErrors}\\{DateTime.Now.ToString("yyyy_MM_dd_h_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Errors_{countError}.csv";
+                defName = $"{_filesSettings.FolderErrors}\\{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Errors_{countError}.csv";
             }
 
             return defName;
@@ -905,7 +905,7 @@ namespace GeoCoding
 
             if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
             {
-                defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd_h_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
+                defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
             }
 
             return defName;

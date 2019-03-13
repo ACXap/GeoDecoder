@@ -27,9 +27,9 @@ namespace GeoCoding
 
             try
             {
-                var a = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).SectionGroups.Get("userSettings").Sections[1] as System.Configuration.ClientSettingsSection;
-                var b = bool.Parse(a.Settings.Get("CanStartCompact").Value.ValueXml.InnerText);
-                if (b)
+                var a = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).SectionGroups.Get("userSettings").Sections[1] as ClientSettingsSection;
+
+                if (bool.Parse(a.Settings.Get("CanStartCompact").Value.ValueXml.InnerText))
                 {
                     StartCompact();
                     return;
@@ -50,12 +50,7 @@ namespace GeoCoding
 
         private void StartCompact()
         {
-            CompactMainWindow cwin = new CompactMainWindow()
-            {
-                Height = 450,
-                Width = 700
-            };
-
+            CompactMainWindow cwin = new CompactMainWindow();
             cwin.Show();
         }
 
