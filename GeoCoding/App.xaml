@@ -6,6 +6,13 @@
     Startup="Application_Startup">
     <Application.Resources>
         <ResourceDictionary>
+            <!--  Конвертеры  -->
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <local:ConverterStatToProgress x:Key="ConverterStatToProgress" />
+            <local:ConverterStatGeoToProgressState x:Key="ConverterStartGeoToProgress" />
+            <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
+            <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
+            
             <ResourceDictionary.MergedDictionaries>
                 <!--  MahApps.Metro resource dictionaries.  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
@@ -24,13 +31,6 @@
                 <ResourceDictionary Source="Styles/ComboBox.xaml" />
                 <ResourceDictionary Source="Styles/Border.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!--  Конвертеры  -->
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <local:ConverterStatToProgress x:Key="ConverterStatToProgress" />
-            <local:ConverterStatGeoToProgressState x:Key="ConverterStartGeoToProgress" />
-            <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
-            <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

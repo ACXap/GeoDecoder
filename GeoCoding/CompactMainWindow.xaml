@@ -18,13 +18,6 @@
     WindowButtonCommandsOverlayBehavior="Always"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    
-    <!--  Ресурсы окна, в основном конвертеры  -->
-    <Controls:MetroWindow.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <local:ConverterStatToProgress x:Key="ConverterStatToProgress" />
-        <local:ConverterStatGeoToProgressState x:Key="ConverterStartGeoToProgress" />
-    </Controls:MetroWindow.Resources>
 
     <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
@@ -42,7 +35,8 @@
     <Controls:MetroWindow.TaskbarItemInfo>
         <TaskbarItemInfo 
             ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}" 
-            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}"/>
+            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}"
+            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" />
     </Controls:MetroWindow.TaskbarItemInfo>
 
     <!--  Панель команд на заголовке окна  -->
@@ -87,7 +81,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-       
+
         <!--  Работа с получением данных и сохранением  -->
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
@@ -129,7 +123,7 @@
                                     ToolTip="Считать данные из файла в таблицу данных" />
 
                         <!--  Настройки для получения данных  -->
-                        <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
 
                             <!--  Выбор входного файла на ФТП-сервере  -->
                             <CheckBox
@@ -156,7 +150,7 @@
                     </Grid>
                 </Grid>
             </Border>
-            
+
             <!--  Панель работы с выходным файлом  -->
             <Border Grid.Row="1" Margin="1"
                 Style="{StaticResource BorderMain}">
@@ -196,7 +190,7 @@
                         <!--  Настройки для сохранения  -->
                         <StackPanel
                             Grid.Column="1"
-                            Margin="2"
+                            Margin="2" VerticalAlignment="Center"
                             Orientation="Vertical">
 
                             <!--  Копировать ли выходной файл на ФТП-сервер  -->
@@ -207,7 +201,7 @@
                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP сервер (если он настроен на вкладке FTP)" />
 
                             <!--  Настройка разбиения выходного файла  -->
-                            <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения">
+                            <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения" >
 
                                 <!--  Разбивать ли выходной файл на части (по количеству строк)  -->
                                 <CheckBox Content="Разбить файл на части (по строкам):" IsChecked="{Binding FilesSettings.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -271,7 +265,7 @@
                 Text="Обработка..." Size="22"
                 TextAlternative="Завершение..." />
             </StackPanel>
-            
+
             <!--  Настройки геокодирования  -->
             <ScrollViewer
                 Grid.Column="1"
@@ -353,7 +347,7 @@
             </ScrollViewer>
         </Grid>
     </Grid>
-    
+
     <!--  Всплывающие окна  -->
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
