@@ -46,6 +46,10 @@ namespace GeoCoding
         /// </summary>
         private const string _headerSaveData = "Сохранение данных";
         /// <summary>
+        /// Заголовок оповещения закрытия программы
+        /// </summary>
+        private const string _headerClose = "Закрытие программы";
+        /// <summary>
         /// Текст оповещения об успешности записи в файл
         /// </summary>
         private const string _bodySaveData = "Данные успешно сохранены в файле";
@@ -240,6 +244,9 @@ namespace GeoCoding
                     }
                     header = _headerDataEmpty;
                     break;
+                case NotificationType.Close:
+                    header = _headerClose;
+                    break;
                 default:
                     break;
             }
@@ -273,6 +280,56 @@ namespace GeoCoding
                 Notification(notificationType, body);
             }
         }
+
+        public bool NotificationWithConfirmation(NotificationType notificationType, string body)
+        {
+            string header = string.Empty;
+
+            switch (notificationType)
+            {
+                case NotificationType.Error:
+                    break;
+                case NotificationType.Ok:
+                    break;
+                case NotificationType.Cancel:
+                    break;
+                case NotificationType.SettingsSave:
+                    break;
+                case NotificationType.SaveData:
+                    break;
+                case NotificationType.StatAlreadySave:
+                    break;
+                case NotificationType.DataProcessed:
+                    break;
+                case NotificationType.DataEmpty:
+                    break;
+                case NotificationType.Close:
+                    header = _headerClose;
+                    break;
+                default:
+                    break;
+            }
+
+            return NotificationWithConfirmation(header, body);
+        }
+
+        public bool NotificationWithConfirmation(string header, string body)
+        {
+            var a = _dialogCoordinator.ShowModalMessageExternal(this, header, body, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+            {
+                AffirmativeButtonText = "Да",
+                NegativeButtonText = "Нет"
+            });
+            if (a == MessageDialogResult.Affirmative)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         #endregion PublicMethod
 
         public NotificationsModel(NotificationSettings settings)

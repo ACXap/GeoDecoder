@@ -9,6 +9,7 @@
         SaveData,
         StatAlreadySave,
         DataProcessed,
-        DataEmpty
+        DataEmpty,
+        Close
     }
 }

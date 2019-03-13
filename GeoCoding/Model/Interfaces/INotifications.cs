@@ -42,5 +42,21 @@ namespace GeoCoding
         /// <param name="body">Сообщение</param>
         /// <param name="error">Ошибка</param>
         void Notification(NotificationType notificationType, string body, Exception error);
+
+        /// <summary>
+        /// Оповещение с подтверждением 
+        /// </summary>
+        /// <param name="header">Заголовок</param>
+        /// <param name="body">Текст сообщения</param>
+        /// <returns>Возвращает результат диалога</returns>
+        bool NotificationWithConfirmation(string header, string body);
+
+        /// <summary>
+        /// Оповещение с подтверждением 
+        /// </summary>
+        /// /// <param name="notificationType">Вид работы</param>
+        /// <param name="body">Текст сообщения</param>
+        /// <returns>Возвращает результат диалога</returns>
+        bool NotificationWithConfirmation(NotificationType notificationType, string body);
     }
 }

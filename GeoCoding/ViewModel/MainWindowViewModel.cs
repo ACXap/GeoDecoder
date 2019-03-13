@@ -92,6 +92,11 @@ namespace GeoCoding
         private bool _isStartGeoCoding = false;
 
         /// <summary>
+        /// Поле для хранения запрошена ли остановка процесса геокодирования
+        /// </summary>
+        private bool _isRequestedStop = false;
+
+        /// <summary>
         /// Поле для хранения запущено ли получение данных из БД
         /// </summary>
         private bool _isStartGetDataFromBD = false;
@@ -120,6 +125,11 @@ namespace GeoCoding
         /// Поле для хранения статистики
         /// </summary>
         private StatisticsViewModel _stat;
+
+        /// <summary>
+        /// Поле для хранения запускать ли в компактном режиме
+        /// </summary>
+        private bool _canStartCompact = false;
 
         /// <summary>
         /// Поле для хранения ссылки на текущую тему оформления
@@ -226,7 +236,15 @@ namespace GeoCoding
         /// </summary>
         private RelayCommand<SelectionChangedEventArgs> _commandSelectMainGeo;
 
-        //private readonly object _lock = new object();
+        /// <summary>
+        /// Поле для хранения команды обработки закрытия программы
+        /// </summary>
+        private RelayCommand<CancelEventArgs> _commandClosing;
+
+        /// <summary>
+        /// Поле для хранения команды для геокодирования группы
+        /// </summary>
+        private RelayCommand<object> _commandGetGeoCodGroup;
 
         #endregion PrivateFields
 
@@ -286,6 +304,15 @@ namespace GeoCoding
                 Set(ref _isStartGeoCoding, value);
                 IsRequestedStop = false;
             }
+        }
+
+        /// <summary>
+        /// Запрошена ли отмена процесса геокодирования
+        /// </summary>
+        public bool IsRequestedStop
+        {
+            get => _isRequestedStop;
+            set => Set(ref _isRequestedStop, value);
         }
 
         /// <summary>
@@ -385,6 +412,15 @@ namespace GeoCoding
                 Set(ref _colorTheme, value);
                 ThemeManager.ChangeTheme(Application.Current, value.Name);
             }
+        }
+
+        /// <summary>
+        /// Запускать ли программу в компактном режиме
+        /// </summary>
+        public bool CanStartCompact
+        {
+            get => _canStartCompact;
+            set => Set(ref _canStartCompact, value);
         }
 
         /// <summary>
@@ -768,6 +804,38 @@ namespace GeoCoding
                         }
                     }));
 
+        /// <summary>
+        /// Команда для обработки закрытия программы
+        /// </summary>
+        public RelayCommand<CancelEventArgs> CommandClosing =>
+        _commandClosing ?? (_commandClosing = new RelayCommand<CancelEventArgs>(
+                    obj =>
+                    {
+                        if (_isStartGeoCoding)
+                        {
+                            obj.Cancel = true;
+                            _notifications.Notification(NotificationType.Close, "Идет процесс геокодирования. Закрытие невозможно!");
+                        }
+                        else
+                        {
+                            obj.Cancel = !_notifications.NotificationWithConfirmation(NotificationType.Close, "Вы уверены?");
+                        }
+                    }));
+
+        /// <summary>
+        /// Команда для запуска геокодирования для группы
+        /// </summary>
+        public RelayCommand<object> CommandGetGeoCodGroup =>
+            _commandGetGeoCodGroup ?? (_commandGetGeoCodGroup = new RelayCommand<object>(
+                obj =>
+                {
+                    if (obj is CollectionViewGroup a)
+                    {
+                        var b = a.Items;
+                        GetAllGeoCod(b.Select(x => (EntityGeoCod)x), false);
+                    }
+                }));
+
         #endregion PublicCommands
 
         #region PrivateMethod
@@ -1100,39 +1168,6 @@ namespace GeoCoding
         }
 
         #endregion PrivateMethod
-
-
-        private bool _isRequestedStop = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsRequestedStop
-        {
-            get => _isRequestedStop;
-            set => Set(ref _isRequestedStop, value);
-        }
-
-        private RelayCommand<object> _commandGetGeoCodGroup;
-        public RelayCommand<object> CommandGetGeoCodGroup =>
-            _commandGetGeoCodGroup ?? (_commandGetGeoCodGroup = new RelayCommand<object>(
-                obj =>
-            {
-                if (obj is CollectionViewGroup a)
-                {
-                    var b = a.Items;
-                    GetAllGeoCod(b.Select(x => (EntityGeoCod)x), false);
-                }
-            }));
-
-        private bool _canStartCompact = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool CanStartCompact
-        {
-            get => _canStartCompact;
-            set => Set(ref _canStartCompact, value);
-        }
 
         /// <summary>
         /// Конструктор по умолчанию
