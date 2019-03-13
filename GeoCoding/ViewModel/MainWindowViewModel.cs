@@ -624,7 +624,7 @@ namespace GeoCoding
                                 }
                             }
                         }
-                    }));
+                    }, obj=> !_isStartGeoCoding));
 
         /// <summary>
         /// Команда для сохранения настроек

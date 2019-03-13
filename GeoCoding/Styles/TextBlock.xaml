@@ -3,6 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:GeoCoding">
 
+    
+    
     <Style x:Key="TextBlockTime" TargetType="{x:Type TextBlock}">
         <Setter Property="Text" Value="{Binding DateTimeGeoCod, StringFormat=\{0:G\}, ConverterCulture=ru}" />
         <Style.Triggers>
@@ -108,4 +110,26 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <DataTemplate x:Key="TitleTemplate">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock Text="{Binding}" FontSize="16" VerticalAlignment="Center"/>
+            <TextBlock 
+                VerticalAlignment="Center" 
+                Text="{Binding DataContext.Stat.Statistics.Percent, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}, StringFormat=\{0:N\}%}" 
+                Margin="10,0,0,0" 
+                FontSize="14">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DataContext.IsStartGeoCoding, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </StackPanel>
+    </DataTemplate>
 </ResourceDictionary>

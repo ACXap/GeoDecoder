@@ -11,29 +11,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
     x:Name="metroWindow"
-    Title="Геокодирование" 
-    Width="1200"
+    Title="Геокодирование" TitleTemplate="{StaticResource TitleTemplate}"
     SaveWindowPosition="True"
-    Height="700"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
     WindowButtonCommandsOverlayBehavior="Always"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <!--<i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closed">
-            <cmd:EventToCommand Command="{Binding CommandClose}" PassEventArgsToCommand="True" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>-->
-    <!--  Ресурсы окна, в основном конвертеры  -->
-    <Controls:MetroWindow.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <local:ConverterStatToProgress x:Key="ConverterStatToProgress" />
-        <local:ConverterStatGeoToProgressState x:Key="ConverterStartGeoToProgress" />
-    </Controls:MetroWindow.Resources>
-
-   
     <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
         <local:MainWindowViewModel />
@@ -50,7 +35,8 @@
     <Controls:MetroWindow.TaskbarItemInfo>
         <TaskbarItemInfo 
             ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}" 
-            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}"/>
+            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}"
+            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}"/>
     </Controls:MetroWindow.TaskbarItemInfo>
 
     <!--  Панель команд на заголовке окна  -->
@@ -143,7 +129,7 @@
                                 <Button
                                     Grid.Column="0"
                                     HorizontalAlignment="Left" Content="Получить данные"
-                                    Command="{Binding CommandGetDataFromFile}"
+                                    Command="{Binding CommandGetDataFromFile}" 
                                     Style="{StaticResource ButtonMainStyle}"
                                     ToolTip="Считать данные из файла в таблицу данных"/>
 
@@ -168,8 +154,8 @@
                                 <!--  Выбор файла с данными, открываем проводник  -->
                                 <Button
                                     Grid.Column="2"
-                                    Command="{Binding CommandGetFile}" Content="Выбрать файл с данными"
-                                    Style="{StaticResource ButtonMainStyle}"
+                                    Command="{Binding CommandGetFile}" 
+                                    Style="{StaticResource ButtonMainStyle}" Content="Выбрать файл с данными"
                                     ToolTip="Открытие диалога выбора файла с данными"/>
 
 
@@ -336,7 +322,7 @@
                         <Button
                             Grid.Column="0"
                             Command="{Binding CommandSetFileOutput}"
-                            Content="Выбрать файл для сохранения"
+                            Content="Выбрать файл для сохранения" 
                             ToolTip="Открытие диалога выбора файла для сохранения"
                             Style="{StaticResource ButtonMainStyle}" />
 
@@ -370,7 +356,7 @@
 
                         <!--  Кнопка сохранения данных  -->
                         <Button
-                            Grid.Column="2"
+                            Grid.Column="2" 
                             Command="{Binding CommandSaveData}"
                             Content="Сохранить данные"
                             Style="{StaticResource ButtonMainStyle}" />

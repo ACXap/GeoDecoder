@@ -26,6 +26,9 @@
             </ResourceDictionary.MergedDictionaries>
 
             <!--  Конвертеры  -->
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <local:ConverterStatToProgress x:Key="ConverterStatToProgress" />
+            <local:ConverterStatGeoToProgressState x:Key="ConverterStartGeoToProgress" />
             <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
             <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
         </ResourceDictionary>

@@ -9,14 +9,24 @@
         TargetType="{x:Type Button}">
         <Setter Property="Margin" Value="2" />
         <Setter Property="Padding" Value="2" />
+        <Setter Property="Width" Value="90"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style
-        x:Key="ButtonStopStart"
-        BasedOn="{StaticResource ButtonMainStyle}"
+        x:Key="ButtonStopStart" 
+        BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}"
         TargetType="{x:Type Button}">
         <Setter Property="Command" Value="{Binding CommandGetAllGeoCod}" />
         <Setter Property="Height" Value="80" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="2" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="FontSize" Value="18" />
