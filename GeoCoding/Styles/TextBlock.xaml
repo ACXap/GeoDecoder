@@ -24,6 +24,10 @@
         <Setter Property="Text" Value="{StaticResource FontAwesomeSettings}" />
     </Style>
 
+    <Style x:Key="TextBlockGeoCod" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
+        <Setter Property="Text" Value="{StaticResource FontAwesomeGeoCod}"/>
+    </Style>
+    
     <Style x:Key="TextBlockFile" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
         <Setter Property="Text" Value="{StaticResource FontAwesomeFile}" />
         <Setter Property="ToolTip" Value="Работа с файлом"/>

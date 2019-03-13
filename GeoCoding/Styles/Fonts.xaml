@@ -19,5 +19,6 @@
     <system:String x:Key="FontAwesomeFile">&#xf15b;</system:String>
     <system:String x:Key="FontAwesomeBD">&#xf1c0;</system:String>
     <system:String x:Key="FontAwesomeAddress">&#xf276;</system:String>
+    <system:String x:Key="FontAwesomeGeoCod">&#xf041;</system:String>
 
 </ResourceDictionary>
