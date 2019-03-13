@@ -415,7 +415,7 @@ namespace GeoCoding
 
             if (d != null && d.Any())
             {
-                if (IsFirstStringNameColumnTempFile(d.First()))
+                if (IsFirstStringNameColumn(d.First()))
                 {
                     data = new List<EntityGeoCod>(d.Count());
                     foreach (var item in d.Skip(1))
@@ -432,28 +432,28 @@ namespace GeoCoding
 
                         try
                         {
-                            if (s.Length >= 12)
+                            if (int.TryParse(s[_globalIDColumnIndexLoadFile].Trim(), out int id))
                             {
-                                if (int.TryParse(s[_globalIDColumnIndexLoadFile].Trim(), out int id))
-                                {
-                                    geocod.GlobalID = id;
-                                }
-                                else
-                                {
-                                    SetError(geocod, _errorIsFormatIDWrong);
-                                    countError++;
-                                }
+                                geocod.GlobalID = id;
+                            }
+                            else
+                            {
+                                SetError(geocod, _errorIsFormatIDWrong);
+                                countError++;
+                            }
 
-                                if (!string.IsNullOrEmpty(s[_addressColumnIndexLoadFile]))
-                                {
-                                    geocod.Address = s[_addressColumnIndexLoadFile];
-                                }
-                                else
-                                {
-                                    SetError(geocod, _errorIsAddressEmpty);
-                                    countError++;
-                                }
+                            if (!string.IsNullOrEmpty(s[_addressColumnIndexLoadFile]))
+                            {
+                                geocod.Address = s[_addressColumnIndexLoadFile];
+                            }
+                            else
+                            {
+                                SetError(geocod, _errorIsAddressEmpty);
+                                countError++;
+                            }
 
+                            if (IsFirstStringNameColumnTempFile(d.First()))
+                            {
                                 if (!string.IsNullOrEmpty(s[2]) && !string.IsNullOrEmpty(s[3]))
                                 {
                                     geocod.MainGeoCod = new GeoCod()
@@ -475,13 +475,11 @@ namespace GeoCoding
                                 geocod.DateTimeGeoCod = dt;
                                 byte.TryParse(s[11], out byte c);
                                 geocod.CountResult = c;
-
-                                
                             }
-                            else
+                            else if (IsFirstStringNameColumnErrorFile(d.First()))
                             {
-                                SetError(geocod, _errorIsFormatStringWrong);
-                                countError++;
+                                geocod.Error = s[2];
+                                geocod.Status = StatusType.Error;
                             }
                         }
                         catch (Exception ex)
@@ -493,61 +491,6 @@ namespace GeoCoding
                         data.Add(geocod);
                     }
                 }
-                else if (IsFirstStringNameColumn(d.First()))
-                {
-                    data = new List<EntityGeoCod>(d.Count());
-                    foreach (var item in d.Skip(1))
-                    {
-                        if (countError >= _maxCountError)
-                        {
-                            error = new Exception(_errorLotOfMistakes);
-                            data = null;
-                            break;
-                        }
-
-                        EntityGeoCod geocod = new EntityGeoCod();
-                        var s = item.Split(_charSplit);
-
-                        try
-                        {
-                            if (s.Length >= 2)
-                            {
-                                if (int.TryParse(s[_globalIDColumnIndexLoadFile].Trim(), out int id))
-                                {
-                                    geocod.GlobalID = id;
-                                }
-                                else
-                                {
-                                    SetError(geocod, _errorIsFormatIDWrong);
-                                    countError++;
-                                }
-
-                                if (!string.IsNullOrEmpty(s[_addressColumnIndexLoadFile]))
-                                {
-                                    geocod.Address = s[_addressColumnIndexLoadFile];
-                                }
-                                else
-                                {
-                                    SetError(geocod, _errorIsAddressEmpty);
-                                    countError++;
-                                }
-                            }
-                            else
-                            {
-                                SetError(geocod, _errorIsFormatStringWrong);
-                                countError++;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            SetError(geocod, ex.Message);
-                            countError++;
-                        }
-
-                        data.Add(geocod);
-                    }
-                }
-                
                 else
                 {
                     error = new Exception(_errorIsNotFirstStringNameColumn);
@@ -591,14 +534,12 @@ namespace GeoCoding
 
         private bool IsFirstStringNameColumnTempFile(string fs)
         {
-            bool result = false;
+            return fs.ToLower() == _nameColumnTempFile.ToLower();
+        }
 
-            if (fs.ToLower() == _nameColumnTempFile.ToLower())
-            {
-                result = true;
-            }
-
-            return result;
+        private bool IsFirstStringNameColumnErrorFile(string fs)
+        {
+            return fs.ToLower() == _nameColumnErrorFile;
         }
 
         /// <summary>

@@ -152,7 +152,9 @@ namespace GeoCoding.FileService
             {
                 if (Directory.Exists(Path.GetDirectoryName(file)))
                 {
-                    using (StreamWriter sw = new StreamWriter(File.Create(file), Encoding.Default))
+                    // utf-8 с Bom не читается системой, приходится так
+                    Encoding utf = new UTF8Encoding(false);
+                    using (StreamWriter sw = new StreamWriter(File.Create(file), utf))
                     {
                         foreach (var item in data)
                         {
