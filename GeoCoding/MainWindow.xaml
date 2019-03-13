@@ -33,10 +33,10 @@
 
     <!--  Отображение процесса геокодирования на панели задач  -->
     <Controls:MetroWindow.TaskbarItemInfo>
-        <TaskbarItemInfo 
-            ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}" 
+        <TaskbarItemInfo
+            ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}"
             ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}"
-            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}"/>
+            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" />
     </Controls:MetroWindow.TaskbarItemInfo>
 
     <!--  Панель команд на заголовке окна  -->
@@ -129,9 +129,9 @@
                                 <Button
                                     Grid.Column="0"
                                     HorizontalAlignment="Left" Content="Получить данные"
-                                    Command="{Binding CommandGetDataFromFile}" 
+                                    Command="{Binding CommandGetDataFromFile}"
                                     Style="{StaticResource ButtonMainStyle}"
-                                    ToolTip="Считать данные из файла в таблицу данных"/>
+                                    ToolTip="Считать данные из файла в таблицу данных" />
 
                                 <!--  Настройки для получения данных  -->
                                 <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
@@ -154,11 +154,9 @@
                                 <!--  Выбор файла с данными, открываем проводник  -->
                                 <Button
                                     Grid.Column="2"
-                                    Command="{Binding CommandGetFile}" 
+                                    Command="{Binding CommandGetFile}"
                                     Style="{StaticResource ButtonMainStyle}" Content="Выбрать файл с данными"
-                                    ToolTip="Открытие диалога выбора файла с данными"/>
-
-
+                                    ToolTip="Открытие диалога выбора файла с данными" />
                             </Grid>
                         </Grid>
                     </Border>
@@ -322,7 +320,7 @@
                         <Button
                             Grid.Column="0"
                             Command="{Binding CommandSetFileOutput}"
-                            Content="Выбрать файл для сохранения" 
+                            Content="Выбрать файл для сохранения"
                             ToolTip="Открытие диалога выбора файла для сохранения"
                             Style="{StaticResource ButtonMainStyle}" />
 
@@ -356,7 +354,7 @@
 
                         <!--  Кнопка сохранения данных  -->
                         <Button
-                            Grid.Column="2" 
+                            Grid.Column="2"
                             Command="{Binding CommandSaveData}"
                             Content="Сохранить данные"
                             Style="{StaticResource ButtonMainStyle}" />
@@ -483,7 +481,7 @@
                                                                     Header="Выполнить геокодирование группы" />
                                                             </ContextMenu>
                                                         </Expander.ContextMenu>
-                                                     
+
                                                         <Expander.Header>
                                                             <StackPanel Orientation="Horizontal">
                                                                 <TextBlock
@@ -579,18 +577,6 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-
-                            <!--  Колонка ошибка  -->
-                            <!--<DataGridTemplateColumn Header="Ошибка" SortMemberPath="Error">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            Margin="5,0"
-                                            Text="{Binding Error}"
-                                            TextWrapping="Wrap" />
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>-->
 
                             <!--  Колонка кол. результатов  -->
                             <DataGridTemplateColumn Header="Кол.результатов" SortMemberPath="CountResult">
@@ -704,7 +690,6 @@
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
-
         </Grid>
     </Grid>
 
