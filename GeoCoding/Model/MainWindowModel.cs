@@ -458,12 +458,15 @@ namespace GeoCoding
                                         Longitude = s[3],
                                         Latitude = s[4],
                                     };
-
+                                    byte.TryParse(s[5], out byte qcode);
+                                    geocod.MainGeoCod.Qcode = qcode;
                                     Enum.TryParse(s[9], out KindType kt);
                                     geocod.MainGeoCod.Kind = kt;
                                     Enum.TryParse(s[10], out PrecisionType pt);
                                     geocod.MainGeoCod.Precision = pt;
+
                                 }
+
                                 geocod.Error = s[6];
                                 Enum.TryParse(s[7], out StatusType a);
                                 geocod.Status = a;
