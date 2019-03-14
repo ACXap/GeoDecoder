@@ -30,7 +30,7 @@
                         <Button Command="{Binding DataContext.CommandOpenFolder, ElementName=gb}" CommandParameter="StatFolder">
                             <Button.Template>
                                 <ControlTemplate>
-                                    <TextBlock Margin="5,0" Style="{StaticResource TextBlockFolder}" />
+                                    <TextBlock Margin="5,0" Style="{StaticResource TextBlockFolder}" ToolTip="Сохранить статистику"/>
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>

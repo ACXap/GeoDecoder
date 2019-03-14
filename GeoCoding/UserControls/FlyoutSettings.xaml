@@ -437,7 +437,6 @@
                             IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
                     </Grid>
                 </ScrollViewer>
-
             </TabItem>
             <TabItem Header="Оповещения">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">

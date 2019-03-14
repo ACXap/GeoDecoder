@@ -1176,6 +1176,15 @@ namespace GeoCoding
 
         #endregion PrivateMethod
 
+        private RelayCommand _commandSaveTempData;
+        public RelayCommand CommandSaveTempData =>
+        _commandSaveTempData ?? (_commandSaveTempData = new RelayCommand(
+                    () =>
+                    {
+                        SaveTemp();
+                    }, ()=> _collectionGeoCod!=null && _collectionGeoCod.Any()));
+
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
