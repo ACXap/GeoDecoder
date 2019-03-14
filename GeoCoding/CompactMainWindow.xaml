@@ -10,7 +10,7 @@
     xmlns:local="clr-namespace:GeoCoding"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
-    x:Name="metroWindow" Height="430" Width="580" SizeToContent="WidthAndHeight"
+    x:Name="metroWindow" Height="430" Width="590" SizeToContent="WidthAndHeight"
     Title="Геокодирование" ResizeMode="CanMinimize"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource AccentColorBrush}"
@@ -103,7 +103,7 @@
                     </Grid.RowDefinitions>
 
                     <!--  Имя входного файла с данными  -->
-                    <TextBox MaxWidth="550"
+                    <TextBox MaxWidth="560"
                                 Grid.Row="0"
                                 Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
                                 IsReadOnly="True"
@@ -169,7 +169,7 @@
 
                     <!--  Файл для сохранения  -->
                     <TextBox
-                        Grid.Row="0" MaxWidth="550"
+                        Grid.Row="0" MaxWidth="560"
                         VerticalAlignment="Center"
                         Controls:TextBoxHelper.Watermark="Выбрать файл для сохранения"
                         IsReadOnly="True"
@@ -235,15 +235,21 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="200" />
                 <ColumnDefinition Width="200" />
             </Grid.ColumnDefinitions>
 
             <!--  Статистика  -->
             <uc:Statistics Grid.Column="2" />
 
-            <StackPanel Orientation="Vertical" Grid.Column="0">
-                <StackPanel Orientation="Vertical">
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Row="0">
                     <TextBlock
                             Margin="5,1,1,1"
                             FontWeight="Bold"
@@ -258,10 +264,10 @@
                 </StackPanel>
 
                 <!--  Запуск геокодирования  -->
-                <Button Style="{StaticResource ButtonStopStart}" />
+                <Button Style="{StaticResource ButtonStopStart}" Grid.Row="1"/>
 
                 <!--  Индикация работы геокодирования  -->
-                <uc:WorkIndication Grid.Row="1"
+                <uc:WorkIndication Grid.Row="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Panel.ZIndex="1"
@@ -269,14 +275,12 @@
                 IsShowTextAlternative="{Binding IsRequestedStop}"
                 Text="Обработка..." Size="22"
                 TextAlternative="Завершение..." />
-            </StackPanel>
+
+                <ToggleButton x:Name="tbData" Grid.Row="3" Content="Данные" Margin="2" HorizontalAlignment="Left" />
+            </Grid>
 
             <!--  Настройки геокодирования  -->
-            <ScrollViewer
-                Grid.Column="1"
-                Width="200"
-                VerticalScrollBarVisibility="Auto">
-                <Grid>
+                <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -349,7 +353,6 @@
                         </CheckBox>
                     </StackPanel>
                 </Grid>
-            </ScrollViewer>
         </Grid>
     </Grid>
 
@@ -359,8 +362,6 @@
 
             <!--  Настройки  -->
             <Controls:Flyout
-                MaxWidth="900"
-                MaxHeight="600"
                 Header="Настройки приложения"
                 IsOpen="{Binding ElementName=tbOpenSettings, Path=IsChecked}"
                 Position="Right"
@@ -372,8 +373,6 @@
 
             <!--  Окно с помощью  -->
             <Controls:Flyout
-                MaxWidth="900"
-                MaxHeight="500"
                 Header="Помощь"
                 IsOpen="{Binding ElementName=tbOpenHelp, Path=IsChecked}"
                 Position="Right"
@@ -384,6 +383,213 @@
                     </i:Interaction.Behaviors>
                 </FlowDocumentScrollViewer>
             </Controls:Flyout>
+
+            <Controls:Flyout
+                IsOpen="{Binding ElementName=tbData, Path=IsChecked}"
+                Position="Right"
+                Style="{StaticResource FlyoutStyleMain}">
+                <!--  Данные  -->
+                <TabControl Grid.Column="0" Controls:TabControlHelper.Underlined="SelectedTabItem">
+                    <TabItem Header="Данные">
+                        <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMainAll}">
+                            <DataGrid.Columns>
+
+                                <!--  Колонка статуса  -->
+                                <DataGridTemplateColumn SortMemberPath="Status">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Style="{StaticResource TextBlockStatus}" Tag="{Binding Status}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--  Колонка адреса  -->
+                                <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Address}" TextWrapping="Wrap" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--  Колонка широта  -->
+                                <DataGridTemplateColumn Header="Широта">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Latitude}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--  Колонка долгота  -->
+                                <DataGridTemplateColumn Header="Долгота">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Longitude}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--  Колонка вид объекта  -->
+                                <DataGridTemplateColumn Header="Вид объекта" SortMemberPath="MainGeoCod.Kind">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--  Колонка качество  -->
+                                <DataGridTemplateColumn Header="Качество" SortMemberPath="MainGeoCod.Precision">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--  Колонка качество для базы  -->
+                                <DataGridTemplateColumn Header="Qcode" SortMemberPath="MainGeoCod.Qcode">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Qcode}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                    <TabItem Header="Ошибки">
+                        <DataGrid
+                        ItemsSource="{Binding Customers}"
+                        SelectedItem="{Binding CurrentGeoCod}"
+                        Style="{StaticResource DataGridErrors}" ScrollViewer.CanContentScroll="True">
+                            <DataGrid.GroupStyle>
+                                <GroupStyle>
+                                    <GroupStyle.Panel>
+                                        <ItemsPanelTemplate>
+                                            <DataGridRowsPresenter />
+                                        </ItemsPanelTemplate>
+                                    </GroupStyle.Panel>
+                                    <GroupStyle.ContainerStyle>
+                                        <Style TargetType="{x:Type GroupItem}">
+                                            <Setter Property="Margin" Value="0,0,0,5" />
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                        <Expander Tag="{Binding ElementName=metroWindow, Path=DataContext}">
+                                                            <i:Interaction.Behaviors>
+                                                                <local:PersistGroupExpandedStateBehavior GroupName="{Binding Path=Name}" />
+                                                            </i:Interaction.Behaviors>
+                                                            <Expander.ContextMenu>
+                                                                <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
+                                                                    <MenuItem
+                                                                    Command="{Binding CommandGetGeoCodGroup}"
+                                                                    CommandParameter="{TemplateBinding DataContext}"
+                                                                    Header="Выполнить геокодирование группы" />
+                                                                </ContextMenu>
+                                                            </Expander.ContextMenu>
+                                                            <Expander.Header>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <TextBlock
+                                                                    Margin="5,0,0,0"
+                                                                    FontWeight="Bold"
+                                                                    Text="{Binding Path=Name}" />
+                                                                    <TextBlock
+                                                                    Margin="20,0,0,0"
+                                                                    FontWeight="Bold"
+                                                                    Text="Количество:" />
+                                                                    <TextBlock
+                                                                    Margin="5,0,0,0"
+                                                                    FontWeight="Bold"
+                                                                    Text="{Binding Path=ItemCount}" />
+                                                                </StackPanel>
+                                                            </Expander.Header>
+                                                            <Expander.Content>
+                                                                <ItemsPresenter />
+                                                            </Expander.Content>
+                                                        </Expander>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </GroupStyle.ContainerStyle>
+                                </GroupStyle>
+                            </DataGrid.GroupStyle>
+                            <DataGrid.Columns>
+
+                                <!--  Колонка адреса  -->
+                                <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock
+                                            Margin="5,0"
+                                            Text="{Binding Address}"
+                                            TextWrapping="Wrap" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!--  Варианты координат  -->
+                                <DataGridTemplateColumn Header="Варианты">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ComboBox ItemsSource="{Binding ListGeoCod}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="SelectionChanged">
+                                                        <cmd:EventToCommand Command="{Binding DataContext.CommandSelectMainGeo, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" PassEventArgsToCommand="True" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                                <ComboBox.Style>
+                                                    <Style BasedOn="{StaticResource MetroComboBox}" TargetType="{x:Type ComboBox}">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ListGeoCod}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ComboBox.Style>
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition />
+                                                                <ColumnDefinition />
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition />
+                                                                <RowDefinition />
+                                                            </Grid.RowDefinitions>
+
+                                                            <TextBlock
+                                                            Grid.Column="0"
+                                                            Grid.ColumnSpan="3"
+                                                            Text="{Binding AddressWeb}" />
+                                                            <TextBlock
+                                                            Grid.Row="1"
+                                                            Grid.Column="0"
+                                                            FontWeight="Bold"
+                                                            Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+                                                            <TextBlock
+                                                            Grid.Row="1"
+                                                            Grid.Column="1"
+                                                            Margin="5,0"
+                                                            Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
+                </TabControl>
+            </Controls:Flyout>
+
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>
 </Controls:MetroWindow>

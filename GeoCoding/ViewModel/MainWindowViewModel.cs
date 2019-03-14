@@ -268,7 +268,7 @@ namespace GeoCoding
                 DispatcherHelper.CheckBeginInvokeOnUI(() =>
                 {
                     _stat.Init(value);
-                    //Customers = CollectionViewSource.GetDefaultView(_collectionGeoCod);
+                    //Customers = CollectionViewSource.GetDefaultView(_collectionGeoCod); потому что так будет пустая основная коллекция
                     Customers = new CollectionViewSource { Source = _collectionGeoCod }.View;
                     DispatcherHelper.CheckBeginInvokeOnUI(() => Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error")));
                     _customerView.Filter = CustomerFilter;
