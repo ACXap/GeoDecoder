@@ -42,7 +42,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="FtpServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ftp://</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="FtpPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">21</Value>

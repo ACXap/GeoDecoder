@@ -4,7 +4,7 @@ namespace GeoCoding
 {
     public class FTPSettings : ViewModelBase
     {
-        private string _server ="ftp://";
+        private string _server = string.Empty;
         /// <summary>
         /// Сервер
         /// </summary>
@@ -14,7 +14,7 @@ namespace GeoCoding
             set => Set(ref _server, value);
         }
 
-        private int _port;
+        private int _port = 21;
         /// <summary>
         /// Порт сервера
         /// </summary>

@@ -172,7 +172,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ftp://")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string FtpServer {
             get {
                 return ((string)(this["FtpServer"]));
