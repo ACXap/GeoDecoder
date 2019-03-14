@@ -264,7 +264,7 @@
                 </StackPanel>
 
                 <!--  Запуск геокодирования  -->
-                <Button Style="{StaticResource ButtonStopStart}" Grid.Row="1"/>
+                <Button Style="{StaticResource ButtonStopStart}" Grid.Row="1" Width="170"/>
 
                 <!--  Индикация работы геокодирования  -->
                 <uc:WorkIndication Grid.Row="2"
@@ -332,14 +332,26 @@
                             Margin="5,1,1,1"
                             FontWeight="Bold"
                             Text="Что делаем после:" />
-                        <CheckBox
-                            Margin="10,2,2,5"
-                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}"
-                            ToolTip="Сохранить все данные в формате программы, во временную папку">
+                    <Grid Margin="10,2,2,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <CheckBox                       
+                                IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}"
+                                ToolTip="Сохранить все данные в формате программы, во временную папку">
                             <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap" />
                         </CheckBox>
+                        <Button Grid.Column="1" Command="{Binding CommandSaveTempData}" HorizontalAlignment="Center">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <TextBlock Margin="2,0" Style="{StaticResource TextBlockSave}" ToolTip="Сохранить временные результаты"/>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
 
-                        <CheckBox
+                    <CheckBox
                             Margin="10,2,2,5"
                             Content="Сохранить результаты"
                             IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}"
