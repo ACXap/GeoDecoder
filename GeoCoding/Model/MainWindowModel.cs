@@ -812,6 +812,11 @@ namespace GeoCoding
             });
         }
 
+        /// <summary>
+        /// Метод для тестового подключения к фтп-серверу
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="ftps">Настройки фтп-сервера</param>
         public async void ConnectFTPAsync(Action<Exception> callback, FTPSettings ftps)
         {
             Exception error = null;
@@ -826,6 +831,12 @@ namespace GeoCoding
             });
         }
 
+        /// <summary>
+        /// Метод для копирования файла на фтп-сервер
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="ftps">Настройки фтп-сервера</param>
+        /// <param name="path">Путь к файлу</param>
         public void CopyFileOnFtp(Action<Exception> callback, FTPSettings ftps, string path)
         {
             Exception error = null;
@@ -838,6 +849,11 @@ namespace GeoCoding
             callback(error);
         }
 
+        /// <summary>
+        /// Метод для формирования фтп-настроек в формате
+        /// </summary>
+        /// <param name="ftps">Настройки фтп-сервера</param>
+        /// <returns>Возвращает настройки фтп-сервера в формате</returns>
         private FTPService.ConnectionSettings GetConSettings(FTPSettings ftps)
         {
             return new FTPService.ConnectionSettings()
