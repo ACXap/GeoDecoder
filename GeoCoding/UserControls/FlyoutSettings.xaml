@@ -476,28 +476,35 @@
                         </WrapPanel>
                         <CheckBox Content="Запускать в компактном виде" IsChecked="{Binding CanStartCompact}" Grid.Row="1" Margin="5" />
                         <GroupBox Header="Процесс геокодирования" Grid.Row="2">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0" />
-                                <RadioButton 
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" Margin="2"/>
+                                    <TextBox Controls:TextBoxHelper.Watermark="100-1000" Margin="2"/>
+                                </StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0" />
+                                    <RadioButton 
                                     Grid.Row="1" 
                                     Grid.Column="0" 
                                     Content="Несколько запросов в параллель" 
                                     Margin="20,1,0,1" 
                                     x:Name="rbParallel" />
-                                <TextBox Grid.Row="1" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-5" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}" />
-                                <RadioButton Grid.Row="2" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,1,0,1" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
-                                <TextBox Grid.Row="2" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-20" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}" />
-                            </Grid>
+                                    <TextBox Grid.Row="1" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-5" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}" />
+                                    <RadioButton Grid.Row="2" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,1,0,1" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
+                                    <TextBox Grid.Row="2" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-20" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}" />
+                                </Grid>
+                            </StackPanel>
+                            
                         </GroupBox>
                         <Expander Grid.Row="3" Header="Параметры сети" Margin="2">
                             <WrapPanel Orientation="Vertical">
