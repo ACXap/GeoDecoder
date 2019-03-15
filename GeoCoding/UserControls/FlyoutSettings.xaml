@@ -478,36 +478,41 @@
                         <GroupBox Header="Процесс геокодирования" Grid.Row="2">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0"/>
-                                <RadioButton Grid.Row="1" Grid.Column="0" Content="Несколько запросов в параллель" Margin="20,2,0,2" x:Name="rbParallel"/>
-                                <TextBox Grid.Row="1" Grid.Column="2" Width="60" Margin="0,2" Controls:TextBoxHelper.Watermark="1-5" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}"/>
-                                <RadioButton Grid.Row="2" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,2,0,2" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}"/>
-                                <TextBox Grid.Row="2" Grid.Column="2" Width="60" Margin="0,2" Controls:TextBoxHelper.Watermark="1-20" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}"/>
+                                <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0" />
+                                <RadioButton 
+                                    Grid.Row="1" 
+                                    Grid.Column="0" 
+                                    Content="Несколько запросов в параллель" 
+                                    Margin="20,1,0,1" 
+                                    x:Name="rbParallel" />
+                                <TextBox Grid.Row="1" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-5" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}" />
+                                <RadioButton Grid.Row="2" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,1,0,1" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
+                                <TextBox Grid.Row="2" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-20" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}" />
                             </Grid>
                         </GroupBox>
                         <Expander Grid.Row="3" Header="Параметры сети" Margin="2">
-                            <WrapPanel Orientation="Vertical" >
+                            <WrapPanel Orientation="Vertical">
                                 <RadioButton Content="Без прокси" Margin="2" />
                                 <RadioButton Content="Использовать системные настройки прокси" Margin="2" />
-                                <RadioButton Content="Ручная настройка прокси" Margin="2" x:Name="rbManualProxy"/>
+                                <RadioButton Content="Ручная настройка прокси" Margin="2" x:Name="rbManualProxy" />
                                 <StackPanel Orientation="Horizontal" Margin="30,0,0,0" IsEnabled="{Binding ElementName=rbManualProxy, Path=IsChecked}">
                                     <TextBlock Text="HTTP прокси" VerticalAlignment="Center" Margin="5" />
-                                    <TextBox Width="200" Controls:TextBoxHelper.Watermark="10.10.10.10" />
+                                    <TextBox Width="200" Controls:TextBoxHelper.Watermark="10.10.10.10" VerticalContentAlignment="Center" />
                                     <TextBlock Text="Порт" Margin="5" VerticalAlignment="Center" />
-                                    <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" />
-                                    <Button Content="Проверить" Margin="10,0"/>
-                                    <TextBlock Text="" Margin="5,0"/>
+                                    <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" VerticalContentAlignment="Center" />
+                                    <Button Content="Проверить" Margin="10,0" />
+                                    <TextBlock Text="" Margin="5,0" />
                                 </StackPanel>
-                                <RadioButton Content="Список прокси" Margin="2" x:Name="rbListProxy"/>
+                                <RadioButton Content="Список прокси" Margin="2" x:Name="rbListProxy" />
                             </WrapPanel>
                         </Expander>
                     </Grid>

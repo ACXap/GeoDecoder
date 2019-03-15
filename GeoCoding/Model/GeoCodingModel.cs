@@ -256,7 +256,6 @@ namespace GeoCoding
 
                         if (e != null)
                         {
-                            //error = e;
                             if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
                             {
                                 error = e;
@@ -273,8 +272,8 @@ namespace GeoCoding
                         }
                     });
 
-                    result = parallelResult.IsCompleted;
-                    indexStop = parallelResult.LowestBreakIteration;
+                   // result = parallelResult.IsCompleted;
+                   // indexStop = parallelResult.LowestBreakIteration;
                 }
                 catch (OperationCanceledException c)
                 {
