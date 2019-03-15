@@ -132,7 +132,7 @@
                                 <TextBox
                                 Grid.Row="5"
                                 Grid.Column="2"
-                                MinWidth="40"
+                                Width="80" 
                                 Margin="5"
                                 Text="{Binding FilesSettings.MaxSizePart, UpdateSourceTrigger=PropertyChanged}" />
                             </WrapPanel>
@@ -478,7 +478,7 @@
                         <GroupBox Header="Процесс геокодирования" Grid.Row="2">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" Margin="2" />
+                                    <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center"  />
                                     <TextBox Controls:TextBoxHelper.Watermark="100-1000" Margin="2" Width="80" />
                                 </StackPanel>
                                 <Grid>
