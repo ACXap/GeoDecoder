@@ -246,6 +246,11 @@ namespace GeoCoding
         /// </summary>
         private RelayCommand<object> _commandGetGeoCodGroup;
 
+        /// <summary>
+        /// Поле для хранения команды сохранения временных данных
+        /// </summary>
+        private RelayCommand _commandSaveTempData;
+
         #endregion PrivateFields
 
         #region PublicPropertys
@@ -843,6 +848,16 @@ namespace GeoCoding
                     }
                 }));
 
+        /// <summary>
+        /// Команда для сохранения временных данных
+        /// </summary>
+        public RelayCommand CommandSaveTempData =>
+        _commandSaveTempData ?? (_commandSaveTempData = new RelayCommand(
+                    () =>
+                    {
+                        SaveTemp();
+                    }, () => _collectionGeoCod != null && _collectionGeoCod.Any()));
+
         #endregion PublicCommands
 
         #region PrivateMethod
@@ -1175,15 +1190,6 @@ namespace GeoCoding
         }
 
         #endregion PrivateMethod
-
-        private RelayCommand _commandSaveTempData;
-        public RelayCommand CommandSaveTempData =>
-        _commandSaveTempData ?? (_commandSaveTempData = new RelayCommand(
-                    () =>
-                    {
-                        SaveTemp();
-                    }, ()=> _collectionGeoCod!=null && _collectionGeoCod.Any()));
-
 
         /// <summary>
         /// Конструктор по умолчанию
