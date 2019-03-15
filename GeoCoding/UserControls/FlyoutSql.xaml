@@ -54,7 +54,6 @@
                     IsReadOnly="True"
                     Text="SELECT H.orponid, H.adr_adm_ter FROM orpon_rf.public.ent_as_house H LIMIT 100" />
             </StackPanel>
-
         </StackPanel>
         <StackPanel
             Grid.Row="2"

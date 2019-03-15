@@ -18,12 +18,12 @@
         <GroupBox.HeaderTemplate>
             <DataTemplate>
                 <Grid>
-                    <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding}" VerticalAlignment="Center" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button Command="{Binding ElementName=gb, Path=DataContext.CommandSaveStatistics}">
                             <Button.Template>
                                 <ControlTemplate>
-                                    <TextBlock Margin="5,0" Style="{StaticResource TextBlockSave}" ToolTip="Сохранить статистику"/>
+                                    <TextBlock Margin="5,0" Style="{StaticResource TextBlockSave}" ToolTip="Сохранить статистику" />
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
