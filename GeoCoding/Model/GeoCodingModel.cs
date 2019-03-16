@@ -256,7 +256,8 @@ namespace GeoCoding
 
                         if (e != null)
                         {
-                            if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
+                            //if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
+                            if (e.Message == _errorLimit)
                             {
                                 error = e;
                                 pl.Break();

@@ -7,15 +7,16 @@
     xmlns:cmd="http://www.galasoft.ch/mvvmlight"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:local="clr-namespace:GeoCoding" 
+    xmlns:local="clr-namespace:GeoCoding"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
     x:Name="metroWindow"
-    Title="Геокодирование" TitleTemplate="{StaticResource TitleTemplate}"
-    SaveWindowPosition="True"
+    Title="Геокодирование"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
+    SaveWindowPosition="True"
+    TitleTemplate="{StaticResource TitleTemplate}"
     WindowButtonCommandsOverlayBehavior="Always"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -40,9 +41,9 @@
     <!--  Отображение процесса геокодирования на панели задач  -->
     <Controls:MetroWindow.TaskbarItemInfo>
         <TaskbarItemInfo
+            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}"
             ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}"
-            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}"
-            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" />
+            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}" />
     </Controls:MetroWindow.TaskbarItemInfo>
 
     <!--  Панель команд на заголовке окна  -->
@@ -134,13 +135,17 @@
                                 <!--  Кнопка получения данных  -->
                                 <Button
                                     Grid.Column="0"
-                                    HorizontalAlignment="Left" Content="Получить данные"
+                                    HorizontalAlignment="Left"
                                     Command="{Binding CommandGetDataFromFile}"
+                                    Content="Получить данные"
                                     Style="{StaticResource ButtonMainStyle}"
                                     ToolTip="Считать данные из файла в таблицу данных" />
 
                                 <!--  Настройки для получения данных  -->
-                                <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                                <StackPanel
+                                    Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Orientation="Vertical">
 
                                     <!--  Выбор входного файла на ФТП-сервере  -->
                                     <CheckBox
@@ -161,7 +166,8 @@
                                 <Button
                                     Grid.Column="2"
                                     Command="{Binding CommandGetFile}"
-                                    Style="{StaticResource ButtonMainStyle}" Content="Выбрать файл с данными"
+                                    Content="Выбрать файл с данными"
+                                    Style="{StaticResource ButtonMainStyle}"
                                     ToolTip="Открытие диалога выбора файла с данными" />
                             </Grid>
                         </Grid>
@@ -194,11 +200,14 @@
                                 <ToggleButton
                                     x:Name="tbSql"
                                     Grid.Column="2"
+                                    Width="90"
+                                    Height="50"
                                     Margin="2"
-                                    Padding="2" Height="50" Width="90"
+                                    Padding="2"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
-                                    Content="СВОЙ ЗАПРОС" FontSize="10"
+                                    Content="СВОЙ ЗАПРОС"
+                                    FontSize="10"
                                     ToolTip="Открытие окна для написания своего запроса" />
                             </Grid>
                         </Grid>
@@ -214,7 +223,7 @@
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -239,14 +248,15 @@
                                 Grid.Row="1"
                                 Grid.Column="0"
                                 VerticalAlignment="Center"
-                                FontWeight="Bold" 
+                                FontWeight="Bold"
                                 Text="Вариант" />
                             <TextBox
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 BorderThickness="0"
-                                IsReadOnly="True"  ToolTip="{Binding SingleGeoCod.MainGeoCod.AddressWeb}"
-                                Text="{Binding SingleGeoCod.MainGeoCod.AddressWeb}" />
+                                IsReadOnly="True"
+                                Text="{Binding SingleGeoCod.MainGeoCod.AddressWeb}"
+                                ToolTip="{Binding SingleGeoCod.MainGeoCod.AddressWeb}" />
 
                             <StackPanel
                                 Grid.Row="2"
@@ -280,14 +290,20 @@
                                     Text="{Binding SingleGeoCod.CountResult}" />
                             </StackPanel>
 
-                            <!-- Кнопка запуска геокодирования одиночного адреса -->
-                            <Button 
-                                Grid.Row="1" Grid.RowSpan="2"
-                                Grid.Column="1" Padding="2" Width="30" Height="30"
-                                HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                Command="{Binding CommandGetGeoCod}" ToolTip="Геокодировать"
-                                CommandParameter="{Binding SingleGeoCod}">
-                                <TextBlock Style="{StaticResource TextBlockGeoCod}"/>
+                            <!--  Кнопка запуска геокодирования одиночного адреса  -->
+                            <Button
+                                Grid.Row="1"
+                                Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Width="30"
+                                Height="30"
+                                Padding="2"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding CommandGetGeoCod}"
+                                CommandParameter="{Binding SingleGeoCod}"
+                                ToolTip="Геокодировать">
+                                <TextBlock Style="{StaticResource TextBlockGeoCod}" />
                             </Button>
                         </Grid>
                     </Border>
@@ -329,13 +345,14 @@
                             Grid.Column="0"
                             Command="{Binding CommandSetFileOutput}"
                             Content="Выбрать файл для сохранения"
-                            ToolTip="Открытие диалога выбора файла для сохранения"
-                            Style="{StaticResource ButtonMainStyle}" />
+                            Style="{StaticResource ButtonMainStyle}"
+                            ToolTip="Открытие диалога выбора файла для сохранения" />
 
                         <!--  Настройки для сохранения  -->
-                        <StackPanel VerticalAlignment="Center"
+                        <StackPanel
                             Grid.Column="1"
                             Margin="2"
+                            VerticalAlignment="Center"
                             Orientation="Vertical">
 
                             <!--  Копировать ли выходной файл на ФТП-сервер  -->
@@ -462,8 +479,9 @@
                 <TabItem Header="Ошибки">
                     <DataGrid
                         ItemsSource="{Binding Customers}"
+                        ScrollViewer.CanContentScroll="True"
                         SelectedItem="{Binding CurrentGeoCod}"
-                        Style="{StaticResource DataGridErrors}" ScrollViewer.CanContentScroll="True">
+                        Style="{StaticResource DataGridErrors}">
                         <DataGrid.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.Panel>
@@ -614,7 +632,7 @@
                     <!--  Статистика  -->
                     <uc:Statistics Grid.Row="0" />
 
-                    <!-- Панель выбора геокодера -->
+                    <!--  Панель выбора геокодера  -->
                     <StackPanel Grid.Row="1" Orientation="Vertical">
                         <TextBlock
                             Margin="5,1,1,1"
@@ -664,7 +682,7 @@
                                 IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}"
                                 ToolTip="Будут геокодированы все адреса геокодированные с ошибками" />
 
-                            <!--  Геокодировать только объекты со статусом "Негеокодирован" -->
+                            <!--  Геокодировать только объекты со статусом "Негеокодирован"  -->
                             <RadioButton
                                 Margin="10,2,2,5"
                                 Content="Негеокодированные"
@@ -679,18 +697,22 @@
 
                         <Grid Margin="10,2,2,5">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <CheckBox                       
-                                IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}"
-                                ToolTip="Сохранить все данные в формате программы, во временную папку">
+                            <CheckBox IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" ToolTip="Сохранить все данные в формате программы, во временную папку">
                                 <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap" />
                             </CheckBox>
-                            <Button Grid.Column="1" Command="{Binding CommandSaveTempData}" HorizontalAlignment="Center">
+                            <Button
+                                Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                Command="{Binding CommandSaveTempData}">
                                 <Button.Template>
                                     <ControlTemplate>
-                                        <TextBlock Margin="2,0" Style="{StaticResource TextBlockSave}" ToolTip="Сохранить временные результаты"/>
+                                        <TextBlock
+                                            Margin="2,0"
+                                            Style="{StaticResource TextBlockSave}"
+                                            ToolTip="Сохранить временные результаты" />
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
