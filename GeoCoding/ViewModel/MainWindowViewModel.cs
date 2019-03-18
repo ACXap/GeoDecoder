@@ -1198,17 +1198,7 @@ namespace GeoCoding
         _commandGetProxyList ?? (_commandGetProxyList = new RelayCommand(
                     () =>
                     {
-                        _netProxyModel.GetProxyList((d, e) =>
-                        {
-                            if (e == null)
-                            {
-                                _netSettings.CollectionListProxy = new ObservableCollection<ProxyEntity>(d);
-                            }
-                            else
-                            {
-                                _notifications.Notification("ProxyList", e.Message);
-                            }
-                        });
+                        GetProxyList();
                     }));
 
         private NetSettings _netSettings;
@@ -1221,7 +1211,20 @@ namespace GeoCoding
             set => Set(ref _netSettings, value);
         }
 
-
+        private void GetProxyList()
+        {
+            _netProxyModel.GetProxyList((d, e) =>
+            {
+                if (e == null)
+                {
+                    _netSettings.CollectionListProxy = new ObservableCollection<ProxyEntity>(d);
+                }
+                else
+                {
+                    _notifications.Notification("ProxyList", e.Message);
+                }
+            });
+        }
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -1231,7 +1234,6 @@ namespace GeoCoding
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
             _netProxyModel = new NetProxyModel();
-
 
             _model.GetSettings((e, f, g, ftp, bds, ns, nset, c, comp) =>
             {
@@ -1248,6 +1250,10 @@ namespace GeoCoding
                     CanStartCompact = comp;
                     _geoCodingModel = new GeoCodingModel(_netSettings, _geoCodSettings);
                     CurrentGeoService = g.GeoService;
+                    if(_netSettings.IsListProxy)
+                    {
+                        GetProxyList();
+                    }
                 }
                 else
                 {
@@ -1255,7 +1261,6 @@ namespace GeoCoding
                     _notifications.Notification(NotificationType.Error, e);
                 }
             });
-
         }
     }
 }

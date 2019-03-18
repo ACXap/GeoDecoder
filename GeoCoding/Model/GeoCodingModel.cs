@@ -254,12 +254,13 @@ namespace GeoCoding
             Exception error = null;
             bool result = false;
             long? indexStop = 0;
-            int countError = 0;
+            //int countError = 0;
 
             _cts = new CancellationTokenSource();
 
             if (_geoCodSettings.IsMultipleRequests)
             {
+                int countError = 0;
                 ParallelOptions po = new ParallelOptions
                 {
                     CancellationToken = _cts.Token,
@@ -272,6 +273,7 @@ namespace GeoCoding
                         var connect = GetConnect();
                         var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
                         {
+                            data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
                             var e = SetGeoCod(data, connect);
 
                             if (e != null)
@@ -322,6 +324,7 @@ namespace GeoCoding
                         {
                             EntityGeoCod geo = null;
                             var connect = GetConnect(data);
+                            int countError = 0;
 
                             while (data.IsActive)
                             {
@@ -331,6 +334,7 @@ namespace GeoCoding
                                     if (geo != null)
                                     {
                                         geo.Status = StatusType.GeoCodingNow;
+                                        geo.Proxy = $"{data.Address}:{data.Port}";
                                     }
                                 }
 
@@ -341,8 +345,6 @@ namespace GeoCoding
                                     {
                                         if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
                                         {
-                                            //error = e;
-                                            //pl.Break();
                                             data.IsActive = false;
                                         }
                                         else
@@ -350,7 +352,7 @@ namespace GeoCoding
                                             if (countError++ >= _geoCodSettings.MaxCountError)
                                             {
                                                 error = new Exception(_errorLotOfMistakes);
-                                                pl.Break();
+                                                data.IsActive = false;
                                             }
                                         }
                                     }

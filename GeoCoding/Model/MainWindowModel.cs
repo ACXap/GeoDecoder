@@ -38,7 +38,7 @@ namespace GeoCoding
         private readonly string _nameColumnErrorFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}error";
 
         private readonly string _nameColumnTempFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}AddressWeb{_charSplit}Longitude{_charSplit}Latitude" +
-                                                         $"{_charSplit}Qcode{_charSplit}Error{_charSplit}Status{_charSplit}DateTimeGeoCod{_charSplit}Kind{_charSplit}Precision{_charSplit}CountResult";
+                                                         $"{_charSplit}Qcode{_charSplit}Error{_charSplit}Status{_charSplit}DateTimeGeoCod{_charSplit}Kind{_charSplit}Precision{_charSplit}CountResult{_charSplit}Proxy";
 
         private readonly string _nameColumnStatisticsFile = $"DateTime{_charSplit}User{_charSplit}System{_charSplit}FileInput{_charSplit}FileOutput{_charSplit}FileError{_charSplit}AllEntity" +
                                                              $"{_charSplit}OK{_charSplit}Error{_charSplit}NotGeoCoding{_charSplit}GeoCodingNow{_charSplit}House" +
@@ -260,7 +260,7 @@ namespace GeoCoding
                 {
                     return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.MainGeoCod?.AddressWeb}{_charSplit}{x.MainGeoCod?.Longitude}{_charSplit}{x.MainGeoCod?.Latitude}" +
                     $"{_charSplit}{x.MainGeoCod?.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.MainGeoCod?.Kind}" +
-                    $"{_charSplit}{x.MainGeoCod?.Precision}{_charSplit}{x.CountResult}";
+                    $"{_charSplit}{x.MainGeoCod?.Precision}{_charSplit}{x.CountResult}{_charSplit}{x.Proxy}";
                 }));
 
                 _fileService.SaveData(er =>
@@ -474,6 +474,7 @@ namespace GeoCoding
                                 geocod.DateTimeGeoCod = dt;
                                 byte.TryParse(s[11], out byte c);
                                 geocod.CountResult = c;
+                                geocod.Proxy = s[12];
                             }
                             else if (IsFirstStringNameColumnErrorFile(d.First()))
                             {
@@ -695,6 +696,7 @@ namespace GeoCoding
             p.ProxyAddress = netSettings.ProxyAddress;
             p.CountProxy = geoCodSettings.CountProxy;
             p.CountRequests = geoCodSettings.CountRequests;
+            p.MaxCountError = geoCodSettings.MaxCountError;
 
             // ФТП-сервер пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
