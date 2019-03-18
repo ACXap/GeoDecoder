@@ -10,6 +10,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace GeoCoding
 {
@@ -54,7 +55,9 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения ссылки на модельгеокодирования
         /// </summary>
-        private readonly GeoCodingModel _geoCodingModel;
+        private GeoCodingModel _geoCodingModel;
+
+        private NetProxyModel _netProxyModel;
 
         /// <summary>
         /// Поле для хранения ссылки на коллекцию с данными
@@ -678,7 +681,7 @@ namespace GeoCoding
                         _model.SaveSettings(e =>
                         {
                             _notifications.Notification(NotificationType.SettingsSave, e, true);
-                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, ColorTheme.Name, _canStartCompact);
+                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, _netSettings, ColorTheme.Name, _canStartCompact);
                     }));
 
         /// <summary>
@@ -1191,6 +1194,47 @@ namespace GeoCoding
 
         #endregion PrivateMethod
 
+        private RelayCommand _commandGetProxyList;
+        public RelayCommand CommandGetProxyList =>
+        _commandGetProxyList ?? (_commandGetProxyList = new RelayCommand(
+                    () =>
+                    {
+                        GetProxyList();
+                    }));
+
+        private NetSettings _netSettings;
+        /// <summary>
+        /// 
+        /// </summary>
+        public NetSettings NetSettings
+        {
+            get => _netSettings;
+            set => Set(ref _netSettings, value);
+        }
+
+        private void GetProxyList()
+        {
+            _netProxyModel.GetProxyList((d, e) =>
+            {
+                if (e == null)
+                {
+                    _netSettings.CollectionListProxy = new ObservableCollection<ProxyEntity>(d);
+                }
+                else
+                {
+                    _notifications.Notification("ProxyList", e.Message);
+                }
+            });
+        }
+
+        private RelayCommand _commandTestProxy;
+        public RelayCommand CommandTestProxy =>
+        _commandTestProxy ?? (_commandTestProxy = new RelayCommand(
+                    () =>
+                    {
+                        _netProxyModel.TestProxyAsync(_netSettings.Proxy);
+                    }));
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1198,9 +1242,9 @@ namespace GeoCoding
         {
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
-            _geoCodingModel = new GeoCodingModel();
+            _netProxyModel = new NetProxyModel();
 
-            _model.GetSettings((e, f, g, ftp, bds, ns, c, comp) =>
+            _model.GetSettings((e, f, g, ftp, bds, ns, nset, c, comp) =>
             {
                 if (e == null)
                 {
@@ -1209,15 +1253,29 @@ namespace GeoCoding
                     FTPSettings = ftp;
                     BDSettings = bds;
                     ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
-                    CurrentGeoService = g.GeoService;
                     NotificationSettings = ns;
+                    NetSettings = nset;
                     _notifications = new NotificationsModel(ns);
                     CanStartCompact = comp;
+                    _geoCodingModel = new GeoCodingModel(_netSettings, _geoCodSettings);
+                    CurrentGeoService = g.GeoService;
+                    if(_netSettings.IsListProxy)
+                    {
+                        GetProxyList();
+                    }
                 }
                 else
                 {
                     _notifications = new NotificationsModel(new NotificationSettings());
                     _notifications.Notification(NotificationType.Error, e);
+                }
+            });
+
+            Messenger.Default.Register<PropertyChangedMessage<bool>>(this, data =>
+            {
+                if((data.PropertyName == "IsNotProxy" || data.PropertyName == "IsSystemProxy" || data.PropertyName == "IsManualProxy") && data.NewValue)
+                {
+                    _geoCodSettings.IsMultipleRequests = true;
                 }
             });
         }

@@ -88,5 +88,16 @@ namespace GeoCoding
             get => _countResult;
             set => Set(ref _countResult, value);
         }
+
+
+        private string _proxy = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Proxy
+        {
+            get => _proxy;
+            set => Set(ref _proxy, value);
+        }
     }
 }
