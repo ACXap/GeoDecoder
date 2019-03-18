@@ -1227,6 +1227,14 @@ namespace GeoCoding
             });
         }
 
+        private RelayCommand _commandTestProxy;
+        public RelayCommand CommandTestProxy =>
+        _commandTestProxy ?? (_commandTestProxy = new RelayCommand(
+                    () =>
+                    {
+                        _netProxyModel.TestProxyAsync(_netSettings.Proxy);
+                    }));
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>

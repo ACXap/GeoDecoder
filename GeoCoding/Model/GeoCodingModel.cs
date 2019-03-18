@@ -330,7 +330,8 @@ namespace GeoCoding
                             {
                                 if(po.CancellationToken.IsCancellationRequested)
                                 {
-                                    pl.Break();
+                                    //pl.Break();
+                                    break;
                                 }
                                 lock (_lock)
                                 {
@@ -430,8 +431,8 @@ namespace GeoCoding
             }
             else if (_netSettings.IsManualProxy)
             {
-                cs.ProxyAddress = _netSettings.ProxyAddress;
-                cs.ProxyPort = _netSettings.ProxyPort;
+                cs.ProxyAddress = _netSettings.Proxy.Address;
+                cs.ProxyPort = _netSettings.Proxy.Port;
                 cs.ProxyType = ProxyType.Manual;
             }
             else

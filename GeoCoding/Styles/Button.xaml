@@ -91,6 +91,7 @@
         BasedOn="{StaticResource ButtonMainStyle}"
         TargetType="{x:Type Button}">
         <Setter Property="Content" Value="Проверить подключение" />
+        <Setter Property="Width" Value="160"/>
         <Style.Triggers>
             <Trigger Property="Tag" Value="{x:Static local:StatusConnect.ConnectNow}">
                 <Setter Property="Content" Value="Идет подключение..." />

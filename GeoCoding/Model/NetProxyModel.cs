@@ -1,7 +1,10 @@
 ﻿using GeoCoding.FileService;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace GeoCoding
 {
@@ -9,6 +12,44 @@ namespace GeoCoding
     {
         private readonly IFileService _fileService = new FileService.FileService();
         private readonly string _fileNameProxyList = "ProxyList.csv";
+        private readonly string _urlTest = "https://google.ru";
+
+        public async void TestProxyAsync(ProxyEntity proxy)
+        {
+            string data = string.Empty;
+            proxy.Error = string.Empty;
+
+            await Task.Factory.StartNew(() =>
+            {
+                proxy.Status = StatusConnect.ConnectNow;
+                try
+                {
+                    WebRequest request = WebRequest.Create(_urlTest);
+                    request.Proxy = new WebProxy(proxy.Address, proxy.Port);
+
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    {
+                        using (Stream dataStream = response.GetResponseStream())
+                        {
+                            if (dataStream != null)
+                            {
+                                using (StreamReader reader = new StreamReader(dataStream))
+                                {
+                                    data = reader.ReadToEnd();
+                                }
+                            }
+                        }
+                    }
+                    proxy.IsActive = !string.IsNullOrEmpty(data);
+                    proxy.Status = StatusConnect.OK;
+                }
+                catch (Exception ex)
+                {
+                    proxy.Error = ex.Message;
+                    proxy.Status = StatusConnect.Error;
+                }
+            });
+        }
 
         public void GetProxyList(Action<IEnumerable<ProxyEntity>, Exception> callback)
         {

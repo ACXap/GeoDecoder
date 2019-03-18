@@ -25,7 +25,6 @@ namespace GeoCoding
             }
         }
 
-
         private bool _isSystemProxy = true;
         /// <summary>
         /// 
@@ -71,26 +70,45 @@ namespace GeoCoding
             }
         }
 
+        //private string _proxyAddress = string.Empty;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public string ProxyAddress
+        //{
+        //    get => _proxyAddress;
+        //    set => Set(ref _proxyAddress, value);
+        //}
 
-        private string _proxyAddress = string.Empty;
+        //private int _proxyPort = 0;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public int ProxyPort
+        //{
+        //    get => _proxyPort;
+        //    set => Set(ref _proxyPort, value);
+        //}
+
+        //private string _error = string.Empty;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public string Error
+        //{
+        //    get => _error;
+        //    set => Set(ref _error, value);
+        //}
+
+
+        private ProxyEntity _proxy;
         /// <summary>
         /// 
         /// </summary>
-        public string ProxyAddress
+        public ProxyEntity Proxy
         {
-            get => _proxyAddress;
-            set => Set(ref _proxyAddress, value);
-        }
-
-
-        private int _proxyPort = 0;
-        /// <summary>
-        /// 
-        /// </summary>
-        public int ProxyPort
-        {
-            get => _proxyPort;
-            set => Set(ref _proxyPort, value);
+            get => _proxy;
+            set => Set(ref _proxy, value);
         }
 
         private ObservableCollection<ProxyEntity> _collectionListProxy;

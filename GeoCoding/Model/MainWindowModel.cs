@@ -652,10 +652,12 @@ namespace GeoCoding
                 IsSystemProxy = p.IsSystemProxy,
                 IsManualProxy = p.IsManualProxy,
                 IsListProxy = p.IsListProxy,
-                ProxyAddress = p.ProxyAddress,
-                ProxyPort = p.ProxyPort
+                Proxy = new ProxyEntity()
+                {
+                    Address = p.ProxyAddress,
+                    Port = p.ProxyPort
+                }
             };
-
             callback(error, f, g, ftp, bds, ns, nset, color, canStartCompact);
         }
 
@@ -692,8 +694,8 @@ namespace GeoCoding
             p.IsManualProxy = netSettings.IsManualProxy;
             p.IsSystemProxy = netSettings.IsSystemProxy;
             p.IsListProxy = netSettings.IsListProxy;
-            p.ProxyPort = netSettings.ProxyPort;
-            p.ProxyAddress = netSettings.ProxyAddress;
+            p.ProxyPort = netSettings.Proxy.Port;
+            p.ProxyAddress = netSettings.Proxy.Address;
             p.CountProxy = geoCodSettings.CountProxy;
             p.CountRequests = geoCodSettings.CountRequests;
             p.MaxCountError = geoCodSettings.MaxCountError;

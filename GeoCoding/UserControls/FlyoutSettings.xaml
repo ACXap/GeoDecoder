@@ -480,7 +480,7 @@
                             </ComboBox>
                         </WrapPanel>
                         <CheckBox Content="Запускать в компактном виде" IsChecked="{Binding CanStartCompact}" Grid.Row="1" Margin="5" />
-                        <GroupBox Header="Процесс геокодирования" Grid.Row="2">
+                        <GroupBox Header="Процесс геокодирования" Grid.Row="2" Margin="2">
                             <StackPanel Orientation="Vertical">
                                 <!--<StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" />
@@ -510,18 +510,19 @@
                                 </Grid>
                             </StackPanel>
                         </GroupBox>
-                        <Expander Grid.Row="3" Header="Параметры сети" Margin="2">
+                        <GroupBox Grid.Row="3" Header="Параметры сети" Margin="2">
                             <WrapPanel Orientation="Vertical">
                                 <RadioButton Content="Без прокси" Margin="2" IsChecked="{Binding NetSettings.IsNotProxy}" GroupName="proxy"/>
                                 <RadioButton Content="Использовать системные настройки прокси" Margin="2" IsChecked="{Binding NetSettings.IsSystemProxy}" GroupName="proxy"/>
                                 <RadioButton Content="Ручная настройка прокси" Margin="2" x:Name="rbManualProxy" IsChecked="{Binding NetSettings.IsManualProxy}" GroupName="proxy"/>
                                 <StackPanel Orientation="Horizontal" Margin="30,0,0,0" IsEnabled="{Binding ElementName=rbManualProxy, Path=IsChecked}">
                                     <TextBlock Text="HTTP прокси" VerticalAlignment="Center" Margin="5" />
-                                    <TextBox Width="200" Controls:TextBoxHelper.Watermark="10.10.10.10" VerticalContentAlignment="Center" Text="{Binding NetSettings.ProxyAddress}" />
+                                    <TextBox Width="200" Controls:TextBoxHelper.Watermark="10.10.10.10" VerticalContentAlignment="Center" Text="{Binding NetSettings.Proxy.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Text="Порт" Margin="5" VerticalAlignment="Center" />
-                                    <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" VerticalContentAlignment="Center" Text="{Binding NetSettings.ProxyPort}" />
-                                    <Button Content="Проверить" Margin="10,0" IsEnabled="False"/>
-                                    <TextBlock Text="" Margin="5,0" />
+                                    <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" VerticalContentAlignment="Center" Text="{Binding NetSettings.Proxy.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Button Margin="5,0" Command="{Binding CommandTestProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Proxy.Status}" />
+                                    <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding NetSettings.Proxy.Status}" Height="10" Width="10"/>
+                                    <TextBlock Text="{Binding NetSettings.Proxy.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <RadioButton Content="Список прокси" Margin="2" x:Name="rbListProxy" IsChecked="{Binding NetSettings.IsListProxy}" GroupName="proxy"/>
@@ -562,7 +563,7 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </WrapPanel>
-                        </Expander>
+                        </GroupBox>
                     </Grid>
                 </ScrollViewer>
             </TabItem>

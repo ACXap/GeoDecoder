@@ -2,7 +2,7 @@
 
 namespace GeoCoding
 {
-    public class ProxyEntity:ViewModelBase
+    public class ProxyEntity : ViewModelBase
     {
         private string _address = string.Empty;
         /// <summary>
@@ -44,7 +44,6 @@ namespace GeoCoding
             set => Set(ref _isActive, value);
         }
 
-
         private string _error = string.Empty;
         /// <summary>
         /// 
@@ -53,6 +52,16 @@ namespace GeoCoding
         {
             get => _error;
             set => Set(ref _error, value);
+        }
+
+        private StatusConnect _status = StatusConnect.NotConnect;
+        /// <summary>
+        /// 
+        /// </summary>
+        public StatusConnect Status
+        {
+            get => _status;
+            set => Set(ref _status, value);
         }
     }
 }
