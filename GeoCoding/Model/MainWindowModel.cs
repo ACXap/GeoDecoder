@@ -579,7 +579,10 @@ namespace GeoCoding
                 CanSaveStatistics = p.CanSaveStatistics,
                 GeoService = p.GeoService,
                 IsMultipleProxy = p.IsMultipleProxy,
-                IsMultipleRequests = p.IsMultipleRequests
+                IsMultipleRequests = p.IsMultipleRequests,
+                CountProxy = p.CountProxy,
+                CountRequests = p.CountRequests,
+                MaxCountError = p.MaxCountError
             };
 
             FTPSettings ftp = new FTPSettings()
@@ -647,6 +650,7 @@ namespace GeoCoding
                 IsNotProxy = p.IsNotProxy,
                 IsSystemProxy = p.IsSystemProxy,
                 IsManualProxy = p.IsManualProxy,
+                IsListProxy = p.IsListProxy,
                 ProxyAddress = p.ProxyAddress,
                 ProxyPort = p.ProxyPort
             };
@@ -681,14 +685,16 @@ namespace GeoCoding
             p.IsFileInputOnFTP = filesSettings.IsFileInputOnFTP;
             p.MaxSizePart = filesSettings.MaxSizePart;
             p.CanStartCompact = comp;
-            p.IsListProxy = netSettings.IsListProxy;
-            p.IsManualProxy = netSettings.IsManualProxy;
             p.IsMultipleProxy = geoCodSettings.IsMultipleProxy;
             p.IsMultipleRequests = geoCodSettings.IsMultipleRequests;
             p.IsNotProxy = netSettings.IsNotProxy;
+            p.IsManualProxy = netSettings.IsManualProxy;
             p.IsSystemProxy = netSettings.IsSystemProxy;
+            p.IsListProxy = netSettings.IsListProxy;
             p.ProxyPort = netSettings.ProxyPort;
             p.ProxyAddress = netSettings.ProxyAddress;
+            p.CountProxy = geoCodSettings.CountProxy;
+            p.CountRequests = geoCodSettings.CountRequests;
 
             // ФТП-сервер пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>

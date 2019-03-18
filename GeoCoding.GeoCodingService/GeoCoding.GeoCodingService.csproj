@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ConnectSettings.cs" />
+    <Compile Include="Data\Enumeration\ProxyType.cs" />
     <Compile Include="Data\GeoCod.cs" />
     <Compile Include="Data\HereJson.cs" />
     <Compile Include="Data\SputnikJson.cs" />

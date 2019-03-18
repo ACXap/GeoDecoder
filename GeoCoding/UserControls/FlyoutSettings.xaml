@@ -515,16 +515,16 @@
                                     <TextBox Width="200" Controls:TextBoxHelper.Watermark="10.10.10.10" VerticalContentAlignment="Center" Text="{Binding NetSettings.ProxyAddress}" />
                                     <TextBlock Text="Порт" Margin="5" VerticalAlignment="Center" />
                                     <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" VerticalContentAlignment="Center" Text="{Binding NetSettings.ProxyPort}" />
-                                    <Button Content="Проверить" Margin="10,0" />
+                                    <Button Content="Проверить" Margin="10,0" IsEnabled="False"/>
                                     <TextBlock Text="" Margin="5,0" />
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <RadioButton Content="Список прокси" Margin="2" x:Name="rbListProxy" IsChecked="{Binding NetSettings.IsListProxy}" GroupName="proxy"/>
                                     <Button Content="Загрузить список" Margin="5" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" Command="{Binding CommandGetProxyList}" />
                                     <TextBlock Text="Количество адресов: " VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding CollectionListProxy.Count, FallbackValue=0}" Margin="5" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding NetSettings.CollectionListProxy.Count, FallbackValue=0}" Margin="5" VerticalAlignment="Center" />
                                 </StackPanel>
-                                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding CollectionListProxy}" VerticalScrollBarVisibility="Visible"  ScrollViewer.CanContentScroll="True" Height="500">
+                                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding NetSettings.CollectionListProxy}" VerticalScrollBarVisibility="Visible"  ScrollViewer.CanContentScroll="True" Height="500">
                                     <DataGrid.Columns>
                                         <DataGridTemplateColumn Header="Адрес">
                                             <DataGridTemplateColumn.CellTemplate>

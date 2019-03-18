@@ -54,9 +54,9 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения ссылки на модельгеокодирования
         /// </summary>
-        private readonly GeoCodingModel _geoCodingModel;
+        private GeoCodingModel _geoCodingModel;
 
-        private readonly NetProxyModel _netProxyModel;
+        private NetProxyModel _netProxyModel;
 
         /// <summary>
         /// Поле для хранения ссылки на коллекцию с данными
@@ -1202,7 +1202,7 @@ namespace GeoCoding
                         {
                             if (e == null)
                             {
-                                CollectionListProxy = new ObservableCollection<ProxyEntity>(d);
+                                _netSettings.CollectionListProxy = new ObservableCollection<ProxyEntity>(d);
                             }
                             else
                             {
@@ -1210,18 +1210,6 @@ namespace GeoCoding
                             }
                         });
                     }));
-
-
-        private ObservableCollection<ProxyEntity> _collectionListProxy;
-        /// <summary>
-        /// 
-        /// </summary>
-        public ObservableCollection<ProxyEntity> CollectionListProxy
-        {
-            get => _collectionListProxy;
-            set => Set(ref _collectionListProxy, value);
-        }
-
 
         private NetSettings _netSettings;
         /// <summary>
@@ -1233,6 +1221,8 @@ namespace GeoCoding
             set => Set(ref _netSettings, value);
         }
 
+
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1240,8 +1230,8 @@ namespace GeoCoding
         {
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
-            _geoCodingModel = new GeoCodingModel();
-            //_netProxyModel = new NetProxyModel();
+            _netProxyModel = new NetProxyModel();
+
 
             _model.GetSettings((e, f, g, ftp, bds, ns, nset, c, comp) =>
             {
@@ -1252,11 +1242,12 @@ namespace GeoCoding
                     FTPSettings = ftp;
                     BDSettings = bds;
                     ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
-                    CurrentGeoService = g.GeoService;
                     NotificationSettings = ns;
                     NetSettings = nset;
                     _notifications = new NotificationsModel(ns);
                     CanStartCompact = comp;
+                    _geoCodingModel = new GeoCodingModel(_netSettings, _geoCodSettings);
+                    CurrentGeoService = g.GeoService;
                 }
                 else
                 {
@@ -1264,6 +1255,7 @@ namespace GeoCoding
                     _notifications.Notification(NotificationType.Error, e);
                 }
             });
+
         }
     }
 }

@@ -583,5 +583,41 @@ namespace GeoCoding.Properties {
                 this["ProxyPort"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int CountRequests {
+            get {
+                return ((int)(this["CountRequests"]));
+            }
+            set {
+                this["CountRequests"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int CountProxy {
+            get {
+                return ((int)(this["CountProxy"]));
+            }
+            set {
+                this["CountProxy"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int MaxCountError {
+            get {
+                return ((int)(this["MaxCountError"]));
+            }
+            set {
+                this["MaxCountError"] = value;
+            }
+        }
     }
 }

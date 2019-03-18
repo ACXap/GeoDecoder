@@ -18,18 +18,29 @@ namespace GeoCoding
         private const string _errorLimit = "Ваш лимит исчерпан";
         private const string _errorTimeIsUp = "Скорее всего упал сайт";
         private const string _errorLotOfMistakes = "Очень много ошибок при обработке данных. Обработка прекращена";
-        private const int _maxCountError = 100;
+        //private const int _maxCountError = 100;
         private IGeoCodingService _geoCodingService;
         private CancellationTokenSource _cts;
+
+        private readonly NetSettings _netSettings;
+        private readonly GeoCodSettings _geoCodSettings;
+        private object _lock = new object();
+
+        public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings)
+        {
+            _netSettings = netSettings;
+            _geoCodSettings = geoCodSettings;
+        }
         #endregion PrivateField
 
         #region PrivateMethod
+
         /// <summary>
         /// Функция для получения координат для объекта
         /// </summary>
         /// <param name="data">Объект</param>
         /// <returns>Возвращает ошибку</returns>
-        private Exception SetGeoCod(EntityGeoCod data)
+        private Exception SetGeoCod(EntityGeoCod data, ConnectSettings cs)
         {
             Exception error = null;
             string errorMsg = string.Empty;
@@ -79,10 +90,11 @@ namespace GeoCoding
 
                 data.DateTimeGeoCod = DateTime.Now;
 
-            }, data.Address);
+            }, data.Address, cs);
 
             return error;
         }
+
         /// <summary>
         /// Метод заполнения свойств объекта EntityGeoCod при ошибках
         /// </summary>
@@ -93,6 +105,7 @@ namespace GeoCoding
             geocod.Error = mes;
             geocod.Status = StatusType.Error;
         }
+
         /// <summary>
         /// Метод получения основного (точного) геокода для адреса
         /// </summary>
@@ -119,6 +132,7 @@ namespace GeoCoding
 
             return data;
         }
+
         /// <summary>
         /// Метод получения коллекции геокодов для адреса
         /// </summary>
@@ -149,11 +163,11 @@ namespace GeoCoding
                     {
                         data.Kind = KindType.Locality;
                     }
-                    else if(g.Kind == "houseNumber")
+                    else if (g.Kind == "houseNumber")
                     {
                         data.Kind = KindType.House;
                     }
-                    else if(g.Kind == "street")
+                    else if (g.Kind == "street")
                     {
                         data.Kind = KindType.Street;
                     }
@@ -170,7 +184,7 @@ namespace GeoCoding
                     {
                         data.Precision = PrecisionType.Exact;
                     }
-                    else if(g.Precision == "1.0")
+                    else if (g.Precision == "1.0")
                     {
                         data.Precision = PrecisionType.Exact;
                     }
@@ -212,6 +226,7 @@ namespace GeoCoding
         #endregion PrivateMethod
 
         #region PublicMethod
+
         /// <summary>
         /// Метод остановки процесса
         /// </summary>
@@ -219,6 +234,7 @@ namespace GeoCoding
         {
             _cts?.Cancel();
         }
+
         /// <summary>
         /// Метод установки текущего геосериса
         /// </summary>
@@ -227,6 +243,7 @@ namespace GeoCoding
         {
             _geoCodingService = MainGeoService.GetServiceByName(nameService);
         }
+
         /// <summary>
         /// Метод для получения координат для множества объектов
         /// </summary>
@@ -240,57 +257,129 @@ namespace GeoCoding
             int countError = 0;
 
             _cts = new CancellationTokenSource();
-            ParallelOptions po = new ParallelOptions
-            {
-                CancellationToken = _cts.Token,
-                MaxDegreeOfParallelism = 5
-            };
 
-            await Task.Factory.StartNew(() =>
+            if (_geoCodSettings.IsMultipleRequests)
             {
-                try
+                ParallelOptions po = new ParallelOptions
                 {
-                    var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
+                    CancellationToken = _cts.Token,
+                    MaxDegreeOfParallelism = _geoCodSettings.CountRequests
+                };
+                await Task.Factory.StartNew(() =>
+                {
+                    try
                     {
-                        var e = SetGeoCod(data);
-
-                        if (e != null)
+                        var connect = GetConnect();
+                        var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
                         {
-                            if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
+                            var e = SetGeoCod(data, connect);
+
+                            if (e != null)
                             {
-                                error = e;
-                                pl.Break();
-                            }
-                            else
-                            {
-                                if (countError++ >= _maxCountError)
+                                if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
                                 {
-                                    error = new Exception(_errorLotOfMistakes);
+                                    error = e;
                                     pl.Break();
                                 }
+                                else
+                                {
+                                    if (countError++ >= _geoCodSettings.MaxCountError)
+                                    {
+                                        error = new Exception(_errorLotOfMistakes);
+                                        pl.Break();
+                                    }
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                    catch (OperationCanceledException c)
+                    {
+                        error = c;
+                    }
+                    catch (Exception ex)
+                    {
+                        error = ex;
+                    }
+                    finally
+                    {
+                        _cts?.Dispose();
+                    }
+                }, _cts.Token);
+            }
+            else if (_geoCodSettings.IsMultipleProxy)
+            {
+                ParallelOptions po = new ParallelOptions
+                {
+                    CancellationToken = _cts.Token,
+                    MaxDegreeOfParallelism = _geoCodSettings.CountProxy
+                };
 
-                   // result = parallelResult.IsCompleted;
-                   // indexStop = parallelResult.LowestBreakIteration;
-                }
-                catch (OperationCanceledException c)
+                await Task.Factory.StartNew(() =>
                 {
-                    error = c;
-                }
-                catch (Exception ex)
-                {
-                    error = ex;
-                }
-                finally
-                {
-                    _cts?.Dispose();
-                }
-            }, _cts.Token);
+                    try
+                    {
+                        var parallelResult = Parallel.ForEach(_netSettings.CollectionListProxy, po, (data, pl) =>
+                        {
+                            EntityGeoCod geo = null;
+                            var connect = GetConnect(data);
+
+                            while (data.IsActive)
+                            {
+                                lock (_lock)
+                                {
+                                    geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotGeoCoding);
+                                    if (geo != null)
+                                    {
+                                        geo.Status = StatusType.GeoCodingNow;
+                                    }
+                                }
+
+                                if (geo != null)
+                                {
+                                    var e = SetGeoCod(geo, connect);
+                                    if (e != null)
+                                    {
+                                        if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
+                                        {
+                                            //error = e;
+                                            //pl.Break();
+                                            data.IsActive = false;
+                                        }
+                                        else
+                                        {
+                                            if (countError++ >= _geoCodSettings.MaxCountError)
+                                            {
+                                                error = new Exception(_errorLotOfMistakes);
+                                                pl.Break();
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        });
+                    }
+                    catch (OperationCanceledException c)
+                    {
+                        error = c;
+                    }
+                    catch (Exception ex)
+                    {
+                        error = ex;
+                    }
+                    finally
+                    {
+                        _cts?.Dispose();
+                    }
+                }, _cts.Token);
+            }
 
             callback(result, indexStop, error);
         }
+
         /// <summary>
         /// Метод для получения координат объекта
         /// </summary>
@@ -303,11 +392,12 @@ namespace GeoCoding
 
             await Task.Factory.StartNew(() =>
             {
-                error = SetGeoCod(data);
+                error = SetGeoCod(data, GetConnect());
             });
 
             callback(error);
         }
+
         /// <summary>
         /// Метод для получения урл-адреса запроса
         /// </summary>
@@ -317,6 +407,51 @@ namespace GeoCoding
         {
             return _geoCodingService.GetUrlRequest(address);
         }
+
         #endregion PublicMethod
+
+        private ConnectSettings GetConnect()
+        {
+            ConnectSettings cs = new ConnectSettings();
+
+            if (_netSettings.IsNotProxy)
+            {
+                cs.ProxyType = ProxyType.None;
+            }
+            else if (_netSettings.IsSystemProxy)
+            {
+                cs.ProxyType = ProxyType.System;
+            }
+            else if (_netSettings.IsManualProxy)
+            {
+                cs.ProxyAddress = _netSettings.ProxyAddress;
+                cs.ProxyPort = _netSettings.ProxyPort;
+                cs.ProxyType = ProxyType.Manual;
+            }
+            else
+            {
+                var proxy = _netSettings.CollectionListProxy.FirstOrDefault(x => x.IsActive);
+                if (proxy != null)
+                {
+                    cs.ProxyAddress = proxy.Address;
+                    cs.ProxyPort = proxy.Port;
+                    cs.ProxyType = ProxyType.Manual;
+                }
+            }
+
+            return cs;
+        }
+
+        private ConnectSettings GetConnect(ProxyEntity proxy)
+        {
+            ConnectSettings cs = new ConnectSettings
+            {
+                ProxyAddress = proxy.Address,
+                ProxyPort = proxy.Port,
+                ProxyType = ProxyType.Manual
+            };
+
+            return cs;
+        }
     }
 }

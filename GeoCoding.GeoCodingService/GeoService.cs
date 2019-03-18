@@ -63,7 +63,7 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметроми строка, ошибка</param>
         /// <param name="address">Строка адреса для поиска координат</param>
-        protected virtual void GetJsonString(Action<string, Exception> callback, string address)
+        protected virtual void GetJsonString(Action<string, Exception> callback, string address, ConnectSettings cs)
         {
             Exception error = null;
             string json = string.Empty;
@@ -73,8 +73,21 @@ namespace GeoCoding.GeoCodingService
             {
                 WebRequest request = WebRequest.Create(url);
                 request.Headers.Add("Content-Encoding: gzip, deflate, br");
-                request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
 
+                if(cs.ProxyType == ProxyType.System)
+                {
+                    request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+                }
+                else if(cs.ProxyType == ProxyType.None)
+                {
+                    request.Proxy = null;
+                }
+                else
+                {
+                    WebProxy proxy = new WebProxy(cs.ProxyAddress, cs.ProxyPort);
+                    request.Proxy = proxy;
+                }
+                
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
                     using (Stream dataStream = response.GetResponseStream())
@@ -132,7 +145,7 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: объект, ошибка</param>
         /// <param name="address">Строка адреса для поиска</param>
-        public virtual void GetGeoCod(Action<IEnumerable<GeoCod>, Exception> callback, string address)
+        public virtual void GetGeoCod(Action<IEnumerable<GeoCod>, Exception> callback, string address, ConnectSettings cs)
         {
             Exception error = null;
             IEnumerable<GeoCod> data = null;
@@ -160,7 +173,7 @@ namespace GeoCoding.GeoCodingService
                             error = new Exception(_textJsonEmpty);
                         }
                     }
-                }, address);
+                }, address, cs);
             }
             else
             {

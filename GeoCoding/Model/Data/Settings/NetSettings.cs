@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +71,16 @@ namespace GeoCoding
         {
             get => _proxyPort;
             set => Set(ref _proxyPort, value);
+        }
+
+        private ObservableCollection<ProxyEntity> _collectionListProxy;
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<ProxyEntity> CollectionListProxy
+        {
+            get => _collectionListProxy;
+            set => Set(ref _collectionListProxy, value);
         }
     }
 }
