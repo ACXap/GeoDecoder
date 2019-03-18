@@ -339,12 +339,12 @@ namespace GeoCoding
                                     if (geo != null)
                                     {
                                         geo.Status = StatusType.GeoCodingNow;
-                                        geo.Proxy = $"{data.Address}:{data.Port}";
                                     }
                                 }
 
                                 if (geo != null)
                                 {
+                                    geo.Proxy = $"{data.Address}:{data.Port}";
                                     var e = SetGeoCod(geo, connect);
                                     if (e != null)
                                     {
