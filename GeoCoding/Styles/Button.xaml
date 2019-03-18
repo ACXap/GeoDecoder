@@ -104,7 +104,6 @@
         x:Key="ButtonGetGeo"
         BasedOn="{StaticResource ButtonMainStyle}"
         TargetType="{x:Type Button}">
-        <Setter Property="Width" Value="160"/>
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -116,6 +115,9 @@
             <Trigger Property="Tag" Value="{x:Static local:StatusType.GeoCodingNow}">
                 <Setter Property="IsEnabled" Value="False" />
             </Trigger>
+            <DataTrigger Binding="{Binding SingleGeoCod.Address}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
