@@ -281,14 +281,14 @@
                             </StackPanel>
 
                             <!-- Кнопка запуска геокодирования одиночного адреса -->
-                            <Button 
-                                Grid.Row="1" Grid.RowSpan="2"
-                                Grid.Column="1" Padding="2" Width="30" Height="30"
-                                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                            <StackPanel Orientation="Horizontal"  Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                Grid.Column="1">
+                                <Controls:ProgressRing Style="{StaticResource ProgressRingGetGeo}" Tag="{Binding SingleGeoCod.Status}" Margin="0,0,5,0"/>
+                                <Button Style="{StaticResource ButtonGetGeo}"
+                                Padding="2" Width="30" Height="30"     Tag="{Binding SingleGeoCod.Status}"                            
                                 Command="{Binding CommandGetGeoCod}" ToolTip="Геокодировать"
-                                CommandParameter="{Binding SingleGeoCod}">
-                                <TextBlock Style="{StaticResource TextBlockGeoCod}"/>
-                            </Button>
+                                CommandParameter="{Binding SingleGeoCod}"/>
+                            </StackPanel>
                         </Grid>
                     </Border>
                 </TabItem>

@@ -522,7 +522,7 @@
                                     <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" VerticalContentAlignment="Center" Text="{Binding NetSettings.Proxy.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <Button Margin="5,0" Command="{Binding CommandTestProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Proxy.Status}" />
                                     <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding NetSettings.Proxy.Status}" Height="10" Width="10"/>
-                                    <TextBlock Text="{Binding NetSettings.Proxy.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,0" VerticalAlignment="Center"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding NetSettings.Proxy.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,0" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <RadioButton Content="Список прокси" Margin="2" x:Name="rbListProxy" IsChecked="{Binding NetSettings.IsListProxy}" GroupName="proxy"/>

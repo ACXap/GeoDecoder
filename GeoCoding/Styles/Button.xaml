@@ -100,4 +100,23 @@
         </Style.Triggers>
     </Style>
 
+    <Style
+        x:Key="ButtonGetGeo"
+        BasedOn="{StaticResource ButtonMainStyle}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="160"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Style="{StaticResource TextBlockGeoCod}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.GeoCodingNow}">
+                <Setter Property="IsEnabled" Value="False" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

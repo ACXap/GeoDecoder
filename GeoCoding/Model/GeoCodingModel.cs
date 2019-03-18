@@ -86,6 +86,7 @@ namespace GeoCoding
                 {
                     data.Error = e.Message;
                     data.Status = StatusType.Error;
+                    data.CountResult = 0;
                 }
 
                 data.DateTimeGeoCod = DateTime.Now;
@@ -396,6 +397,7 @@ namespace GeoCoding
         {
             Exception error = null;
             data.MainGeoCod = null;
+            data.CountResult = 0;
 
             await Task.Factory.StartNew(() =>
             {
