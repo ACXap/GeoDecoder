@@ -84,8 +84,7 @@ namespace GeoCoding
                 }
                 else
                 {
-                    data.Error = e.Message;
-                    data.Status = StatusType.Error;
+                    SetError(data, e.Message);
                     data.CountResult = 0;
                 }
 
