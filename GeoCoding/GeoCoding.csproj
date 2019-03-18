@@ -98,6 +98,7 @@
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
     <Compile Include="Model\Data\Enumeration\NotificationType.cs" />
     <Compile Include="Model\Data\GeoCod.cs" />
+    <Compile Include="Model\Data\ProxyEntity.cs" />
     <Compile Include="Model\Data\Settings\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
     <Compile Include="Model\Data\Settings\FilesSettings.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Model\Data\Settings\GeoCodSettings.cs" />
     <Compile Include="Model\Data\Enumeration\KindType.cs" />
     <Compile Include="Model\Data\Enumeration\PrecisionType.cs" />
+    <Compile Include="Model\Data\Settings\NetSettings.cs" />
     <Compile Include="Model\Data\Settings\NotificationSettings.cs" />
     <Compile Include="Model\Data\Statistics.cs" />
     <Compile Include="Model\Data\Enumeration\StatusConnect.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Model\GeoCodingModel.cs" />
     <Compile Include="Model\Interfaces\INotifications.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
+    <Compile Include="Model\NetProxyModel.cs" />
     <Compile Include="Model\NotificationsModel.cs" />
     <Compile Include="UserControls\FlyoutSql.xaml.cs">
       <DependentUpon>FlyoutSql.xaml</DependentUpon>
@@ -262,6 +265,9 @@
     <Resource Include="geo.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ProxyList.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ЧитайМеня.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

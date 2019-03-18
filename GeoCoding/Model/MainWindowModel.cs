@@ -545,7 +545,7 @@ namespace GeoCoding
         /// Метод для получения настроек приложения
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: ошибка, настройки файлов, настройки геокодирования, настройки фтп-сервера</param>
-        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, BDSettings, NotificationSettings, string, bool> callback)
+        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, BDSettings, NotificationSettings, NetSettings, string, bool> callback)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
@@ -577,7 +577,9 @@ namespace GeoCoding
                 CanOpenFolderAfter = p.CanOpenFolderAfter,
                 CanGeoCodAfterGetFile = p.CanGeoCodAfterGetFile,
                 CanSaveStatistics = p.CanSaveStatistics,
-                GeoService = p.GeoService
+                GeoService = p.GeoService,
+                IsMultipleProxy = p.IsMultipleProxy,
+                IsMultipleRequests = p.IsMultipleRequests
             };
 
             FTPSettings ftp = new FTPSettings()
@@ -640,7 +642,16 @@ namespace GeoCoding
                 CanNotificationExit = p.CanNotificationExit
             };
 
-            callback(error, f, g, ftp, bds, ns, color, canStartCompact);
+            NetSettings nset = new NetSettings()
+            {
+                IsNotProxy = p.IsNotProxy,
+                IsSystemProxy = p.IsSystemProxy,
+                IsManualProxy = p.IsManualProxy,
+                ProxyAddress = p.ProxyAddress,
+                ProxyPort = p.ProxyPort
+            };
+
+            callback(error, f, g, ftp, bds, ns, nset, color, canStartCompact);
         }
 
         /// <summary>
@@ -650,7 +661,7 @@ namespace GeoCoding
         /// <param name="filesSettings">Настройки файлов</param>
         /// <param name="ftpSettings">Настройки фтп-сервера</param>
         /// <param name="geoCodSettings">Настройки геокодирования</param>
-        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, BDSettings bdSettings, NotificationSettings ns, string color, bool comp)
+        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, BDSettings bdSettings, NotificationSettings ns, NetSettings netSettings, string color, bool comp)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
@@ -670,6 +681,14 @@ namespace GeoCoding
             p.IsFileInputOnFTP = filesSettings.IsFileInputOnFTP;
             p.MaxSizePart = filesSettings.MaxSizePart;
             p.CanStartCompact = comp;
+            p.IsListProxy = netSettings.IsListProxy;
+            p.IsManualProxy = netSettings.IsManualProxy;
+            p.IsMultipleProxy = geoCodSettings.IsMultipleProxy;
+            p.IsMultipleRequests = geoCodSettings.IsMultipleRequests;
+            p.IsNotProxy = netSettings.IsNotProxy;
+            p.IsSystemProxy = netSettings.IsSystemProxy;
+            p.ProxyPort = netSettings.ProxyPort;
+            p.ProxyAddress = netSettings.ProxyAddress;
 
             // ФТП-сервер пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>

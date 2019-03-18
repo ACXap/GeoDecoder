@@ -56,6 +56,8 @@ namespace GeoCoding
         /// </summary>
         private readonly GeoCodingModel _geoCodingModel;
 
+        private readonly NetProxyModel _netProxyModel;
+
         /// <summary>
         /// Поле для хранения ссылки на коллекцию с данными
         /// </summary>
@@ -678,7 +680,7 @@ namespace GeoCoding
                         _model.SaveSettings(e =>
                         {
                             _notifications.Notification(NotificationType.SettingsSave, e, true);
-                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, ColorTheme.Name, _canStartCompact);
+                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, _netSettings, ColorTheme.Name, _canStartCompact);
                     }));
 
         /// <summary>
@@ -1191,6 +1193,46 @@ namespace GeoCoding
 
         #endregion PrivateMethod
 
+        private RelayCommand _commandGetProxyList;
+        public RelayCommand CommandGetProxyList =>
+        _commandGetProxyList ?? (_commandGetProxyList = new RelayCommand(
+                    () =>
+                    {
+                        _netProxyModel.GetProxyList((d, e) =>
+                        {
+                            if (e == null)
+                            {
+                                CollectionListProxy = new ObservableCollection<ProxyEntity>(d);
+                            }
+                            else
+                            {
+                                _notifications.Notification("ProxyList", e.Message);
+                            }
+                        });
+                    }));
+
+
+        private ObservableCollection<ProxyEntity> _collectionListProxy;
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<ProxyEntity> CollectionListProxy
+        {
+            get => _collectionListProxy;
+            set => Set(ref _collectionListProxy, value);
+        }
+
+
+        private NetSettings _netSettings;
+        /// <summary>
+        /// 
+        /// </summary>
+        public NetSettings NetSettings
+        {
+            get => _netSettings;
+            set => Set(ref _netSettings, value);
+        }
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1199,8 +1241,9 @@ namespace GeoCoding
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
             _geoCodingModel = new GeoCodingModel();
+            //_netProxyModel = new NetProxyModel();
 
-            _model.GetSettings((e, f, g, ftp, bds, ns, c, comp) =>
+            _model.GetSettings((e, f, g, ftp, bds, ns, nset, c, comp) =>
             {
                 if (e == null)
                 {
@@ -1211,6 +1254,7 @@ namespace GeoCoding
                     ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
                     CurrentGeoService = g.GeoService;
                     NotificationSettings = ns;
+                    NetSettings = nset;
                     _notifications = new NotificationsModel(ns);
                     CanStartCompact = comp;
                 }

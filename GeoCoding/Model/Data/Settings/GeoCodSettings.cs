@@ -127,5 +127,27 @@ namespace GeoCoding
             get => _geoService;
             set => Set(ref _geoService, value);
         }
+
+
+        private bool _isMultipleRequests = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsMultipleRequests
+        {
+            get => _isMultipleRequests;
+            set => Set(ref _isMultipleRequests, value);
+        }
+
+
+        private bool _isMultipleProxy = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsMultipleProxy
+        {
+            get => _isMultipleProxy;
+            set => Set(ref _isMultipleProxy, value);
+        }
     }
 }
