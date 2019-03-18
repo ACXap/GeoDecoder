@@ -10,6 +10,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace GeoCoding
 {
@@ -1259,6 +1260,14 @@ namespace GeoCoding
                 {
                     _notifications = new NotificationsModel(new NotificationSettings());
                     _notifications.Notification(NotificationType.Error, e);
+                }
+            });
+
+            Messenger.Default.Register<PropertyChangedMessage<bool>>(this, data =>
+            {
+                if((data.PropertyName == "IsNotProxy" || data.PropertyName == "IsSystemProxy" || data.PropertyName == "IsManualProxy") && data.NewValue)
+                {
+                    _geoCodSettings.IsMultipleRequests = true;
                 }
             });
         }

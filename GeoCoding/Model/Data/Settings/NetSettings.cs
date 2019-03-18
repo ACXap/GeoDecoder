@@ -17,7 +17,12 @@ namespace GeoCoding
         public bool IsNotProxy
         {
             get => _isNotProxy;
-            set => Set(ref _isNotProxy, value);
+            set
+            {
+                var oldValue = _isNotProxy;
+                Set(ref _isNotProxy, value);
+                RaisePropertyChanged("IsNotProxy", oldValue, value, true);
+            }
         }
 
 
@@ -28,7 +33,12 @@ namespace GeoCoding
         public bool IsSystemProxy
         {
             get => _isSystemProxy;
-            set => Set(ref _isSystemProxy, value);
+            set
+            {
+                var oldValue = _isSystemProxy;
+                Set(ref _isSystemProxy, value);
+                RaisePropertyChanged("IsSystemProxy", oldValue, value, true);
+            }
         }
 
         private bool _isManualProxy = false;
@@ -38,7 +48,12 @@ namespace GeoCoding
         public bool IsManualProxy
         {
             get => _isManualProxy;
-            set => Set(ref _isManualProxy, value);
+            set
+            {
+                var oldValue = _isManualProxy;
+                Set(ref _isManualProxy, value);
+                RaisePropertyChanged("IsManualProxy", oldValue, value, true);
+            }
         }
 
         private bool _isListProxy = false;
@@ -48,7 +63,12 @@ namespace GeoCoding
         public bool IsListProxy
         {
             get => _isListProxy;
-            set => Set(ref _isListProxy, value);
+            set
+            {
+                var oldValue = _isListProxy;
+                Set(ref _isListProxy, value);
+                RaisePropertyChanged("IsListProxy",oldValue, value, true);
+            }
         }
 
 
