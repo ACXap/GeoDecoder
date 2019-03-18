@@ -846,7 +846,7 @@ namespace GeoCoding
                         var b = a.Items;
                         GetAllGeoCod(b.Select(x => (EntityGeoCod)x), false);
                     }
-                }));
+                },obj=>!_isStartGeoCoding));
 
         /// <summary>
         /// Команда для сохранения временных данных
