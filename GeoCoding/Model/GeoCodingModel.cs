@@ -328,6 +328,10 @@ namespace GeoCoding
 
                             while (data.IsActive)
                             {
+                                if(po.CancellationToken.IsCancellationRequested)
+                                {
+                                    pl.Break();
+                                }
                                 lock (_lock)
                                 {
                                     geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotGeoCoding);
