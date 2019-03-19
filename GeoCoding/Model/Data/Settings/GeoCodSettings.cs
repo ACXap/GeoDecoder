@@ -168,8 +168,7 @@ namespace GeoCoding
             set => Set(ref _countProxy, value);
         }
 
-
-        private int _maxCountError = 100;
+        private int _maxCountError = 50;
         /// <summary>
         /// 
         /// </summary>
@@ -177,6 +176,16 @@ namespace GeoCoding
         {
             get => _maxCountError;
             set => Set(ref _maxCountError, value);
+        }
+
+        private int _maxCountErrorForProxy = 10;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int MaxCountErrorForProxy
+        {
+            get => _maxCountErrorForProxy;
+            set => Set(ref _maxCountErrorForProxy, value);
         }
     }
 }

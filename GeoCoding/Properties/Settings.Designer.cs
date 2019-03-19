@@ -610,13 +610,25 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
         public int MaxCountError {
             get {
                 return ((int)(this["MaxCountError"]));
             }
             set {
                 this["MaxCountError"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public string MaxCountErrorForProxy {
+            get {
+                return ((string)(this["MaxCountErrorForProxy"]));
+            }
+            set {
+                this["MaxCountErrorForProxy"] = value;
             }
         }
     }

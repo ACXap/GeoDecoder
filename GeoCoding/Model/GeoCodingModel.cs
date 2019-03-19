@@ -285,12 +285,16 @@ namespace GeoCoding
                                 }
                                 else
                                 {
-                                    if (countError++ >= _geoCodSettings.MaxCountError)
+                                    if (++countError >= _geoCodSettings.MaxCountError)
                                     {
                                         error = new Exception(_errorLotOfMistakes);
                                         pl.Break();
                                     }
                                 }
+                            }
+                            else
+                            {
+                                countError = 0;
                             }
                         });
                     }
@@ -328,7 +332,7 @@ namespace GeoCoding
 
                             while (data.IsActive)
                             {
-                                if(po.CancellationToken.IsCancellationRequested)
+                                if (po.CancellationToken.IsCancellationRequested)
                                 {
                                     //pl.Break();
                                     break;
@@ -348,18 +352,22 @@ namespace GeoCoding
                                     var e = SetGeoCod(geo, connect);
                                     if (e != null)
                                     {
-                                        if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
+                                        if (e.Message == _errorLimit)
                                         {
                                             data.IsActive = false;
                                         }
                                         else
                                         {
-                                            if (countError++ >= _geoCodSettings.MaxCountError)
+                                            if (++countError >= _geoCodSettings.MaxCountError)
                                             {
                                                 error = new Exception(_errorLotOfMistakes);
                                                 data.IsActive = false;
                                             }
                                         }
+                                    }
+                                    else
+                                    {
+                                        countError = 0;
                                     }
                                 }
                                 else

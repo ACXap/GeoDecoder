@@ -70,37 +70,6 @@ namespace GeoCoding
             }
         }
 
-        //private string _proxyAddress = string.Empty;
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public string ProxyAddress
-        //{
-        //    get => _proxyAddress;
-        //    set => Set(ref _proxyAddress, value);
-        //}
-
-        //private int _proxyPort = 0;
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public int ProxyPort
-        //{
-        //    get => _proxyPort;
-        //    set => Set(ref _proxyPort, value);
-        //}
-
-        //private string _error = string.Empty;
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public string Error
-        //{
-        //    get => _error;
-        //    set => Set(ref _error, value);
-        //}
-
-
         private ProxyEntity _proxy;
         /// <summary>
         /// 
@@ -119,6 +88,17 @@ namespace GeoCoding
         {
             get => _collectionListProxy;
             set => Set(ref _collectionListProxy, value);
+        }
+
+
+        private StatusConnect _status = StatusConnect.NotConnect;
+        /// <summary>
+        /// 
+        /// </summary>
+        public StatusConnect Status
+        {
+            get => _status;
+            set => Set(ref _status, value);
         }
     }
 }

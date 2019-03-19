@@ -153,7 +153,10 @@
       <Value Profile="(Default)">20</Value>
     </Setting>
     <Setting Name="MaxCountError" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">50</Value>
+    </Setting>
+    <Setting Name="MaxCountErrorForProxy" Type="System.String" Scope="User">
+      <Value Profile="(Default)">10</Value>
     </Setting>
   </Settings>
 </SettingsFile>
