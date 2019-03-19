@@ -435,8 +435,8 @@
                             </WrapPanel>
                         </GroupBox>
                         <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="10,0,0,0">
-                            <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" ToolTip="Количество подряд ошибок до прекращения обработки данных программой"/>
-                            <TextBox Controls:TextBoxHelper.Watermark="10-100" Margin="3" Width="80" Text="{Binding GeoCodSettings.MaxCountError}"/>
+                            <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" ToolTip="Количество подряд ошибок до прекращения обработки данных программой" />
+                            <TextBox Controls:TextBoxHelper.Watermark="10-100" Margin="3" Width="80" Text="{Binding GeoCodSettings.MaxCountError}" />
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
@@ -506,40 +506,39 @@
                                 </Grid>
                             </StackPanel>
                         </GroupBox>
-                       
                     </Grid>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Сеть">
                 <GroupBox Header="Параметры сети" Margin="2">
                     <WrapPanel Orientation="Vertical">
-                        <RadioButton Content="Без прокси" IsChecked="{Binding NetSettings.IsNotProxy}" GroupName="proxy" Margin="5"/>
-                        <RadioButton Content="Использовать системные настройки прокси" Margin="4" IsChecked="{Binding NetSettings.IsSystemProxy}" GroupName="proxy"/>
+                        <RadioButton Content="Без прокси" IsChecked="{Binding NetSettings.IsNotProxy}" GroupName="proxy" Margin="5" />
+                        <RadioButton Content="Использовать системные настройки прокси" Margin="4" IsChecked="{Binding NetSettings.IsSystemProxy}" GroupName="proxy" />
                         <StackPanel Orientation="Horizontal" Margin="5">
-                            <RadioButton Content="Ручная настройка прокси" x:Name="rbManualProxy" IsChecked="{Binding NetSettings.IsManualProxy}" GroupName="proxy"/>
-                            <TextBlock TextWrapping="Wrap" Text="{Binding NetSettings.Proxy.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0" VerticalAlignment="Center"/>
+                            <RadioButton Content="Ручная настройка прокси" x:Name="rbManualProxy" IsChecked="{Binding NetSettings.IsManualProxy}" GroupName="proxy" />
+                            <TextBlock TextWrapping="Wrap" Text="{Binding NetSettings.Proxy.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0" VerticalAlignment="Center" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="30,0,0,0" IsEnabled="{Binding ElementName=rbManualProxy, Path=IsChecked}">
                             <TextBlock Text="HTTP прокси" VerticalAlignment="Center" Margin="3" />
-                            <TextBox 
-                                Width="150" 
-                                Controls:TextBoxHelper.Watermark="10.10.10.10" 
-                                VerticalContentAlignment="Center" 
-                                Text="{Binding NetSettings.Proxy.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding NetSettings.Proxy.Delay}"/>
+                            <TextBox
+                                Width="150"
+                                Controls:TextBoxHelper.Watermark="10.10.10.10"
+                                VerticalContentAlignment="Center"
+                                Text="{Binding NetSettings.Proxy.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding NetSettings.Proxy.Delay}" />
                             <TextBlock Text="Порт" Margin="3" VerticalAlignment="Center" />
                             <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" VerticalContentAlignment="Center" Text="{Binding NetSettings.Proxy.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <Button Margin="4,0" Command="{Binding CommandTestProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Proxy.Status}" />
-                            <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding NetSettings.Proxy.Status}" Height="10" Width="10"/>
+                            <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding NetSettings.Proxy.Status}" Height="10" Width="10" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="5">
-                            <RadioButton Content="Список прокси" x:Name="rbListProxy" IsChecked="{Binding NetSettings.IsListProxy}" GroupName="proxy"/>
+                            <RadioButton Content="Список прокси" x:Name="rbListProxy" IsChecked="{Binding NetSettings.IsListProxy}" GroupName="proxy" />
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel.Style>
                                     <Style TargetType="{x:Type StackPanel}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Setter Property="Visibility" Value="Collapsed" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ElementName=rbListProxy, Path=IsChecked}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -550,31 +549,33 @@
                                 <Button Margin="2" Command="{Binding CommandTestListProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Status}" />
                             </StackPanel>
                         </StackPanel>
-                        <DataGrid 
-                            AutoGenerateColumns="False" 
-                            ItemsSource="{Binding NetSettings.CollectionListProxy}" 
-                            VerticalScrollBarVisibility="Visible"  
+                        <DataGrid
+                            AutoGenerateColumns="False"
+                            ItemsSource="{Binding NetSettings.CollectionListProxy}"
+                            VerticalScrollBarVisibility="Visible"
                             CanUserAddRows="False" MaxHeight="300">
                             <DataGrid.Style>
                                 <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource DataGridMain}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=rbListProxy, Path=IsChecked}" Value="False">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding NetSettings.CollectionListProxy.Count}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding NetSettings.CollectionListProxy}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </DataGrid.Style>
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn >
+                                <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center"/>
+                                            <CheckBox
+                                                IsChecked="{Binding IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                HorizontalAlignment="Center" ToolTip="{Binding Error}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -588,18 +589,18 @@
                                 <DataGridTemplateColumn Header="Порт">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Port}" TextAlignment="Center"/>
+                                            <TextBlock Text="{Binding Port}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="Пинг">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Delay}" TextAlignment="Center"/>
+                                            <TextBlock Text="{Binding Delay}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                                          </DataGrid.Columns>
+                            </DataGrid.Columns>
                         </DataGrid>
                     </WrapPanel>
                 </GroupBox>

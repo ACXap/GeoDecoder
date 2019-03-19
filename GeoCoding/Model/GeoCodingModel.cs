@@ -273,7 +273,10 @@ namespace GeoCoding
                         var connect = GetConnect();
                         var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
                         {
-                            data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
+                            if(!string.IsNullOrEmpty(connect.ProxyAddress))
+                            {
+                                data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
+                            }
                             var e = SetGeoCod(data, connect);
 
                             if (e != null)
@@ -340,7 +343,8 @@ namespace GeoCoding
                                 lock (_lock)
                                 {
                                     geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotGeoCoding
-                                                                      || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne || x.Error != _errorGeoCodNotFound)));
+                                                                      || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne 
+                                                                                                        && x.Error != _errorGeoCodNotFound)));
                                     if (geo != null)
                                     {
                                         geo.Status = StatusType.GeoCodingNow;
@@ -356,12 +360,13 @@ namespace GeoCoding
                                         if (e.Message == _errorLimit)
                                         {
                                             data.IsActive = false;
+                                            data.Error = _errorLimit;
                                         }
                                         else
                                         {
                                             if (++countError >= _geoCodSettings.MaxCountError)
                                             {
-                                                // error = new Exception(_errorLotOfMistakes);
+                                                data.Error = _errorLotOfMistakes;
                                                 data.IsActive = false;
                                             }
                                         }
