@@ -61,21 +61,19 @@ namespace GeoCoding
             });
         }
 
-        public void TestListProxy(IEnumerable<ProxyEntity> data)
+        public async void TestListProxyAsync(IEnumerable<ProxyEntity> data)
         {
-            ParallelOptions po = new ParallelOptions()
+            await Task.Factory.StartNew(() =>
             {
-                MaxDegreeOfParallelism = 50
-            };
-
-            Task.Factory.StartNew(() =>
-            {
-                var a = Parallel.ForEach(data, (item) =>
+                ParallelOptions po = new ParallelOptions()
+                {
+                    MaxDegreeOfParallelism = 50
+                };
+                var a = Parallel.ForEach(data, po, (item) =>
                 {
                     TestProxyAsync(item);
                 });
             });
-            
         }
 
         public void GetProxyList(Action<IEnumerable<ProxyEntity>, Exception> callback)

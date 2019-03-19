@@ -1240,7 +1240,7 @@ namespace GeoCoding
         _commandTestListProxy ?? (_commandTestListProxy = new RelayCommand(
                     () =>
                     {
-
+                        _netProxyModel.TestListProxyAsync(_netSettings.CollectionListProxy);
                     }));
 
         /// <summary>
