@@ -339,7 +339,8 @@ namespace GeoCoding
                                 }
                                 lock (_lock)
                                 {
-                                    geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotGeoCoding);
+                                    geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotGeoCoding
+                                                                      || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne || x.Error != _errorGeoCodNotFound)));
                                     if (geo != null)
                                     {
                                         geo.Status = StatusType.GeoCodingNow;
@@ -360,7 +361,7 @@ namespace GeoCoding
                                         {
                                             if (++countError >= _geoCodSettings.MaxCountError)
                                             {
-                                                error = new Exception(_errorLotOfMistakes);
+                                                // error = new Exception(_errorLotOfMistakes);
                                                 data.IsActive = false;
                                             }
                                         }

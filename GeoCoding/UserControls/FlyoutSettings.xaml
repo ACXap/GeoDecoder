@@ -513,30 +513,42 @@
             <TabItem Header="Сеть">
                 <GroupBox Header="Параметры сети" Margin="2">
                     <WrapPanel Orientation="Vertical">
-                        <RadioButton Content="Без прокси" Margin="2" IsChecked="{Binding NetSettings.IsNotProxy}" GroupName="proxy"/>
-                        <RadioButton Content="Использовать системные настройки прокси" Margin="2" IsChecked="{Binding NetSettings.IsSystemProxy}" GroupName="proxy"/>
-                        <StackPanel Orientation="Horizontal">
-                            <RadioButton Content="Ручная настройка прокси" Margin="2" x:Name="rbManualProxy" IsChecked="{Binding NetSettings.IsManualProxy}" GroupName="proxy"/>
+                        <RadioButton Content="Без прокси" IsChecked="{Binding NetSettings.IsNotProxy}" GroupName="proxy" Margin="5"/>
+                        <RadioButton Content="Использовать системные настройки прокси" Margin="4" IsChecked="{Binding NetSettings.IsSystemProxy}" GroupName="proxy"/>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <RadioButton Content="Ручная настройка прокси" x:Name="rbManualProxy" IsChecked="{Binding NetSettings.IsManualProxy}" GroupName="proxy"/>
                             <TextBlock TextWrapping="Wrap" Text="{Binding NetSettings.Proxy.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="30,0,0,0" IsEnabled="{Binding ElementName=rbManualProxy, Path=IsChecked}">
-                            <TextBlock Text="HTTP прокси" VerticalAlignment="Center" Margin="5" />
+                            <TextBlock Text="HTTP прокси" VerticalAlignment="Center" Margin="3" />
                             <TextBox 
                                 Width="150" 
                                 Controls:TextBoxHelper.Watermark="10.10.10.10" 
                                 VerticalContentAlignment="Center" 
                                 Text="{Binding NetSettings.Proxy.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding NetSettings.Proxy.Delay}"/>
-                            <TextBlock Text="Порт" Margin="5" VerticalAlignment="Center" />
+                            <TextBlock Text="Порт" Margin="3" VerticalAlignment="Center" />
                             <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" VerticalContentAlignment="Center" Text="{Binding NetSettings.Proxy.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button Margin="5,0" Command="{Binding CommandTestProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Proxy.Status}" />
+                            <Button Margin="4,0" Command="{Binding CommandTestProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Proxy.Status}" />
                             <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding NetSettings.Proxy.Status}" Height="10" Width="10"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <RadioButton Content="Список прокси" Margin="2" x:Name="rbListProxy" IsChecked="{Binding NetSettings.IsListProxy}" GroupName="proxy"/>
-                            <Button Content="Загрузить список" Margin="5" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" Command="{Binding CommandGetProxyList}" />
-                            <TextBlock Text="Количество адресов: " VerticalAlignment="Center" />
-                            <TextBlock Text="{Binding NetSettings.CollectionListProxy.Count, FallbackValue=0}" Margin="5" VerticalAlignment="Center" />
-                            <Button Margin="5" Command="{Binding CommandTestListProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Status}" />
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <RadioButton Content="Список прокси" x:Name="rbListProxy" IsChecked="{Binding NetSettings.IsListProxy}" GroupName="proxy"/>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel.Style>
+                                    <Style TargetType="{x:Type StackPanel}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbListProxy, Path=IsChecked}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <Button Content="Загрузить список" Margin="2" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" Command="{Binding CommandGetProxyList}" />
+                                <TextBlock Text="Количество адресов: " VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding NetSettings.CollectionListProxy.Count, FallbackValue=0}" Margin="2" VerticalAlignment="Center" />
+                                <Button Margin="2" Command="{Binding CommandTestListProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Status}" />
+                            </StackPanel>
                         </StackPanel>
                         <DataGrid 
                             AutoGenerateColumns="False" 
@@ -546,6 +558,9 @@
                             <DataGrid.Style>
                                 <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource DataGridMain}">
                                     <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=rbListProxy, Path=IsChecked}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding NetSettings.CollectionListProxy.Count}" Value="0">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
