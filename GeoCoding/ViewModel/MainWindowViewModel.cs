@@ -1248,9 +1248,9 @@ namespace GeoCoding
         /// </summary>
         public RelayCommand CommandTestProxy =>
         _commandTestProxy ?? (_commandTestProxy = new RelayCommand(
-                    () =>
+                    async () =>
                     {
-                        _netProxyModel.TestProxyAsync(_netSettings.Proxy);
+                        await _netProxyModel.TestProxyAsync(_netSettings.Proxy);
                     }));
 
         /// <summary>
@@ -1262,9 +1262,11 @@ namespace GeoCoding
         /// </summary>
         public RelayCommand CommandTestListProxy =>
         _commandTestListProxy ?? (_commandTestListProxy = new RelayCommand(
-                    () =>
+                    async () =>
                     {
-                        _netProxyModel.TestListProxyAsync(_netSettings.CollectionListProxy);
+                        _netSettings.Status = StatusConnect.ConnectNow;
+                        await _netProxyModel.TestListProxyAsync(_netSettings.CollectionListProxy);
+                        _netSettings.Status = StatusConnect.OK;
                     }));
 
         /// <summary>

@@ -1,11 +1,11 @@
 ﻿using GeoCoding.FileService;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace GeoCoding
 {
@@ -15,55 +15,61 @@ namespace GeoCoding
         private readonly string _fileNameProxyList = "ProxyList.csv";
         private readonly string _urlTest = "https://google.ru";
 
-        public async void TestProxyAsync(ProxyEntity proxy)
+        private void TestProxy(ProxyEntity proxy)
         {
             string data = string.Empty;
             proxy.Error = string.Empty;
             Stopwatch sw = new Stopwatch();
-
-            await Task.Factory.StartNew(() =>
+            proxy.Status = StatusConnect.ConnectNow;
+            try
             {
-                proxy.Status = StatusConnect.ConnectNow;
-                try
-                {
-                    WebRequest request = WebRequest.Create(_urlTest);
-                    request.Proxy = new WebProxy(proxy.Address, proxy.Port);
+                WebRequest request = WebRequest.Create(_urlTest);
+                request.Proxy = new WebProxy(proxy.Address, proxy.Port);
 
-                    sw.Start();
-                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                sw.Start();
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (Stream dataStream = response.GetResponseStream())
                     {
-                        using (Stream dataStream = response.GetResponseStream())
+                        if (dataStream != null)
                         {
-                            if (dataStream != null)
+                            using (StreamReader reader = new StreamReader(dataStream))
                             {
-                                using (StreamReader reader = new StreamReader(dataStream))
-                                {
-                                    data = reader.ReadToEnd();
-                                    sw.Stop();
-                                    proxy.Delay = (int)sw.ElapsedMilliseconds;
-                                }
+                                data = reader.ReadToEnd();
+                                sw.Stop();
+                                proxy.Delay = (int)sw.ElapsedMilliseconds;
                             }
                         }
                     }
-                    proxy.IsActive = !string.IsNullOrEmpty(data);
-                    proxy.Status = StatusConnect.OK;
                 }
-                catch (Exception ex)
-                {
-                    proxy.Error = ex.Message;
-                    proxy.Status = StatusConnect.Error;
-                    sw?.Stop();
-                }
-                finally
-                {
-                    sw?.Stop();
-                }
+                proxy.IsActive = !string.IsNullOrEmpty(data);
+                proxy.Status = StatusConnect.OK;
+            }
+            catch (Exception ex)
+            {
+                proxy.Error = ex.Message;
+                proxy.Status = StatusConnect.Error;
+                proxy.IsActive = false;
+                sw?.Stop();
+            }
+            finally
+            {
+                sw?.Stop();
+            }
+        }
+
+
+        public Task TestProxyAsync(ProxyEntity proxy)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                TestProxy(proxy);
             });
         }
 
-        public async void TestListProxyAsync(IEnumerable<ProxyEntity> data)
+        public Task TestListProxyAsync(IEnumerable<ProxyEntity> data)
         {
-            await Task.Factory.StartNew(() =>
+            return Task.Factory.StartNew(() =>
             {
                 ParallelOptions po = new ParallelOptions()
                 {
@@ -71,9 +77,10 @@ namespace GeoCoding
                 };
                 var a = Parallel.ForEach(data, po, (item) =>
                 {
-                    TestProxyAsync(item);
+                    TestProxy(item);
                 });
             });
+            
         }
 
         public void GetProxyList(Action<IEnumerable<ProxyEntity>, Exception> callback)
@@ -100,7 +107,7 @@ namespace GeoCoding
                             int.TryParse(str[1], out int port);
                             proxy.Port = port;
 
-                            if(str.Length>2)
+                            if (str.Length > 2)
                             {
                                 if (!string.IsNullOrEmpty(str[2]))
                                 {

@@ -547,6 +547,7 @@
                                 <TextBlock Text="Количество адресов: " VerticalAlignment="Center" />
                                 <TextBlock Text="{Binding NetSettings.CollectionListProxy.Count, FallbackValue=0}" Margin="2" VerticalAlignment="Center" />
                                 <Button Margin="2" Command="{Binding CommandTestListProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Status}" />
+                                <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding NetSettings.Status}" Height="10" Width="10" />
                             </StackPanel>
                         </StackPanel>
                         <DataGrid

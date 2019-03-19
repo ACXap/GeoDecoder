@@ -337,7 +337,6 @@ namespace GeoCoding
                             {
                                 if (po.CancellationToken.IsCancellationRequested)
                                 {
-                                    //pl.Break();
                                     break;
                                 }
                                 lock (_lock)
