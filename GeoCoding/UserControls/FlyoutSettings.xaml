@@ -571,7 +571,7 @@
                                 </Style>
                             </DataGrid.Style>
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn>
+                                <DataGridTemplateColumn SortMemberPath="IsActive">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <CheckBox
@@ -594,7 +594,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Пинг">
+                                <DataGridTemplateColumn Header="Пинг" SortMemberPath="Delay">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Delay}" TextAlignment="Center" />
