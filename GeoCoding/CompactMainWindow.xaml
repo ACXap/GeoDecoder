@@ -10,11 +10,15 @@
     xmlns:local="clr-namespace:GeoCoding"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
-    x:Name="metroWindow" Height="430" Width="590" SizeToContent="WidthAndHeight"
-    Title="Геокодирование" ResizeMode="CanMinimize"
+    x:Name="metroWindow"
+    Title="Геокодирование"
+    Width="590"
+    Height="430"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource AccentColorBrush}"
     BorderThickness="1"
+    ResizeMode="CanMinimize"
+    SizeToContent="WidthAndHeight"
     WindowButtonCommandsOverlayBehavior="Always"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -38,10 +42,10 @@
 
     <!--  Отображение процесса геокодирования на панели задач  -->
     <Controls:MetroWindow.TaskbarItemInfo>
-        <TaskbarItemInfo 
-            ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}" 
-            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}"
-            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" />
+        <TaskbarItemInfo
+            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}"
+            ProgressState="{Binding IsStartGeoCoding, Converter={StaticResource ConverterStartGeoToProgress}}"
+            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}" />
     </Controls:MetroWindow.TaskbarItemInfo>
 
     <!--  Панель команд на заголовке окна  -->
@@ -90,12 +94,15 @@
         <!--  Работа с получением данных и сохранением  -->
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <!--  Панель работы с входным файлом  -->
-            <Border Grid.Row="0" Style="{StaticResource BorderMain}" Margin="1">
+            <Border
+                Grid.Row="0"
+                Margin="1"
+                Style="{StaticResource BorderMain}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -103,12 +110,13 @@
                     </Grid.RowDefinitions>
 
                     <!--  Имя входного файла с данными  -->
-                    <TextBox MaxWidth="560"
-                                Grid.Row="0"
-                                Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
-                                IsReadOnly="True"
-                                Style="{StaticResource TextBoxFolderOpen}"
-                                Text="{Binding FilesSettings.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <TextBox
+                        Grid.Row="0"
+                        MaxWidth="560"
+                        Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
+                        IsReadOnly="True"
+                        Style="{StaticResource TextBoxFolderOpen}"
+                        Text="{Binding FilesSettings.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                     <!--  Управление входным файлом  -->
                     <Grid Grid.Row="1">
@@ -120,44 +128,49 @@
 
                         <!--  Кнопка получения данных  -->
                         <Button
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Left"
-                                    Command="{Binding CommandGetDataFromFile}"
-                                    Content="Получить данные"
-                                    Style="{StaticResource ButtonMainStyle}"
-                                    ToolTip="Считать данные из файла в таблицу данных" />
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            Command="{Binding CommandGetDataFromFile}"
+                            Content="Получить данные"
+                            Style="{StaticResource ButtonMainStyle}"
+                            ToolTip="Считать данные из файла в таблицу данных" />
 
                         <!--  Настройки для получения данных  -->
-                        <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center">
+                        <StackPanel
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
 
                             <!--  Выбор входного файла на ФТП-сервере  -->
                             <CheckBox
-                                        Margin="2"
-                                        Content="Файл на FTP сервере"
-                                        IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
-                                        ToolTip="Если настроена работа с ФТП, то откроется папка на ФТП-сервере" />
+                                Margin="2"
+                                Content="Файл на FTP сервере"
+                                IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
+                                ToolTip="Если настроена работа с ФТП, то откроется папка на ФТП-сервере" />
 
                             <!--  После выбора файла с данными, данные получаем сразу  -->
                             <CheckBox
-                                        Margin="2"
-                                        Content="Данные получить сразу"
-                                        IsChecked="{Binding FilesSettings.CanGetDataOnce}"
-                                        ToolTip="После выбора файла с данными, таблица с данными заполнится сразу" />
+                                Margin="2"
+                                Content="Данные получить сразу"
+                                IsChecked="{Binding FilesSettings.CanGetDataOnce}"
+                                ToolTip="После выбора файла с данными, таблица с данными заполнится сразу" />
                         </StackPanel>
 
                         <!--  Выбор файла с данными, открываем проводник  -->
                         <Button
-                                    Grid.Column="2"
-                                    Command="{Binding CommandGetFile}"
-                                    Content="Выбрать файл с данными"
-                                    Style="{StaticResource ButtonMainStyle}"
-                                    ToolTip="Открытие диалога выбора файла с данными" />
+                            Grid.Column="2"
+                            Command="{Binding CommandGetFile}"
+                            Content="Выбрать файл с данными"
+                            Style="{StaticResource ButtonMainStyle}"
+                            ToolTip="Открытие диалога выбора файла с данными" />
                     </Grid>
                 </Grid>
             </Border>
 
             <!--  Панель работы с выходным файлом  -->
-            <Border Grid.Row="1" Margin="1"
+            <Border
+                Grid.Row="1"
+                Margin="1"
                 Style="{StaticResource BorderMain}">
 
                 <!--  Панель работы с выходным файлом  -->
@@ -169,7 +182,8 @@
 
                     <!--  Файл для сохранения  -->
                     <TextBox
-                        Grid.Row="0" MaxWidth="560"
+                        Grid.Row="0"
+                        MaxWidth="560"
                         VerticalAlignment="Center"
                         Controls:TextBoxHelper.Watermark="Выбрать файл для сохранения"
                         IsReadOnly="True"
@@ -189,13 +203,14 @@
                             Grid.Column="0"
                             Command="{Binding CommandSetFileOutput}"
                             Content="Выбрать файл для сохранения"
-                            ToolTip="Открытие диалога выбора файла для сохранения"
-                            Style="{StaticResource ButtonMainStyle}" />
+                            Style="{StaticResource ButtonMainStyle}"
+                            ToolTip="Открытие диалога выбора файла для сохранения" />
 
                         <!--  Настройки для сохранения  -->
                         <StackPanel
                             Grid.Column="1"
-                            Margin="2" VerticalAlignment="Center"
+                            Margin="2"
+                            VerticalAlignment="Center"
                             Orientation="Vertical">
 
                             <!--  Копировать ли выходной файл на ФТП-сервер  -->
@@ -206,7 +221,7 @@
                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP сервер (если он настроен на вкладке FTP)" />
 
                             <!--  Настройка разбиения выходного файла  -->
-                            <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения" >
+                            <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения">
 
                                 <!--  Разбивать ли выходной файл на части (по количеству строк)  -->
                                 <CheckBox Content="Разбить файл на части (по строкам):" IsChecked="{Binding FilesSettings.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -244,127 +259,141 @@
 
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Vertical" Grid.Row="0">
+                <StackPanel Grid.Row="0" Orientation="Vertical">
                     <TextBlock
-                            Margin="5,1,1,1"
-                            FontWeight="Bold"
-                            Text="Геокодер:" />
+                        Margin="5,1,1,1"
+                        FontWeight="Bold"
+                        Text="Геокодер:" />
 
                     <ComboBox
-                            Margin="5,2"
-                            ItemsSource="{Binding CollectionGeoService}"
-                            SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{StaticResource ComboBoxGeoService}"
-                            ToolTip="Выбор геокодера" />
+                        Margin="5,2"
+                        ItemsSource="{Binding CollectionGeoService}"
+                        SelectedItem="{Binding CurrentGeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource ComboBoxGeoService}"
+                        ToolTip="Выбор геокодера" />
                 </StackPanel>
 
                 <!--  Запуск геокодирования  -->
-                <Button Style="{StaticResource ButtonStopStart}" Grid.Row="1" Width="170"/>
+                <Button
+                    Grid.Row="1"
+                    Width="170"
+                    Style="{StaticResource ButtonStopStart}" />
 
                 <!--  Индикация работы геокодирования  -->
-                <uc:WorkIndication Grid.Row="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Panel.ZIndex="1"
-                IsActive="{Binding IsStartGeoCoding}"
-                IsShowTextAlternative="{Binding IsRequestedStop}"
-                Text="Обработка..." Size="22"
-                TextAlternative="Завершение..." />
+                <uc:WorkIndication
+                    Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Panel.ZIndex="1"
+                    IsActive="{Binding IsStartGeoCoding}"
+                    IsShowTextAlternative="{Binding IsRequestedStop}"
+                    Size="22"
+                    Text="Обработка..."
+                    TextAlternative="Завершение..." />
 
-                <ToggleButton x:Name="tbData" Grid.Row="3" Content="Данные" Margin="2" HorizontalAlignment="Left" />
+                <ToggleButton
+                    x:Name="tbData"
+                    Grid.Row="3"
+                    Margin="2"
+                    HorizontalAlignment="Left"
+                    Content="Данные" />
             </Grid>
 
             <!--  Настройки геокодирования  -->
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
 
-                    <!--  Настройки геокодирования  -->
-                    <StackPanel Grid.Row="3" Orientation="Vertical">
+                <!--  Настройки геокодирования  -->
+                <StackPanel Grid.Row="3" Orientation="Vertical">
 
-                        <StackPanel Orientation="Vertical">
-                            <StackPanel.Style>
-                                <Style TargetType="{x:Type StackPanel}">
-                                    <Setter Property="IsEnabled" Value="True" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsStartGeoCoding}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style>
-                            <TextBlock
-                                Margin="5,1,1,1"
-                                FontWeight="Bold"
-                                Text="Что геокодируем:" />
-                            <!--  Геокодировать все объекты в таблице данных  -->
-                            <RadioButton
-                                Margin="10,2,2,5"
-                                Content="Все"
-                                IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}"
-                                ToolTip="Будут геокодированы все адреса в таблице" />
-
-                            <!--  Геокодировать только объекты со статусом "Ошибка"  -->
-                            <RadioButton
-                                Margin="10,2,2,5"
-                                Content="С ошибками"
-                                IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}"
-                                ToolTip="Будут геокодированы все адреса геокодированные с ошибками" />
-
-                            <!--  Геокодировать только объекты со статусом "Негеокодирован" и "Ошибка"  -->
-                            <RadioButton
-                                Margin="10,2,2,5"
-                                Content="Негеокодированные"
-                                IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}"
-                                ToolTip="Будут геокодированы все негеокодированные адреса" />
-                        </StackPanel>
-
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel.Style>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Setter Property="IsEnabled" Value="True" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsStartGeoCoding}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
                         <TextBlock
                             Margin="5,1,1,1"
                             FontWeight="Bold"
-                            Text="Что делаем после:" />
+                            Text="Что геокодируем:" />
+                        <!--  Геокодировать все объекты в таблице данных  -->
+                        <RadioButton
+                            Margin="10,2,2,5"
+                            Content="Все"
+                            IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}"
+                            ToolTip="Будут геокодированы все адреса в таблице" />
+
+                        <!--  Геокодировать только объекты со статусом "Ошибка"  -->
+                        <RadioButton
+                            Margin="10,2,2,5"
+                            Content="С ошибками"
+                            IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}"
+                            ToolTip="Будут геокодированы все адреса геокодированные с ошибками" />
+
+                        <!--  Геокодировать только объекты со статусом "Негеокодирован" и "Ошибка"  -->
+                        <RadioButton
+                            Margin="10,2,2,5"
+                            Content="Негеокодированные"
+                            IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}"
+                            ToolTip="Будут геокодированы все негеокодированные адреса" />
+                    </StackPanel>
+
+                    <TextBlock
+                        Margin="5,1,1,1"
+                        FontWeight="Bold"
+                        Text="Что делаем после:" />
                     <Grid Margin="10,2,2,5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="150" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <CheckBox                       
-                                IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}"
-                                ToolTip="Сохранить все данные в формате программы, во временную папку">
+                        <CheckBox IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" ToolTip="Сохранить все данные в формате программы, во временную папку">
                             <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap" />
                         </CheckBox>
-                        <Button Grid.Column="1" Command="{Binding CommandSaveTempData}" HorizontalAlignment="Center">
+                        <Button
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Command="{Binding CommandSaveTempData}">
                             <Button.Template>
                                 <ControlTemplate>
-                                    <TextBlock Margin="2,0" Style="{StaticResource TextBlockSave}" ToolTip="Сохранить временные результаты"/>
+                                    <TextBlock
+                                        Margin="2,0"
+                                        Style="{StaticResource TextBlockSave}"
+                                        ToolTip="Сохранить временные результаты" />
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
                     </Grid>
 
                     <CheckBox
-                            Margin="10,2,2,5"
-                            Content="Сохранить результаты"
-                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}"
-                            ToolTip="Сохранить все данные в формате для базы данных" />
+                        Margin="10,2,2,5"
+                        Content="Сохранить результаты"
+                        IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}"
+                        ToolTip="Сохранить все данные в формате для базы данных" />
 
-                        <CheckBox
-                            Margin="10,2,2,5"
-                            IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}"
-                            ToolTip="После сохранения файла с результатами, откроется папка с этим файлом">
-                            <TextBlock Text="Открыть папку результатов" />
-                        </CheckBox>
-                    </StackPanel>
-                </Grid>
+                    <CheckBox
+                        Margin="10,2,2,5"
+                        IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}"
+                        ToolTip="После сохранения файла с результатами, откроется папка с этим файлом">
+                        <TextBlock Text="Открыть папку результатов" />
+                    </CheckBox>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 
@@ -473,9 +502,10 @@
                     </TabItem>
                     <TabItem Header="Ошибки">
                         <DataGrid
-                        ItemsSource="{Binding Customers}"
-                        SelectedItem="{Binding CurrentGeoCod}"
-                        Style="{StaticResource DataGridErrors}" ScrollViewer.CanContentScroll="True">
+                            ItemsSource="{Binding Customers}"
+                            ScrollViewer.CanContentScroll="True"
+                            SelectedItem="{Binding CurrentGeoCod}"
+                            Style="{StaticResource DataGridErrors}">
                             <DataGrid.GroupStyle>
                                 <GroupStyle>
                                     <GroupStyle.Panel>
@@ -496,25 +526,25 @@
                                                             <Expander.ContextMenu>
                                                                 <ContextMenu DataContext="{Binding Path=PlacementTarget.Tag, RelativeSource={RelativeSource Self}}">
                                                                     <MenuItem
-                                                                    Command="{Binding CommandGetGeoCodGroup}"
-                                                                    CommandParameter="{TemplateBinding DataContext}"
-                                                                    Header="Выполнить геокодирование группы" />
+                                                                        Command="{Binding CommandGetGeoCodGroup}"
+                                                                        CommandParameter="{TemplateBinding DataContext}"
+                                                                        Header="Выполнить геокодирование группы" />
                                                                 </ContextMenu>
                                                             </Expander.ContextMenu>
                                                             <Expander.Header>
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock
-                                                                    Margin="5,0,0,0"
-                                                                    FontWeight="Bold"
-                                                                    Text="{Binding Path=Name}" />
+                                                                        Margin="5,0,0,0"
+                                                                        FontWeight="Bold"
+                                                                        Text="{Binding Path=Name}" />
                                                                     <TextBlock
-                                                                    Margin="20,0,0,0"
-                                                                    FontWeight="Bold"
-                                                                    Text="Количество:" />
+                                                                        Margin="20,0,0,0"
+                                                                        FontWeight="Bold"
+                                                                        Text="Количество:" />
                                                                     <TextBlock
-                                                                    Margin="5,0,0,0"
-                                                                    FontWeight="Bold"
-                                                                    Text="{Binding Path=ItemCount}" />
+                                                                        Margin="5,0,0,0"
+                                                                        FontWeight="Bold"
+                                                                        Text="{Binding Path=ItemCount}" />
                                                                 </StackPanel>
                                                             </Expander.Header>
                                                             <Expander.Content>
@@ -535,9 +565,9 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock
-                                            Margin="5,0"
-                                            Text="{Binding Address}"
-                                            TextWrapping="Wrap" />
+                                                Margin="5,0"
+                                                Text="{Binding Address}"
+                                                TextWrapping="Wrap" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -576,19 +606,19 @@
                                                             </Grid.RowDefinitions>
 
                                                             <TextBlock
-                                                            Grid.Column="0"
-                                                            Grid.ColumnSpan="3"
-                                                            Text="{Binding AddressWeb}" />
+                                                                Grid.Column="0"
+                                                                Grid.ColumnSpan="3"
+                                                                Text="{Binding AddressWeb}" />
                                                             <TextBlock
-                                                            Grid.Row="1"
-                                                            Grid.Column="0"
-                                                            FontWeight="Bold"
-                                                            Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+                                                                Grid.Row="1"
+                                                                Grid.Column="0"
+                                                                FontWeight="Bold"
+                                                                Text="{Binding Kind, Converter={StaticResource ConverterKindTypeToString}}" />
                                                             <TextBlock
-                                                            Grid.Row="1"
-                                                            Grid.Column="1"
-                                                            Margin="5,0"
-                                                            Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
+                                                                Grid.Row="1"
+                                                                Grid.Column="1"
+                                                                Margin="5,0"
+                                                                Text="{Binding Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
                                                         </Grid>
                                                     </DataTemplate>
                                                 </ComboBox.ItemTemplate>

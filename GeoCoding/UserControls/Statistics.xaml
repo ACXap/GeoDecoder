@@ -14,16 +14,22 @@
             <Setter Property="Background" Value="White" />
         </Style>
     </d:DesignerProperties.DesignStyle>
-    <GroupBox Margin="3" Name="gb" Header="Статистика">
+    <GroupBox
+        Name="gb"
+        Margin="3"
+        Header="Статистика">
         <GroupBox.HeaderTemplate>
             <DataTemplate>
                 <Grid>
-                    <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding}" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button Command="{Binding ElementName=gb, Path=DataContext.CommandSaveStatistics}">
                             <Button.Template>
                                 <ControlTemplate>
-                                    <TextBlock Margin="5,0" Style="{StaticResource TextBlockSave}" ToolTip="Сохранить статистику" />
+                                    <TextBlock
+                                        Margin="5,0"
+                                        Style="{StaticResource TextBlockSave}"
+                                        ToolTip="Сохранить статистику" />
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
