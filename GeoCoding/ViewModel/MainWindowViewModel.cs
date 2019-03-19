@@ -1194,7 +1194,13 @@ namespace GeoCoding
 
         #endregion PrivateMethod
 
+        /// <summary>
+        /// Поле для хранения команды получения списка прокси
+        /// </summary>
         private RelayCommand _commandGetProxyList;
+        /// <summary>
+        /// Команда для получения списка прокси
+        /// </summary>
         public RelayCommand CommandGetProxyList =>
         _commandGetProxyList ?? (_commandGetProxyList = new RelayCommand(
                     () =>
@@ -1202,9 +1208,12 @@ namespace GeoCoding
                         GetProxyList();
                     }));
 
+        /// <summary>
+        /// Поле для хранения ссылки на сетевые настройки
+        /// </summary>
         private NetSettings _netSettings;
         /// <summary>
-        /// 
+        /// Сетевые настройки
         /// </summary>
         public NetSettings NetSettings
         {
@@ -1212,6 +1221,9 @@ namespace GeoCoding
             set => Set(ref _netSettings, value);
         }
 
+        /// <summary>
+        /// Метод для получения списка прокси
+        /// </summary>
         private void GetProxyList()
         {
             _netProxyModel.GetProxyList((d, e) =>
@@ -1227,7 +1239,13 @@ namespace GeoCoding
             });
         }
 
+        /// <summary>
+        /// Поле для хранения ссылки на команду проверки прокси
+        /// </summary>
         private RelayCommand _commandTestProxy;
+        /// <summary>
+        /// Команда для проверки прокси
+        /// </summary>
         public RelayCommand CommandTestProxy =>
         _commandTestProxy ?? (_commandTestProxy = new RelayCommand(
                     () =>
@@ -1235,7 +1253,13 @@ namespace GeoCoding
                         _netProxyModel.TestProxyAsync(_netSettings.Proxy);
                     }));
 
+        /// <summary>
+        /// Поле для хранения ссылки на команду проверки списка прокси
+        /// </summary>
         private RelayCommand _commandTestListProxy;
+        /// <summary>
+        /// Команда для проверки списка прокси
+        /// </summary>
         public RelayCommand CommandTestListProxy =>
         _commandTestListProxy ?? (_commandTestListProxy = new RelayCommand(
                     () =>
