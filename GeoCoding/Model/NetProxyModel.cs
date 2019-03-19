@@ -58,7 +58,6 @@ namespace GeoCoding
             }
         }
 
-
         public Task TestProxyAsync(ProxyEntity proxy)
         {
             return Task.Factory.StartNew(() =>
@@ -80,7 +79,6 @@ namespace GeoCoding
                     TestProxy(item);
                 });
             });
-            
         }
 
         public void GetProxyList(Action<IEnumerable<ProxyEntity>, Exception> callback)
