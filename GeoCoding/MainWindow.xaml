@@ -389,7 +389,7 @@
                 TextAlternative="Идет завершения процессов. Подождите..." />
 
             <!--  Данные  -->
-            <TabControl Grid.Column="0" Controls:TabControlHelper.Underlined="SelectedTabItem">
+            <TabControl Grid.Column="0" Controls:TabControlHelper.Underlined="TabPanel">
                 <TabItem Header="Данные">
                     <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMainAll}">
                         <DataGrid.Columns>

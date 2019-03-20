@@ -373,7 +373,11 @@
                             Margin="5"
                             Content="Геокодировать сразу после выбора файла"
                             IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
-                        <GroupBox Grid.Row="1" Header="Какие объекты геокодировать">
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="10,0,0,0">
+                            <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" ToolTip="Количество подряд ошибок до прекращения обработки данных программой" />
+                            <TextBox Controls:TextBoxHelper.Watermark="10-100" Margin="3" Width="80" Text="{Binding GeoCodSettings.MaxCountError}" />
+                        </StackPanel>
+                        <GroupBox Grid.Row="2" Header="Какие объекты геокодировать">
                             <WrapPanel Orientation="Vertical">
                                 <RadioButton
                                     Grid.Row="0"
@@ -397,7 +401,7 @@
                                     IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
                             </WrapPanel>
                         </GroupBox>
-                        <GroupBox Grid.Row="2" Header="Что делаем сразу после геокодирования">
+                        <GroupBox Grid.Row="3" Header="Что делаем сразу после геокодирования">
                             <WrapPanel Orientation="Vertical">
                                 <CheckBox
                                     Margin="5"
@@ -420,7 +424,7 @@
                                     IsChecked="{Binding GeoCodSettings.CanSaveStatistics}" />
                             </WrapPanel>
                         </GroupBox>
-                        <GroupBox Grid.Row="3" Header="Какой используем геокодер">
+                        <GroupBox Grid.Row="4" Header="Какой используем геокодер">
                             <WrapPanel Orientation="Vertical">
                                 <ComboBox
                                     Margin="5,2"
@@ -434,10 +438,7 @@
                                 </ComboBox>
                             </WrapPanel>
                         </GroupBox>
-                        <StackPanel Orientation="Horizontal" Grid.Row="4" Margin="10,0,0,0">
-                            <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" ToolTip="Количество подряд ошибок до прекращения обработки данных программой" />
-                            <TextBox Controls:TextBoxHelper.Watermark="10-100" Margin="3" Width="80" Text="{Binding GeoCodSettings.MaxCountError}" />
-                        </StackPanel>
+                        
                     </Grid>
                 </ScrollViewer>
             </TabItem>
