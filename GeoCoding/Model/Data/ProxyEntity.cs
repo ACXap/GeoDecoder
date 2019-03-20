@@ -63,7 +63,5 @@ namespace GeoCoding
             get => _status;
             set => Set(ref _status, value);
         }
-
-
     }
 }

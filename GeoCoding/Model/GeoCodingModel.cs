@@ -273,7 +273,7 @@ namespace GeoCoding
                         var connect = GetConnect();
                         var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
                         {
-                            if(!string.IsNullOrEmpty(connect.ProxyAddress))
+                            if (!string.IsNullOrEmpty(connect.ProxyAddress))
                             {
                                 data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
                             }
@@ -342,7 +342,7 @@ namespace GeoCoding
                                 lock (_lock)
                                 {
                                     geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotGeoCoding
-                                                                      || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne 
+                                                                      || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne
                                                                                                         && x.Error != _errorGeoCodNotFound)));
                                     if (geo != null)
                                     {
