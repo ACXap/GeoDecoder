@@ -17,6 +17,7 @@ namespace GeoCoding
             get => _allEntity;
             set => Set(ref _allEntity, value);
         }
+
         private int _ok = 0;
         /// <summary>
         /// Всего объектов со статусом "ОК"
@@ -26,6 +27,7 @@ namespace GeoCoding
             get => _ok;
             set => Set(ref _ok, value);
         }
+
         private int _error = 0;
         /// <summary>
         /// Всего объектов со статусом "Ошибка"
@@ -35,6 +37,7 @@ namespace GeoCoding
             get => _error;
             set => Set(ref _error, value);
         }
+
         private int _notGeoCoding = 0;
         /// <summary>
         /// Всего объектов со статусом "Негеокодирован"
@@ -44,6 +47,7 @@ namespace GeoCoding
             get => _notGeoCoding;
             set => Set(ref _notGeoCoding, value);
         }
+
         private int _geoCodingNow = 0;
         /// <summary>
         /// Всего объектов со статусом "Геокодируется сейчас"
@@ -53,6 +57,7 @@ namespace GeoCoding
             get => _geoCodingNow;
             set => Set(ref _geoCodingNow, value);
         }
+
         private int _house = 0;
         /// <summary>
         /// Всего объектов с типом объекта "Дом"
@@ -62,6 +67,7 @@ namespace GeoCoding
             get => _house;
             set => Set(ref _house, value);
         }
+
         private int _exact = 0;
         /// <summary>
         /// Всего объектов с качеством геокодирования "Точное геокодирование"
@@ -71,6 +77,7 @@ namespace GeoCoding
             get => _exact;
             set => Set(ref _exact, value);
         }
+
         private int _notFound = 0;
         /// <summary>
         /// Всего объектов для которых не найдены варианты
@@ -91,10 +98,9 @@ namespace GeoCoding
             set => Set(ref _timeGeoCod, value);
         }
 
-
         private TimeSpan _timeLeftGeoCod;
         /// <summary>
-        /// 
+        /// Время оставшееся до завершения геокодирования
         /// </summary>
         public TimeSpan TimeLeftGeoCod
         {

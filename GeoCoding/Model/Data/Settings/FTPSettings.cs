@@ -2,6 +2,9 @@
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для хранения настроек подключения к серверу фтп
+    /// </summary>
     public class FTPSettings : ViewModelBase
     {
         private string _server = string.Empty;

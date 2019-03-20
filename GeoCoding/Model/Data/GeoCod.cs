@@ -2,6 +2,9 @@
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для хранения результата геокодирования адреса
+    /// </summary>
     public class GeoCod : ViewModelBase
     {
         private string _addressWeb = string.Empty;

@@ -223,6 +223,60 @@ namespace GeoCoding
 
             return list;
         }
+
+        /// <summary>
+        /// Метод для создания настроек подключения
+        /// </summary>
+        /// <returns>Возвращает настройки подключения</returns>
+        private ConnectSettings GetConnect()
+        {
+            ConnectSettings cs = new ConnectSettings();
+
+            if (_netSettings.IsNotProxy)
+            {
+                cs.ProxyType = ProxyType.None;
+            }
+            else if (_netSettings.IsSystemProxy)
+            {
+                cs.ProxyType = ProxyType.System;
+            }
+            else if (_netSettings.IsManualProxy)
+            {
+                cs.ProxyAddress = _netSettings.Proxy.Address;
+                cs.ProxyPort = _netSettings.Proxy.Port;
+                cs.ProxyType = ProxyType.Manual;
+            }
+            else
+            {
+                var proxy = _netSettings.CollectionListProxy.FirstOrDefault(x => x.IsActive);
+                if (proxy != null)
+                {
+                    cs.ProxyAddress = proxy.Address;
+                    cs.ProxyPort = proxy.Port;
+                    cs.ProxyType = ProxyType.Manual;
+                }
+            }
+
+            return cs;
+        }
+
+        /// <summary>
+        /// Метод для создания настроек подключения с настройками прокси вручную
+        /// </summary>
+        /// <param name="proxy">Настройки прокси сервера</param>
+        /// <returns>Возвращает настройки подключения</returns>
+        private ConnectSettings GetConnect(ProxyEntity proxy)
+        {
+            ConnectSettings cs = new ConnectSettings
+            {
+                ProxyAddress = proxy.Address,
+                ProxyPort = proxy.Port,
+                ProxyType = ProxyType.Manual
+            };
+
+            return cs;
+        }
+
         #endregion PrivateMethod
 
         #region PublicMethod
@@ -430,49 +484,5 @@ namespace GeoCoding
         }
 
         #endregion PublicMethod
-
-        private ConnectSettings GetConnect()
-        {
-            ConnectSettings cs = new ConnectSettings();
-
-            if (_netSettings.IsNotProxy)
-            {
-                cs.ProxyType = ProxyType.None;
-            }
-            else if (_netSettings.IsSystemProxy)
-            {
-                cs.ProxyType = ProxyType.System;
-            }
-            else if (_netSettings.IsManualProxy)
-            {
-                cs.ProxyAddress = _netSettings.Proxy.Address;
-                cs.ProxyPort = _netSettings.Proxy.Port;
-                cs.ProxyType = ProxyType.Manual;
-            }
-            else
-            {
-                var proxy = _netSettings.CollectionListProxy.FirstOrDefault(x => x.IsActive);
-                if (proxy != null)
-                {
-                    cs.ProxyAddress = proxy.Address;
-                    cs.ProxyPort = proxy.Port;
-                    cs.ProxyType = ProxyType.Manual;
-                }
-            }
-
-            return cs;
-        }
-
-        private ConnectSettings GetConnect(ProxyEntity proxy)
-        {
-            ConnectSettings cs = new ConnectSettings
-            {
-                ProxyAddress = proxy.Address,
-                ProxyPort = proxy.Port,
-                ProxyType = ProxyType.Manual
-            };
-
-            return cs;
-        }
     }
 }

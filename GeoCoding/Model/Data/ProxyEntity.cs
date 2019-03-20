@@ -2,11 +2,14 @@
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для хранения прокси сервера
+    /// </summary>
     public class ProxyEntity : ViewModelBase
     {
         private string _address = string.Empty;
         /// <summary>
-        /// 
+        /// Аддрес прокси сервера
         /// </summary>
         public string Address
         {
@@ -16,7 +19,7 @@ namespace GeoCoding
 
         private int _port = 0;
         /// <summary>
-        /// 
+        /// Порт прокси сервера
         /// </summary>
         public int Port
         {
@@ -26,7 +29,7 @@ namespace GeoCoding
 
         private int _delay = 0;
         /// <summary>
-        /// 
+        /// Задержка выполнения запроса через прокси
         /// </summary>
         public int Delay
         {
@@ -36,7 +39,7 @@ namespace GeoCoding
 
         private bool _isActive = true;
         /// <summary>
-        /// 
+        /// Активен ли прокси сервер
         /// </summary>
         public bool IsActive
         {
@@ -46,7 +49,7 @@ namespace GeoCoding
 
         private string _error = string.Empty;
         /// <summary>
-        /// 
+        /// Ошибка
         /// </summary>
         public string Error
         {
@@ -56,7 +59,7 @@ namespace GeoCoding
 
         private StatusConnect _status = StatusConnect.NotConnect;
         /// <summary>
-        /// 
+        /// Статус подключения
         /// </summary>
         public StatusConnect Status
         {

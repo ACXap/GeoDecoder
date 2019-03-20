@@ -9,12 +9,28 @@ using System.Threading.Tasks;
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для работы с прокси серверам
+    /// </summary>
     public class NetProxyModel
     {
+        /// <summary>
+        /// Ссылка на модуль работы с файлами
+        /// </summary>
         private readonly IFileService _fileService = new FileService.FileService();
+        /// <summary>
+        /// Имя файла с прокси серверами
+        /// </summary>
         private readonly string _fileNameProxyList = "ProxyList.csv";
+        /// <summary>
+        /// Урл-ссылка на сайт, для проверки прокси серверов
+        /// </summary>
         private readonly string _urlTest = "https://google.ru";
 
+        /// <summary>
+        /// Метод для проверки прокси сервера
+        /// </summary>
+        /// <param name="proxy"></param>
         private void TestProxy(ProxyEntity proxy)
         {
             string data = string.Empty;
@@ -57,7 +73,11 @@ namespace GeoCoding
                 sw?.Stop();
             }
         }
-
+        /// <summary>
+        /// Метод для проверки прокси сервера
+        /// </summary>
+        /// <param name="proxy">Прокси сервера</param>
+        /// <returns>Возвращает запущенную задачу проверки</returns>
         public Task TestProxyAsync(ProxyEntity proxy)
         {
             return Task.Factory.StartNew(() =>
@@ -65,7 +85,11 @@ namespace GeoCoding
                 TestProxy(proxy);
             });
         }
-
+        /// <summary>
+        /// Метод для проверки списка прокси серверов
+        /// </summary>
+        /// <param name="data">Список прокси серверов</param>
+        /// <returns>Возвращает запущенную задачу проверки</returns>
         public Task TestListProxyAsync(IEnumerable<ProxyEntity> data)
         {
             return Task.Factory.StartNew(() =>
@@ -80,7 +104,10 @@ namespace GeoCoding
                 });
             });
         }
-
+        /// <summary>
+        /// Метод для получения списка прокси сервероиз файла
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром коллекция с прокси серверами и ошибка</param>
         public void GetProxyList(Action<IEnumerable<ProxyEntity>, Exception> callback)
         {
             Exception error = null;

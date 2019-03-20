@@ -2,6 +2,9 @@
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Интерфейс для организации работы с оповещениями
+    /// </summary>
     public interface INotifications
     {
         /// <summary>

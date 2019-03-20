@@ -2,10 +2,15 @@
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для хранения настроек подключения к базе данных
+    /// </summary>
     public class BDSettings : ViewModelBase
     {
-
         private string _server = string.Empty;
+        /// <summary>
+        /// Адрес сервера
+        /// </summary>
         public string Server
         {
             get => _server;
@@ -13,6 +18,9 @@ namespace GeoCoding
         }
 
         private string _bdName = string.Empty;
+        /// <summary>
+        /// Имя базы данных
+        /// </summary>
         public string BDName
         {
             get => _bdName;
@@ -20,6 +28,9 @@ namespace GeoCoding
         }
 
         private int _port = 5432;
+        /// <summary>
+        /// Порт сервера
+        /// </summary>
         public int Port
         {
             get => _port;
@@ -27,6 +38,9 @@ namespace GeoCoding
         }
 
         private string _login = string.Empty;
+        /// <summary>
+        /// Логин подключения к базе данных
+        /// </summary>
         public string Login
         {
             get => _login;
@@ -34,6 +48,9 @@ namespace GeoCoding
         }
 
         private string _password = string.Empty;
+        /// <summary>
+        /// пароль подключения к базе данных
+        /// </summary>
         public string Password
         {
             get => _password;
@@ -41,6 +58,9 @@ namespace GeoCoding
         }
 
         private string _sqlQuery = string.Empty;
+        /// <summary>
+        /// SQL - запрос к базе данных
+        /// </summary>
         public string SQLQuery
         {
             get => _sqlQuery;
@@ -48,6 +68,9 @@ namespace GeoCoding
         }
 
         private StatusConnect _statusConnect = StatusConnect.NotConnect;
+        /// <summary>
+        /// Статус подключения к базе данных
+        /// </summary>
         public StatusConnect StatusConnect
         {
             get => _statusConnect;
@@ -55,6 +78,9 @@ namespace GeoCoding
         }
 
         private string _error = string.Empty;
+        /// <summary>
+        /// Сообщение об ошибке при подключении
+        /// </summary>
         public string Error
         {
             get => _error;

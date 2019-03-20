@@ -336,6 +336,10 @@ namespace GeoCoding
 
         #endregion PublicMethod
 
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="settings">Настройки оповещений</param>
         public NotificationsModel(NotificationSettings settings)
         {
             _notificationSettings = settings;

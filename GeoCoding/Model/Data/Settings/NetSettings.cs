@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для хранения сетевых настроек
+    /// </summary>
     public class NetSettings:ViewModelBase
     {
         private bool _isNotProxy = false;
         /// <summary>
-        /// 
+        /// Не использовать прокси сервер
         /// </summary>
         public bool IsNotProxy
         {
@@ -27,7 +25,7 @@ namespace GeoCoding
 
         private bool _isSystemProxy = true;
         /// <summary>
-        /// 
+        /// Использовать системный прокси сервер
         /// </summary>
         public bool IsSystemProxy
         {
@@ -42,7 +40,7 @@ namespace GeoCoding
 
         private bool _isManualProxy = false;
         /// <summary>
-        /// 
+        /// Использовать прокси сервер настроенный вручную
         /// </summary>
         public bool IsManualProxy
         {
@@ -57,7 +55,7 @@ namespace GeoCoding
 
         private bool _isListProxy = false;
         /// <summary>
-        /// 
+        /// Использовать список прокси серверов
         /// </summary>
         public bool IsListProxy
         {
@@ -72,7 +70,7 @@ namespace GeoCoding
 
         private ProxyEntity _proxy;
         /// <summary>
-        /// 
+        /// Настроенный прокси сервер
         /// </summary>
         public ProxyEntity Proxy
         {
@@ -82,7 +80,7 @@ namespace GeoCoding
 
         private ObservableCollection<ProxyEntity> _collectionListProxy;
         /// <summary>
-        /// 
+        /// Коллекция для хранения списка прокси серверов
         /// </summary>
         public ObservableCollection<ProxyEntity> CollectionListProxy
         {
@@ -93,7 +91,7 @@ namespace GeoCoding
 
         private StatusConnect _status = StatusConnect.NotConnect;
         /// <summary>
-        /// 
+        /// Статус проверки коллекции прокси серверов
         /// </summary>
         public StatusConnect Status
         {

@@ -89,10 +89,9 @@ namespace GeoCoding
             set => Set(ref _countResult, value);
         }
 
-
         private string _proxy = string.Empty;
         /// <summary>
-        /// 
+        /// Прокси через который было выполнено геокодирование
         /// </summary>
         public string Proxy
         {

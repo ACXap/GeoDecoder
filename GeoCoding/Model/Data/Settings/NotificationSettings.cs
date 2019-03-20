@@ -2,6 +2,9 @@
 
 namespace GeoCoding
 {
+    /// <summary>
+    /// Класс для хранения настроек оповещения
+    /// </summary>
     public class NotificationSettings : ViewModelBase
     {
         private bool _canNotificationSaveSettings = false;

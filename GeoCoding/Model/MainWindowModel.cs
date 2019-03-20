@@ -214,6 +214,12 @@ namespace GeoCoding
             callback(error);
         }
 
+        /// <summary>
+        /// Метод для сохранения файла с ошибками
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="data">Данные для записи</param>
+        /// <param name="file">Имя файла</param>
         public void SaveError(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file)
         {
             Exception error = null;
@@ -244,6 +250,12 @@ namespace GeoCoding
             callback(error);
         }
 
+        /// <summary>
+        /// Метод для сохранения файла с временными данными
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="data">Данные для записи</param>
+        /// <param name="file">Имя файла</param>
         public void SaveTemp(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file)
         {
             Exception error = null;
@@ -276,6 +288,13 @@ namespace GeoCoding
             callback(error);
         }
 
+        /// <summary>
+        /// Метод для сохранения статистики
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="stat">Статистика</param>
+        /// <param name="files">Настройки файлов</param>
+        /// <param name="file">Имя файла со статистикой</param>
         public void SaveStatistics(Action<Exception> callback, Statistics stat, FilesSettings files, string file)
         {
             Exception error = null;
@@ -338,6 +357,13 @@ namespace GeoCoding
             callback(error);
         }
 
+        /// <summary>
+        /// Метод для получения настроек из файла
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="file">Имя файла</param>
+        /// <param name="ftp">Настройки фтп-сервера</param>
+        /// <param name="bd">Настройки подключения к базе данных</param>
         public void GetSettingsFromFile(Action<Exception> callback, string file, FTPSettings ftp, BDSettings bd)
         {
             Exception error = null;
@@ -532,11 +558,21 @@ namespace GeoCoding
             return result;
         }
 
+        /// <summary>
+        /// Метод для проверки первой строки данных и сравнения со строкой файла с временными данными
+        /// </summary>
+        /// <param name="fs">Строка с названием столбцов в файле с временными данными</param>
+        /// <returns></returns>
         private bool IsFirstStringNameColumnTempFile(string fs)
         {
             return fs.ToLower() == _nameColumnTempFile.ToLower();
         }
 
+        /// <summary>
+        /// Метод для проверки первой строки данных и сравнения со  строкой файла с ошибками
+        /// </summary>
+        /// <param name="fs">Строка с названием столбцов в файле с ошибками</param>
+        /// <returns>Возвращает истину, если первая строка данных файла с ошибками</returns>
         private bool IsFirstStringNameColumnErrorFile(string fs)
         {
             return fs.ToLower() == _nameColumnErrorFile;
@@ -767,6 +803,11 @@ namespace GeoCoding
             callback(error);
         }
 
+        /// <summary>
+        /// Метод для подключения к базе данных
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром: ошибка</param>
+        /// <param name="bds">Настройки подключения к базе данных</param>
         public async void ConnectBDAsync(Action<Exception> callback, BDSettings bds)
         {
             Exception error = null;
@@ -788,6 +829,12 @@ namespace GeoCoding
             });
         }
 
+        /// <summary>
+        /// Метод для получения данных из базы данных
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром, коллекция данных, ошибка</param>
+        /// <param name="bds">Настройки подключения к базе данных</param>
+        /// <param name="query">Sql-запрос к базе данных</param>
         public async void GetDataFromBDAsync(Action<IEnumerable<EntityGeoCod>, Exception> callback, BDSettings bds, string query)
         {
             Exception error = null;
