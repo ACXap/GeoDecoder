@@ -260,6 +260,10 @@
       <Project>{ef2fbc95-76f0-4851-a5ae-3efa6aca4ccf}</Project>
       <Name>GeoCoding.BDService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GeoDecoder.Verification\GeoDecoder.VerificationService.csproj">
+      <Project>{ce899cee-c4e1-4ce8-a963-1a4ede572d50}</Project>
+      <Name>GeoDecoder.VerificationService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="geo.ico" />

@@ -15,10 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.BDService", "GeoD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.FTPService", "GeoCoding.FTPService\GeoCoding.FTPService.csproj", "{A1E2831A-ADF0-49E0-8120-28EF56C3840A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoDecoder.VerificationService", "GeoDecoder.Verification\GeoDecoder.VerificationService.csproj", "{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -48,11 +47,18 @@ Global
 		{A1E2831A-ADF0-49E0-8120-28EF56C3840A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1E2831A-ADF0-49E0-8120-28EF56C3840A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1E2831A-ADF0-49E0-8120-28EF56C3840A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {612F98CA-8700-4A57-BD3F-3228D69D5563}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
