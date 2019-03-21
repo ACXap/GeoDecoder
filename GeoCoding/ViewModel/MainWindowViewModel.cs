@@ -280,8 +280,7 @@ namespace GeoCoding
                     Customers = new CollectionViewSource { Source = _collectionGeoCod }.View;
                     DispatcherHelper.CheckBeginInvokeOnUI(() => Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error")));
                     _customerView.Filter = CustomerFilter;
-
-                    Ver.SetCollection(_collectionGeoCod);
+                    _ver.SetCollection(value);
                 });
             }
         }
@@ -1301,11 +1300,11 @@ namespace GeoCoding
             set
             {
                 Set(ref _tabIndex, value);
-                if(value==2)
+                if (value == 2)
                 {
-                    _ver.Customers?.Refresh();
+
                 }
-                else if(value==1)
+                else if (value == 1)
                 {
                     _customerView?.Refresh();
                 }
@@ -1320,7 +1319,7 @@ namespace GeoCoding
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
 
-           _netProxyModel = new NetProxyModel();
+            _netProxyModel = new NetProxyModel();
 
             _model.GetSettings((e, f, g, ftp, bds, ns, nset, c, comp, verServer, verModule) =>
             {

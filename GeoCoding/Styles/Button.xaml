@@ -87,6 +87,76 @@
     </Style>
 
     <Style
+        x:Key="ButtonStopStartCompare" 
+        BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}"
+        TargetType="{x:Type Button}">
+        <Setter Property="Command" Value="{Binding Ver.CommandCompare}" />
+        <Setter Property="Height" Value="80" />
+
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Content">
+            <Setter.Value>
+                <Controls:ContentControlEx
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Content="Сравнить"  ToolTip="Запустить сравнение"
+                        ContentCharacterCasing="Upper" />
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Ver.IsStartCompare}" Value="True">
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Controls:ContentControlEx Grid.Row="0"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Content="Стоп" ToolTip="Остановить геокодирование"
+                        ContentCharacterCasing="Upper" />
+                            <!--<TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
+                            <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" EllipseDiameter="7"/>-->
+                        </Grid>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Command" Value="{Binding Ver.CommandStopCompare}" />
+            </DataTrigger>
+
+            <!--<DataTrigger Binding="{Binding IsRequestedStop}" Value="True">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Content">
+                    <Setter.Value>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="2*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Controls:ContentControlEx Grid.Row="0"
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Content="Останавливаем" ToolTip="Завершаются все запущеные процессы"
+                        ContentCharacterCasing="Upper" />
+                            <TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
+                            <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" EllipseDiameter="7"/>
+                        </Grid>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Command" Value="{Binding CommandStopGeoCoding}" />
+            </DataTrigger>-->
+        </Style.Triggers>
+    </Style>
+
+
+
+
+    <Style
         x:Key="ButtonStopStartConnect"
         BasedOn="{StaticResource ButtonMainStyle}"
         TargetType="{x:Type Button}">

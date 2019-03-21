@@ -597,7 +597,7 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Проверка данных">
-                    <TabItem.Style>
+                    <!--<TabItem.Style>
                         <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource MetroTabItem}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
@@ -606,40 +606,103 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TabItem.Style>
+                    </TabItem.Style>-->
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <DataGrid ItemsSource="{Binding Ver.Customers}" Style="{StaticResource DataGridMain}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <GroupBox Header="Какие данные" Grid.Row="0" Grid.Column="0" Margin="2">
+                            <WrapPanel Orientation="Vertical">
+                                <RadioButton Content="Все геокодирование" ToolTip="Актуально для всех, кроме яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareAllData}"/>
+                                <RadioButton Content="Точно геокодированные" ToolTip="Актуально для яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareGoodData}"/>
+                            </WrapPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Статистика" Grid.Row="0" Grid.Column="1" Margin="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="5"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Всего" Grid.Row="0" Grid.Column="0"/>
+                                <TextBlock Text="Точных до проверки" Grid.Row="1" Grid.Column="0"/>
+                                <TextBlock Text="Точных после проверки" Grid.Row="2" Grid.Column="0"/>
+                                <TextBlock Text="Время выполнения" Grid.Row="3" Grid.Column="0"/>
+
+                                <TextBlock Text="{Binding Ver.Collection.Count}" Grid.Row="0" Grid.Column="2"/>
+                                <TextBlock Text="{Binding Ver.CountGood}" Grid.Row="1" Grid.Column="2"/>
+                                <TextBlock Text="{Binding Ver.CountGoodAfterCompare}" Grid.Row="2" Grid.Column="2"/>
+                                <TextBlock Text="" Grid.Row="0" Grid.Column="3"/>
+                                
+                            </Grid>
+                        </GroupBox>
+                        <uc:WorkIndication Grid.Row="0" Grid.Column="2" 
+                                           IsActive="{Binding Ver.IsStartCompare}"     
+                                           HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                                           Text="Идет сравнение..."
+                TextAlternative="Завершение. Подождите..."/>
+                        <Button Style="{StaticResource ButtonStopStartCompare}" 
+                                Grid.Row="0" Grid.Column="2" 
+                                HorizontalAlignment="Left" 
+                                VerticalAlignment="Center" Margin="10" Padding="10" Width="200"/>
+                        
+                        <DataGrid Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding Ver.CustomerView}" Style="{StaticResource DataGridMain}">
                             <DataGrid.Columns>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Style="{StaticResource TextBlockStatusCompare}" Tag="{Binding Status}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="Адрес">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Vertical">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="Искомый: " FontWeight="Bold"/>
-                                                    <TextBlock Text="{Binding Address}"/>
-                                                </StackPanel>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="Найден: " FontWeight="Bold"/>
-                                                <TextBlock Text="{Binding MainGeoCod.AddressWeb}"/>
-                                                </StackPanel>
+                                                <StackPanel.ToolTip>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock Text="{Binding GeoCode.GlobalID}"/>
+                                                        <TextBlock Text="{Binding GlobalIdAfterCompare}"/>
+                                                    </StackPanel>
+                                                </StackPanel.ToolTip>
+                                                <TextBlock Text="{Binding GeoCode.MainGeoCod.AddressWeb}"/>
+                                                <TextBlock Text="{Binding GeoCode.Address}"/>
                                             </StackPanel>
+                                            
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Качество">
+                                <DataGridTemplateColumn Header="Qcode" SortMemberPath="GeoCode.MainGeoCod.Qcode">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding MainGeoCod.Qcode}" TextAlignment="Center"/>
+                                            <TextBlock Text="{Binding GeoCode.MainGeoCod.Qcode, FallbackValue=0}" TextAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Qcode после" SortMemberPath="Qcode">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Qcode}" TextAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <Button Content="Проверить данные" Grid.Row="1" HorizontalAlignment="Left"/>
                     </Grid>
                 </TabItem>
             </TabControl>
