@@ -620,7 +620,7 @@
 
                         <GroupBox Header="Какие данные" Grid.Row="0" Grid.Column="0" Margin="2">
                             <WrapPanel Orientation="Vertical">
-                                <RadioButton Content="Все геокодирование" ToolTip="Актуально для всех, кроме яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareAllData}"/>
+                                <RadioButton Content="Все геокодированные" ToolTip="Актуально для всех, кроме яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareAllData}"/>
                                 <RadioButton Content="Точно геокодированные" ToolTip="Актуально для яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareGoodData}"/>
                             </WrapPanel>
                         </GroupBox>

@@ -226,10 +226,13 @@ namespace GeoCoding
 
                         _model.CompareAsync(e =>
                          {
+                             IsStartCompare = false;
+                             CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+
                              if (e == null)
                              {
-                                 CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
-                                 IsStartCompare = false;
+                                 
+ 
                              }
                              else
                              {

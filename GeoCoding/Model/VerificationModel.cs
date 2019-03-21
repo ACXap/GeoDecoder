@@ -47,11 +47,11 @@ namespace GeoCoding
 
             ParallelOptions po = new ParallelOptions()
             {
-                MaxDegreeOfParallelism = 5,
+                MaxDegreeOfParallelism = 3,
                 CancellationToken = t
             };
 
-            var list = data.Partition(500);
+            var list = data.Partition(400);
 
             await Task.Factory.StartNew(() =>
             {
