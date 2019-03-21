@@ -280,6 +280,8 @@ namespace GeoCoding
                     Customers = new CollectionViewSource { Source = _collectionGeoCod }.View;
                     DispatcherHelper.CheckBeginInvokeOnUI(() => Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error")));
                     _customerView.Filter = CustomerFilter;
+
+                    Ver.SetCollection(_collectionGeoCod);
                 });
             }
         }
@@ -1289,6 +1291,26 @@ namespace GeoCoding
             set => Set(ref _canUseVerificationModule, value);
         }
 
+        private int _tabIndex = 0;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int TabIndex
+        {
+            get => _tabIndex;
+            set
+            {
+                Set(ref _tabIndex, value);
+                if(value==2)
+                {
+                    _ver.Customers?.Refresh();
+                }
+                else if(value==1)
+                {
+                    _customerView?.Refresh();
+                }
+            }
+        }
 
         /// <summary>
         /// Конструктор по умолчанию

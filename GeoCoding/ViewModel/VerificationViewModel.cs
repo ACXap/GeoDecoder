@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Data;
@@ -8,7 +9,6 @@ namespace GeoCoding
 {
     public class VerificationViewModel : ViewModelBase
     {
-        private readonly string _connectionSettings;
         private readonly VerificationModel _model;
         private IEnumerable<EntityGeoCod> _collection;
 
@@ -29,7 +29,14 @@ namespace GeoCoding
         public void SetCollection(IEnumerable<EntityGeoCod> collection)
         {
             Customers = new CollectionViewSource { Source = collection }.View;
+            _customerView.Filter = CustomerFilter;
             _collection = collection;
+        }
+
+        private bool CustomerFilter(object obj)
+        {
+            EntityGeoCod customer = obj as EntityGeoCod;
+            return customer.MainGeoCod != null && customer.MainGeoCod.Qcode == 1;
         }
 
         private StatusConnect _status = StatusConnect.NotConnect;
@@ -73,7 +80,7 @@ namespace GeoCoding
 
                         _model.CheckServerAsync(e =>
                         {
-                            if(e!=null)
+                            if (e != null)
                             {
                                 Error = e.Message;
                                 Status = StatusConnect.Error;
@@ -89,7 +96,7 @@ namespace GeoCoding
         public VerificationViewModel(string connectionString)
         {
             ConnectSettings = connectionString;
-            _model = new VerificationModel(_connectionSettings);
+            _model = new VerificationModel(connectionString);
         }
     }
 }

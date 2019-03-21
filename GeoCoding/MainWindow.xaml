@@ -389,7 +389,7 @@
                 TextAlternative="Идет завершения процессов. Подождите..." />
 
             <!--  Данные  -->
-            <TabControl Grid.Column="0" Controls:TabControlHelper.Underlined="TabPanel">
+            <TabControl Grid.Column="0" Controls:TabControlHelper.Underlined="TabPanel" SelectedIndex="{Binding TabIndex}">
                 <TabItem Header="Данные">
                     <DataGrid ItemsSource="{Binding CollectionGeoCod}" Style="{StaticResource DataGridMainAll}">
                         <DataGrid.Columns>
@@ -607,6 +607,40 @@
                             </Style.Triggers>
                         </Style>
                     </TabItem.Style>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <DataGrid ItemsSource="{Binding Ver.Customers}" Style="{StaticResource DataGridMain}">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Адрес">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Vertical">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Искомый: " FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Address}"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Найден: " FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding MainGeoCod.AddressWeb}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Качество">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding MainGeoCod.Qcode}" TextAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="Проверить данные" Grid.Row="1" HorizontalAlignment="Left"/>
+                    </Grid>
                 </TabItem>
             </TabControl>
 
