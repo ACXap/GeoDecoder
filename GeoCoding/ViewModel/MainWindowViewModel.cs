@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using MahApps.Metro;
 using System;
@@ -10,7 +11,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using GalaSoft.MvvmLight.Messaging;
 
 namespace GeoCoding
 {
@@ -681,7 +681,7 @@ namespace GeoCoding
                         _model.SaveSettings(e =>
                         {
                             _notifications.Notification(NotificationType.SettingsSave, e, true);
-                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, _netSettings, ColorTheme.Name, _canStartCompact);
+                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, _netSettings, ColorTheme.Name, _canStartCompact, _ver.ConnectSettings, _canUseVerificationModule);
                     }));
 
         /// <summary>
@@ -849,7 +849,7 @@ namespace GeoCoding
                         var b = a.Items;
                         GetAllGeoCod(b.Select(x => (EntityGeoCod)x), false);
                     }
-                },obj=>!_isStartGeoCoding));
+                }, obj => !_isStartGeoCoding));
 
         /// <summary>
         /// Команда для сохранения временных данных
@@ -1269,6 +1269,27 @@ namespace GeoCoding
                         _netSettings.Status = StatusConnect.OK;
                     }));
 
+        private VerificationViewModel _ver;
+        /// <summary>
+        /// 
+        /// </summary>
+        public VerificationViewModel Ver
+        {
+            get => _ver;
+            set => Set(ref _ver, value);
+        }
+
+        private bool _canUseVerificationModule = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool CanUseVerificationModule
+        {
+            get => _canUseVerificationModule;
+            set => Set(ref _canUseVerificationModule, value);
+        }
+
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1276,9 +1297,10 @@ namespace GeoCoding
         {
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
-            _netProxyModel = new NetProxyModel();
 
-            _model.GetSettings((e, f, g, ftp, bds, ns, nset, c, comp) =>
+           _netProxyModel = new NetProxyModel();
+
+            _model.GetSettings((e, f, g, ftp, bds, ns, nset, c, comp, verServer, verModule) =>
             {
                 if (e == null)
                 {
@@ -1292,8 +1314,10 @@ namespace GeoCoding
                     _notifications = new NotificationsModel(ns);
                     CanStartCompact = comp;
                     _geoCodingModel = new GeoCodingModel(_netSettings, _geoCodSettings);
+                    Ver = new VerificationViewModel(verServer);
                     CurrentGeoService = g.GeoService;
-                    if(_netSettings.IsListProxy)
+                    CanUseVerificationModule = verModule;
+                    if (_netSettings.IsListProxy)
                     {
                         GetProxyList();
                     }
@@ -1307,7 +1331,7 @@ namespace GeoCoding
 
             Messenger.Default.Register<PropertyChangedMessage<bool>>(this, data =>
             {
-                if((data.PropertyName == "IsNotProxy" || data.PropertyName == "IsSystemProxy" || data.PropertyName == "IsManualProxy") && data.NewValue)
+                if ((data.PropertyName == "IsNotProxy" || data.PropertyName == "IsSystemProxy" || data.PropertyName == "IsManualProxy") && data.NewValue)
                 {
                     _geoCodSettings.IsMultipleRequests = true;
                 }

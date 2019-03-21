@@ -1,4 +1,4 @@
-﻿namespace GeoDecoder.VerificationService
+﻿namespace GeoCoding.VerificationService
 {
     public class EntityResultCompare : EntityForCompare
     {

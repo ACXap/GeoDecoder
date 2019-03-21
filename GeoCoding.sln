@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.BDService", "GeoD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.FTPService", "GeoCoding.FTPService\GeoCoding.FTPService.csproj", "{A1E2831A-ADF0-49E0-8120-28EF56C3840A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoDecoder.VerificationService", "GeoDecoder.Verification\GeoDecoder.VerificationService.csproj", "{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.VerificationService", "GeoDecoder.Verification\GeoCoding.VerificationService.csproj", "{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

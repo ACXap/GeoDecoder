@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 
-namespace GeoDecoder.VerificationService
+namespace GeoCoding.VerificationService
 {
     public class Verification : IVerificationService
     {
@@ -16,7 +16,7 @@ namespace GeoDecoder.VerificationService
             OpenTimeout = new TimeSpan(0, 5, 0),
             CloseTimeout = new TimeSpan(0, 5, 0),
         };
-        private readonly EndpointAddress _address;
+        private EndpointAddress _address;
 
         public void CheckServiceVerification(Action<bool, Exception> callback)
         {
@@ -176,9 +176,28 @@ namespace GeoDecoder.VerificationService
             callback(result, error);
         }
 
-        public Verification(string ConnectionSettings)
+        public void SettingsService(Action<Exception> callback, string connectSettings)
         {
-            _address = new EndpointAddress(ConnectionSettings);
+            Exception error = null;
+
+            try
+            {
+                _address = new EndpointAddress(connectSettings);
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+
+            callback(error);
+        }
+
+        public Verification(string connectionSettings)
+        {
+            if (!string.IsNullOrEmpty(connectionSettings))
+            {
+                _address = new EndpointAddress(connectionSettings);
+            }
         }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GeoDecoder.VerificationService.VerificationWebService {
+namespace GeoCoding.VerificationService.VerificationWebService {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -19,10 +19,10 @@ namespace GeoDecoder.VerificationService.VerificationWebService {
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
         [System.ServiceModel.FaultContractAttribute(typeof(string), Action="", Name="ErrorField")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
-        GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse SearchAddressElementByFullName(GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullName request);
+        GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse SearchAddressElementByFullName(GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullName request);
         
         [System.ServiceModel.OperationContractAttribute(Action="", ReplyAction="*")]
-        System.Threading.Tasks.Task<GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse> SearchAddressElementByFullNameAsync(GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullName request);
+        System.Threading.Tasks.Task<GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse> SearchAddressElementByFullNameAsync(GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullName request);
     }
     
     /// <remarks/>
@@ -540,12 +540,12 @@ namespace GeoDecoder.VerificationService.VerificationWebService {
     public partial class SearchAddressElementByFullName {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.informatica.com/dis/ws/ws_", Order=0)]
-        public GeoDecoder.VerificationService.VerificationWebService.AddressElementNameData AddressElementNameData;
+        public GeoCoding.VerificationService.VerificationWebService.AddressElementNameData AddressElementNameData;
         
         public SearchAddressElementByFullName() {
         }
         
-        public SearchAddressElementByFullName(GeoDecoder.VerificationService.VerificationWebService.AddressElementNameData AddressElementNameData) {
+        public SearchAddressElementByFullName(GeoCoding.VerificationService.VerificationWebService.AddressElementNameData AddressElementNameData) {
             this.AddressElementNameData = AddressElementNameData;
         }
     }
@@ -557,23 +557,23 @@ namespace GeoDecoder.VerificationService.VerificationWebService {
     public partial class SearchAddressElementByFullNameResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://www.informatica.com/dis/ws/ws_", Order=0)]
-        public GeoDecoder.VerificationService.VerificationWebService.AddressElementNameResponse AddressElementNameResponse;
+        public GeoCoding.VerificationService.VerificationWebService.AddressElementNameResponse AddressElementNameResponse;
         
         public SearchAddressElementByFullNameResponse() {
         }
         
-        public SearchAddressElementByFullNameResponse(GeoDecoder.VerificationService.VerificationWebService.AddressElementNameResponse AddressElementNameResponse) {
+        public SearchAddressElementByFullNameResponse(GeoCoding.VerificationService.VerificationWebService.AddressElementNameResponse AddressElementNameResponse) {
             this.AddressElementNameResponse = AddressElementNameResponse;
         }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface wsSearchAddrElByFullNamePortTypeChannel : GeoDecoder.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType, System.ServiceModel.IClientChannel {
+    public interface wsSearchAddrElByFullNamePortTypeChannel : GeoCoding.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class wsSearchAddrElByFullNamePortTypeClient : System.ServiceModel.ClientBase<GeoDecoder.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType>, GeoDecoder.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType {
+    public partial class wsSearchAddrElByFullNamePortTypeClient : System.ServiceModel.ClientBase<GeoCoding.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType>, GeoCoding.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType {
         
         public wsSearchAddrElByFullNamePortTypeClient() {
         }
@@ -595,26 +595,26 @@ namespace GeoDecoder.VerificationService.VerificationWebService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse GeoDecoder.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType.SearchAddressElementByFullName(GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullName request) {
+        GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse GeoCoding.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType.SearchAddressElementByFullName(GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullName request) {
             return base.Channel.SearchAddressElementByFullName(request);
         }
         
-        public GeoDecoder.VerificationService.VerificationWebService.AddressElementNameResponse SearchAddressElementByFullName(GeoDecoder.VerificationService.VerificationWebService.AddressElementNameData AddressElementNameData) {
-            GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullName inValue = new GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullName();
+        public GeoCoding.VerificationService.VerificationWebService.AddressElementNameResponse SearchAddressElementByFullName(GeoCoding.VerificationService.VerificationWebService.AddressElementNameData AddressElementNameData) {
+            GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullName inValue = new GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullName();
             inValue.AddressElementNameData = AddressElementNameData;
-            GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse retVal = ((GeoDecoder.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType)(this)).SearchAddressElementByFullName(inValue);
+            GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse retVal = ((GeoCoding.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType)(this)).SearchAddressElementByFullName(inValue);
             return retVal.AddressElementNameResponse;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse> GeoDecoder.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType.SearchAddressElementByFullNameAsync(GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullName request) {
+        System.Threading.Tasks.Task<GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse> GeoCoding.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType.SearchAddressElementByFullNameAsync(GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullName request) {
             return base.Channel.SearchAddressElementByFullNameAsync(request);
         }
         
-        public System.Threading.Tasks.Task<GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse> SearchAddressElementByFullNameAsync(GeoDecoder.VerificationService.VerificationWebService.AddressElementNameData AddressElementNameData) {
-            GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullName inValue = new GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullName();
+        public System.Threading.Tasks.Task<GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse> SearchAddressElementByFullNameAsync(GeoCoding.VerificationService.VerificationWebService.AddressElementNameData AddressElementNameData) {
+            GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullName inValue = new GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullName();
             inValue.AddressElementNameData = AddressElementNameData;
-            return ((GeoDecoder.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType)(this)).SearchAddressElementByFullNameAsync(inValue);
+            return ((GeoCoding.VerificationService.VerificationWebService.wsSearchAddrElByFullNamePortType)(this)).SearchAddressElementByFullNameAsync(inValue);
         }
     }
 }

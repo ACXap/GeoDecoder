@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GeoDecoder.VerificationService
+namespace GeoCoding.VerificationService
 {
     public interface IVerificationService
     {
@@ -9,5 +9,6 @@ namespace GeoDecoder.VerificationService
         void GetMatches(Action<IEnumerable<EntityResultCompare>, Exception> callback , IEnumerable<EntityForCompare> data);
         void GetLightMatch(Action<bool, Exception> callback, EntityForCompare data);
         void CheckServiceVerification(Action<bool, Exception> callback);
+        void SettingsService(Action<Exception> callback, string connectSettings);
     }
 }

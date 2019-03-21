@@ -464,6 +464,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <WrapPanel Margin="5" Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Text="Цветовая тема приложения" />
@@ -481,7 +482,45 @@
                             </ComboBox>
                         </WrapPanel>
                         <CheckBox Content="Запускать в компактном виде" IsChecked="{Binding CanStartCompact}" Grid.Row="1" Margin="5" />
-                        <GroupBox Header="Процесс геокодирования" Grid.Row="2" Margin="2">
+                        <StackPanel Orientation="Vertical" Grid.Row="2">
+                            <CheckBox Content="Включить модуль проверки данных" Margin="5" x:Name="cbVerModule" IsChecked="{Binding CanUseVerificationModule}"/>
+                            <Expander Header="Модуль проверки данных" IsExpanded="False" Margin="2">
+                                <Expander.Style>
+                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource MetroExpander}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=cbVerModule, Path=IsChecked}" Value="True">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Expander.Style>
+                                <WrapPanel Orientation="Horizontal">
+                                    <TextBlock Text="Адрес сервера проверки" VerticalAlignment="Center"/>
+                                    <TextBox Margin="10" Text="{Binding Ver.ConnectSettings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="450"/>
+                                    <WrapPanel>
+                                        <Button Command="{Binding Ver.CommandCheckServer}"
+                                            Style="{StaticResource ButtonStopStartConnect}"
+                                            Tag="{Binding Ver.Status}"/>
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontWeight="Bold"
+                                            Text="Статус подключения:" />
+                                        <TextBlock
+                                        Margin="5"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Ver.Status}" />
+                                        <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding Ver.Status}" Width="10" Height="10"/>
+                                        <TextBox
+                            Margin="10"
+                            BorderThickness="0"
+                            Text="{Binding Ver.Error}"
+                            TextWrapping="Wrap" />
+                                    </WrapPanel>
+                                </WrapPanel>
+                            </Expander>
+                        </StackPanel>
+                        <GroupBox Header="Процесс геокодирования" Grid.Row="3" Margin="2">
                             <StackPanel Orientation="Vertical">
                                 <Grid>
                                     <Grid.RowDefinitions>

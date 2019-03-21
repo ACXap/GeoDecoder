@@ -116,6 +116,7 @@
     <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Model\NetProxyModel.cs" />
     <Compile Include="Model\NotificationsModel.cs" />
+    <Compile Include="Model\VerificationModel.cs" />
     <Compile Include="UserControls\FlyoutSql.xaml.cs">
       <DependentUpon>FlyoutSql.xaml</DependentUpon>
     </Compile>
@@ -133,6 +134,7 @@
     </Compile>
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\StatisticsViewModel.cs" />
+    <Compile Include="ViewModel\VerificationViewModel.cs" />
     <Page Include="CompactMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,9 +262,9 @@
       <Project>{ef2fbc95-76f0-4851-a5ae-3efa6aca4ccf}</Project>
       <Name>GeoCoding.BDService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GeoDecoder.Verification\GeoDecoder.VerificationService.csproj">
+    <ProjectReference Include="..\GeoDecoder.Verification\GeoCoding.VerificationService.csproj">
       <Project>{ce899cee-c4e1-4ce8-a963-1a4ede572d50}</Project>
-      <Name>GeoDecoder.VerificationService</Name>
+      <Name>GeoCoding.VerificationService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

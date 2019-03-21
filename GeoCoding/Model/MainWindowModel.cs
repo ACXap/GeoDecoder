@@ -582,13 +582,15 @@ namespace GeoCoding
         /// Метод для получения настроек приложения
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: ошибка, настройки файлов, настройки геокодирования, настройки фтп-сервера</param>
-        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, BDSettings, NotificationSettings, NetSettings, string, bool> callback)
+        public void GetSettings(Action<Exception, FilesSettings, GeoCodSettings, FTPSettings, BDSettings, NotificationSettings, NetSettings, string, bool, string, bool> callback)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
             var curDir = Environment.CurrentDirectory;
             string color = p.ColorTheme;
             bool canStartCompact = p.CanStartCompact;
+            string verServer = string.Empty;
+            bool verModule = p.CanUseVerificationModule;
 
             FilesSettings f = new FilesSettings()
             {
@@ -670,6 +672,7 @@ namespace GeoCoding
                 }
             }, p.BDPassword);
 
+
             NotificationSettings ns = new NotificationSettings()
             {
                 CanNotificationDataEmpty = p.CanNotificationDataEmpty,
@@ -694,7 +697,16 @@ namespace GeoCoding
                     Port = p.ProxyPort
                 }
             };
-            callback(error, f, g, ftp, bds, ns, nset, color, canStartCompact);
+
+            Helpers.ProtectedDataDPAPI.DecryptData((d,e)=>
+            {
+                if(e==null)
+                {
+                    verServer = d;
+                }
+            }, p.VerificationServer);
+
+            callback(error, f, g, ftp, bds, ns, nset, color, canStartCompact, verServer, verModule);
         }
 
         /// <summary>
@@ -704,7 +716,7 @@ namespace GeoCoding
         /// <param name="filesSettings">Настройки файлов</param>
         /// <param name="ftpSettings">Настройки фтп-сервера</param>
         /// <param name="geoCodSettings">Настройки геокодирования</param>
-        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, BDSettings bdSettings, NotificationSettings ns, NetSettings netSettings, string color, bool comp)
+        public void SaveSettings(Action<Exception> callback, FilesSettings filesSettings, FTPSettings ftpSettings, GeoCodSettings geoCodSettings, BDSettings bdSettings, NotificationSettings ns, NetSettings netSettings, string color, bool comp, string verServer, bool verModule)
         {
             Exception error = null;
             var p = Properties.Settings.Default;
@@ -735,6 +747,7 @@ namespace GeoCoding
             p.CountProxy = geoCodSettings.CountProxy;
             p.CountRequests = geoCodSettings.CountRequests;
             p.MaxCountError = geoCodSettings.MaxCountError;
+            p.CanUseVerificationModule = verModule;
 
             // ФТП-сервер пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
@@ -781,6 +794,15 @@ namespace GeoCoding
                     p.BDPassword = d;
                 }
             }, bdSettings.Password);
+
+            // Сервер проверки адресов шифруем
+            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    p.VerificationServer = d;
+                }
+            }, verServer);
 
             p.CanNotificationProcessCancel = ns.CanNotificationProcessCancel;
             p.CanNotificationDataEmpty = ns.CanNotificationDataEmpty;

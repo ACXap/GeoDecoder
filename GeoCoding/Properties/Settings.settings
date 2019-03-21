@@ -158,5 +158,11 @@
     <Setting Name="MaxCountErrorForProxy" Type="System.String" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
+    <Setting Name="VerificationServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CanUseVerificationModule" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

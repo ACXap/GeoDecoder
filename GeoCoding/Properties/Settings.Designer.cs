@@ -631,5 +631,29 @@ namespace GeoCoding.Properties {
                 this["MaxCountErrorForProxy"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string VerificationServer {
+            get {
+                return ((string)(this["VerificationServer"]));
+            }
+            set {
+                this["VerificationServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanUseVerificationModule {
+            get {
+                return ((bool)(this["CanUseVerificationModule"]));
+            }
+            set {
+                this["CanUseVerificationModule"] = value;
+            }
+        }
     }
 }

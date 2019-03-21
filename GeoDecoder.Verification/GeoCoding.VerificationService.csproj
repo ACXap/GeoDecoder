@@ -7,8 +7,8 @@
     <ProjectGuid>{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GeoDecoder.VerificationService</RootNamespace>
-    <AssemblyName>GeoDecoder.VerificationService</AssemblyName>
+    <RootNamespace>GeoCoding.VerificationService</RootNamespace>
+    <AssemblyName>GeoCoding.VerificationService</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -58,10 +58,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\VerificationWebService\GeoDecoder.VerificationService.VerificationWebService.AddressElementNameResponse.datasource">
+    <None Include="Connected Services\VerificationWebService\GeoCoding.VerificationService.VerificationWebService.AddressElementNameResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\VerificationWebService\GeoDecoder.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse.datasource">
+    <None Include="Connected Services\VerificationWebService\GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\VerificationWebService\ws_SearchAddressElementByFullName.wsdl" />
