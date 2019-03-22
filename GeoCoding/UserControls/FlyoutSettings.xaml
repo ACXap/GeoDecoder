@@ -49,32 +49,6 @@
                             <CheckBox Content="Включить модуль работы с базой данных" Margin="5,2" x:Name="cbCanBd" IsChecked="True"/>
                             <CheckBox Content="Включить модуль работы с фтп-сервером" Margin="5,2" x:Name="cbCanFtp" IsChecked="True"/>
                         </WrapPanel>
-                        <GroupBox Header="Процесс геокодирования" Grid.Row="3" Margin="2">
-                            <StackPanel Orientation="Vertical">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0" />
-                                    <RadioButton
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Content="Несколько запросов в параллель"
-                                    Margin="20,1,0,1"
-                                    x:Name="rbParallel" IsChecked="{Binding GeoCodSettings.IsMultipleRequests}" />
-                                    <TextBox Grid.Row="1" Text="{Binding GeoCodSettings.CountRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-5" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}" />
-                                    <RadioButton Grid.Row="2" IsChecked="{Binding GeoCodSettings.IsMultipleProxy}" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,1,0,1" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
-                                    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-20" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}" />
-                                </Grid>
-                            </StackPanel>
-                        </GroupBox>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -424,9 +398,10 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <CheckBox
-                            Grid.Row="0"
+                            Grid.Row="2"
                             Margin="5"
                             Content="Геокодировать сразу после выбора файла"
                             IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
@@ -434,7 +409,29 @@
                             <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" ToolTip="Количество подряд ошибок до прекращения обработки данных программой" />
                             <TextBox Controls:TextBoxHelper.Watermark="10-100" Margin="3" Width="80" Text="{Binding GeoCodSettings.MaxCountError}" />
                         </StackPanel>
-                        <GroupBox Grid.Row="2" Header="Какие объекты геокодировать">
+                        <Grid Grid.Row="0" Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0" />
+                            <RadioButton
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Content="Несколько запросов в параллель"
+                                    Margin="20,1,0,1"
+                                    x:Name="rbParallel" IsChecked="{Binding GeoCodSettings.IsMultipleRequests}" />
+                            <TextBox Grid.Row="1" Text="{Binding GeoCodSettings.CountRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-5" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}" />
+                            <RadioButton Grid.Row="2" IsChecked="{Binding GeoCodSettings.IsMultipleProxy}" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,1,0,1" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
+                            <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-20" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}" />
+                        </Grid>
+                        <GroupBox Grid.Row="3" Header="Какие объекты геокодировать">
                             <WrapPanel Orientation="Vertical">
                                 <RadioButton
                                     Grid.Row="0"
@@ -458,7 +455,7 @@
                                     IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
                             </WrapPanel>
                         </GroupBox>
-                        <GroupBox Grid.Row="3" Header="Что делаем сразу после геокодирования">
+                        <GroupBox Grid.Row="4" Header="Что делаем сразу после геокодирования">
                             <WrapPanel Orientation="Vertical">
                                 <CheckBox
                                     Margin="5"
@@ -481,7 +478,7 @@
                                     IsChecked="{Binding GeoCodSettings.CanSaveStatistics}" />
                             </WrapPanel>
                         </GroupBox>
-                        <GroupBox Grid.Row="4" Header="Какой используем геокодер">
+                        <GroupBox Grid.Row="5" Header="Какой используем геокодер">
                             <WrapPanel Orientation="Vertical">
                                 <ComboBox
                                     Margin="5,2"
@@ -519,22 +516,22 @@
                                             Tag="{Binding Ver.Status}" />
                         <TextBlock
                                             VerticalAlignment="Center"
-                                            FontWeight="Bold"
+                                            FontWeight="Bold" Margin="10,0"
                                             Text="Статус подключения:" />
                         <TextBlock
-                                        Margin="5"
+                                        Margin="10,0"
                                         VerticalAlignment="Center"
                                         Text="{Binding Ver.Status}" />
+                        
                         <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding Ver.Status}" Width="10" Height="10" />
-                        <TextBox
-                            Margin="10"
-                            BorderThickness="0"
-                            Text="{Binding Ver.Error}"
-                            TextWrapping="Wrap" />
+                    </WrapPanel>
+                    <WrapPanel Grid.Row="2" Grid.Column="2">
+                            <TextBox 
+                            BorderThickness="0" Margin="5"
+                            Text="{Binding Ver.Error}" TextWrapping="Wrap" MaxHeight="150" VerticalScrollBarVisibility="Auto"/>
                     </WrapPanel>
                 </Grid>
             </TabItem>
-
             <TabItem Header="Сеть">
                 <GroupBox Header="Параметры сети" Margin="2">
                     <WrapPanel Orientation="Vertical">

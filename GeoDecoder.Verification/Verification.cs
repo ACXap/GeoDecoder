@@ -26,7 +26,12 @@ namespace GeoCoding.VerificationService
             {
                 using (var client = new VerificationWebService.wsSearchAddrElByFullNamePortTypeClient(_binding, _address))
                 {
-                    client.Open();
+                    var address = new VerificationWebService.AddressElementNameDataAddressElementFullNameGroup[]
+                        {
+                                    new VerificationWebService.AddressElementNameDataAddressElementFullNameGroup(){FullAddress = "Россия"}
+                        };
+                    var r = client.SearchAddressElementByFullName(new VerificationWebService.AddressElementNameData() { AddressElementFullNameList = address });
+
                 }
             }
             catch (Exception ex)
