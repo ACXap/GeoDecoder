@@ -103,51 +103,8 @@ namespace GeoCoding
                                 }
                             }
                         }
-
                     }, geo);
-
-
                 });
-
-                //List<VerificationService.EntityForCompare> list = data.Select(x =>
-                //{
-                //    x.Status = StatusCompareType.CompareNow;
-                //    return new VerificationService.EntityForCompare()
-                //    {
-                //        Data = x.GeoCode.MainGeoCod.AddressWeb
-                //    };
-                //}).ToList();
-
-                //_verification.GetId(e =>
-                //{
-                //    if (e != null)
-                //    {
-                //        error = e;
-                //    }
-                //    else
-                //    {
-                //        foreach (var item in list)
-                //        {
-                //            var i = data.FirstOrDefault(x => x.GeoCode.MainGeoCod.AddressWeb == item.Data);
-                //            i.Status = StatusCompareType.OK;
-                //            i.GlobalIdAfterCompare = item.Id;
-
-                //            if (i.GlobalIdAfterCompare == i.GeoCode.GlobalID)
-                //            {
-                //                i.Qcode = 1;
-                //            }
-                //            else
-                //            {
-                //                i.Qcode = 2;
-                //            }
-
-                //            if (i.Qcode != i.GeoCode.MainGeoCod.Qcode)
-                //            {
-                //                i.IsNotMatch = true;
-                //            }
-                //        }
-                //    }
-                //}, list);
 
                 callback(error);
             }, t);

@@ -96,7 +96,7 @@
             </Grid.ColumnDefinitions>
 
             <!--  Вкладки Файл, БД  -->
-            <TabControl
+            <TabControl 
                 Grid.Column="0"
                 Controls:TabControlHelper.Underlined="TabPanel"
                 TabStripPlacement="Left">
@@ -107,7 +107,7 @@
                         <TextBlock Style="{StaticResource TextBlockFile}" />
                     </TabItem.Header>
 
-                    <!--  Панель работы с входным файлом  -->
+                    <!--  Панель работы с входным файлом -->
                     <Border Style="{StaticResource BorderMain}">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -116,7 +116,7 @@
                             </Grid.RowDefinitions>
 
                             <!--  Имя входного файла с данными  -->
-                            <TextBox
+                            <TextBox  
                                 Grid.Row="0"
                                 Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
                                 IsReadOnly="True"
@@ -158,11 +158,11 @@
                                 </StackPanel>
 
                                 <!--  Выбор файла с данными, открываем проводник  -->
-                                <Button
+                                <Button TabIndex="0"
                                     Grid.Column="2"
                                     Command="{Binding CommandGetFile}"
                                     Style="{StaticResource ButtonMainStyle}" Content="Выбрать файл с данными"
-                                    ToolTip="Открытие диалога выбора файла с данными" />
+                                    ToolTip="Открытие диалога выбора файла с данными"  />
                             </Grid>
                         </Grid>
                     </Border>
@@ -173,6 +173,8 @@
                     <TabItem.Header>
                         <TextBlock Style="{StaticResource TextBlockFolderFiles}" />
                     </TabItem.Header>
+                   
+                    <!-- Панель работы с sql-запросом -->
                     <Border Style="{StaticResource BorderMain}">
                         <Grid>
                             <Grid Grid.Row="1">
@@ -187,11 +189,13 @@
                                     x:Name="tbFilesList"
                                     Grid.Column="2"
                                     Margin="2"
-                                    Padding="2" Height="50" Width="110"
+                                    Padding="2" Height="50" Width="90"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
-                                    Content="СПИСОК ФАЙЛОВ" FontSize="10"
-                                    ToolTip="Открытие окна для формирования списка файлов для обработки" />
+                                    FontSize="10"
+                                    ToolTip="Открытие окна для формирования списка файлов для обработки">
+                                    <TextBlock Text="СПИСОК ФАЙЛОВ" TextWrapping="Wrap"/>
+                                </ToggleButton>
                             </Grid>
                         </Grid>
                     </Border>
@@ -876,6 +880,17 @@
 
                 <!--  Юзер-контрол для отображения настроек приложения  -->
                 <uc:FlyoutSettings />
+            </Controls:Flyout>
+
+            <!--  Список файлов  -->
+            <Controls:Flyout
+                MaxWidth="900"
+                MaxHeight="500"
+                Header="Список файлов"
+                IsOpen="{Binding ElementName=tbFilesList, Path=IsChecked}"
+                Position="Left"
+                Style="{StaticResource FlyoutStyleMain}">
+
             </Controls:Flyout>
 
             <!--  Запрос к базе данных  -->
