@@ -45,9 +45,9 @@
                                 </ComboBox>
                             </WrapPanel>
                             <CheckBox Content="Запускать в компактном виде" IsChecked="{Binding CanStartCompact}" Grid.Row="1" Margin="5,2" />
-                            <CheckBox Content="Включить модуль проверки данных" Margin="5,2" x:Name="cbVerModule" IsChecked="{Binding CanUseVerificationModule}"/>
-                            <CheckBox Content="Включить модуль работы с базой данных" Margin="5,2"/>
-                            <CheckBox Content="Включить модуль работы с фтп-сервером" Margin="5,2"/>
+                            <CheckBox Content="Включить модуль проверки данных" Margin="5,2" x:Name="cbVerModule" IsChecked="{Binding CanUseVerificationModule}" />
+                            <CheckBox Content="Включить модуль работы с базой данных" Margin="5,2" x:Name="cbCanBd" IsChecked="True"/>
+                            <CheckBox Content="Включить модуль работы с фтп-сервером" Margin="5,2" x:Name="cbCanFtp" IsChecked="True"/>
                         </WrapPanel>
                         <GroupBox Header="Процесс геокодирования" Grid.Row="3" Margin="2">
                             <StackPanel Orientation="Vertical">
@@ -197,7 +197,7 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="FTP сервер">
+            <TabItem Header="FTP сервер" Visibility="{Binding ElementName=cbCanFtp,  Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -310,7 +310,7 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="База данных">
+            <TabItem Header="База данных" Visibility="{Binding ElementName=cbCanBd, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -495,11 +495,10 @@
                                 </ComboBox>
                             </WrapPanel>
                         </GroupBox>
-                        
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Проверка данных">
+            <TabItem Header="Проверка данных" Visibility="{Binding ElementName=cbVerModule, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -511,32 +510,31 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Адрес сервера проверки" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Адрес сервера проверки" VerticalAlignment="Center" />
                     <TextBox Grid.Column="2" Grid.Row="0" Margin="5" Controls:TextBoxHelper.Watermark="http://example.com" Text="{Binding Ver.ConnectSettings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-
                     <WrapPanel Grid.Row="1" Grid.Column="2">
-                                <Button Command="{Binding Ver.CommandCheckServer}"
+                        <Button Command="{Binding Ver.CommandCheckServer}"
                                             Style="{StaticResource ButtonStopStartConnect}"
-                                            Tag="{Binding Ver.Status}"/>
-                                <TextBlock
+                                            Tag="{Binding Ver.Status}" />
+                        <TextBlock
                                             VerticalAlignment="Center"
                                             FontWeight="Bold"
                                             Text="Статус подключения:" />
-                                <TextBlock
+                        <TextBlock
                                         Margin="5"
                                         VerticalAlignment="Center"
                                         Text="{Binding Ver.Status}" />
-                                <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding Ver.Status}" Width="10" Height="10"/>
-                                <TextBox
+                        <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding Ver.Status}" Width="10" Height="10" />
+                        <TextBox
                             Margin="10"
                             BorderThickness="0"
                             Text="{Binding Ver.Error}"
                             TextWrapping="Wrap" />
-                            </WrapPanel>
+                    </WrapPanel>
                 </Grid>
             </TabItem>
-            
+
             <TabItem Header="Сеть">
                 <GroupBox Header="Параметры сети" Margin="2">
                     <WrapPanel Orientation="Vertical">
