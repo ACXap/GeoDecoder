@@ -1,6 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -54,9 +53,24 @@ namespace GeoCoding
         private bool _canCompareGoodData = false;
 
         /// <summary>
+        /// Поле запущена ли процедура сравнения данных
+        /// </summary>
+        private bool _isStartCompare = false;
+
+        /// <summary>
         /// Поле для хранения ссылки на команду проверки подключения к сереру
         /// </summary>
         private RelayCommand _commandCheckServer;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду зафиксировать изменения данных проверки
+        /// </summary>
+        private RelayCommand _commandCommitChanges;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду остановки проверки данных
+        /// </summary>
+        private RelayCommand _commandStopCompare;
 
         #endregion PrivateField
 
@@ -121,6 +135,15 @@ namespace GeoCoding
         }
 
         /// <summary>
+        /// Запущена ли процедура сравнения данных
+        /// </summary>
+        public bool IsStartCompare
+        {
+            get => _isStartCompare;
+            set => Set(ref _isStartCompare, value);
+        }
+
+        /// <summary>
         /// Сверять только точные данные
         /// </summary>
         public bool CanCompareGoodData
@@ -132,6 +155,26 @@ namespace GeoCoding
         #endregion PublicProperties
 
         #region PrivateMethod
+
+        /// <summary>
+        /// Метод фильтрации коллекции
+        /// </summary>
+        /// <param name="item">Объект фильтрации</param>
+        /// <returns>Возвращает истину если объект проходит критерий</returns>
+        private bool CustomerFilter(object item)
+        {
+            EntityForCompare customer = item as EntityForCompare;
+            if (_canCompareAllData)
+            {
+                return customer.GeoCode.MainGeoCod?.Qcode == 1 || customer.GeoCode.MainGeoCod?.Qcode == 2;
+            }
+            else
+            {
+                return customer.GeoCode.MainGeoCod?.Qcode == 1;
+            }
+
+        }
+
         #endregion PrivateMethod
 
         #region PublicMethod
@@ -150,6 +193,16 @@ namespace GeoCoding
             CustomerView.Filter = CustomerFilter;
 
             CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
+        }
+
+        /// <summary>
+        /// Метод обновления информации проверки данных
+        /// </summary>
+        public void Update()
+        {
+            _customerView.Refresh();
+            CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
+            CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
         }
 
         #endregion PublicMethod
@@ -182,9 +235,31 @@ namespace GeoCoding
                 });
             }));
 
+        /// <summary>
+        /// Команда для фиксации данных после проверки
+        /// </summary>
+        public RelayCommand CommandCommitChanges =>
+        _commandCommitChanges ?? (_commandCommitChanges = new RelayCommand(
+                    () =>
+                    {
+                        var list = _collection.Where(x => x.IsChanges);
+                        foreach (var item in list)
+                        {
+                            item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                        }
+                    }, () => _collection != null && _collection.Any()));
+
+        /// <summary>
+        /// Команда для остановки проверки данных
+        /// </summary>
+        public RelayCommand CommandStopCompare =>
+        _commandStopCompare ?? (_commandStopCompare = new RelayCommand(
+                    () =>
+                    {
+                        _model.StopCompare();
+                    }));
+
         #endregion PublicCommand
-
-
 
         private int _countGood = 0;
         /// <summary>
@@ -195,7 +270,6 @@ namespace GeoCoding
             get => _countGood;
             set => Set(ref _countGood, value);
         }
-
 
         private int _countGoodAfterCompare = 0;
         /// <summary>
@@ -217,7 +291,7 @@ namespace GeoCoding
 
                         if (_canCompareAllData)
                         {
-                            list = _collection.Where(x => x.GeoCode.MainGeoCod != null && (x.GeoCode.MainGeoCod.Qcode == 1 || x.GeoCode.MainGeoCod.Qcode == 2)).ToList();
+                            list = _collection.Where(x => x.GeoCode.MainGeoCod != null).ToList();
                         }
                         else if (_canCompareGoodData)
                         {
@@ -231,60 +305,23 @@ namespace GeoCoding
 
                              if (e == null)
                              {
-                                 
- 
+
                              }
                              else
                              {
 
                              }
                          }, list);
-                    }));
-
-        private bool CustomerFilter(object item)
-        {
-            EntityForCompare customer = item as EntityForCompare;
-            if(_canCompareAllData)
-            {
-                return customer.GeoCode.MainGeoCod?.Qcode == 1 || customer.GeoCode.MainGeoCod?.Qcode == 2;
-            }
-            else
-            {
-                return customer.GeoCode.MainGeoCod?.Qcode == 1;
-            }
-            
-        }
-
-        private RelayCommand _commandStopCompare;
-        public RelayCommand CommandStopCompare =>
-        _commandStopCompare ?? (_commandStopCompare = new RelayCommand(
-                    () =>
-                    {
-                        _model.StopCompare();
-                    }));
+                    }, () => _collection != null && _collection.Any()));
 
 
-        private RelayCommand _commandCommitChanges;
-        public RelayCommand CommandCommitChanges =>
-        _commandCommitChanges ?? (_commandCommitChanges = new RelayCommand(
-                    () =>
-                    {
-                        var list = _collection.Where(x => x.IsChanges);
-                        foreach (var item in list)
-                        {
-                            item.GeoCode.MainGeoCod.Qcode = item.Qcode;
-                        }
-                    }));
 
-        private bool _isStartCompare = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsStartCompare
-        {
-            get => _isStartCompare;
-            set => Set(ref _isStartCompare, value);
-        }
+
+
+
+
+
+
 
         public VerificationViewModel(string connectionString)
         {

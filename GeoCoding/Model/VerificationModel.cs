@@ -88,19 +88,9 @@ namespace GeoCoding
                                 o.Status = StatusCompareType.OK;
                                 o.GlobalIdAfterCompare = i.Id;
 
-                                if (o.GlobalIdAfterCompare == o.GeoCode.GlobalID)
-                                {
-                                    o.Qcode = 1;
-                                }
-                                else
-                                {
-                                    o.Qcode = 2;
-                                }
+                                o.Qcode = o.GlobalIdAfterCompare == o.GeoCode.GlobalID ? (byte)1 : (byte)2;
 
-                                if (o.Qcode != o.GeoCode.MainGeoCod.Qcode)
-                                {
-                                    o.IsChanges = true;
-                                }
+                                o.IsChanges = o.Qcode != o.GeoCode.MainGeoCod.Qcode;
                             }
                         }
                     }, geo);
