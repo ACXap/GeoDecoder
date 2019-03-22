@@ -233,9 +233,12 @@ namespace GeoCoding
         /// </summary>
         public void Update()
         {
-            _customerView.Refresh();
-            CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
-            CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+            if(_collection!=null && _customerView!=null)
+            {
+                _customerView.Refresh();
+                CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
+                CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+            }
         }
 
         #endregion PublicMethod
@@ -266,7 +269,7 @@ namespace GeoCoding
                         Status = StatusConnect.OK;
                     }
                 });
-            }));
+            },()=>!string.IsNullOrEmpty(_connectSettings)));
 
         /// <summary>
         /// Команда для фиксации данных после проверки
