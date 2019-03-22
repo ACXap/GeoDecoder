@@ -145,7 +145,7 @@ namespace GeoCoding
             set
             {
                 Set(ref _canCompareAllData, value);
-                _customerView.Refresh();
+                _customerView?.Refresh();
             }
         }
 
