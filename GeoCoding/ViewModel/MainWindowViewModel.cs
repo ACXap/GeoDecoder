@@ -1311,6 +1311,80 @@ namespace GeoCoding
             }
         }
 
+
+        private ObservableCollection<EntityFile> _collectionFiles;
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<EntityFile> CollectionFiles
+        {
+            get => _collectionFiles;
+            set => Set(ref _collectionFiles, value);
+        }
+
+        private RelayCommand _commandGetFiles;
+        public RelayCommand CommandGetFiles =>
+        _commandGetFiles ?? (_commandGetFiles = new RelayCommand(
+                    () =>
+                    {
+                        _model.GetFiles((d, e) =>
+                        {
+                            // Оповещаем если ошибка
+                            _notifications.Notification(NotificationType.Error, e);
+
+                            if (e == null)
+                            {
+                                SetCollectionFiles(d);
+                                GetDataAboutFiles();
+                            }
+                        });
+                    }, () => !_isStartGeoCoding));
+
+        private void SetCollectionFiles(IEnumerable<string> d)
+        {
+            if (d != null && d.Any())
+            {
+                if (_collectionFiles == null || !_collectionFiles.Any())
+                {
+                    CollectionFiles = new ObservableCollection<EntityFile>(d.Select(x =>
+                    {
+                        return new EntityFile() { NameFile = x };
+                    }));
+                }
+                else
+                {
+                    foreach (var item in d)
+                    {
+                        _collectionFiles.Add(new EntityFile() { NameFile = item });
+                    }
+                }
+            }
+        }
+
+        private void GetDataAboutFiles()
+        {
+            IsStartGetDataAboutFiles = true;
+
+            _model.GetDataAboutFiles(e =>
+            {
+                if (e == null)
+                {
+                    IsStartGetDataAboutFiles = false;
+                }
+            }, _collectionFiles);
+
+        }
+
+        private bool _isStartGetDataAboutFiles = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsStartGetDataAboutFiles
+        {
+            get => _isStartGetDataAboutFiles;
+            set => Set(ref _isStartGetDataAboutFiles, value);
+        }
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>

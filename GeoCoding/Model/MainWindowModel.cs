@@ -79,6 +79,42 @@ namespace GeoCoding
             callback(file, error);
         }
 
+        public void GetFiles(Action<IEnumerable<string>, Exception> callback, string defaultFolder = "")
+        {
+            Exception error = null;
+            string[] data = null;
+
+            _fileService.GetFiles((d, e) =>
+            {
+                data = d?.ToArray();
+                error = e;
+            }, defaultFolder);
+
+            callback(data, error);
+        }
+
+        public async void GetDataAboutFiles(Action<Exception> callback, IEnumerable<EntityFile> data)
+        {
+            Exception error = null;
+
+            await Task.Factory.StartNew(() =>
+            {
+                foreach (var item in data)
+                {
+                    _fileService.GetCountRecord((i, e) =>
+                    {
+                        if (e == null)
+                        {
+                            item.Count = i;
+                        }
+                    }, item.NameFile);
+                }
+
+                callback(error);
+            });
+
+        }
+
         /// <summary>
         /// Метод для получения(выбора) файла для сохранения данных
         /// </summary>
@@ -698,9 +734,9 @@ namespace GeoCoding
                 }
             };
 
-            Helpers.ProtectedDataDPAPI.DecryptData((d,e)=>
+            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
             {
-                if(e==null)
+                if (e == null)
                 {
                     verServer = d;
                 }

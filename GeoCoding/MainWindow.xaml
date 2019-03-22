@@ -891,6 +891,8 @@
                 Position="Left"
                 Style="{StaticResource FlyoutStyleMain}">
 
+                <!-- Юзер-контрол для работы со списком файлов -->
+                <uc:FlyoutFilesList/>
             </Controls:Flyout>
 
             <!--  Запрос к базе данных  -->

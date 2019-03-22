@@ -67,6 +67,41 @@ namespace GeoCoding.FileService
         }
 
         /// <summary>
+        /// Метод выбора файлов с данными
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами список файлов и ошибка</param>
+        /// <param name="defaultFolder">Имя папки по умолчанию для открытия</param>
+        public void GetFiles(Action<IEnumerable<string>, Exception> callback, string defaultFolder = "")
+        {
+            Exception error = null;
+            string[] data = null;
+
+            OpenFileDialog fd = new OpenFileDialog()
+            {
+                Multiselect = true,
+                Filter = _filterForGetFile,
+                Title = _titleFileGetDialog,
+                InitialDirectory = defaultFolder
+            };
+
+            try
+            {
+                if (fd.ShowDialog() == true)
+                {
+                    data = fd.FileNames;
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+
+            callback(data, error);
+        }
+
+
+
+        /// <summary>
         /// Метод получения данных из файла
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами множество строк и ошибка</param>
@@ -313,6 +348,36 @@ namespace GeoCoding.FileService
             }
 
             callback(data, error);
+        }
+
+        /// <summary>
+        /// Метод для подсчета строк в файле
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами количество записей и ошибка</param>
+        /// <param name="fileName">Имя файла</param>
+        public void GetCountRecord(Action<int, Exception> callback, string fileName)
+        {
+            Exception error = null;
+            int count = 0;
+
+            if (File.Exists(fileName))
+            {
+                try
+                {
+                    var data = File.ReadAllLines(fileName);
+                    count = data.Length;
+                }
+                catch (Exception ex)
+                {
+                    error = ex;
+                }
+            }
+            else
+            {
+                error = new FileNotFoundException(fileName);
+            }
+
+            callback(count, error);
         }
     }
 }

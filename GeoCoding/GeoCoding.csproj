@@ -96,6 +96,7 @@
     <Compile Include="Helpers\FlowDocumentFromFile.cs" />
     <Compile Include="Helpers\PersistGroupExpandedStateBehavior.cs" />
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
+    <Compile Include="Model\Data\EntityFile.cs" />
     <Compile Include="Model\Data\EntityForCompare.cs" />
     <Compile Include="Model\Data\Enumeration\NotificationType.cs" />
     <Compile Include="Model\Data\Enumeration\StatusCompareType.cs" />
@@ -119,6 +120,9 @@
     <Compile Include="Model\NetProxyModel.cs" />
     <Compile Include="Model\NotificationsModel.cs" />
     <Compile Include="Model\VerificationModel.cs" />
+    <Compile Include="UserControls\FlyoutFilesList.xaml.cs">
+      <DependentUpon>FlyoutFilesList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\FlyoutSql.xaml.cs">
       <DependentUpon>FlyoutSql.xaml</DependentUpon>
     </Compile>
@@ -192,6 +196,10 @@
     <Page Include="Styles\ToolTip.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\FlyoutFilesList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\FlyoutSql.xaml">
       <SubType>Designer</SubType>

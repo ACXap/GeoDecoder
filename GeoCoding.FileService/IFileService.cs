@@ -16,6 +16,20 @@ namespace GeoCoding.FileService
         void GetFile(Action<string, Exception> callback, string defaultFolder = "");
 
         /// <summary>
+        /// Метод выбора файлов с данными
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами список файлов и ошибка</param>
+        /// <param name="defaultFolder">Имя папки по умолчанию для открытия</param>
+        void GetFiles(Action<IEnumerable<string>, Exception> callback, string defaultFolder = "");
+
+        /// <summary>
+        /// Метод для подсчета строк в файле
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметрами количество записей и ошибка</param>
+        /// <param name="fileName">Имя файла</param>
+        void GetCountRecord(Action<int, Exception> callback, string fileName);
+
+        /// <summary>
         /// Метод получения данных из файла
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами множество строк и ошибка</param>
@@ -66,6 +80,5 @@ namespace GeoCoding.FileService
         void AppendData(Action<Exception> callback, IEnumerable<string> data, string file);
 
         void GetByteFromFile(Action<byte[], Exception> callback, string file);
-
     }
 }
