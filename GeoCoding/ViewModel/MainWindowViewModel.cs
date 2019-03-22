@@ -1302,7 +1302,7 @@ namespace GeoCoding
                 Set(ref _tabIndex, value);
                 if (value == 2)
                 {
-
+                    _ver?.CustomerView?.Refresh();
                 }
                 else if (value == 1)
                 {

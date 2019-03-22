@@ -24,7 +24,7 @@
 
     <Style x:Key="TextBlockIconAwesome" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
-        <Setter Property="FontSize" Value="22" />
+        <Setter Property="FontSize" Value="20" />
         <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
 
@@ -49,6 +49,11 @@
     <Style x:Key="TextBlockAddress" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
         <Setter Property="Text" Value="{StaticResource FontAwesomeAddress}" />
         <Setter Property="ToolTip" Value="Работа с одиночным адресом"/>
+    </Style>
+
+    <Style x:Key="TextBlockFolderFiles" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
+        <Setter Property="Text" Value="{StaticResource FontAwesomeFolderClose}" />
+        <Setter Property="ToolTip" Value="Работа со списком файлов"/>
     </Style>
 
     <Style x:Key="TextBlockHelp" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
@@ -110,8 +115,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
-
 
     <Style x:Key="TextBlockStatusCompare" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />

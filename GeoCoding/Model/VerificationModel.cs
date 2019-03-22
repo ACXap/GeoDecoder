@@ -99,7 +99,7 @@ namespace GeoCoding
 
                                 if (o.Qcode != o.GeoCode.MainGeoCod.Qcode)
                                 {
-                                    o.IsNotMatch = true;
+                                    o.IsChanges = true;
                                 }
                             }
                         }

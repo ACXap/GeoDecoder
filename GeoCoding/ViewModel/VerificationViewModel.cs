@@ -264,6 +264,18 @@ namespace GeoCoding
                     }));
 
 
+        private RelayCommand _commandCommitChanges;
+        public RelayCommand CommandCommitChanges =>
+        _commandCommitChanges ?? (_commandCommitChanges = new RelayCommand(
+                    () =>
+                    {
+                        var list = _collection.Where(x => x.IsChanges);
+                        foreach (var item in list)
+                        {
+                            item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                        }
+                    }));
+
         private bool _isStartCompare = false;
         /// <summary>
         /// 

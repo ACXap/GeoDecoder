@@ -24,11 +24,11 @@ namespace GeoCoding
             set => Set(ref _globalIdAfterCompare, value);
         }
 
-        private int _qCode;
+        private byte _qCode;
         /// <summary>
         /// 
         /// </summary>
-        public int Qcode
+        public byte Qcode
         {
             get => _qCode;
             set => Set(ref _qCode, value);
@@ -54,14 +54,14 @@ namespace GeoCoding
             set => Set(ref _status, value);
         }
 
-        private bool _isNotMatch;
+        private bool _isChanges;
         /// <summary>
         /// 
         /// </summary>
-        public bool IsNotMatch
+        public bool IsChanges
         {
-            get => _isNotMatch;
-            set => Set(ref _isNotMatch, value);
+            get => _isChanges;
+            set => Set(ref _isChanges, value);
         }
     }
 }
