@@ -58,6 +58,16 @@ namespace GeoCoding
         private bool _isStartCompare = false;
 
         /// <summary>
+        /// Количество точных данных
+        /// </summary>
+        private int _countGood = 0;
+
+        /// <summary>
+        /// Количество точных данных после проверки
+        /// </summary>
+        private int _countGoodAfterCompare = 0;
+
+        /// <summary>
         /// Поле для хранения ссылки на команду проверки подключения к сереру
         /// </summary>
         private RelayCommand _commandCheckServer;
@@ -66,6 +76,11 @@ namespace GeoCoding
         /// Поле для хранения ссылки на команду зафиксировать изменения данных проверки
         /// </summary>
         private RelayCommand _commandCommitChanges;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду запуска процедуры проверки
+        /// </summary>
+        private RelayCommand _commandCompare;
 
         /// <summary>
         /// Поле для хранения ссылки на команду остановки проверки данных
@@ -150,6 +165,24 @@ namespace GeoCoding
         {
             get => _canCompareGoodData;
             set => Set(ref _canCompareGoodData, value);
+        }
+
+        /// <summary>
+        /// Количество точных данных
+        /// </summary>
+        public int CountGood
+        {
+            get => _countGood;
+            set => Set(ref _countGood, value);
+        }
+
+        /// <summary>
+        /// Количество точных данных после проверки
+        /// </summary>
+        public int CountGoodAfterCompare
+        {
+            get => _countGoodAfterCompare;
+            set => Set(ref _countGoodAfterCompare, value);
         }
 
         #endregion PublicProperties
@@ -259,29 +292,9 @@ namespace GeoCoding
                         _model.StopCompare();
                     }));
 
-        #endregion PublicCommand
-
-        private int _countGood = 0;
         /// <summary>
-        /// 
+        /// Команда для запуска процедуры проверки
         /// </summary>
-        public int CountGood
-        {
-            get => _countGood;
-            set => Set(ref _countGood, value);
-        }
-
-        private int _countGoodAfterCompare = 0;
-        /// <summary>
-        /// 
-        /// </summary>
-        public int CountGoodAfterCompare
-        {
-            get => _countGoodAfterCompare;
-            set => Set(ref _countGoodAfterCompare, value);
-        }
-
-        private RelayCommand _commandCompare;
         public RelayCommand CommandCompare =>
         _commandCompare ?? (_commandCompare = new RelayCommand(
                     () =>
@@ -299,30 +312,27 @@ namespace GeoCoding
                         }
 
                         _model.CompareAsync(e =>
-                         {
-                             IsStartCompare = false;
-                             CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+                        {
+                            IsStartCompare = false;
+                            CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
 
-                             if (e == null)
-                             {
+                            if (e == null)
+                            {
 
-                             }
-                             else
-                             {
+                            }
+                            else
+                            {
 
-                             }
-                         }, list);
+                            }
+                        }, list);
                     }, () => _collection != null && _collection.Any()));
 
+        #endregion PublicCommand
 
-
-
-
-
-
-
-
-
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="connectionString">Парамтры подключения к серверу проверки</param>
         public VerificationViewModel(string connectionString)
         {
             ConnectSettings = connectionString;

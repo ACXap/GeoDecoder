@@ -27,7 +27,6 @@ namespace GeoCoding.VerificationService
                 using (var client = new VerificationWebService.wsSearchAddrElByFullNamePortTypeClient(_binding, _address))
                 {
                     client.Open();
-                    //client.Close();
                 }
             }
             catch (Exception ex)

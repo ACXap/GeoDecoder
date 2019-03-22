@@ -21,6 +21,63 @@
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <TabControl Grid.Row="0" Controls:TabControlHelper.Underlined="TabPanel">
+            <TabItem Header="Общие">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <WrapPanel Orientation="Vertical" Grid.Row="0">
+                            <WrapPanel Margin="5" Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="Цветовая тема приложения" />
+                                <ComboBox
+                            Margin="5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            ItemsSource="{Binding ListTheme}"
+                            SelectedItem="{Binding ColorTheme}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding DisplayName}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </WrapPanel>
+                            <CheckBox Content="Запускать в компактном виде" IsChecked="{Binding CanStartCompact}" Grid.Row="1" Margin="5,2" />
+                            <CheckBox Content="Включить модуль проверки данных" Margin="5,2" x:Name="cbVerModule" IsChecked="{Binding CanUseVerificationModule}"/>
+                            <CheckBox Content="Включить модуль работы с базой данных" Margin="5,2"/>
+                            <CheckBox Content="Включить модуль работы с фтп-сервером" Margin="5,2"/>
+                        </WrapPanel>
+                        <GroupBox Header="Процесс геокодирования" Grid.Row="3" Margin="2">
+                            <StackPanel Orientation="Vertical">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0" />
+                                    <RadioButton
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Content="Несколько запросов в параллель"
+                                    Margin="20,1,0,1"
+                                    x:Name="rbParallel" IsChecked="{Binding GeoCodSettings.IsMultipleRequests}" />
+                                    <TextBox Grid.Row="1" Text="{Binding GeoCodSettings.CountRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-5" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}" />
+                                    <RadioButton Grid.Row="2" IsChecked="{Binding GeoCodSettings.IsMultipleProxy}" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,1,0,1" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
+                                    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-20" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}" />
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
             <TabItem Header="Файлы и папки">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <Grid>
@@ -442,113 +499,44 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Оповещения">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <WrapPanel Orientation="Vertical" Margin="5">
-                        <CheckBox Content="Оповещать только об ошибках" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationOnlyError}" />
-                        <CheckBox Content="Оповещать о сохранении данных" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveData}" />
-                        <CheckBox Content="Оповещать о окончании процесса" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataProcessed}" />
-                        <CheckBox Content="Оповещать об отмене процесса пользователем" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationProcessCancel}" />
-                        <CheckBox Content="Оповещать об отсутствии данных для обработки" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataEmpty}" />
-                        <CheckBox Content="Оповещать о уже сохраненной статистики" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}" />
-                        <CheckBox Content="Оповещать об успехе сохранения настроек" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}" />
-                        <CheckBox Content="Оповещать ли о закрытии программы" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationExit}" />
-                    </WrapPanel>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Общие">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <WrapPanel Margin="5" Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="Цветовая тема приложения" />
-                            <ComboBox
-                            Margin="5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            ItemsSource="{Binding ListTheme}"
-                            SelectedItem="{Binding ColorTheme}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding DisplayName}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                        </WrapPanel>
-                        <CheckBox Content="Запускать в компактном виде" IsChecked="{Binding CanStartCompact}" Grid.Row="1" Margin="5" />
-                        <StackPanel Orientation="Vertical" Grid.Row="2">
-                            <CheckBox Content="Включить модуль проверки данных" Margin="5" x:Name="cbVerModule" IsChecked="{Binding CanUseVerificationModule}"/>
-                            <Expander Header="Модуль проверки данных" IsExpanded="False" Margin="2">
-                                <Expander.Style>
-                                    <Style TargetType="{x:Type Expander}" BasedOn="{StaticResource MetroExpander}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=cbVerModule, Path=IsChecked}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Expander.Style>
-                                <WrapPanel Orientation="Horizontal">
-                                    <TextBlock Text="Адрес сервера проверки" VerticalAlignment="Center"/>
-                                    <TextBox Margin="10" Text="{Binding Ver.ConnectSettings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="450"/>
-                                    <WrapPanel>
-                                        <Button Command="{Binding Ver.CommandCheckServer}"
+            <TabItem Header="Проверка данных">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Адрес сервера проверки" VerticalAlignment="Center"/>
+                    <TextBox Grid.Column="2" Grid.Row="0" Margin="5" Controls:TextBoxHelper.Watermark="http://example.com" Text="{Binding Ver.ConnectSettings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+
+                    <WrapPanel Grid.Row="1" Grid.Column="2">
+                                <Button Command="{Binding Ver.CommandCheckServer}"
                                             Style="{StaticResource ButtonStopStartConnect}"
                                             Tag="{Binding Ver.Status}"/>
-                                        <TextBlock
+                                <TextBlock
                                             VerticalAlignment="Center"
                                             FontWeight="Bold"
                                             Text="Статус подключения:" />
-                                        <TextBlock
+                                <TextBlock
                                         Margin="5"
                                         VerticalAlignment="Center"
                                         Text="{Binding Ver.Status}" />
-                                        <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding Ver.Status}" Width="10" Height="10"/>
-                                        <TextBox
+                                <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding Ver.Status}" Width="10" Height="10"/>
+                                <TextBox
                             Margin="10"
                             BorderThickness="0"
                             Text="{Binding Ver.Error}"
                             TextWrapping="Wrap" />
-                                    </WrapPanel>
-                                </WrapPanel>
-                            </Expander>
-                        </StackPanel>
-                        <GroupBox Header="Процесс геокодирования" Grid.Row="3" Margin="2">
-                            <StackPanel Orientation="Vertical">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="10" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0" />
-                                    <RadioButton
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Content="Несколько запросов в параллель"
-                                    Margin="20,1,0,1"
-                                    x:Name="rbParallel" IsChecked="{Binding GeoCodSettings.IsMultipleRequests}" />
-                                    <TextBox Grid.Row="1" Text="{Binding GeoCodSettings.CountRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-5" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}" />
-                                    <RadioButton Grid.Row="2" IsChecked="{Binding GeoCodSettings.IsMultipleProxy}" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,1,0,1" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
-                                    <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-20" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}" />
-                                </Grid>
-                            </StackPanel>
-                        </GroupBox>
-                    </Grid>
-                </ScrollViewer>
+                            </WrapPanel>
+                </Grid>
             </TabItem>
+            
             <TabItem Header="Сеть">
                 <GroupBox Header="Параметры сети" Margin="2">
                     <WrapPanel Orientation="Vertical">
@@ -645,6 +633,20 @@
                         </DataGrid>
                     </WrapPanel>
                 </GroupBox>
+            </TabItem>
+            <TabItem Header="Оповещения">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <WrapPanel Orientation="Vertical" Margin="5">
+                        <CheckBox Content="Оповещать только об ошибках" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationOnlyError}" />
+                        <CheckBox Content="Оповещать о сохранении данных" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveData}" />
+                        <CheckBox Content="Оповещать о окончании процесса" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataProcessed}" />
+                        <CheckBox Content="Оповещать об отмене процесса пользователем" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationProcessCancel}" />
+                        <CheckBox Content="Оповещать об отсутствии данных для обработки" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataEmpty}" />
+                        <CheckBox Content="Оповещать о уже сохраненной статистики" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}" />
+                        <CheckBox Content="Оповещать об успехе сохранения настроек" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}" />
+                        <CheckBox Content="Оповещать ли о закрытии программы" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationExit}" />
+                    </WrapPanel>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
         <Button

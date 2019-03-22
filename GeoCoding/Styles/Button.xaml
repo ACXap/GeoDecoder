@@ -119,7 +119,7 @@
                             </Grid.RowDefinitions>
                             <Controls:ContentControlEx Grid.Row="0"
                         VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Content="Стоп" ToolTip="Остановить геокодирование"
+                        Content="Стоп" ToolTip="Остановить"
                         ContentCharacterCasing="Upper" />
                             <!--<TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
                             <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" EllipseDiameter="7"/>-->
