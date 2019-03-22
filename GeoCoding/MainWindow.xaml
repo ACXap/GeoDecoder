@@ -184,6 +184,9 @@
                                     <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
 
+                                <TextBlock Grid.Column="0" Text="Выбрано файлов: " Margin="5" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="{Binding CollectionFiles.Count}" Margin="5"/>
+
                                 <!--  Открытие панели пользовательского sql-запроса  -->
                                 <ToggleButton
                                     x:Name="tbFilesList"

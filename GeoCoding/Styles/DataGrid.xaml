@@ -34,6 +34,22 @@
             Header="Очистить коллекцию" />
     </ContextMenu>
 
+    <ContextMenu x:Key="ContextMenuRowFilesList">
+        <MenuItem
+            
+            CommandParameter="{Binding}"
+            Header="Выполнить геокодирование" />
+        <Separator />
+        <MenuItem
+            Command="{Binding DataContext.CommandRemoveFilesFromCollection, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Удалить файл" />
+        <MenuItem
+            Command="{Binding DataContext.CommandClearCollectionFiles, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Очистить коллекцию" />
+    </ContextMenu>
+
     <!-- Стиль основной для строк -->
     <Style
         x:Key="DataGridMainRow"
@@ -45,6 +61,19 @@
                 <ToolTip Style="{StaticResource ToolTipDataGrid}" />
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!-- Стиль основной для строк -->
+    <Style
+        x:Key="DataGridRowFilesList"
+        BasedOn="{StaticResource MetroDataGridRow}"
+        TargetType="{x:Type DataGridRow}">
+        <Setter Property="ContextMenu" Value="{StaticResource ContextMenuRowFilesList}" />
+        <!--<Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{StaticResource ToolTipDataGrid}" />
+            </Setter.Value>
+        </Setter>-->
     </Style>
 
     <!-- Стиль для строк основной таблицы данных -->
@@ -88,5 +117,9 @@
         <Setter Property="VirtualizingPanel.IsContainerVirtualizable" Value="True" />
         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
         <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True" />
+    </Style>
+
+    <Style x:Key="DataGridCollectionFiles" BasedOn="{StaticResource DataGridMain}" TargetType="{x:Type DataGrid}">
+        <Setter Property="RowStyle" Value="{StaticResource DataGridRowFilesList}"/>
     </Style>
 </ResourceDictionary>

@@ -658,7 +658,7 @@ namespace GeoCoding
                         if (obj.Data.GetDataPresent(DataFormats.FileDrop, true) == true)
                         {
                             var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
-                            if (a.Length > 0)
+                            if (a.Length == 1)
                             {
                                 if (a[0].Contains(".ini"))
                                 {
@@ -668,6 +668,10 @@ namespace GeoCoding
                                 {
                                     SetFileInput(a[0]);
                                 }
+                            }
+                            else if (a.Length > 1)
+                            {
+                                SetCollectionFiles(a);
                             }
                         }
                     }, obj => !_isStartGeoCoding));
@@ -1311,7 +1315,6 @@ namespace GeoCoding
             }
         }
 
-
         private ObservableCollection<EntityFile> _collectionFiles;
         /// <summary>
         /// 
@@ -1335,10 +1338,25 @@ namespace GeoCoding
                             if (e == null)
                             {
                                 SetCollectionFiles(d);
-                                GetDataAboutFiles();
                             }
                         });
                     }, () => !_isStartGeoCoding));
+
+        private RelayCommand _commandClearCollectionFiles;
+        public RelayCommand CommandClearCollectionFiles =>
+        _commandClearCollectionFiles ?? (_commandClearCollectionFiles = new RelayCommand(
+                    () =>
+                    {
+                        CollectionFiles?.Clear();
+                    }, () => !_isStartGeoCoding && _collectionFiles != null && _collectionFiles.Any()));
+
+        private RelayCommand<EntityFile> _commandRemoveFilesFromCollection;
+        public RelayCommand<EntityFile> CommandRemoveFilesFromCollection =>
+        _commandRemoveFilesFromCollection ?? (_commandRemoveFilesFromCollection = new RelayCommand<EntityFile>(
+                    obj =>
+                    {
+                        _collectionFiles.Remove(obj);
+                    }, !_isStartGeoCoding));
 
         private void SetCollectionFiles(IEnumerable<string> d)
         {
@@ -1350,6 +1368,8 @@ namespace GeoCoding
                     {
                         return new EntityFile() { NameFile = x };
                     }));
+
+                    GetDataAboutFiles();
                 }
                 else
                 {

@@ -17,7 +17,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" Margin="5" Style="{StaticResource DataGridMain}" ItemsSource="{Binding CollectionFiles}">
+        <DataGrid Grid.Row="0" Margin="5" Style="{StaticResource DataGridCollectionFiles}" ItemsSource="{Binding CollectionFiles}">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="Имя файла" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
@@ -39,6 +39,10 @@
             Margin="0,10,30,10"
             Padding="5" Command="{Binding CommandGetFiles}"
             HorizontalAlignment="Right"/>
+        <Button Content="Очистить" Grid.Row="1"  Height="40"
+            Margin="30,10,0,10"
+            Padding="5" Command="{Binding CommandClearCollectionFiles}"
+            HorizontalAlignment="Left"/>
         <StackPanel
             Grid.Row="2"
             HorizontalAlignment="Center"

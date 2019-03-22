@@ -81,9 +81,9 @@ namespace GeoCoding.GeoCodingService
                 var a = JsonConvert.DeserializeObject<Description>(res);
                 return a;
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
 
