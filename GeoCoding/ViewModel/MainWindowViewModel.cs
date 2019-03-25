@@ -1117,6 +1117,11 @@ namespace GeoCoding
             }
         }
 
+        /// <summary>
+        /// Метод фильтрации коллекции
+        /// </summary>
+        /// <param name="collectionItem">Коллекция объектов для фильтрации</param>
+        /// <returns>Возвращаем отфильтрованную коллекцию</returns>
         private IEnumerable<EntityGeoCod> GetCollectionWithFilter(IEnumerable<EntityGeoCod> collectionItem)
         {
             IEnumerable<EntityGeoCod> data = null;
@@ -1371,7 +1376,6 @@ namespace GeoCoding
             get => _isStartGetDataAboutFiles;
             set => Set(ref _isStartGetDataAboutFiles, value);
         }
-
 
         /// <summary>
         /// Конструктор по умолчанию

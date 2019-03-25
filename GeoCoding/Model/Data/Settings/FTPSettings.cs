@@ -84,7 +84,7 @@ namespace GeoCoding
         public string Error
         {
             get => _error;
-            set => Set("Error", ref _error, value);
+            set => Set(ref _error, value);
         }
     }
 }

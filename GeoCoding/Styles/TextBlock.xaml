@@ -92,53 +92,20 @@
             <Trigger Property="Tag" Value="{x:Static local:StatusType.OK}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeOk}" />
                 <Setter Property="Foreground" Value="Green" />
-                <Setter Property="ToolTip" Value="Геокодирован успешно" />
+                <Setter Property="ToolTip" Value="Обработан успешно" />
             </Trigger>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.Error}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeError}" />
                 <Setter Property="Foreground" Value="Yellow" />
-                <Setter Property="ToolTip" Value="Геокодирован с ошибкой" />
+                <Setter Property="ToolTip" Value="Обработан с ошибкой" />
             </Trigger>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.NotProcessed}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeNotCheck}" />
-                <Setter Property="ToolTip" Value="Не геокодирован" />
+                <Setter Property="ToolTip" Value="Не обработан" />
             </Trigger>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.Processed}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeCheckNow}" />
-                <Setter Property="ToolTip" Value="Геокодируется в данный момент" />
-                <Trigger.EnterActions>
-                    <BeginStoryboard Name="flash" Storyboard="{StaticResource flashAnimation}" />
-                </Trigger.EnterActions>
-                <Trigger.ExitActions>
-                    <StopStoryboard BeginStoryboardName="flash" />
-                </Trigger.ExitActions>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <Style x:Key="TextBlockStatusCompare" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="16" />
-        <Style.Triggers>
-            <Trigger Property="Tag" Value="{x:Static local:StatusType.OK}">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeOk}" />
-                <Setter Property="Foreground" Value="Green" />
-                <Setter Property="ToolTip" Value="Сверен успешно" />
-            </Trigger>
-            <Trigger Property="Tag" Value="{x:Static local:StatusType.Error}">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeError}" />
-                <Setter Property="Foreground" Value="Yellow" />
-                <Setter Property="ToolTip" Value="Сверен с ошибкой" />
-            </Trigger>
-            <Trigger Property="Tag" Value="{x:Static local:StatusType.NotProcessed}">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeNotCheck}" />
-                <Setter Property="ToolTip" Value="Не сверялся" />
-            </Trigger>
-            <Trigger Property="Tag" Value="{x:Static local:StatusType.Processed}">
-                <Setter Property="Text" Value="{StaticResource FontAwesomeCheckNow}" />
-                <Setter Property="ToolTip" Value="Сверяется в данный момент" />
+                <Setter Property="ToolTip" Value="Обрабатывается в данный момент" />
                 <Trigger.EnterActions>
                     <BeginStoryboard Name="flash" Storyboard="{StaticResource flashAnimation}" />
                 </Trigger.EnterActions>

@@ -708,7 +708,7 @@
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Style="{StaticResource TextBlockStatusCompare}" Tag="{Binding Status}"/>
+                                            <TextBlock Style="{StaticResource TextBlockStatus}" Tag="{Binding Status}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

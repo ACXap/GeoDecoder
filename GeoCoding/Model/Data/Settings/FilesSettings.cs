@@ -161,7 +161,7 @@ namespace GeoCoding
         public bool CanGetDataOnce
         {
             get => _canGetDataOnce;
-            set => Set("CanGetDataOnce", ref _canGetDataOnce, value);
+            set => Set(ref _canGetDataOnce, value);
         }
 
         /// <summary>

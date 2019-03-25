@@ -99,8 +99,6 @@ namespace GeoCoding.FileService
             callback(data, error);
         }
 
-
-
         /// <summary>
         /// Метод получения данных из файла
         /// </summary>

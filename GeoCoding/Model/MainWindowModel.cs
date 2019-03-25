@@ -96,6 +96,7 @@ namespace GeoCoding
         public async void GetDataAboutFiles(Action<Exception> callback, IEnumerable<EntityFile> data)
         {
             Exception error = null;
+            string firstString = string.Empty;
 
             await Task.Factory.StartNew(() =>
             {
@@ -106,6 +107,26 @@ namespace GeoCoding
                         if (e == null)
                         {
                             item.Count = i;
+                        }
+                    }, item.NameFile);
+
+                    _fileService.GetData((d, e) =>
+                    {
+                        if (e == null)
+                        {
+                            firstString = d.First();
+                            if (IsFirstStringNameColumnTempFile(firstString))
+                            {
+                                item.FileType = FileType.Temp;
+                            }
+                            else if (IsFirstStringNameColumnErrorFile(firstString))
+                            {
+                                item.FileType = FileType.Error;
+                            }
+                            else if (IsFirstStringNameColumn(firstString))
+                            {
+                                item.FileType = FileType.Data;
+                            }
                         }
                     }, item.NameFile);
                 }
