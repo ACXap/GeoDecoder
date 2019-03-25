@@ -38,11 +38,6 @@ namespace GeoCoding
         private string _error = string.Empty;
 
         /// <summary>
-        /// Строка подключения к сереру
-        /// </summary>
-        private string _connectSettings = string.Empty;
-
-        /// <summary>
         /// Сверять все данные
         /// </summary>
         private bool _canCompareAllData = true;
@@ -125,15 +120,6 @@ namespace GeoCoding
         {
             get => _error;
             set => Set(ref _error, value);
-        }
-
-        /// <summary>
-        /// Строка подключения к сереру
-        /// </summary>
-        public string ConnectSettings
-        {
-            get => _connectSettings;
-            set => Set(ref _connectSettings, value);
         }
 
         /// <summary>
@@ -252,7 +238,7 @@ namespace GeoCoding
             _commandCheckServer ?? (_commandCheckServer = new RelayCommand(
             () =>
             {
-                _model.SettingsService(_connectSettings);
+                _model.SettingsService(_verificationSettings.VerificationServer);
 
                 Status = StatusConnect.ConnectNow;
 
@@ -269,7 +255,7 @@ namespace GeoCoding
                         Status = StatusConnect.OK;
                     }
                 });
-            },()=>!string.IsNullOrEmpty(_connectSettings)));
+            },()=>!string.IsNullOrEmpty(_verificationSettings.VerificationServer)));
 
         /// <summary>
         /// Команда для фиксации данных после проверки
@@ -283,7 +269,7 @@ namespace GeoCoding
                         {
                             item.GeoCode.MainGeoCod.Qcode = item.Qcode;
                         }
-                    }, () => _collection != null && _collection.Any()));
+                    }, () => _collection != null && _collection.Any() && !_isStartCompare));
 
         /// <summary>
         /// Команда для остановки проверки данных

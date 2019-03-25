@@ -18,7 +18,6 @@ namespace GeoCoding
         private const string _errorLimit = "Ваш лимит исчерпан";
         private const string _errorTimeIsUp = "Скорее всего упал сайт";
         private const string _errorLotOfMistakes = "Очень много ошибок при обработке данных. Обработка прекращена";
-        //private const int _maxCountError = 100;
         private IGeoCodingService _geoCodingService;
         private CancellationTokenSource _cts;
 
@@ -46,6 +45,7 @@ namespace GeoCoding
             string errorMsg = string.Empty;
 
             data.Status = StatusType.GeoCodingNow;
+            data.GeoCoder = _geoCodSettings.GeoService;
 
             _geoCodingService.GetGeoCod((d, e) =>
             {

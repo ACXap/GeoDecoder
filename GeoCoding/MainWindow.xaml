@@ -628,16 +628,16 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Проверка данных">
-                    <!--<TabItem.Style>
+                    <TabItem.Style>
                         <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource MetroTabItem}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding CanUseVerificationModule}" Value="True">
+                                <DataTrigger Binding="{Binding GeneralSettings.CanUseVerificationModule}" Value="True">
                                     <Setter Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TabItem.Style>-->
+                    </TabItem.Style>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
@@ -683,7 +683,7 @@
                         </GroupBox>
                         <uc:WorkIndication Grid.Row="0" Grid.Column="2" 
                                            IsActive="{Binding Ver.IsStartCompare}"     
-                                           HorizontalAlignment="Center"
+                                           HorizontalAlignment="Right"
                                            VerticalAlignment="Top"
                                            Text="Идет сравнение..."
                                            TextAlternative="Завершение. Подождите..."/>
@@ -753,11 +753,8 @@
             </TabControl>
 
             <!--  Статистика, кнопка запуска геокодирования, настройки геокодирования  -->
-            <ScrollViewer
-                Grid.Column="1"
-                Width="200"
-                VerticalScrollBarVisibility="Auto">
-                <Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Column="1">
+                    <Grid Width="200">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />

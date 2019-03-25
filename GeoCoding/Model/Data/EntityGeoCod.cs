@@ -98,5 +98,15 @@ namespace GeoCoding
             get => _proxy;
             set => Set(ref _proxy, value);
         }
+
+        private string _geoCoder = string.Empty;
+        /// <summary>
+        /// Кодер которым был геокодирован адрес
+        /// </summary>
+        public string GeoCoder
+        {
+            get => _geoCoder;
+            set => Set(ref _geoCoder, value);
+        }
     }
 }

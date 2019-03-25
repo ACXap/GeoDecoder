@@ -23,5 +23,15 @@ namespace GeoCoding
             get => _count;
             set => Set(ref _count, value);
         }
+
+        private FileType _fileType = FileType.Other;
+        /// <summary>
+        /// 
+        /// </summary>
+        public FileType MyProperty
+        {
+            get => _fileType;
+            set => Set(ref _fileType, value);
+        }
     }
 }

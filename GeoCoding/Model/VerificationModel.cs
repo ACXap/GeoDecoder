@@ -55,46 +55,53 @@ namespace GeoCoding
 
             await Task.Factory.StartNew(() =>
             {
-                var a = Parallel.ForEach(list, po, (item) =>
+                try
                 {
-                    var geo = item.Select(x =>
+                    var a = Parallel.ForEach(list, po, (item) =>
                     {
-                        x.Status = StatusCompareType.CompareNow;
-                        return new VerificationService.EntityForCompare()
+                        var geo = item.Select(x =>
                         {
-                            Data = x.GeoCode.MainGeoCod.AddressWeb
-                        };
-                    }).ToList();
-
-                    _verification.GetId(e =>
-                    {
-                        var index = 0;
-
-                        if (e != null)
-                        {
-                            error = e;
-                            foreach (var i in geo)
+                            x.Status = StatusCompareType.CompareNow;
+                            return new VerificationService.EntityForCompare()
                             {
-                                var o = item.ElementAt(index++);
-                                o.Status = StatusCompareType.Error;
-                                o.Error = e.Message;
-                            }
-                        }
-                        else
+                                Data = x.GeoCode.MainGeoCod.AddressWeb
+                            };
+                        }).ToList();
+
+                        _verification.GetId(e =>
                         {
-                            foreach (var i in geo)
+                            var index = 0;
+
+                            if (e != null)
                             {
-                                var o = item.ElementAt(index++);
-                                o.Status = StatusCompareType.OK;
-                                o.GlobalIdAfterCompare = i.Id;
-
-                                o.Qcode = o.GlobalIdAfterCompare == o.GeoCode.GlobalID ? (byte)1 : (byte)2;
-
-                                o.IsChanges = o.Qcode != o.GeoCode.MainGeoCod.Qcode;
+                                error = e;
+                                foreach (var i in geo)
+                                {
+                                    var o = item.ElementAt(index++);
+                                    o.Status = StatusCompareType.Error;
+                                    o.Error = e.Message;
+                                }
                             }
-                        }
-                    }, geo);
-                });
+                            else
+                            {
+                                foreach (var i in geo)
+                                {
+                                    var o = item.ElementAt(index++);
+                                    o.Status = StatusCompareType.OK;
+                                    o.GlobalIdAfterCompare = i.Id;
+
+                                    o.Qcode = o.GlobalIdAfterCompare == o.GeoCode.GlobalID ? (byte)1 : (byte)2;
+
+                                    o.IsChanges = o.Qcode != o.GeoCode.MainGeoCod.Qcode;
+                                }
+                            }
+                        }, geo);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    error = ex;
+                }
 
                 callback(error);
             }, t);

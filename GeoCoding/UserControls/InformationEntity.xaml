@@ -31,6 +31,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock
             Grid.Row="0"
@@ -81,6 +82,10 @@
             Grid.Column="2"
             Text="{Binding CountResult}" />
         <TextBlock
+            Grid.Row="12"
+            Grid.Column="2"
+            Text="{Binding GeoCoder}" />
+        <TextBlock
             Grid.Row="0"
             Grid.Column="0"
             Text="GlobalID" />
@@ -128,5 +133,9 @@
             Grid.Row="11"
             Grid.Column="0"
             Text="Кол.результатов" />
+        <TextBlock
+            Grid.Row="12"
+            Grid.Column="0"
+            Text="Кодер" />
     </Grid>
 </UserControl>

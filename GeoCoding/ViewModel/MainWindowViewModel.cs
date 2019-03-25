@@ -1038,7 +1038,6 @@ namespace GeoCoding
             {
                 // Отображаем индикацию работы процесса
                 IsStartGeoCoding = true;
-                // _stat.Start(_currentGeoService);
                 _stat.Start(_geoCodSettings.GeoService);
 
                 _geoCodingModel.GetAllGeoCod((r, i, e) =>
@@ -1077,6 +1076,8 @@ namespace GeoCoding
                     {
                         SaveStatistics();
                     }
+
+                    _ver.SetCollection(_collectionGeoCod);
                 }, data);
             }
             else
@@ -1303,8 +1304,6 @@ namespace GeoCoding
                     {
                         return new EntityFile() { NameFile = x };
                     }));
-
-                    GetDataAboutFiles();
                 }
                 else
                 {
@@ -1313,6 +1312,8 @@ namespace GeoCoding
                         _collectionFiles.Add(new EntityFile() { NameFile = item });
                     }
                 }
+
+                GetDataAboutFiles();
             }
         }
 
