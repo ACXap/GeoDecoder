@@ -28,7 +28,7 @@ namespace GeoCoding
         /// <summary>
         /// 
         /// </summary>
-        public FileType MyProperty
+        public FileType FileType
         {
             get => _fileType;
             set => Set(ref _fileType, value);
@@ -44,6 +44,14 @@ namespace GeoCoding
             set => Set(ref _error, value);
         }
 
-
+        private StatusType _status = StatusType.NotProcessed;
+        /// <summary>
+        /// 
+        /// </summary>
+        public StatusType Status
+        {
+            get => _status;
+            set => Set(ref _status, value);
+        }
     }
 }

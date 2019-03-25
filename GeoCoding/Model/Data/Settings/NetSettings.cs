@@ -88,7 +88,6 @@ namespace GeoCoding
             set => Set(ref _collectionListProxy, value);
         }
 
-
         private StatusType _status = StatusType.NotProcessed;
         /// <summary>
         /// Статус проверки коллекции прокси серверов

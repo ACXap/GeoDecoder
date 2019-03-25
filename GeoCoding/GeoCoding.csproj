@@ -100,7 +100,6 @@
     <Compile Include="Model\Data\EntityForCompare.cs" />
     <Compile Include="Model\Data\Enumeration\FileType.cs" />
     <Compile Include="Model\Data\Enumeration\NotificationType.cs" />
-    <Compile Include="Model\Data\Enumeration\StatusCompareType.cs" />
     <Compile Include="Model\Data\GeoCod.cs" />
     <Compile Include="Model\Data\ProxyEntity.cs" />
     <Compile Include="Model\Data\Settings\BDSettings.cs" />
@@ -115,7 +114,6 @@
     <Compile Include="Model\Data\Settings\NotificationSettings.cs" />
     <Compile Include="Model\Data\Settings\VerificationSettings.cs" />
     <Compile Include="Model\Data\Statistics.cs" />
-    <Compile Include="Model\Data\Enumeration\StatusConnect.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />
     <Compile Include="Model\GeoCodingModel.cs" />
     <Compile Include="Model\Interfaces\INotifications.cs" />
