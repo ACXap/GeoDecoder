@@ -332,14 +332,24 @@ namespace GeoCoding
 
         #endregion PublicCommand
 
+        private VerificationSettings _verificationSettings;
+        /// <summary>
+        /// 
+        /// </summary>
+        public VerificationSettings VerificationSettings
+        {
+            get => _verificationSettings;
+            set => Set(ref _verificationSettings, value);
+        }
+
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="connectionString">Парамтры подключения к серверу проверки</param>
-        public VerificationViewModel(string connectionString)
+        public VerificationViewModel(VerificationSettings vset)
         {
-            ConnectSettings = connectionString;
-            _model = new VerificationModel(connectionString);
+            VerificationSettings = vset;
+            _model = new VerificationModel(_verificationSettings.VerificationServer);
         }
     }
 }

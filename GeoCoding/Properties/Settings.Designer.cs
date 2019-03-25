@@ -655,5 +655,29 @@ namespace GeoCoding.Properties {
                 this["CanUseVerificationModule"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanUseBdModule {
+            get {
+                return ((bool)(this["CanUseBdModule"]));
+            }
+            set {
+                this["CanUseBdModule"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanUseFtpModule {
+            get {
+                return ((bool)(this["CanUseFtpModule"]));
+            }
+            set {
+                this["CanUseFtpModule"] = value;
+            }
+        }
     }
 }

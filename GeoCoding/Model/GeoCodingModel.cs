@@ -24,7 +24,7 @@ namespace GeoCoding
 
         private readonly NetSettings _netSettings;
         private readonly GeoCodSettings _geoCodSettings;
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
         public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings)
         {
@@ -293,9 +293,9 @@ namespace GeoCoding
         /// Метод установки текущего геосериса
         /// </summary>
         /// <param name="geoService">Ссылка на геосервис</param>
-        public void SetGeoService(string nameService)
+        private void SetGeoService()
         {
-            _geoCodingService = MainGeoService.GetServiceByName(nameService);
+            _geoCodingService = MainGeoService.GetServiceByName(_geoCodSettings.GeoService);
         }
 
         /// <summary>
@@ -306,6 +306,8 @@ namespace GeoCoding
         public async void GetAllGeoCod(Action<bool, long?, Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
         {
             Exception error = null;
+            SetGeoService();
+
             bool result = false;
             long? indexStop = 0;
             //int countError = 0;
@@ -464,6 +466,7 @@ namespace GeoCoding
             Exception error = null;
             data.MainGeoCod = null;
             data.CountResult = 0;
+            SetGeoService();
 
             await Task.Factory.StartNew(() =>
             {
@@ -480,6 +483,7 @@ namespace GeoCoding
         /// <returns>Возвращает ссылку на запрос</returns>
         public string GetUrlRequest(string address)
         {
+            SetGeoService();
             return _geoCodingService.GetUrlRequest(address);
         }
 

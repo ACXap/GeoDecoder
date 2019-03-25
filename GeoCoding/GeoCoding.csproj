@@ -106,11 +106,13 @@
     <Compile Include="Model\Data\EntityGeoCod.cs" />
     <Compile Include="Model\Data\Settings\FilesSettings.cs" />
     <Compile Include="Model\Data\Settings\FTPSettings.cs" />
+    <Compile Include="Model\Data\Settings\GeneralSettings.cs" />
     <Compile Include="Model\Data\Settings\GeoCodSettings.cs" />
     <Compile Include="Model\Data\Enumeration\KindType.cs" />
     <Compile Include="Model\Data\Enumeration\PrecisionType.cs" />
     <Compile Include="Model\Data\Settings\NetSettings.cs" />
     <Compile Include="Model\Data\Settings\NotificationSettings.cs" />
+    <Compile Include="Model\Data\Settings\VerificationSettings.cs" />
     <Compile Include="Model\Data\Statistics.cs" />
     <Compile Include="Model\Data\Enumeration\StatusConnect.cs" />
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />

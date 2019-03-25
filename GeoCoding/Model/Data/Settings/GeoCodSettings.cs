@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using System.Collections.ObjectModel;
 
 namespace GeoCoding
 {
@@ -187,5 +188,10 @@ namespace GeoCoding
             get => _maxCountErrorForProxy;
             set => Set(ref _maxCountErrorForProxy, value);
         }
+
+        /// <summary>
+        /// Коллекция всех возможных геосервисов
+        /// </summary>
+        public ReadOnlyCollection<string> CollectionGeoService => GeoCodingService.MainGeoService.AllNameService;
     }
 }

@@ -104,10 +104,10 @@ namespace GeoCoding
         /// </summary>
         private bool _isStartGetDataFromBD = false;
 
-        /// <summary>
-        /// Поле для хранения ссылки на текущий выбранный геосервис
-        /// </summary>
-        private string _currentGeoService;
+        ///// <summary>
+        ///// Поле для хранения ссылки на текущий выбранный геосервис
+        ///// </summary>
+        //private string _currentGeoService;
 
         /// <summary>
         /// Поле для хранения ссылки на настройки геокодирования
@@ -128,16 +128,6 @@ namespace GeoCoding
         /// Поле для хранения статистики
         /// </summary>
         private StatisticsViewModel _stat;
-
-        /// <summary>
-        /// Поле для хранения запускать ли в компактном режиме
-        /// </summary>
-        private bool _canStartCompact = false;
-
-        /// <summary>
-        /// Поле для хранения ссылки на текущую тему оформления
-        /// </summary>
-        private Theme _colorTheme = ThemeManager.DetectTheme();
 
         /// <summary>
         /// Поле для хранения ссылки на команду получения полного имени файла
@@ -362,20 +352,6 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Текущий геосервис
-        /// </summary>
-        public string CurrentGeoService
-        {
-            get => _currentGeoService;
-            set
-            {
-                _geoCodSettings.GeoService = value;
-                _geoCodingModel.SetGeoService(value);
-                Set(ref _currentGeoService, value);
-            }
-        }
-
-        /// <summary>
         /// Настройки для работы с ФТП-сервером
         /// </summary>
         public FTPSettings FTPSettings
@@ -410,38 +386,6 @@ namespace GeoCoding
             get => _stat;
             set => Set(ref _stat, value);
         }
-
-        /// <summary>
-        /// Текущая тема оформления окна
-        /// </summary>
-        public Theme ColorTheme
-        {
-            get => _colorTheme;
-            set
-            {
-                Set(ref _colorTheme, value);
-                ThemeManager.ChangeTheme(Application.Current, value.Name);
-            }
-        }
-
-        /// <summary>
-        /// Запускать ли программу в компактном режиме
-        /// </summary>
-        public bool CanStartCompact
-        {
-            get => _canStartCompact;
-            set => Set(ref _canStartCompact, value);
-        }
-
-        /// <summary>
-        /// Коллекция всех возможных тем оформления окна
-        /// </summary>
-        public ReadOnlyCollection<Theme> ListTheme => ThemeManager.Themes;
-
-        /// <summary>
-        /// Коллекция всех возможных геосервисов
-        /// </summary>
-        public ReadOnlyCollection<string> CollectionGeoService => GeoCodingService.MainGeoService.AllNameService;
 
         #endregion PublicPropertys
 
@@ -686,7 +630,7 @@ namespace GeoCoding
                         _model.SaveSettings(e =>
                         {
                             _notifications.Notification(NotificationType.SettingsSave, e, true);
-                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, _netSettings, ColorTheme.Name, _canStartCompact, _ver.ConnectSettings, _canUseVerificationModule);
+                        }, _filesSettings, _ftpSettings, _geoCodSettings, _bdSettings, _notificationSettings, _netSettings, _verificationSettings, _generalSettings);
                     }));
 
         /// <summary>
@@ -1094,7 +1038,8 @@ namespace GeoCoding
             {
                 // Отображаем индикацию работы процесса
                 IsStartGeoCoding = true;
-                _stat.Start(_currentGeoService);
+                // _stat.Start(_currentGeoService);
+                _stat.Start(_geoCodSettings.GeoService);
 
                 _geoCodingModel.GetAllGeoCod((r, i, e) =>
                 {
@@ -1284,16 +1229,6 @@ namespace GeoCoding
             set => Set(ref _ver, value);
         }
 
-        private bool _canUseVerificationModule = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool CanUseVerificationModule
-        {
-            get => _canUseVerificationModule;
-            set => Set(ref _canUseVerificationModule, value);
-        }
-
         private int _tabIndex = 0;
         /// <summary>
         /// 
@@ -1405,6 +1340,27 @@ namespace GeoCoding
             set => Set(ref _isStartGetDataAboutFiles, value);
         }
 
+        private GeneralSettings _generalSettings;
+        /// <summary>
+        /// 
+        /// </summary>
+        public GeneralSettings GeneralSettings
+        {
+            get => _generalSettings;
+            set => Set(ref _generalSettings, value);
+        }
+
+
+        private VerificationSettings _verificationSettings;
+        /// <summary>
+        /// 
+        /// </summary>
+        public VerificationSettings VerificationSettings
+        {
+            get => _verificationSettings;
+            set => Set(ref _verificationSettings, value);
+        }
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1415,7 +1371,7 @@ namespace GeoCoding
 
             _netProxyModel = new NetProxyModel();
 
-            _model.GetSettings((e, f, g, ftp, bds, ns, nset, c, comp, verServer, verModule) =>
+            _model.GetSettings((e, f, g, ftp, bds, ns, nset, vset, gset) =>
             {
                 if (e == null)
                 {
@@ -1423,15 +1379,14 @@ namespace GeoCoding
                     GeoCodSettings = g;
                     FTPSettings = ftp;
                     BDSettings = bds;
-                    ColorTheme = ThemeManager.ChangeTheme(Application.Current, c);
+                    GeneralSettings = gset;
                     NotificationSettings = ns;
                     NetSettings = nset;
+                    VerificationSettings = vset;
+
                     _notifications = new NotificationsModel(ns);
-                    CanStartCompact = comp;
                     _geoCodingModel = new GeoCodingModel(_netSettings, _geoCodSettings);
-                    Ver = new VerificationViewModel(verServer);
-                    CurrentGeoService = g.GeoService;
-                    CanUseVerificationModule = verModule;
+                    Ver = new VerificationViewModel(_verificationSettings);
                     if (_netSettings.IsListProxy)
                     {
                         GetProxyList();
