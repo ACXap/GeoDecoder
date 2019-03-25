@@ -99,11 +99,11 @@
                 <Setter Property="Foreground" Value="Yellow" />
                 <Setter Property="ToolTip" Value="Геокодирован с ошибкой" />
             </Trigger>
-            <Trigger Property="Tag" Value="{x:Static local:StatusType.NotGeoCoding}">
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.NotProcessed}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeNotCheck}" />
                 <Setter Property="ToolTip" Value="Не геокодирован" />
             </Trigger>
-            <Trigger Property="Tag" Value="{x:Static local:StatusType.GeoCodingNow}">
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.Processed}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeCheckNow}" />
                 <Setter Property="ToolTip" Value="Геокодируется в данный момент" />
                 <Trigger.EnterActions>
@@ -122,21 +122,21 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="FontSize" Value="16" />
         <Style.Triggers>
-            <Trigger Property="Tag" Value="{x:Static local:StatusCompareType.OK}">
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.OK}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeOk}" />
                 <Setter Property="Foreground" Value="Green" />
                 <Setter Property="ToolTip" Value="Сверен успешно" />
             </Trigger>
-            <Trigger Property="Tag" Value="{x:Static local:StatusCompareType.Error}">
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.Error}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeError}" />
                 <Setter Property="Foreground" Value="Yellow" />
                 <Setter Property="ToolTip" Value="Сверен с ошибкой" />
             </Trigger>
-            <Trigger Property="Tag" Value="{x:Static local:StatusCompareType.NotCompare}">
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.NotProcessed}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeNotCheck}" />
                 <Setter Property="ToolTip" Value="Не сверялся" />
             </Trigger>
-            <Trigger Property="Tag" Value="{x:Static local:StatusCompareType.CompareNow}">
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.Processed}">
                 <Setter Property="Text" Value="{StaticResource FontAwesomeCheckNow}" />
                 <Setter Property="ToolTip" Value="Сверяется в данный момент" />
                 <Trigger.EnterActions>

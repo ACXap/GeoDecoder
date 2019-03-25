@@ -61,7 +61,7 @@ namespace GeoCoding
                     {
                         var geo = item.Select(x =>
                         {
-                            x.Status = StatusCompareType.CompareNow;
+                            x.Status = StatusType.Processed;
                             return new VerificationService.EntityForCompare()
                             {
                                 Data = x.GeoCode.MainGeoCod.AddressWeb
@@ -78,7 +78,7 @@ namespace GeoCoding
                                 foreach (var i in geo)
                                 {
                                     var o = item.ElementAt(index++);
-                                    o.Status = StatusCompareType.Error;
+                                    o.Status = StatusType.Error;
                                     o.Error = e.Message;
                                 }
                             }
@@ -87,7 +87,7 @@ namespace GeoCoding
                                 foreach (var i in geo)
                                 {
                                     var o = item.ElementAt(index++);
-                                    o.Status = StatusCompareType.OK;
+                                    o.Status = StatusType.OK;
                                     o.GlobalIdAfterCompare = i.Id;
 
                                     o.Qcode = o.GlobalIdAfterCompare == o.GeoCode.GlobalID ? (byte)1 : (byte)2;

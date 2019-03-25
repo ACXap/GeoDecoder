@@ -57,6 +57,9 @@ namespace GeoCoding
         /// </summary>
         private GeoCodingModel _geoCodingModel;
 
+        /// <summary>
+        /// Поле для хранения ссылки на модель работы с прокси
+        /// </summary>
         private NetProxyModel _netProxyModel;
 
         /// <summary>
@@ -88,6 +91,11 @@ namespace GeoCoding
         /// Поле для хранения настроек оповещений
         /// </summary>
         private NotificationSettings _notificationSettings;
+
+        /// <summary>
+        /// Поле для хранения ссылки на настройки модуля проверки данных
+        /// </summary>
+        private VerificationSettings _verificationSettings;
 
         /// <summary>
         /// Поле для хранения запущена ли процедура декодирования
@@ -123,6 +131,11 @@ namespace GeoCoding
         /// Поле для хранения ссылки на настройки БД
         /// </summary>
         private BDSettings _bdSettings;
+
+        /// <summary>
+        /// Поле для хранения ссылки на основные настройки приложения
+        /// </summary>
+        private GeneralSettings _generalSettings;
 
         /// <summary>
         /// Поле для хранения статистики
@@ -370,12 +383,30 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// настройки БД
+        /// Настройки БД
         /// </summary>
         public BDSettings BDSettings
         {
             get => _bdSettings;
             set => Set(ref _bdSettings, value);
+        }
+
+        /// <summary>
+        /// Настройки модуля проверки данных
+        /// </summary>
+        public VerificationSettings VerificationSettings
+        {
+            get => _verificationSettings;
+            set => Set(ref _verificationSettings, value);
+        }
+
+        /// <summary>
+        /// основные настройки приложения
+        /// </summary>
+        public GeneralSettings GeneralSettings
+        {
+            get => _generalSettings;
+            set => Set(ref _generalSettings, value);
         }
 
         /// <summary>
@@ -667,23 +698,23 @@ namespace GeoCoding
         _commandCheckConnect ?? (_commandCheckConnect = new RelayCommand(
                     () =>
                     {
-                        _bdSettings.StatusConnect = StatusConnect.ConnectNow;
+                        _bdSettings.StatusConnect = StatusType.Processed;
                         _bdSettings.Error = string.Empty;
                         _model.ConnectBDAsync(e =>
                         {
                             if (e != null)
                             {
                                 _notifications.Notification(NotificationType.Error, e);
-                                _bdSettings.StatusConnect = StatusConnect.Error;
+                                _bdSettings.StatusConnect = StatusType.Error;
                                 _bdSettings.Error = e.Message;
                             }
                             else
                             {
-                                _bdSettings.StatusConnect = StatusConnect.OK;
+                                _bdSettings.StatusConnect = StatusType.OK;
                                 _bdSettings.Error = string.Empty;
                             }
                         }, _bdSettings);
-                    }, () => !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect == StatusConnect.ConnectNow));
+                    }, () => !string.IsNullOrEmpty(_bdSettings.Server) || !string.IsNullOrEmpty(_bdSettings.BDName) || _bdSettings.StatusConnect == StatusType.Processed));
 
         /// <summary>
         /// Команда для проверки соединения с фтп-сервером
@@ -692,23 +723,23 @@ namespace GeoCoding
         _commandCheckConnectFtp ?? (_commandCheckConnectFtp = new RelayCommand(
                     () =>
                     {
-                        _ftpSettings.StatusConnect = StatusConnect.ConnectNow;
+                        _ftpSettings.StatusConnect = StatusType.Processed;
                         _ftpSettings.Error = string.Empty;
                         _model.ConnectFTPAsync(e =>
                         {
                             if (e != null)
                             {
                                 _notifications.Notification(NotificationType.Error, e);
-                                _ftpSettings.StatusConnect = StatusConnect.Error;
+                                _ftpSettings.StatusConnect = StatusType.Error;
                                 _ftpSettings.Error = e.Message;
                             }
                             else
                             {
-                                FTPSettings.StatusConnect = StatusConnect.OK;
+                                FTPSettings.StatusConnect = StatusType.OK;
                                 _ftpSettings.Error = string.Empty;
                             }
                         }, _ftpSettings);
-                    }, () => !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect == StatusConnect.ConnectNow));
+                    }, () => !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect == StatusType.Processed));
 
         /// <summary>
         /// Команда для получения данных из базы данных
@@ -1040,45 +1071,45 @@ namespace GeoCoding
                 IsStartGeoCoding = true;
                 _stat.Start(_geoCodSettings.GeoService);
 
-                _geoCodingModel.GetAllGeoCod((r, i, e) =>
-                {
-                    IsStartGeoCoding = false;
-                    _stat.Stop();
-                    _customerView?.Refresh();
+                _geoCodingModel.GetAllGeoCod(e =>
+               {
+                   IsStartGeoCoding = false;
+                   _stat.Stop();
+                   _customerView?.Refresh();
 
-                    if (e == null)
-                    {
-                        // Оповещаем о завершении получении координат
-                        _notifications.Notification(NotificationType.DataProcessed, $"{_processedcompleted} {countData}");
-                    }
-                    else if (e.Message == _errorCancel)
-                    {
-                        // Оповещаем если сами отменили
-                        _notifications.Notification(NotificationType.Cancel);
-                    }
-                    else
-                    {
-                        // Оповещаем если были ошибки
-                        _notifications.Notification(NotificationType.Error, e.Message);
-                    }
+                   if (e == null)
+                   {
+                       // Оповещаем о завершении получении координат
+                       _notifications.Notification(NotificationType.DataProcessed, $"{_processedcompleted} {countData}");
+                   }
+                   else if (e.Message == _errorCancel)
+                   {
+                       // Оповещаем если сами отменили
+                       _notifications.Notification(NotificationType.Cancel);
+                   }
+                   else
+                   {
+                       // Оповещаем если были ошибки
+                       _notifications.Notification(NotificationType.Error, e.Message);
+                   }
 
-                    if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput) && countData > 0)
-                    {
-                        SaveData();
-                        SaveErrors();
-                    }
+                   if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
+                   {
+                       SaveData();
+                       SaveErrors();
+                   }
 
-                    if (_geoCodSettings.CanSaveDataAsTemp && countData > 0)
-                    {
-                        SaveTemp();
-                    }
-                    if (_geoCodSettings.CanSaveStatistics)
-                    {
-                        SaveStatistics();
-                    }
+                   if (_geoCodSettings.CanSaveDataAsTemp)
+                   {
+                       SaveTemp();
+                   }
+                   if (_geoCodSettings.CanSaveStatistics)
+                   {
+                       SaveStatistics();
+                   }
 
-                    _ver.SetCollection(_collectionGeoCod);
-                }, data);
+                   _ver.SetCollection(_collectionGeoCod);
+               }, data);
             }
             else
             {
@@ -1100,7 +1131,7 @@ namespace GeoCoding
             }
             else if (_geoCodSettings.CanGeoCodGetNotGeo)
             {
-                data = collectionItem.Where(x => x.Status == StatusType.NotGeoCoding);
+                data = collectionItem.Where(x => x.Status == StatusType.NotProcessed);
             }
 
             return data;
@@ -1215,9 +1246,9 @@ namespace GeoCoding
         _commandTestListProxy ?? (_commandTestListProxy = new RelayCommand(
                     async () =>
                     {
-                        _netSettings.Status = StatusConnect.ConnectNow;
+                        _netSettings.Status = StatusType.Processed;
                         await _netProxyModel.TestListProxyAsync(_netSettings.CollectionListProxy);
-                        _netSettings.Status = StatusConnect.OK;
+                        _netSettings.Status = StatusType.OK;
                     }));
 
         private VerificationViewModel _ver;
@@ -1242,7 +1273,7 @@ namespace GeoCoding
                 Set(ref _tabIndex, value);
                 if (value == 2)
                 {
-                    _ver.Update();
+                    _ver?.Update();
                 }
                 else if (value == 1)
                 {
@@ -1341,26 +1372,6 @@ namespace GeoCoding
             set => Set(ref _isStartGetDataAboutFiles, value);
         }
 
-        private GeneralSettings _generalSettings;
-        /// <summary>
-        /// 
-        /// </summary>
-        public GeneralSettings GeneralSettings
-        {
-            get => _generalSettings;
-            set => Set(ref _generalSettings, value);
-        }
-
-
-        private VerificationSettings _verificationSettings;
-        /// <summary>
-        /// 
-        /// </summary>
-        public VerificationSettings VerificationSettings
-        {
-            get => _verificationSettings;
-            set => Set(ref _verificationSettings, value);
-        }
 
         /// <summary>
         /// Конструктор по умолчанию

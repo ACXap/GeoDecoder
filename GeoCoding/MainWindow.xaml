@@ -183,18 +183,26 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
 
-                                <TextBlock Grid.Column="0" Text="Выбрано файлов: " Margin="5" FontWeight="Bold"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Grid.Row="1">
+                                    <Button Content="Геокодировать" Margin="2" Padding="2"/>
+                                    <Button Content="Проверить" Margin="2" Padding="2" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Column="0" Text="Выбрано файлов: " Margin="5" FontWeight="Bold" VerticalAlignment="Top"/>
                                 <TextBlock Grid.Column="1" Text="{Binding CollectionFiles.Count}" Margin="5"/>
 
                                 <!--  Открытие панели пользовательского sql-запроса  -->
-                                <ToggleButton
+                                <ToggleButton Grid.Row="1"
                                     x:Name="tbFilesList"
                                     Grid.Column="2"
                                     Margin="2"
-                                    Padding="2" Height="50" Width="90"
+                                    Padding="2" Width="90"
                                     HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
                                     FontSize="10"
                                     ToolTip="Открытие окна для формирования списка файлов для обработки">
                                     <TextBlock Text="СПИСОК ФАЙЛОВ" TextWrapping="Wrap"/>

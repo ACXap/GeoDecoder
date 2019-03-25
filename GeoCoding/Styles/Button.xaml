@@ -163,7 +163,7 @@
         <Setter Property="Content" Value="Проверить подключение" />
         <Setter Property="Width" Value="160"/>
         <Style.Triggers>
-            <Trigger Property="Tag" Value="{x:Static local:StatusConnect.ConnectNow}">
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.Processed}">
                 <Setter Property="Content" Value="Идет подключение..." />
                 <Setter Property="IsEnabled" Value="False" />
             </Trigger>
@@ -182,7 +182,7 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="Tag" Value="{x:Static local:StatusType.GeoCodingNow}">
+            <Trigger Property="Tag" Value="{x:Static local:StatusType.Processed}">
                 <Setter Property="IsEnabled" Value="False" />
             </Trigger>
             <DataTrigger Binding="{Binding SingleGeoCod.Address}" Value="">

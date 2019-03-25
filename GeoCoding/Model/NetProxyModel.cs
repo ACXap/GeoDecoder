@@ -36,7 +36,7 @@ namespace GeoCoding
             string data = string.Empty;
             proxy.Error = string.Empty;
             Stopwatch sw = new Stopwatch();
-            proxy.Status = StatusConnect.ConnectNow;
+            proxy.Status = StatusType.Processed;
             try
             {
                 WebRequest request = WebRequest.Create(_urlTest);
@@ -59,12 +59,12 @@ namespace GeoCoding
                     }
                 }
                 proxy.IsActive = !string.IsNullOrEmpty(data);
-                proxy.Status = StatusConnect.OK;
+                proxy.Status = StatusType.OK;
             }
             catch (Exception ex)
             {
                 proxy.Error = ex.Message;
-                proxy.Status = StatusConnect.Error;
+                proxy.Status = StatusType.Error;
                 proxy.IsActive = false;
                 sw?.Stop();
             }

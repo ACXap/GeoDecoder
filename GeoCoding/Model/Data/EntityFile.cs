@@ -33,5 +33,17 @@ namespace GeoCoding
             get => _fileType;
             set => Set(ref _fileType, value);
         }
+
+        private string _error = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Error
+        {
+            get => _error;
+            set => Set(ref _error, value);
+        }
+
+
     }
 }

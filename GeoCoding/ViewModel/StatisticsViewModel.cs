@@ -98,8 +98,8 @@ namespace GeoCoding
             {
                 _statistics.AllEntity = _collection.Count();
                 _statistics.OK = _collection.Count(x => x.Status == StatusType.OK);
-                _statistics.NotGeoCoding = _collection.Count(x => x.Status == StatusType.NotGeoCoding);
-                _statistics.GeoCodingNow = _collection.Count(x => x.Status == StatusType.GeoCodingNow);
+                _statistics.NotGeoCoding = _collection.Count(x => x.Status == StatusType.NotProcessed);
+                _statistics.GeoCodingNow = _collection.Count(x => x.Status == StatusType.Processed);
                 _statistics.Error = _collection.Count(x => x.Status == StatusType.Error);
                 _statistics.House = _collection.Count(x => x.MainGeoCod?.Kind == KindType.House);
                 _statistics.Exact = _collection.Count(x => x.MainGeoCod?.Precision == PrecisionType.Exact);

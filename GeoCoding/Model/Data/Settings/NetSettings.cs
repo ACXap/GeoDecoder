@@ -89,11 +89,11 @@ namespace GeoCoding
         }
 
 
-        private StatusConnect _status = StatusConnect.NotConnect;
+        private StatusType _status = StatusType.NotProcessed;
         /// <summary>
         /// Статус проверки коллекции прокси серверов
         /// </summary>
-        public StatusConnect Status
+        public StatusType Status
         {
             get => _status;
             set => Set(ref _status, value);

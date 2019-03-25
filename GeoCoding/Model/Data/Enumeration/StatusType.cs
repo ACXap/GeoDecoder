@@ -1,25 +1,25 @@
 ﻿namespace GeoCoding
 {
     /// <summary>
-    /// Перечисление статусов геокодирования
+    /// Перечисление статусов работы
     /// </summary>
     public enum StatusType
     {
         /// <summary>
-        /// Негеокодирован
+        /// Не обработан
         /// </summary>
-        NotGeoCoding,
+        NotProcessed,
         /// <summary>
-        /// Геокодирован без ошибок
+        /// Обработан без ошибок
         /// </summary>
         OK,
         /// <summary>
-        /// Геокодирован с ошибками
+        /// Обработан с ошибками
         /// </summary>
         Error,
         /// <summary>
-        /// Геокодируется в данный момент
+        /// Обрабатывается в данный момент
         /// </summary>
-        GeoCodingNow
+        Processed
     }
 }

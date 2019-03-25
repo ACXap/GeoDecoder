@@ -67,11 +67,11 @@ namespace GeoCoding
             set => Set(ref _sqlQuery, value);
         }
 
-        private StatusConnect _statusConnect = StatusConnect.NotConnect;
+        private StatusType _statusConnect = StatusType.NotProcessed;
         /// <summary>
         /// Статус подключения к базе данных
         /// </summary>
-        public StatusConnect StatusConnect
+        public StatusType StatusConnect
         {
             get => _statusConnect;
             set => Set(ref _statusConnect, value);

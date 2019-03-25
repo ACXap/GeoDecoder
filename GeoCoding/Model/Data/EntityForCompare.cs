@@ -44,11 +44,11 @@ namespace GeoCoding
             set => Set(ref _error, value);
         }
 
-        private StatusCompareType _status = StatusCompareType.NotCompare;
+        private StatusType _status = StatusType.NotProcessed;
         /// <summary>
         /// 
         /// </summary>
-        public StatusCompareType Status
+        public StatusType Status
         {
             get => _status;
             set => Set(ref _status, value);

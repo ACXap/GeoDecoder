@@ -30,7 +30,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения статуса подключения к серверу
         /// </summary>
-        private StatusConnect _status = StatusConnect.NotConnect;
+        private StatusType _status = StatusType.NotProcessed;
 
         /// <summary>
         /// Поле для хранения ошибки при подключении к серверу
@@ -107,7 +107,7 @@ namespace GeoCoding
         /// <summary>
         /// Статус подключения к серверу
         /// </summary>
-        public StatusConnect Status
+        public StatusType Status
         {
             get => _status;
             set => Set(ref _status, value);
@@ -240,19 +240,19 @@ namespace GeoCoding
             {
                 _model.SettingsService(_verificationSettings.VerificationServer);
 
-                Status = StatusConnect.ConnectNow;
+                Status = StatusType.Processed;
 
                 _model.CheckServerAsync(e =>
                 {
                     if (e != null)
                     {
                         Error = e.Message;
-                        Status = StatusConnect.Error;
+                        Status = StatusType.Error;
                     }
                     else
                     {
                         Error = string.Empty;
-                        Status = StatusConnect.OK;
+                        Status = StatusType.OK;
                     }
                 });
             },()=>!string.IsNullOrEmpty(_verificationSettings.VerificationServer)));

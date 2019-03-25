@@ -44,7 +44,7 @@ namespace GeoCoding
             Exception error = null;
             string errorMsg = string.Empty;
 
-            data.Status = StatusType.GeoCodingNow;
+            data.Status = StatusType.Processed;
             data.GeoCoder = _geoCodSettings.GeoService;
 
             _geoCodingService.GetGeoCod((d, e) =>
@@ -303,14 +303,10 @@ namespace GeoCoding
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром: завершился ли процесс, на каком номере завершился, ошибка</param>
         /// <param name="collectionGeoCod">Множество объектов</param>
-        public async void GetAllGeoCod(Action<bool, long?, Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
+        public async void GetAllGeoCod(Action<Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
         {
             Exception error = null;
             SetGeoService();
-
-            bool result = false;
-            long? indexStop = 0;
-            //int countError = 0;
 
             _cts = new CancellationTokenSource();
 
@@ -397,12 +393,12 @@ namespace GeoCoding
                                 }
                                 lock (_lock)
                                 {
-                                    geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotGeoCoding
+                                    geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotProcessed
                                                                       || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne
                                                                                                         && x.Error != _errorGeoCodNotFound)));
                                     if (geo != null)
                                     {
-                                        geo.Status = StatusType.GeoCodingNow;
+                                        geo.Status = StatusType.Processed;
                                     }
                                 }
 
@@ -453,7 +449,7 @@ namespace GeoCoding
                 }, _cts.Token);
             }
 
-            callback(result, indexStop, error);
+            callback(error);
         }
 
         /// <summary>
