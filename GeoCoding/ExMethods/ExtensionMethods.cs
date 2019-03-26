@@ -36,5 +36,39 @@ namespace GeoCoding
                 .GroupBy(i => i.Index / partitionSize)
                 .Select(i => i.Select(i2 => i2.Value));
         }
+
+        /// <summary>
+        /// Метод расширения для IEnumerable, проверка на null и наличие элементов в коллекции
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <returns> <c>true</c> если коллекция null или пустая</returns>
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
+        {
+            if (enumerable == null)
+            {
+                return true;
+            }
+            if (enumerable is ICollection<T> collection)
+            {
+                return collection.Count < 1;
+            }
+            return enumerable.Any();
+        }
+
+        /// <summary>
+        /// Метод расширения для ICollection, проверка на null и наличие элементов в коллекции
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <returns> <c>true</c> если коллекция null или пустая</returns>
+        public static bool IsNullOrEmpty<T>(this ICollection<T> collection)
+        {
+            if (collection == null)
+            {
+                return true;
+            }
+            return collection.Count < 1;
+        }
     }
 }

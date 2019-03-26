@@ -307,7 +307,7 @@ namespace GeoCoding
 
                             if (e == null)
                             {
-
+                                CommandCommitChanges.RaiseCanExecuteChanged();
                             }
                             else
                             {

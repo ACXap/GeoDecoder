@@ -557,7 +557,7 @@ namespace GeoCoding
                     () =>
                     {
                         GetAllGeoCod(_collectionGeoCod);
-                    }, () => _collectionGeoCod != null && _collectionGeoCod.Count > 0));
+                    }, () => _collectionGeoCod != null && _collectionGeoCod.Any()));
 
         /// <summary>
         /// Команда остановки геокодирования
@@ -936,18 +936,18 @@ namespace GeoCoding
         /// <returns>Возвращает полное имя файла</returns>
         private string SetDefNameFileOutput()
         {
-            string defNameOutput = string.Empty;
+            string defName = string.Empty;
 
-            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+            if (_collectionGeoCod != null && _collectionGeoCod.Any())
             {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad_{_collectionGeoCod.Count}.csv";
+                defName = $"{NameFile()}_UpLoad_{_collectionGeoCod.Count}.csv";
             }
             else
             {
-                defNameOutput = $"{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_UpLoad.csv";
+                defName = $"{NameFile()}_UpLoad.csv";
             }
 
-            return $"{_filesSettings.FolderOutput}\\{defNameOutput}";
+            return $"{_filesSettings.FolderOutput}\\{defName}";
         }
 
         /// <summary>
@@ -958,10 +958,10 @@ namespace GeoCoding
         {
             string defName = string.Empty;
 
-            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+            if (_collectionGeoCod != null && _collectionGeoCod.Any())
             {
                 int countError = _collectionGeoCod.Count(x => x.Status == StatusType.Error);
-                defName = $"{_filesSettings.FolderErrors}\\{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Errors_{countError}.csv";
+                defName = $"{_filesSettings.FolderErrors}\\{NameFile()}_Errors_{countError}.csv";
             }
 
             return defName;
@@ -975,13 +975,15 @@ namespace GeoCoding
         {
             string defName = string.Empty;
 
-            if (_collectionGeoCod != null && _collectionGeoCod.Count > 0)
+            if (_collectionGeoCod != null && _collectionGeoCod.Any())
             {
-                defName = $"{_filesSettings.FolderTemp}\\{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}_Temp_{_collectionGeoCod.Count}.csv";
+                defName = $"{_filesSettings.FolderTemp}\\{NameFile()}_Temp_{_collectionGeoCod.Count}.csv";
             }
 
             return defName;
         }
+
+        private string NameFile() => $"{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_{System.IO.Path.GetFileNameWithoutExtension(_filesSettings.FileInput)}";
 
         /// <summary>
         /// Метод для получения имени файла статистики по умолчанию
@@ -997,7 +999,7 @@ namespace GeoCoding
         /// </summary>
         private void SaveErrors()
         {
-            if (_collectionGeoCod != null && _collectionGeoCod.Count(x => x.Status == StatusType.Error) > 0)
+            if (_collectionGeoCod != null && _collectionGeoCod.Any(x => x.Status == StatusType.Error))
             {
                 var nameFile = SetDefNameFileErrors();
                 _filesSettings.FileError = nameFile;
