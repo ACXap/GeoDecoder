@@ -49,8 +49,12 @@ namespace GeoCoding
         /// </summary>
         public MainWindowModel()
         {
-            var p = Properties.Settings.Default;
+            CreateFolderStructure();
+        }
 
+        private void CreateFolderStructure()
+        {
+            var p = Properties.Settings.Default;
             string[] nameFolders = new string[] { p.FolderTemp, p.FolderInput, p.FolderOutput, p.FolderErrors, p.FolderStatistics };
             string path = Environment.CurrentDirectory;
             foreach (var item in nameFolders)

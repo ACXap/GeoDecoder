@@ -27,7 +27,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения параметра сохранить все данные геокодирования в формате для базы данных
         /// </summary>
-        private bool _canSaveDataAsFinished = false;
+        private bool _canSaveDataAsFinished = true;
         /// <summary>
         /// Поле для хранения параметра открывать ли папку с результатами после геокодирования и сохранения
         /// </summary>

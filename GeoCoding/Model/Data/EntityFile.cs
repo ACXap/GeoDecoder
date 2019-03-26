@@ -1,8 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
+using System.Collections.Generic;
 
 namespace GeoCoding
 {
-    public class EntityFile :ViewModelBase
+    public class EntityFile : ViewModelBase
     {
         private string _nameFile = string.Empty;
         /// <summary>
@@ -52,6 +53,16 @@ namespace GeoCoding
         {
             get => _status;
             set => Set(ref _status, value);
+        }
+
+        private List<EntityGeoCod> _collection;
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<EntityGeoCod> Collection
+        {
+            get => _collection;
+            set => Set(ref _collection, value);
         }
     }
 }

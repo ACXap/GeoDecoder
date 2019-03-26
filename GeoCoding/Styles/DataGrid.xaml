@@ -35,10 +35,18 @@
     </ContextMenu>
 
     <ContextMenu x:Key="ContextMenuRowFilesList">
-        <MenuItem
-            
+        <!--<MenuItem
+            Command="{Binding DataContext.CommandGetAllGeoCodFile, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
             CommandParameter="{Binding}"
-            Header="Выполнить геокодирование" />
+            Header="Выполнить геокодирование" />-->
+        <!--<MenuItem
+            Command="{Binding DataContext.CommandGetAllGeoCodFile, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Выполнить проверку" />-->
+        <MenuItem
+            Command="{Binding DataContext.CommandOpenFile, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Открыть" />
         <Separator />
         <MenuItem
             Command="{Binding DataContext.CommandRemoveFilesFromCollection, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"

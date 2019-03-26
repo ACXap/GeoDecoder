@@ -8,7 +8,7 @@ namespace GeoCoding
 {
     public class GeneralSettings : ViewModelBase
     {
-        private bool _canUseVerificationModule = false;
+        private bool _canUseVerificationModule = true;
         /// <summary>
         /// 
         /// </summary>

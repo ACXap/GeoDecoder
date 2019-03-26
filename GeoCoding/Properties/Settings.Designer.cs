@@ -148,7 +148,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool CanSaveDataAsTemp {
             get {
                 return ((bool)(this["CanSaveDataAsTemp"]));
@@ -646,7 +646,7 @@ namespace GeoCoding.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool CanUseVerificationModule {
             get {
                 return ((bool)(this["CanUseVerificationModule"]));

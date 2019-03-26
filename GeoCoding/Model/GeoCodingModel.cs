@@ -483,6 +483,137 @@ namespace GeoCoding
             return _geoCodingService.GetUrlRequest(address);
         }
 
+        public Task<Exception> GetAllGeoCod(IEnumerable<EntityGeoCod> collectionGeoCod)
+        {
+            Exception error = null;
+            SetGeoService();
+
+            _cts = new CancellationTokenSource();
+
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    if (_geoCodSettings.IsMultipleRequests)
+                    {
+                        int countError = 0;
+                        ParallelOptions po = new ParallelOptions
+                        {
+                            CancellationToken = _cts.Token,
+                            MaxDegreeOfParallelism = _geoCodSettings.CountRequests
+                        };
+                        var connect = GetConnect();
+                        var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
+                        {
+                            if (!string.IsNullOrEmpty(connect.ProxyAddress))
+                            {
+                                data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
+                            }
+                            var e = SetGeoCod(data, connect);
+
+                            if (e != null)
+                            {
+                                if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
+                                {
+                                    error = e;
+                                    pl.Break();
+                                }
+                                else
+                                {
+                                    if (++countError >= _geoCodSettings.MaxCountError)
+                                    {
+                                        error = new Exception(_errorLotOfMistakes);
+                                        pl.Break();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                countError = 0;
+                            }
+                        });
+                    }
+                    else
+                    {
+                        ParallelOptions po = new ParallelOptions
+                        {
+                            CancellationToken = _cts.Token,
+                            MaxDegreeOfParallelism = _geoCodSettings.CountProxy
+                        };
+
+                        var parallelResult = Parallel.ForEach(_netSettings.CollectionListProxy, po, (data, pl) =>
+                        {
+                            EntityGeoCod geo = null;
+                            var connect = GetConnect(data);
+                            int countError = 0;
+
+                            while (data.IsActive)
+                            {
+                                if (po.CancellationToken.IsCancellationRequested)
+                                {
+                                    break;
+                                }
+                                lock (_lock)
+                                {
+                                    geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotProcessed
+                                                                      || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne
+                                                                                                        && x.Error != _errorGeoCodNotFound)));
+                                    if (geo != null)
+                                    {
+                                        geo.Status = StatusType.Processed;
+                                    }
+                                }
+
+                                if (geo != null)
+                                {
+                                    geo.Proxy = $"{data.Address}:{data.Port}";
+                                    var e = SetGeoCod(geo, connect);
+                                    if (e != null)
+                                    {
+                                        if (e.Message == _errorLimit)
+                                        {
+                                            data.IsActive = false;
+                                            data.Error = _errorLimit;
+                                        }
+                                        else
+                                        {
+                                            if (++countError >= _geoCodSettings.MaxCountError)
+                                            {
+                                                data.Error = _errorLotOfMistakes;
+                                                data.IsActive = false;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        countError = 0;
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                        });
+                    }
+                }
+                catch (OperationCanceledException c)
+                {
+                    error = c;
+                }
+                catch (Exception ex)
+                {
+                    error = ex;
+                }
+                finally
+                {
+                    _cts?.Dispose();
+                }
+
+                return error;
+            }, _cts.Token);
+        }
+
         #endregion PublicMethod
     }
 }

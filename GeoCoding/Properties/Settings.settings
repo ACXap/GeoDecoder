@@ -36,7 +36,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="CanSaveDataAsTemp" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="CanSaveDataAsFinished" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -162,7 +162,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="CanUseVerificationModule" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="CanUseBdModule" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
-using MahApps.Metro;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -1376,6 +1375,143 @@ namespace GeoCoding
             get => _isStartGetDataAboutFiles;
             set => Set(ref _isStartGetDataAboutFiles, value);
         }
+
+        private RelayCommand _commandGetGeoForListFile;
+        public RelayCommand CommandGetGeoForListFile =>
+        _commandGetGeoForListFile ?? (_commandGetGeoForListFile = new RelayCommand(
+                    async () =>
+                    {
+                        IsStartGeoCoding = true;
+
+                        foreach (var item in _collectionFiles)
+                        {
+                            if (item.FileType == FileType.Other)
+                            {
+                                continue;
+                            }
+
+                            item.Status = StatusType.Processed;
+
+                            FilesSettings.FileInput = item.NameFile;
+
+                            _model.GetDataFromFile((list, e) =>
+                            {
+                                CreateCollection(list, e);
+                            }, item.NameFile);
+
+                            FilesSettings.FileOutput = SetDefNameFileOutput();
+
+                            IEnumerable<EntityGeoCod> data = null;
+
+                            data = GetCollectionWithFilter(_collectionGeoCod).Where(x => !string.IsNullOrEmpty(x.Address));
+
+                            int countData = data.Count();
+
+                            _stat.Start(_geoCodSettings.GeoService);
+
+                            var error = await _geoCodingModel.GetAllGeoCod(data);
+
+                            if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
+                            {
+                                SaveData();
+                                SaveErrors();
+                            }
+                            if (_geoCodSettings.CanSaveDataAsTemp)
+                            {
+                                SaveTemp();
+                            }
+                            if (_geoCodSettings.CanSaveStatistics)
+                            {
+                                SaveStatistics();
+                            }
+
+                            item.Collection = _collectionGeoCod.ToList();
+                            _stat.Stop();
+
+                            if (error == null)
+                            {
+                                item.Status = StatusType.OK;
+                            }
+                            else if (error.Message == _errorCancel)
+                            {
+                                item.Status = StatusType.Error;
+                                item.Error = error.Message;
+                                _notifications.Notification(NotificationType.Cancel);
+                                break;
+                            }
+                            else
+                            {
+                                item.Status = StatusType.Error;
+                                item.Error = error.Message;
+                            }
+
+                            //if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
+                            //{
+                            //    SaveData();
+                            //    SaveErrors();
+                            //}
+                            //if (_geoCodSettings.CanSaveDataAsTemp)
+                            //{
+                            //    SaveTemp();
+                            //}
+                            //if (_geoCodSettings.CanSaveStatistics)
+                            //{
+                            //    SaveStatistics();
+                            //}
+
+                            //item.Collection = _collectionGeoCod.ToList();
+                            //_stat.Stop();
+                        }
+
+                        IsStartGeoCoding = false;
+                    }));
+
+        private RelayCommand<EntityFile> _commandOpenFile;
+        public RelayCommand<EntityFile> CommandOpenFile =>
+        _commandOpenFile ?? (_commandOpenFile = new RelayCommand<EntityFile>(
+                    obj =>
+                    {
+                        FilesSettings.FileInput = obj.NameFile;
+
+                        if (obj.Collection != null && obj.Collection.Any())
+                        {
+                            CreateCollection(obj.Collection, null);
+                        }
+                        else
+                        {
+                            _model.GetDataFromFile((list, e) =>
+                            {
+                                CreateCollection(list, e);
+                            }, obj.NameFile);
+                        }
+
+                        FilesSettings.FileOutput = SetDefNameFileOutput();
+                    }, obj => obj != null && obj.FileType != FileType.Other));
+
+        //private RelayCommand<EntityFile> _commandGetAllGeoCodFile;
+        //public RelayCommand<EntityFile> CommandGetAllGeoCodFile =>
+        //_commandGetAllGeoCodFile ?? (_commandGetAllGeoCodFile = new RelayCommand<EntityFile>(
+        //            obj =>
+        //            {
+        //                FilesSettings.FileInput = obj.NameFile;
+
+        //                if (obj.Collection != null && obj.Collection.Any())
+        //                {
+        //                    CreateCollection(obj.Collection, null);
+        //                }
+        //                else
+        //                {
+        //                    _model.GetDataFromFile((list, e) =>
+        //                    {
+        //                        CreateCollection(list, e);
+        //                    }, obj.NameFile);
+        //                }
+
+        //                FilesSettings.FileOutput = SetDefNameFileOutput();
+
+        //                GetAllGeoCod(_collectionGeoCod);
+
+        //            }));
 
         /// <summary>
         /// Конструктор по умолчанию
