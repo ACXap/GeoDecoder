@@ -189,7 +189,7 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Grid.ColumnSpan="2" Grid.Row="1">
-                                    <Button Content="Геокодировать" Margin="2" Padding="2" Command="{Binding CommandGetGeoForListFile}"/>
+                                    <!--<Button Content="Геокодировать" Margin="2" Padding="2" Command="{Binding CommandGetGeoForListFile}"/>-->
                                     <Button Content="Проверить" Margin="2" Padding="2" IsEnabled="False"/>
                                 </StackPanel>
 
@@ -661,6 +661,7 @@
                             <WrapPanel Orientation="Vertical">
                                 <RadioButton Content="Все геокодированные" ToolTip="Актуально для всех, кроме яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareAllData}"/>
                                 <RadioButton Content="Точно геокодированные" ToolTip="Актуально для яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareGoodData}"/>
+                                <RadioButton Content="С ошибками проверки" ToolTip="Если при проверке возникли ошибки" Margin="2" IsChecked="{Binding Ver.CanCompareErrorCompare}"/>
                             </WrapPanel>
                         </GroupBox>
 
@@ -676,16 +677,19 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Text="Всего" Grid.Row="0" Grid.Column="0"/>
                                 <TextBlock Text="Точных до проверки" Grid.Row="1" Grid.Column="0"/>
                                 <TextBlock Text="Точных после проверки" Grid.Row="2" Grid.Column="0"/>
-                                <TextBlock Text="Время выполнения" Grid.Row="3" Grid.Column="0"/>
+                                <TextBlock Text="Ошибок после проверки" Grid.Row="3" Grid.Column="0"/>
+                                <TextBlock Text="Время выполнения" Grid.Row="4" Grid.Column="0"/>
 
                                 <TextBlock Text="{Binding Ver.Collection.Count}" Grid.Row="0" Grid.Column="2"/>
                                 <TextBlock Text="{Binding Ver.CountGood}" Grid.Row="1" Grid.Column="2"/>
                                 <TextBlock Text="{Binding Ver.CountGoodAfterCompare}" Grid.Row="2" Grid.Column="2"/>
-                                <TextBlock Text="" Grid.Row="0" Grid.Column="3"/>
+                                <TextBlock Text="{Binding Ver.CountErrorAfterCompare}" Grid.Row="3" Grid.Column="2"/>
+                                <TextBlock Text="" Grid.Row="4" Grid.Column="3"/>
                                 
                             </Grid>
                         </GroupBox>
@@ -698,7 +702,6 @@
                         <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left">
                             <Button Style="{StaticResource ButtonStopStartCompare}" 
                                  Margin="10" Padding="10" Width="200"/>
-
                             <Button Grid.Row="0" Grid.Column="2" Content="Зафиксировать" Margin="2" Padding="2" Command="{Binding Ver.CommandCommitChanges}"/>
                         </StackPanel>
                         

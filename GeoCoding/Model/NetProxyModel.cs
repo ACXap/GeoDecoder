@@ -96,7 +96,7 @@ namespace GeoCoding
             {
                 ParallelOptions po = new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = 50
+                    MaxDegreeOfParallelism = 100
                 };
                 var a = Parallel.ForEach(data, po, (item) =>
                 {

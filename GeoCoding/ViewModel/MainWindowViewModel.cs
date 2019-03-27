@@ -197,6 +197,11 @@ namespace GeoCoding
         private RelayCommand<DragEventArgs> _commandDragDrop;
 
         /// <summary>
+        /// Поле для хранения ссылки на команду драг-дроп файлов в список файлов
+        /// </summary>
+        private RelayCommand<DragEventArgs> _commandDragDropFileForList;
+
+        /// <summary>
         /// Поле для хранения ссылки на команду сохранения настроек
         /// </summary>
         private RelayCommand _commandSaveSettings;
@@ -556,8 +561,15 @@ namespace GeoCoding
         _commandGetAllGeoCod ?? (_commandGetAllGeoCod = new RelayCommand(
                     () =>
                     {
-                        GetAllGeoCod(_collectionGeoCod);
-                    }, () => _collectionGeoCod != null && _collectionGeoCod.Any()));
+                        if(_collectionFiles!=null && _collectionFiles.Any())
+                        {
+                            GetAllGeooForFiles();
+                        }
+                        else
+                        {
+                            GetAllGeoCod(_collectionGeoCod);
+                        }
+                    }, () => (_collectionGeoCod != null && _collectionGeoCod.Any()) || (_collectionFiles!=null && _collectionFiles.Any())));
 
         /// <summary>
         /// Команда остановки геокодирования
@@ -649,6 +661,20 @@ namespace GeoCoding
                             }
                         }
                     }, obj => !_isStartGeoCoding));
+
+        /// <summary>
+        /// Команда обработки перетаскивания файлов в список файлов
+        /// </summary>
+        public RelayCommand<DragEventArgs> CommandDragDropFileForList =>
+        _commandDragDropFileForList ?? (_commandDragDropFileForList = new RelayCommand<DragEventArgs>(
+                    obj =>
+                    {
+                        if (obj.Data.GetDataPresent(DataFormats.FileDrop, true) == true)
+                        {
+                            var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
+                            SetCollectionFiles(a);
+                        }
+                    }));
 
         /// <summary>
         /// Команда для сохранения настроек
@@ -1381,92 +1407,107 @@ namespace GeoCoding
         private RelayCommand _commandGetGeoForListFile;
         public RelayCommand CommandGetGeoForListFile =>
         _commandGetGeoForListFile ?? (_commandGetGeoForListFile = new RelayCommand(
-                    async () =>
+                    () =>
                     {
-                        IsStartGeoCoding = true;
-
-                        foreach (var item in _collectionFiles)
-                        {
-                            if (item.FileType == FileType.Other)
-                            {
-                                continue;
-                            }
-
-                            item.Status = StatusType.Processed;
-
-                            FilesSettings.FileInput = item.NameFile;
-
-                            _model.GetDataFromFile((list, e) =>
-                            {
-                                CreateCollection(list, e);
-                            }, item.NameFile);
-
-                            FilesSettings.FileOutput = SetDefNameFileOutput();
-
-                            IEnumerable<EntityGeoCod> data = null;
-
-                            data = GetCollectionWithFilter(_collectionGeoCod).Where(x => !string.IsNullOrEmpty(x.Address));
-
-                            int countData = data.Count();
-
-                            _stat.Start(_geoCodSettings.GeoService);
-
-                            var error = await _geoCodingModel.GetAllGeoCod(data);
-
-                            if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
-                            {
-                                SaveData();
-                                SaveErrors();
-                            }
-                            if (_geoCodSettings.CanSaveDataAsTemp)
-                            {
-                                SaveTemp();
-                            }
-                            if (_geoCodSettings.CanSaveStatistics)
-                            {
-                                SaveStatistics();
-                            }
-
-                            item.Collection = _collectionGeoCod.ToList();
-                            _stat.Stop();
-
-                            if (error == null)
-                            {
-                                item.Status = StatusType.OK;
-                            }
-                            else if (error.Message == _errorCancel)
-                            {
-                                item.Status = StatusType.Error;
-                                item.Error = error.Message;
-                                _notifications.Notification(NotificationType.Cancel);
-                                break;
-                            }
-                            else
-                            {
-                                item.Status = StatusType.Error;
-                                item.Error = error.Message;
-                            }
-
-                            //if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
-                            //{
-                            //    SaveData();
-                            //    SaveErrors();
-                            //}
-                            //if (_geoCodSettings.CanSaveDataAsTemp)
-                            //{
-                            //    SaveTemp();
-                            //}
-                            //if (_geoCodSettings.CanSaveStatistics)
-                            //{
-                            //    SaveStatistics();
-                            //}
-
-                            //item.Collection = _collectionGeoCod.ToList();
-                            //_stat.Stop();
-                        }
-
-                        IsStartGeoCoding = false;
+                        GetAllGeooForFiles();
                     }));
+
+        private async void GetAllGeooForFiles()
+        {
+            IsStartGeoCoding = true;
+
+            foreach (var item in _collectionFiles)
+            {
+                if (item.FileType == FileType.Other)
+                {
+                    continue;
+                }
+
+                item.Status = StatusType.Processed;
+
+                FilesSettings.FileInput = item.NameFile;
+
+                _model.GetDataFromFile((list, e) =>
+                {
+                    CreateCollection(list, e);
+                }, item.NameFile);
+
+                FilesSettings.FileOutput = SetDefNameFileOutput();
+
+                IEnumerable<EntityGeoCod> data = null;
+
+                data = GetCollectionWithFilter(_collectionGeoCod).Where(x => !string.IsNullOrEmpty(x.Address));
+
+                int countData = data.Count();
+
+                _stat.Start(_geoCodSettings.GeoService);
+
+                var error = await _geoCodingModel.GetAllGeoCod(data);
+
+                if (_geoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_filesSettings.FileOutput))
+                {
+                    SaveData();
+                    SaveErrors();
+                }
+                if (_geoCodSettings.CanSaveDataAsTemp)
+                {
+                    SaveTemp();
+                }
+                if (_geoCodSettings.CanSaveStatistics)
+                {
+                    SaveStatistics();
+                }
+
+                item.Collection = _collectionGeoCod.ToList();
+                _stat.Stop();
+
+                if (error == null)
+                {
+                    item.Status = StatusType.OK;
+                }
+                else if (error.Message == _errorCancel)
+                {
+                    item.Status = StatusType.Error;
+                    item.Error = error.Message;
+                    _notifications.Notification(NotificationType.Cancel);
+                    break;
+                }
+                else
+                {
+                    item.Status = StatusType.Error;
+                    item.Error = error.Message;
+                }
+            }
+
+            _notifications.Notification(NotificationType.Ok, "Обработка файлов завершена");
+            IsStartGeoCoding = false;
+        }
+
+
+        private async void CheckAllGeoFromFiles()
+        {
+            foreach(var item in _collectionFiles)
+            {
+                if (item.FileType == FileType.Other)
+                {
+                    continue;
+                }
+
+                item.Status = StatusType.Processed;
+                FilesSettings.FileInput = item.NameFile;
+                _model.GetDataFromFile((list, e) =>
+                {
+                    CreateCollection(list, e);
+                }, item.NameFile);
+                FilesSettings.FileOutput = SetDefNameFileOutput();
+
+
+
+                var error = await _ver.CheckAll();
+
+            }
+            
+        }
 
         private RelayCommand<EntityFile> _commandOpenFile;
         public RelayCommand<EntityFile> CommandOpenFile =>
@@ -1558,6 +1599,10 @@ namespace GeoCoding
                 if ((data.PropertyName == "IsNotProxy" || data.PropertyName == "IsSystemProxy" || data.PropertyName == "IsManualProxy") && data.NewValue)
                 {
                     _geoCodSettings.IsMultipleRequests = true;
+                }
+                if(data.PropertyName == "IsStartCompare" && !data.NewValue)
+                {
+                    CommandSaveData.Execute(true);
                 }
             });
         }

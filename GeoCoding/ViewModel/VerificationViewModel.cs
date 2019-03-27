@@ -1,9 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace GeoCoding
@@ -141,7 +143,12 @@ namespace GeoCoding
         public bool IsStartCompare
         {
             get => _isStartCompare;
-            set => Set(ref _isStartCompare, value);
+            set
+            {
+                var oldValue = _isStartCompare;
+                Set(ref _isStartCompare, value);
+                RaisePropertyChanged("IsStartCompare", oldValue, value, true);
+            }
         }
 
         /// <summary>
@@ -212,6 +219,8 @@ namespace GeoCoding
             CustomerView.Filter = CustomerFilter;
 
             CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
+            CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+            CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
         }
 
         /// <summary>
@@ -219,7 +228,7 @@ namespace GeoCoding
         /// </summary>
         public void Update()
         {
-            if(_collection!=null && _customerView!=null)
+            if (_collection != null && _customerView != null)
             {
                 _customerView.Refresh();
                 CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
@@ -255,7 +264,7 @@ namespace GeoCoding
                         Status = StatusType.OK;
                     }
                 });
-            },()=>!string.IsNullOrEmpty(_verificationSettings.VerificationServer)));
+            }, () => !string.IsNullOrEmpty(_verificationSettings.VerificationServer)));
 
         /// <summary>
         /// Команда для фиксации данных после проверки
@@ -269,7 +278,7 @@ namespace GeoCoding
                         {
                             item.GeoCode.MainGeoCod.Qcode = item.Qcode;
                         }
-                    }, () => _collection != null && _collection.Any() && !_isStartCompare));
+                    }, () => _collection != null && _collection.Any()));
 
         /// <summary>
         /// Команда для остановки проверки данных
@@ -299,24 +308,51 @@ namespace GeoCoding
                         {
                             list = _collection.Where(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1).ToList();
                         }
+                        else if (_canCompareErrorCompare)
+                        {
+                            _collection.Where(x => x.Status == StatusType.Error).ToList();
+                        }
 
                         _model.CompareAsync(e =>
                         {
-                            IsStartCompare = false;
-                            CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
-
                             if (e == null)
                             {
                                 CommandCommitChanges.RaiseCanExecuteChanged();
+                                CommandCommitChanges.Execute(true);
                             }
                             else
                             {
 
                             }
+
+                            CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+                            CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
+                            IsStartCompare = false;
                         }, list);
                     }, () => _collection != null && _collection.Any()));
 
         #endregion PublicCommand
+
+
+        private int _countErrorAfterCompare = 0;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int CountErrorAfterCompare
+        {
+            get => _countErrorAfterCompare;
+            set => Set(ref _countErrorAfterCompare, value);
+        }
+
+        private bool _canCompareErrorCompare = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool CanCompareErrorCompare
+        {
+            get => _canCompareErrorCompare;
+            set => Set(ref _canCompareErrorCompare, value);
+        }
 
         private VerificationSettings _verificationSettings;
         /// <summary>
@@ -327,6 +363,50 @@ namespace GeoCoding
             get => _verificationSettings;
             set => Set(ref _verificationSettings, value);
         }
+
+
+        public Task<Exception> CheckAll()
+        {
+            Exception error = null;
+
+            return Task.Factory.StartNew(() =>
+            {
+                IsStartCompare = true;
+
+                List<EntityForCompare> list = null;
+
+                if (_canCompareAllData)
+                {
+                    list = _collection.Where(x => x.GeoCode.MainGeoCod != null).ToList();
+                }
+                else if (_canCompareGoodData)
+                {
+                    list = _collection.Where(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1).ToList();
+                }
+                else if (_canCompareErrorCompare)
+                {
+                    _collection.Where(x => x.Status == StatusType.Error).ToList();
+                }
+
+
+                try
+                {
+
+                }
+                catch (Exception ex)
+                {
+                    error = ex;
+                }
+
+
+                CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+                CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
+                IsStartCompare = false;
+
+                return error;
+            });
+        }
+
 
         /// <summary>
         /// Конструктор

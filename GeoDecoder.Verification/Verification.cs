@@ -11,10 +11,10 @@ namespace GeoCoding.VerificationService
         {
             Name = "SearchAddress",
             MaxReceivedMessageSize = 1000000,
-            SendTimeout = new TimeSpan(0, 5, 0),
-            ReceiveTimeout = new TimeSpan(0, 5, 0),
-            OpenTimeout = new TimeSpan(0, 5, 0),
-            CloseTimeout = new TimeSpan(0, 5, 0),
+            SendTimeout = new TimeSpan(0, 6, 0),
+            ReceiveTimeout = new TimeSpan(0, 6, 0),
+            OpenTimeout = new TimeSpan(0, 6, 0),
+            CloseTimeout = new TimeSpan(0, 6, 0),
         };
         private EndpointAddress _address;
 
