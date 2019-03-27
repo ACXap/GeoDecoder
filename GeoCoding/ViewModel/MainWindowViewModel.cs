@@ -1483,6 +1483,13 @@ namespace GeoCoding
             IsStartGeoCoding = false;
         }
 
+        private RelayCommand _myCommand;
+        public RelayCommand MyCommand =>
+        _myCommand ?? (_myCommand = new RelayCommand(
+                    () =>
+                    {
+                        CheckAllGeoFromFiles();
+                    }));
 
         private async void CheckAllGeoFromFiles()
         {
@@ -1495,10 +1502,15 @@ namespace GeoCoding
 
                 item.Status = StatusType.Processed;
                 FilesSettings.FileInput = item.NameFile;
-                _model.GetDataFromFile((list, e) =>
+
+                if(item.FileType == FileType.Temp)
                 {
-                    CreateCollection(list, e);
-                }, item.NameFile);
+                    _model.GetDataFromFile((list, e) =>
+                    {
+                        CreateCollection(list, e);
+                    }, item.NameFile);
+                }
+    
                 FilesSettings.FileOutput = SetDefNameFileOutput();
 
 

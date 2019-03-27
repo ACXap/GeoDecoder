@@ -116,5 +116,71 @@ namespace GeoCoding
         {
             _verification = new Verification(connectionSettings);
         }
+
+        public Exception CheckGeo(List<EntityForCompare> data)
+        {
+            Exception error = null;
+
+            cts = new CancellationTokenSource();
+            var t = cts.Token;
+
+            ParallelOptions po = new ParallelOptions()
+            {
+                MaxDegreeOfParallelism = 5,
+                CancellationToken = t
+            };
+
+            var list = data.Partition(400);
+
+            try
+            {
+                var a = Parallel.ForEach(list, po, (item) =>
+                {
+                    var geo = item.Select(x =>
+                    {
+                        x.Status = StatusType.Processed;
+                        return new VerificationService.EntityForCompare()
+                        {
+                            Data = x.GeoCode.MainGeoCod.AddressWeb
+                        };
+                    }).ToList();
+
+                    _verification.GetId(e =>
+                    {
+                        var index = 0;
+
+                        if (e != null)
+                        {
+                            error = e;
+                            foreach (var i in geo)
+                            {
+                                var o = item.ElementAt(index++);
+                                o.Status = StatusType.Error;
+                                o.Error = e.Message;
+                            }
+                        }
+                        else
+                        {
+                            foreach (var i in geo)
+                            {
+                                var o = item.ElementAt(index++);
+                                o.Status = StatusType.OK;
+                                o.GlobalIdAfterCompare = i.Id;
+
+                                o.Qcode = o.GlobalIdAfterCompare == o.GeoCode.GlobalID ? (byte)1 : (byte)2;
+
+                                o.IsChanges = o.Qcode != o.GeoCode.MainGeoCod.Qcode;
+                            }
+                        }
+                    }, geo);
+                });
+            }
+            catch (Exception ex)
+            {
+                error = ex;
+            }
+
+            return error;
+        }
     }
 }

@@ -325,6 +325,12 @@ namespace GeoCoding
 
                             }
 
+                            var list = _collection.Where(x => x.IsChanges);
+                            foreach (var item in list)
+                            {
+                                item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                            }
+
                             CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
                             CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
                             IsStartCompare = false;
@@ -391,7 +397,7 @@ namespace GeoCoding
 
                 try
                 {
-
+                    error = _model.CheckGeo(list);
                 }
                 catch (Exception ex)
                 {
@@ -401,6 +407,13 @@ namespace GeoCoding
 
                 CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
                 CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
+
+                var list = _collection.Where(x => x.IsChanges);
+                foreach (var item in list)
+                {
+                    item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                }
+
                 IsStartCompare = false;
 
                 return error;
