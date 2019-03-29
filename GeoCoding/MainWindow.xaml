@@ -661,6 +661,7 @@
                             <WrapPanel Orientation="Vertical">
                                 <RadioButton Content="Все геокодированные" ToolTip="Актуально для всех, кроме яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareAllData}"/>
                                 <RadioButton Content="Точно геокодированные" ToolTip="Актуально для яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareGoodData}"/>
+                                <RadioButton Content="Неточно геокодированные" ToolTip="Актуально для всех, кроме яндекса" Margin="2" IsChecked="{Binding Ver.CanCompareNotGoodData}"/>
                                 <RadioButton Content="С ошибками проверки" ToolTip="Если при проверке возникли ошибки" Margin="2" IsChecked="{Binding Ver.CanCompareErrorCompare}"/>
                             </WrapPanel>
                         </GroupBox>

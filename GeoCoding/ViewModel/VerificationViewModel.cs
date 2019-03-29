@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Threading;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -220,7 +221,7 @@ namespace GeoCoding
 
             CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
             CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
-            CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
+           // CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
         }
 
         /// <summary>
@@ -230,9 +231,10 @@ namespace GeoCoding
         {
             if (_collection != null && _customerView != null)
             {
-                _customerView.Refresh();
-                CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
+                DispatcherHelper.CheckBeginInvokeOnUI(() => _customerView.Refresh());
+               // CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
                 CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+                CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
             }
         }
 
@@ -276,7 +278,10 @@ namespace GeoCoding
                         var list = _collection.Where(x => x.IsChanges);
                         foreach (var item in list)
                         {
-                            item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                            if (item.Qcode != 0)
+                            {
+                                item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                            }
                         }
                     }, () => _collection != null && _collection.Any()));
 
@@ -310,7 +315,7 @@ namespace GeoCoding
                         }
                         else if (_canCompareErrorCompare)
                         {
-                            _collection.Where(x => x.Status == StatusType.Error).ToList();
+                            list = _collection.Where(x => x.Status == StatusType.Error).ToList();
                         }
 
                         _model.CompareAsync(e =>
@@ -325,14 +330,17 @@ namespace GeoCoding
 
                             }
 
-                            var list = _collection.Where(x => x.IsChanges);
-                            foreach (var item in list)
+                            var l = _collection.Where(x => x.IsChanges);
+                            foreach (var item in l)
                             {
-                                item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                                if (item.Qcode != 0)
+                                {
+                                    item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                                }
+
                             }
 
-                            CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
-                            CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
+                            Update();
                             IsStartCompare = false;
                         }, list);
                     }, () => _collection != null && _collection.Any()));
@@ -371,6 +379,17 @@ namespace GeoCoding
         }
 
 
+
+        private bool _canCompareNotGoodData = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool CanCompareNotGoodData
+        {
+            get => _canCompareNotGoodData;
+            set => Set(ref _canCompareNotGoodData, value);
+        }
+
         public Task<Exception> CheckAll()
         {
             Exception error = null;
@@ -393,7 +412,10 @@ namespace GeoCoding
                 {
                     _collection.Where(x => x.Status == StatusType.Error).ToList();
                 }
-
+                else if (_canCompareNotGoodData)
+                {
+                    _collection.Where(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 2).ToList();
+                }
 
                 try
                 {
@@ -404,14 +426,15 @@ namespace GeoCoding
                     error = ex;
                 }
 
+                Update();
 
-                CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
-                CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
-
-                var list = _collection.Where(x => x.IsChanges);
-                foreach (var item in list)
+                var l = _collection.Where(x => x.IsChanges);
+                foreach (var item in l)
                 {
-                    item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                    if (item.Qcode != 0)
+                    {
+                        item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                    }
                 }
 
                 IsStartCompare = false;

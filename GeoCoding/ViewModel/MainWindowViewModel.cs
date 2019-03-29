@@ -1516,6 +1516,15 @@ namespace GeoCoding
 
 
                 var error = await _ver.CheckAll();
+                if(error==null)
+                {
+                    item.Status = StatusType.OK;
+                }
+                else
+                {
+                    item.Error = error.Message;
+                    item.Status = StatusType.Error;
+                }
 
             }
             
