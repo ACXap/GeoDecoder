@@ -19,6 +19,16 @@ namespace GeoCoding
             set => Set(ref _globalId, value);
         }
 
+        private Guid _fiasGuid;
+        /// <summary>
+        /// Глобальный идентификатор ФИАС
+        /// </summary>
+        public Guid FiasGuid
+        {
+            get => _fiasGuid;
+            set => Set(ref _fiasGuid, value);
+        }
+
         private string _address = string.Empty;
         /// <summary>
         /// Адрес объекта

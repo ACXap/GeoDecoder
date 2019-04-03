@@ -11,10 +11,10 @@ namespace GeoCoding.VerificationService
         {
             Name = "SearchAddress",
             MaxReceivedMessageSize = 1000000,
-            SendTimeout = new TimeSpan(0, 6, 0),
-            ReceiveTimeout = new TimeSpan(0, 6, 0),
-            OpenTimeout = new TimeSpan(0, 6, 0),
-            CloseTimeout = new TimeSpan(0, 6, 0),
+            SendTimeout = new TimeSpan(0, 8, 0),
+            ReceiveTimeout = new TimeSpan(0, 8, 0),
+            OpenTimeout = new TimeSpan(0, 8, 0),
+            CloseTimeout = new TimeSpan(0, 8, 0),
         };
         private EndpointAddress _address;
 
@@ -88,7 +88,6 @@ namespace GeoCoding.VerificationService
 
             callback(error);
         }
-
 
         //public void GetLightMatch(Action<bool, Exception> callback, EntityForCompare data)
         //{

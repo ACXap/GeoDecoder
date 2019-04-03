@@ -39,6 +39,11 @@ namespace GeoCoding.BDService
                                 {
                                     entity.Address = reader.GetString(1);
                                 }
+                                if(reader.FieldCount>2 && reader.GetName(2).ToLower() == "fiasguid" && !reader.IsDBNull(2))
+                                {
+                                    Guid.TryParse(reader.GetString(2), out Guid guid);
+                                    entity.FiasGuid = guid;
+                                }
                                 data.Add(entity);
                             }
                         }

@@ -704,7 +704,7 @@
                             <Button Style="{StaticResource ButtonStopStartCompare}" 
                                  Margin="10" Padding="10" Width="200"/>
                             <Button Content="Зафиксировать" Margin="2" Padding="2" Command="{Binding Ver.CommandCommitChanges}"/>
-                            <Button Command="{Binding MyCommand}" Content="Test"/>
+                            <Button Command="{Binding MyCommand}" Content="Проверить файлы"/>
                         </StackPanel>
                         
 

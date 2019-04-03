@@ -1,4 +1,6 @@
-﻿namespace GeoCoding.BDService
+﻿using System;
+
+namespace GeoCoding.BDService
 {
     /// <summary>
     /// Класс для хранения объекта из базы данных
@@ -13,5 +15,6 @@
         /// Address - адрес объекта
         /// </summary>
         public string Address { get; set; }
+        public Guid FiasGuid { get; set; }
     }
 }

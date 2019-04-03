@@ -32,6 +32,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock
             Grid.Row="0"
@@ -40,49 +41,53 @@
         <TextBlock
             Grid.Row="1"
             Grid.Column="2"
-            Text="{Binding Address}" />
+            Text="{Binding FiasGuid}" />
         <TextBlock
             Grid.Row="2"
             Grid.Column="2"
-            Text="{Binding MainGeoCod.AddressWeb}" />
+            Text="{Binding Address}" />
         <TextBlock
             Grid.Row="3"
             Grid.Column="2"
-            Text="{Binding MainGeoCod.Longitude}" />
+            Text="{Binding MainGeoCod.AddressWeb}" />
         <TextBlock
             Grid.Row="4"
             Grid.Column="2"
-            Text="{Binding MainGeoCod.Latitude}" />
+            Text="{Binding MainGeoCod.Longitude}" />
         <TextBlock
             Grid.Row="5"
             Grid.Column="2"
-            Text="{Binding MainGeoCod.Qcode}" />
+            Text="{Binding MainGeoCod.Latitude}" />
         <TextBlock
             Grid.Row="6"
             Grid.Column="2"
-            Text="{Binding Error}" />
+            Text="{Binding MainGeoCod.Qcode}" />
         <TextBlock
             Grid.Row="7"
             Grid.Column="2"
-            Text="{Binding Status}" />
+            Text="{Binding Error}" />
         <TextBlock
             Grid.Row="8"
             Grid.Column="2"
-            Style="{StaticResource TextBlockTime}" />
+            Text="{Binding Status}" />
         <TextBlock
             Grid.Row="9"
             Grid.Column="2"
-            Text="{Binding MainGeoCod.Kind, Converter={StaticResource ConverterKindTypeToString}}" />
+            Style="{StaticResource TextBlockTime}" />
         <TextBlock
             Grid.Row="10"
             Grid.Column="2"
-            Text="{Binding MainGeoCod.Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
+            Text="{Binding MainGeoCod.Kind, Converter={StaticResource ConverterKindTypeToString}}" />
         <TextBlock
             Grid.Row="11"
             Grid.Column="2"
-            Text="{Binding CountResult}" />
+            Text="{Binding MainGeoCod.Precision, Converter={StaticResource ConverterPrecisionTypeToString}}" />
         <TextBlock
             Grid.Row="12"
+            Grid.Column="2"
+            Text="{Binding CountResult}" />
+        <TextBlock
+            Grid.Row="13"
             Grid.Column="2"
             Text="{Binding GeoCoder}" />
         <TextBlock
@@ -92,49 +97,53 @@
         <TextBlock
             Grid.Row="1"
             Grid.Column="0"
-            Text="Адрес" />
+            Text="ФИАС" />
         <TextBlock
             Grid.Row="2"
             Grid.Column="0"
-            Text="Адрес Web" />
+            Text="Адрес" />
         <TextBlock
             Grid.Row="3"
             Grid.Column="0"
-            Text="Долгота" />
+            Text="Адрес Web" />
         <TextBlock
             Grid.Row="4"
             Grid.Column="0"
-            Text="Широта" />
+            Text="Долгота" />
         <TextBlock
             Grid.Row="5"
             Grid.Column="0"
-            Text="Качество" />
+            Text="Широта" />
         <TextBlock
             Grid.Row="6"
             Grid.Column="0"
-            Text="Ошибка" />
+            Text="Качество" />
         <TextBlock
             Grid.Row="7"
             Grid.Column="0"
-            Text="Статус" />
+            Text="Ошибка" />
         <TextBlock
             Grid.Row="8"
             Grid.Column="0"
-            Text="Дата и время" />
+            Text="Статус" />
         <TextBlock
             Grid.Row="9"
             Grid.Column="0"
-            Text="Тип объекта" />
+            Text="Дата и время" />
         <TextBlock
             Grid.Row="10"
             Grid.Column="0"
-            Text="Качество" />
+            Text="Тип объекта" />
         <TextBlock
             Grid.Row="11"
             Grid.Column="0"
-            Text="Кол.результатов" />
+            Text="Качество" />
         <TextBlock
             Grid.Row="12"
+            Grid.Column="0"
+            Text="Кол.результатов" />
+        <TextBlock
+            Grid.Row="13"
             Grid.Column="0"
             Text="Кодер" />
     </Grid>

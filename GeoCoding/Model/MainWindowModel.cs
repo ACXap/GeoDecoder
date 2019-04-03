@@ -23,8 +23,11 @@ namespace GeoCoding
         private const string _errorIsAddressEmpty = "Значение адреса пусто";
         private const string _errorIsFormatStringWrong = "Неверный формат строки";
         private const string _globalIDColumnNameLoadFile = "globalid";
+        private const string _fiasGuidColumnNameLoadFile = "fiasguid";
         private const string _addressColumnNameLoadFile = "address";
+        
         private const int _globalIDColumnIndexLoadFile = 0;
+        private const int _fiasGuidColumnIndexLoadFile = 2;
         private const int _addressColumnIndexLoadFile = 1;
         private const int _maxCountError = 100;
 
@@ -37,7 +40,7 @@ namespace GeoCoding
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
         private readonly string _nameColumnErrorFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}error";
 
-        private readonly string _nameColumnTempFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}AddressWeb{_charSplit}Longitude{_charSplit}Latitude" +
+        private readonly string _nameColumnTempFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}{_fiasGuidColumnNameLoadFile}{_charSplit}AddressWeb{_charSplit}Longitude{_charSplit}Latitude" +
                                                          $"{_charSplit}Qcode{_charSplit}Error{_charSplit}Status{_charSplit}DateTimeGeoCod{_charSplit}Kind{_charSplit}Precision{_charSplit}CountResult{_charSplit}Proxy";
 
         private readonly string _nameColumnStatisticsFile = $"DateTime{_charSplit}User{_charSplit}System{_charSplit}FileInput{_charSplit}FileOutput{_charSplit}FileError{_charSplit}AllEntity" +
@@ -52,6 +55,9 @@ namespace GeoCoding
             CreateFolderStructure();
         }
 
+        /// <summary>
+        /// Метод для формирования структуры папок
+        /// </summary>
         private void CreateFolderStructure()
         {
             var p = Properties.Settings.Default;
@@ -83,6 +89,11 @@ namespace GeoCoding
             callback(file, error);
         }
 
+        /// <summary>
+        /// Метод для получения списка файлов
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром набор файлов, ошибка</param>
+        /// <param name="defaultFolder">Имя папки по умолчанию</param>
         public void GetFiles(Action<IEnumerable<string>, Exception> callback, string defaultFolder = "")
         {
             Exception error = null;
@@ -97,6 +108,11 @@ namespace GeoCoding
             callback(data, error);
         }
 
+        /// <summary>
+        /// Метод для получения данных о файле
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
+        /// <param name="data">Набор файлов</param>
         public async void GetDataAboutFiles(Action<Exception> callback, IEnumerable<EntityFile> data)
         {
             Exception error = null;
@@ -331,7 +347,7 @@ namespace GeoCoding
 
                 list.AddRange(data.Select(x =>
                 {
-                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.MainGeoCod?.AddressWeb}{_charSplit}{x.MainGeoCod?.Longitude}{_charSplit}{x.MainGeoCod?.Latitude}" +
+                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.FiasGuid}{_charSplit}{x.MainGeoCod?.AddressWeb}{_charSplit}{x.MainGeoCod?.Longitude}{_charSplit}{x.MainGeoCod?.Latitude}" +
                     $"{_charSplit}{x.MainGeoCod?.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.MainGeoCod?.Kind}" +
                     $"{_charSplit}{x.MainGeoCod?.Precision}{_charSplit}{x.CountResult}{_charSplit}{x.Proxy}";
                 }));
@@ -535,6 +551,11 @@ namespace GeoCoding
                                 countError++;
                             }
 
+                            if(d.First().Split(_charSplit)[2].ToLower() == _fiasGuidColumnNameLoadFile && Guid.TryParse(s[_fiasGuidColumnIndexLoadFile], out Guid guid))
+                            {
+                                geocod.FiasGuid = guid;
+                            }
+
                             if (IsFirstStringNameColumnTempFile(d.First()))
                             {
                                 if (!string.IsNullOrEmpty(s[2]) && !string.IsNullOrEmpty(s[3]))
@@ -610,7 +631,8 @@ namespace GeoCoding
             var str = fs.Split(_charSplit);
             if (str.Length >= 2)
             {
-                if (str[_globalIDColumnIndexLoadFile].ToLower() == _globalIDColumnNameLoadFile && str[_addressColumnIndexLoadFile].ToLower() == _addressColumnNameLoadFile)
+                if (str[_globalIDColumnIndexLoadFile].ToLower() == _globalIDColumnNameLoadFile 
+                    && str[_addressColumnIndexLoadFile].ToLower() == _addressColumnNameLoadFile)
                 {
                     result = true;
                 }
@@ -959,6 +981,7 @@ namespace GeoCoding
                             {
                                 a.Address = item.Address;
                             }
+                            a.FiasGuid = item.FiasGuid;
 
                             data.Add(a);
                         }

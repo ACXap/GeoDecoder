@@ -347,7 +347,6 @@ namespace GeoCoding
 
         #endregion PublicCommand
 
-
         private int _countErrorAfterCompare = 0;
         /// <summary>
         /// 
@@ -377,8 +376,6 @@ namespace GeoCoding
             get => _verificationSettings;
             set => Set(ref _verificationSettings, value);
         }
-
-
 
         private bool _canCompareNotGoodData = false;
         /// <summary>
@@ -442,7 +439,6 @@ namespace GeoCoding
                 return error;
             });
         }
-
 
         /// <summary>
         /// Конструктор

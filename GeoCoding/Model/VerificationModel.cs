@@ -47,7 +47,7 @@ namespace GeoCoding
 
             ParallelOptions po = new ParallelOptions()
             {
-                MaxDegreeOfParallelism = 5,
+                MaxDegreeOfParallelism = 4,
                 CancellationToken = t
             };
 
@@ -126,7 +126,7 @@ namespace GeoCoding
 
             ParallelOptions po = new ParallelOptions()
             {
-                MaxDegreeOfParallelism = 5,
+                MaxDegreeOfParallelism = 4,
                 CancellationToken = t
             };
 
