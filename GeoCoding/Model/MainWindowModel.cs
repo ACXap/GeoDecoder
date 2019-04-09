@@ -37,11 +37,16 @@ namespace GeoCoding
         private readonly IBDService _bdService = new BDPostgresql();
         private readonly IFtpService _ftpService = new FtpService();
 
+        //globalid;Latitude;Longitude;Qcode
         private readonly string _nameColumnOutputFile = $"{_globalIDColumnNameLoadFile}{_charSplit}Latitude{_charSplit}Longitude{_charSplit}Qcode";
+
+        //globalid;address;error
         private readonly string _nameColumnErrorFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}error";
 
-        private readonly string _nameColumnTempFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}{_fiasGuidColumnNameLoadFile}{_charSplit}AddressWeb{_charSplit}Longitude{_charSplit}Latitude" +
-                                                         $"{_charSplit}Qcode{_charSplit}Error{_charSplit}Status{_charSplit}DateTimeGeoCod{_charSplit}Kind{_charSplit}Precision{_charSplit}CountResult{_charSplit}Proxy";
+        //globalid;address;fiasguid;AddressWeb;Latitude;Longitude;Qcode;Error;Status;DateTimeGeoCod;Kind;Precision;CountResult;Proxy;GeoCoder
+        private readonly string _nameColumnTempFile = $"{_globalIDColumnNameLoadFile}{_charSplit}{_addressColumnNameLoadFile}{_charSplit}{_fiasGuidColumnNameLoadFile}{_charSplit}AddressWeb{_charSplit}" +
+                                                        $"Latitude{_charSplit}Longitude{_charSplit}Qcode{_charSplit}Error{_charSplit}Status{_charSplit}DateTimeGeoCod{_charSplit}Kind{_charSplit}" +
+                                                         $"Precision{_charSplit}CountResult{_charSplit}Proxy{_charSplit}GeoCoder";
 
         private readonly string _nameColumnStatisticsFile = $"DateTime{_charSplit}User{_charSplit}System{_charSplit}FileInput{_charSplit}FileOutput{_charSplit}FileError{_charSplit}AllEntity" +
                                                              $"{_charSplit}OK{_charSplit}Error{_charSplit}NotGeoCoding{_charSplit}GeoCodingNow{_charSplit}House" +
@@ -347,9 +352,9 @@ namespace GeoCoding
 
                 list.AddRange(data.Select(x =>
                 {
-                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.FiasGuid}{_charSplit}{x.MainGeoCod?.AddressWeb}{_charSplit}{x.MainGeoCod?.Longitude}{_charSplit}{x.MainGeoCod?.Latitude}" +
+                    return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.FiasGuid}{_charSplit}{x.MainGeoCod?.AddressWeb}{_charSplit}{x.MainGeoCod?.Latitude}{_charSplit}{x.MainGeoCod?.Longitude}" +
                     $"{_charSplit}{x.MainGeoCod?.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.MainGeoCod?.Kind}" +
-                    $"{_charSplit}{x.MainGeoCod?.Precision}{_charSplit}{x.CountResult}{_charSplit}{x.Proxy}";
+                    $"{_charSplit}{x.MainGeoCod?.Precision}{_charSplit}{x.CountResult}{_charSplit}{x.Proxy}{_charSplit}{x.GeoCoder}";
                 }));
 
                 _fileService.SaveData(er =>
@@ -556,34 +561,38 @@ namespace GeoCoding
                                 geocod.FiasGuid = guid;
                             }
 
+                            //    0        1       2        3         4       5          6    7      8        9           10    11      12           13     14
+                            //globalid;address;fiasguid;AddressWeb;Latitude;Longitude;Qcode;Error;Status;DateTimeGeoCod;Kind;Precision;CountResult;Proxy;GeoCoder
                             if (IsFirstStringNameColumnTempFile(d.First()))
                             {
-                                if (!string.IsNullOrEmpty(s[2]) && !string.IsNullOrEmpty(s[3]))
+                                if (!string.IsNullOrEmpty(s[3]) && !string.IsNullOrEmpty(s[4]) && !string.IsNullOrEmpty(s[5]))
                                 {
                                     geocod.MainGeoCod = new GeoCod()
                                     {
-                                        AddressWeb = s[2],
-                                        Longitude = s[3],
-                                        Latitude = s[4],
+                                        AddressWeb = s[3],
+                                        Longitude = s[4],
+                                        Latitude = s[5],
                                     };
-                                    byte.TryParse(s[5], out byte qcode);
+                                    byte.TryParse(s[6], out byte qcode);
                                     geocod.MainGeoCod.Qcode = qcode;
-                                    Enum.TryParse(s[9], out KindType kt);
+                                    Enum.TryParse(s[10], out KindType kt);
                                     geocod.MainGeoCod.Kind = kt;
-                                    Enum.TryParse(s[10], out PrecisionType pt);
+                                    Enum.TryParse(s[11], out PrecisionType pt);
                                     geocod.MainGeoCod.Precision = pt;
-
                                 }
 
-                                geocod.Error = s[6];
-                                Enum.TryParse(s[7], out StatusType a);
+                                geocod.Error = s[7];
+                                Enum.TryParse(s[8], out StatusType a);
                                 geocod.Status = a;
-                                DateTime.TryParse(s[8], out DateTime dt);
+                                DateTime.TryParse(s[9], out DateTime dt);
                                 geocod.DateTimeGeoCod = dt;
-                                byte.TryParse(s[11], out byte c);
+                                byte.TryParse(s[12], out byte c);
                                 geocod.CountResult = c;
-                                geocod.Proxy = s[12];
+                                geocod.Proxy = s[13];
+                                geocod.GeoCoder = s[14];
                             }
+                            //    0        1      2
+                            //globalid;address;error
                             else if (IsFirstStringNameColumnErrorFile(d.First()))
                             {
                                 geocod.Error = s[2];
