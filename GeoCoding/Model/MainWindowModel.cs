@@ -556,7 +556,7 @@ namespace GeoCoding
                                 countError++;
                             }
 
-                            if(d.First().Split(_charSplit)[2].ToLower() == _fiasGuidColumnNameLoadFile && Guid.TryParse(s[_fiasGuidColumnIndexLoadFile], out Guid guid))
+                            if(d.First().Split(_charSplit).Length>2 && d.First().Split(_charSplit)[2].ToLower() == _fiasGuidColumnNameLoadFile && Guid.TryParse(s[_fiasGuidColumnIndexLoadFile], out Guid guid))
                             {
                                 geocod.FiasGuid = guid;
                             }

@@ -71,6 +71,8 @@ namespace GeoCoding.GeoCodingService
 
             try
             {
+                ServicePointManager.DefaultConnectionLimit = 100;
+
                 WebRequest request = WebRequest.Create(url);
                 request.Headers.Add("Content-Encoding: gzip, deflate, br");
 
