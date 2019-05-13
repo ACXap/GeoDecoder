@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,6 +56,8 @@
     <Compile Include="GeoServices\HereRusGisGeoCodingService.cs" />
     <Compile Include="GeoServices\RusGisGeoCodingService.cs" />
     <Compile Include="GeoServices\SputnikRusGisGeoCodingService.cs" />
+    <Compile Include="GeoServices\YandexPayGeoCodingService.cs" />
+    <Compile Include="Helpers\Protected.cs" />
     <Compile Include="IGeoCodingService.cs" />
     <Compile Include="MainGeoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

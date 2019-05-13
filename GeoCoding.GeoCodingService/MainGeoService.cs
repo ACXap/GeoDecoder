@@ -23,6 +23,7 @@ namespace GeoCoding.GeoCodingService
                 new RusGisDemoGeoCodingService(),
                 new RusGisGeoCodingService(),
                 new HereRusGisGeoCodingService(),
+                new YandexPayGeoCodingService(),
                 new Test.GeoCodingTest()
             }));
         /// <summary>

@@ -101,6 +101,7 @@
     <Compile Include="Model\Data\Enumeration\FileType.cs" />
     <Compile Include="Model\Data\Enumeration\NotificationType.cs" />
     <Compile Include="Model\Data\GeoCod.cs" />
+    <Compile Include="Model\Data\Limit.cs" />
     <Compile Include="Model\Data\ProxyEntity.cs" />
     <Compile Include="Model\Data\Settings\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
