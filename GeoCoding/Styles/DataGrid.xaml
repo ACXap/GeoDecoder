@@ -3,8 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:l="clr-namespace:GeoCoding"
     xmlns:local="clr-namespace:GeoCoding.Styles">
-    
-    <!-- Контекст меню для строк основной таблицы-->
+
+    <!--  Контекст меню для строк основной таблицы  -->
     <ContextMenu x:Key="ContextMenuRow">
         <MenuItem
             Command="{Binding DataContext.CommandGetGeoCod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
@@ -27,6 +27,19 @@
             Command="{Binding DataContext.CommandCopyGlpobalId, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
             CommandParameter="{Binding}"
             Header="Копировать GlobalID" />
+        <Separator />
+        <MenuItem
+            Command="{Binding DataContext.CommandCopyGeoData, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Копировать ГеоДанные" />
+        <MenuItem
+            Command="{Binding DataContext.CommandSetGeoData, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Вставить ГеоДанные" />
+        <MenuItem
+            Command="{Binding DataContext.CommandSetFirstGeoCod, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+            CommandParameter="{Binding}"
+            Header="Выбрать первый вариант из списка ГеоДанных" />
         <Separator />
         <MenuItem
             Command="{Binding DataContext.CommandClearCollection, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
@@ -58,7 +71,7 @@
             Header="Очистить коллекцию" />
     </ContextMenu>
 
-    <!-- Стиль основной для строк -->
+    <!--  Стиль основной для строк  -->
     <Style
         x:Key="DataGridMainRow"
         BasedOn="{StaticResource MetroDataGridRow}"
@@ -71,7 +84,7 @@
         </Setter>
     </Style>
 
-    <!-- Стиль основной для строк -->
+    <!--  Стиль основной для строк  -->
     <Style
         x:Key="DataGridRowFilesList"
         BasedOn="{StaticResource MetroDataGridRow}"
@@ -84,7 +97,7 @@
         </Setter>-->
     </Style>
 
-    <!-- Стиль для строк основной таблицы данных -->
+    <!--  Стиль для строк основной таблицы данных  -->
     <Style
         x:Key="DataGridMainRowAll"
         BasedOn="{StaticResource DataGridMainRow}"
@@ -96,17 +109,18 @@
         </Style.Triggers>
     </Style>
 
-    <!-- Стиль основной для таблиц -->
+    <!--  Стиль основной для таблиц  -->
     <Style
         x:Key="DataGridMain"
         BasedOn="{StaticResource MetroDataGrid}"
         TargetType="{x:Type DataGrid}">
+        <Setter Property="SelectionMode" Value="Extended" />
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="CanUserAddRows" Value="False" />
         <Setter Property="IsReadOnly" Value="True" />
     </Style>
 
-    <!-- Стиль для основной таблицы данных -->
+    <!--  Стиль для основной таблицы данных  -->
     <Style
         x:Key="DataGridMainAll"
         BasedOn="{StaticResource DataGridMain}"
@@ -114,7 +128,7 @@
         <Setter Property="RowStyle" Value="{StaticResource DataGridMainRowAll}" />
     </Style>
 
-    <!-- Стиль для таблицы с ошибками -->
+    <!--  Стиль для таблицы с ошибками  -->
     <Style
         x:Key="DataGridErrors"
         BasedOn="{StaticResource DataGridMain}"
@@ -127,7 +141,10 @@
         <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True" />
     </Style>
 
-    <Style x:Key="DataGridCollectionFiles" BasedOn="{StaticResource DataGridMain}" TargetType="{x:Type DataGrid}">
-        <Setter Property="RowStyle" Value="{StaticResource DataGridRowFilesList}"/>
+    <Style
+        x:Key="DataGridCollectionFiles"
+        BasedOn="{StaticResource DataGridMain}"
+        TargetType="{x:Type DataGrid}">
+        <Setter Property="RowStyle" Value="{StaticResource DataGridRowFilesList}" />
     </Style>
 </ResourceDictionary>

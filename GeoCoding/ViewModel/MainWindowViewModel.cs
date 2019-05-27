@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -561,7 +562,7 @@ namespace GeoCoding
         _commandGetAllGeoCod ?? (_commandGetAllGeoCod = new RelayCommand(
                     () =>
                     {
-                        if(_collectionFiles!=null && _collectionFiles.Any())
+                        if (_collectionFiles != null && _collectionFiles.Any())
                         {
                             GetAllGeooForFiles();
                         }
@@ -569,7 +570,7 @@ namespace GeoCoding
                         {
                             GetAllGeoCod(_collectionGeoCod);
                         }
-                    }, () => (_collectionGeoCod != null && _collectionGeoCod.Any()) || (_collectionFiles!=null && _collectionFiles.Any())));
+                    }, () => (_collectionGeoCod != null && _collectionGeoCod.Any()) || (_collectionFiles != null && _collectionFiles.Any())));
 
         /// <summary>
         /// Команда остановки геокодирования
@@ -1493,7 +1494,7 @@ namespace GeoCoding
 
         private async void CheckAllGeoFromFiles()
         {
-            foreach(var item in _collectionFiles)
+            foreach (var item in _collectionFiles)
             {
                 if (item.FileType == FileType.Other)
                 {
@@ -1503,20 +1504,20 @@ namespace GeoCoding
                 item.Status = StatusType.Processed;
                 FilesSettings.FileInput = item.NameFile;
 
-                if(item.FileType == FileType.Temp)
+                if (item.FileType == FileType.Temp)
                 {
                     _model.GetDataFromFile((list, e) =>
                     {
                         CreateCollection(list, e);
                     }, item.NameFile);
                 }
-    
+
                 FilesSettings.FileOutput = SetDefNameFileOutput();
 
 
 
                 var error = await _ver.CheckAll();
-                if(error==null)
+                if (error == null)
                 {
                     item.Status = StatusType.OK;
                 }
@@ -1527,7 +1528,7 @@ namespace GeoCoding
                 }
 
             }
-            
+
         }
 
         private RelayCommand<EntityFile> _commandOpenFile;
@@ -1552,30 +1553,97 @@ namespace GeoCoding
                         FilesSettings.FileOutput = SetDefNameFileOutput();
                     }, obj => obj != null && obj.FileType != FileType.Other));
 
-        //private RelayCommand<EntityFile> _commandGetAllGeoCodFile;
-        //public RelayCommand<EntityFile> CommandGetAllGeoCodFile =>
-        //_commandGetAllGeoCodFile ?? (_commandGetAllGeoCodFile = new RelayCommand<EntityFile>(
-        //            obj =>
-        //            {
-        //                FilesSettings.FileInput = obj.NameFile;
+        private RelayCommand<EntityGeoCod> _commandCopyGeoDatad;
+        public RelayCommand<EntityGeoCod> CommandCopyGeoData =>
+        _commandCopyGeoDatad ?? (_commandCopyGeoDatad = new RelayCommand<EntityGeoCod>(
+                    geoCod =>
+                    {
+                        CopiedGeoCod = geoCod.MainGeoCod;
 
-        //                if (obj.Collection != null && obj.Collection.Any())
-        //                {
-        //                    CreateCollection(obj.Collection, null);
-        //                }
-        //                else
-        //                {
-        //                    _model.GetDataFromFile((list, e) =>
-        //                    {
-        //                        CreateCollection(list, e);
-        //                    }, obj.NameFile);
-        //                }
+                        try
+                        {
+                            string data = $"{geoCod.MainGeoCod?.Longitude}:{geoCod.MainGeoCod?.Latitude}";
 
-        //                FilesSettings.FileOutput = SetDefNameFileOutput();
+                            Clipboard.SetText(data, TextDataFormat.UnicodeText);
+                        }
+                        catch (Exception ex)
+                        {
+                            _notifications.Notification(NotificationType.Error, ex.Message);
+                        }
+                    }));
 
-        //                GetAllGeoCod(_collectionGeoCod);
+        private RelayCommand<object> _commandSelectionChanged;
+        public RelayCommand<object> CommandSelectionChanged =>
+        _commandSelectionChanged ?? (_commandSelectionChanged = new RelayCommand<object>(
+                    obj =>
+                    {
+                        var col = (IList)obj;
+                        CollectionSelectionItem = col.Cast<EntityGeoCod>().ToList();
+                    }));
 
-        //            }));
+        private GeoCod _copiedGeoCod;
+        /// <summary>
+        /// 
+        /// </summary>
+        public GeoCod CopiedGeoCod
+        {
+            get => _copiedGeoCod;
+            set => Set(ref _copiedGeoCod, value);
+        }
+
+        private List<EntityGeoCod> _collectionSelectionItem;
+        /// <summary>
+        /// 
+        /// </summary>
+        public List<EntityGeoCod> CollectionSelectionItem
+        {
+            get => _collectionSelectionItem;
+            set => Set(ref _collectionSelectionItem, value);
+        }
+
+        private RelayCommand _commandSetGeoData;
+        public RelayCommand CommandSetGeoData =>
+        _commandSetGeoData ?? (_commandSetGeoData = new RelayCommand(
+                    () =>
+                    {
+                        if (_collectionSelectionItem != null && _collectionSelectionItem.Any())
+                        {
+                            foreach (var item in _collectionSelectionItem)
+                            {
+                                item.MainGeoCod = _copiedGeoCod;
+                                item.Status = StatusType.OK;
+                                item.Error = string.Empty;
+                                item.DateTimeGeoCod = DateTime.Now;
+                            }
+                        }
+                        else if (_currentGeoCod != null)
+                        {
+                            CurrentGeoCod.MainGeoCod = _copiedGeoCod;
+                            CurrentGeoCod.Status = StatusType.OK;
+                            CurrentGeoCod.Error = string.Empty;
+                            CurrentGeoCod.DateTimeGeoCod = DateTime.Now;
+                        }
+
+                        _customerView.Refresh();
+                    }));
+
+        private RelayCommand _commandSetFirstGeoCod;
+        public RelayCommand CommandSetFirstGeoCod =>
+        _commandSetFirstGeoCod ?? (_commandSetFirstGeoCod = new RelayCommand(
+                    () =>
+                    {
+                        if (_collectionSelectionItem != null && _collectionSelectionItem.Any())
+                        {
+                            foreach (var item in _collectionSelectionItem)
+                            {
+                                item.MainGeoCod = item.ListGeoCod.FirstOrDefault();
+                                item.Status = StatusType.OK;
+                                item.Error = string.Empty;
+                                item.DateTimeGeoCod = DateTime.Now;
+                            }
+                        }
+                    }));
+
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -1621,7 +1689,7 @@ namespace GeoCoding
                 {
                     _geoCodSettings.IsMultipleRequests = true;
                 }
-                if(data.PropertyName == "IsStartCompare" && !data.NewValue)
+                if (data.PropertyName == "IsStartCompare" && !data.NewValue)
                 {
                     CommandSaveData.Execute(true);
                 }
