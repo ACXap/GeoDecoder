@@ -59,6 +59,15 @@
     <Style x:Key="TextBlockHelp" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
         <Setter Property="Text" Value="{StaticResource FontAwesomeHelp}"/>
     </Style>
+
+    <Style x:Key="TextBlockGeoCodWithToolTip" TargetType="{x:Type TextBlock}">
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Style="{StaticResource ToolTipGeoCod}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
     
     <Style x:Key="TextBlockBaseClick" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="{StaticResource FontAwesome}" />

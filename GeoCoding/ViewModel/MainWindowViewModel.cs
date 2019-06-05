@@ -526,22 +526,48 @@ namespace GeoCoding
         _commandGetGeoCod ?? (_commandGetGeoCod = new RelayCommand<EntityGeoCod>(
                     geocod =>
                     {
-                        if (!string.IsNullOrEmpty(geocod.Address))
+                        if(_collectionSelectionItem!=null && _collectionSelectionItem.Count>1)
                         {
-                            _geoCodingModel.GetGeoCod(er =>
+                            foreach (var item in _collectionSelectionItem)
                             {
-                                _notifications.Notification(NotificationType.Error, er);
-
-                                if (er == null)
+                                if (!string.IsNullOrEmpty(item.Address))
                                 {
-                                    _customerView?.Refresh();
-                                    _stat.UpdateStatisticsCollection();
+                                    _geoCodingModel.GetGeoCod(er =>
+                                    {
+                                        _notifications.Notification(NotificationType.Error, er);
+
+                                        if (er == null)
+                                        {
+                                            _customerView?.Refresh();
+                                            _stat.UpdateStatisticsCollection();
+                                        }
+                                    }, item);
                                 }
-                            }, geocod);
+                                else
+                                {
+                                    _notifications.Notification(NotificationType.Error, _errorAddressEmpty);
+                                }
+                            }
                         }
                         else
                         {
-                            _notifications.Notification(NotificationType.Error, _errorAddressEmpty);
+                            if (!string.IsNullOrEmpty(geocod.Address))
+                            {
+                                _geoCodingModel.GetGeoCod(er =>
+                                {
+                                    _notifications.Notification(NotificationType.Error, er);
+
+                                    if (er == null)
+                                    {
+                                        _customerView?.Refresh();
+                                        _stat.UpdateStatisticsCollection();
+                                    }
+                                }, geocod);
+                            }
+                            else
+                            {
+                                _notifications.Notification(NotificationType.Error, _errorAddressEmpty);
+                            }
                         }
                     }));
 
@@ -811,10 +837,19 @@ namespace GeoCoding
                         {
                             if (obj.AddedItems[0] is GeoCod item)
                             {
-                                _currentGeoCod.MainGeoCod = item;
-                                _currentGeoCod.Error = string.Empty;
-                                _currentGeoCod.Status = StatusType.OK;
-                                _stat.UpdateStatisticsCollection();
+                                var geo = _collectionSelectionItem.FirstOrDefault();
+                                if(geo!=null)
+                                {
+                                    geo.MainGeoCod = item;
+                                    geo.Error = string.Empty;
+                                    geo.Status = StatusType.OK;
+                                    _stat.UpdateStatisticsCollection();
+                                }
+                                
+                                //_currentGeoCod.MainGeoCod = item;
+                               // _currentGeoCod.Error = string.Empty;
+                                //_currentGeoCod.Status = StatusType.OK;
+                               
                             }
                         }
                     }));
@@ -1625,7 +1660,7 @@ namespace GeoCoding
                         }
 
                         _customerView.Refresh();
-                    }));
+                    }, () => _copiedGeoCod != null));
 
         private RelayCommand _commandSetFirstGeoCod;
         public RelayCommand CommandSetFirstGeoCod =>
@@ -1636,14 +1671,16 @@ namespace GeoCoding
                         {
                             foreach (var item in _collectionSelectionItem)
                             {
-                                item.MainGeoCod = item.ListGeoCod.FirstOrDefault();
-                                item.Status = StatusType.OK;
-                                item.Error = string.Empty;
-                                item.DateTimeGeoCod = DateTime.Now;
+                                if (item.ListGeoCod != null && item.ListGeoCod.Any())
+                                {
+                                    item.MainGeoCod = item.ListGeoCod.FirstOrDefault();
+                                    item.Status = StatusType.OK;
+                                    item.Error = string.Empty;
+                                    item.DateTimeGeoCod = DateTime.Now;
+                                }
                             }
                         }
                     }));
-
 
         /// <summary>
         /// Конструктор по умолчанию

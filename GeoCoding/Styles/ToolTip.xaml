@@ -11,4 +11,13 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="ToolTipGeoCod" TargetType="{x:Type ToolTip}">
+        <Setter Property="Content">
+            <Setter.Value>
+                <uc:InformationGeoCod />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

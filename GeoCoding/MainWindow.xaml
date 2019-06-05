@@ -556,7 +556,8 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Ошибки">
-                    <DataGrid x:Name="DataGridGeoCodError"
+                    <DataGrid
+                        x:Name="DataGridGeoCodError"
                         ItemsSource="{Binding Customers}"
                         ScrollViewer.CanContentScroll="True"
                         SelectedItem="{Binding CurrentGeoCod}"
@@ -668,6 +669,7 @@
                                                         <TextBlock
                                                             Grid.Column="0"
                                                             Grid.ColumnSpan="3"
+                                                            Style="{StaticResource TextBlockGeoCodWithToolTip}"
                                                             Text="{Binding AddressWeb}" />
                                                         <TextBlock
                                                             Grid.Row="1"
