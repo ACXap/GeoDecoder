@@ -319,12 +319,12 @@ namespace GeoCoding
 
         public bool NotificationWithConfirmation(string header, string body)
         {
-            var a = _dialogCoordinator.ShowModalMessageExternal(this, header, body, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
+            var dialog = _dialogCoordinator.ShowModalMessageExternal(this, header, body, MessageDialogStyle.AffirmativeAndNegative, new MetroDialogSettings()
             {
                 AffirmativeButtonText = "Да",
                 NegativeButtonText = "Нет"
             });
-            if (a == MessageDialogResult.Affirmative)
+            if (dialog == MessageDialogResult.Affirmative)
             {
                 return true;
             }

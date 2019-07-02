@@ -10,15 +10,24 @@ namespace GeoCoding.FormKey
 {
     class Program
     {
-        private const string _keyFile = "key";
+        private const string _keyFileHere = "keyHere";
+        private const string _keyFileYandex = "keyYandex";
         static void Main(string[] args)
         {
-            Console.WriteLine("Введите ключ:");
+            Console.WriteLine("Введите ключ для Yandex:");
             var str = Console.ReadLine();
 
             var s = ProtectedDataDPAPI.EncryptData(str);
 
-            File.WriteAllText(_keyFile, s);
+            File.WriteAllText(_keyFileYandex, s);
+            Console.WriteLine("Ключ сформирован успешно");
+
+            Console.WriteLine("Введите app_id и app_code для Here (через пробел):");
+            str = Console.ReadLine();
+
+            s = ProtectedDataDPAPI.EncryptData(str);
+
+            File.WriteAllText(_keyFileHere, s);
             Console.WriteLine("Ключ сформирован успешно");
             Console.ReadLine();
         }

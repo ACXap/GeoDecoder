@@ -337,7 +337,6 @@ namespace GeoCoding
                                 {
                                     item.GeoCode.MainGeoCod.Qcode = item.Qcode;
                                 }
-
                             }
 
                             Update();
@@ -438,6 +437,20 @@ namespace GeoCoding
 
                 return error;
             });
+        }
+
+        private bool _isServerVerFactor = false;
+        public bool IsServerVerFactor
+        {
+            get => _isServerVerFactor;
+            set => Set(ref _isServerVerFactor, value);
+        }
+
+        private bool _isServerVerOrpon = true;
+        public bool IsServerVerOrpon
+        {
+            get => _isServerVerOrpon;
+            set => Set(ref _isServerVerOrpon, value);
         }
 
         /// <summary>

@@ -719,12 +719,30 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <GroupBox
                             Grid.Row="0"
                             Grid.Column="0"
+                            Header="Способ проверки"
+                            IsEnabled="False">
+                            <StackPanel Orientation="Vertical">
+                                <RadioButton
+                                    Margin="5"
+                                    Content="Через Фактор"
+                                    IsChecked="{Binding Ver.IsServerVerFactor}" />
+                                <RadioButton
+                                    Margin="5"
+                                    Content="Через ОРПОН"
+                                    IsChecked="{Binding Ver.IsServerVerOrpon}" />
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox
+                            Grid.Row="0"
+                            Grid.Column="1"
                             Margin="2"
                             Header="Какие данные">
                             <WrapPanel Orientation="Vertical">
@@ -753,7 +771,7 @@
 
                         <GroupBox
                             Grid.Row="0"
-                            Grid.Column="1"
+                            Grid.Column="2"
                             Margin="2"
                             Header="Статистика">
                             <Grid>
@@ -813,17 +831,19 @@
 
                             </Grid>
                         </GroupBox>
+
                         <uc:WorkIndication
                             Grid.Row="0"
-                            Grid.Column="2"
+                            Grid.Column="3"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             IsActive="{Binding Ver.IsStartCompare}"
                             Text="Идет сравнение..."
                             TextAlternative="Завершение. Подождите..." />
+
                         <StackPanel
                             Grid.Row="0"
-                            Grid.Column="2"
+                            Grid.Column="3"
                             HorizontalAlignment="Left"
                             Orientation="Vertical">
                             <Button
@@ -838,7 +858,6 @@
                                 Content="Зафиксировать" />
                             <Button Command="{Binding MyCommand}" Content="Проверить файлы" />
                         </StackPanel>
-
 
                         <DataGrid
                             Grid.Row="1"

@@ -25,7 +25,7 @@ namespace GeoCoding
         private const string _globalIDColumnNameLoadFile = "globalid";
         private const string _fiasGuidColumnNameLoadFile = "fiasguid";
         private const string _addressColumnNameLoadFile = "address";
-        
+
         private const int _globalIDColumnIndexLoadFile = 0;
         private const int _fiasGuidColumnIndexLoadFile = 2;
         private const int _addressColumnIndexLoadFile = 1;
@@ -556,7 +556,7 @@ namespace GeoCoding
                                 countError++;
                             }
 
-                            if(d.First().Split(_charSplit).Length>2 && d.First().Split(_charSplit)[2].ToLower() == _fiasGuidColumnNameLoadFile && Guid.TryParse(s[_fiasGuidColumnIndexLoadFile], out Guid guid))
+                            if (d.First().Split(_charSplit).Length > 2 && d.First().Split(_charSplit)[2].ToLower() == _fiasGuidColumnNameLoadFile && Guid.TryParse(s[_fiasGuidColumnIndexLoadFile], out Guid guid))
                             {
                                 geocod.FiasGuid = guid;
                             }
@@ -640,7 +640,7 @@ namespace GeoCoding
             var str = fs.Split(_charSplit);
             if (str.Length >= 2)
             {
-                if (str[_globalIDColumnIndexLoadFile].ToLower() == _globalIDColumnNameLoadFile 
+                if (str[_globalIDColumnIndexLoadFile].ToLower() == _globalIDColumnNameLoadFile
                     && str[_addressColumnIndexLoadFile].ToLower() == _addressColumnNameLoadFile)
                 {
                     result = true;
@@ -805,6 +805,14 @@ namespace GeoCoding
                 }
             }, p.VerificationServer);
 
+            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    vset.VerificationServerFactor = d;
+                }
+            }, p.VerificationServerFactor);
+
             callback(error, f, g, ftp, bds, ns, nset, vset, gset);
         }
 
@@ -904,6 +912,14 @@ namespace GeoCoding
                     p.VerificationServer = d;
                 }
             }, vset.VerificationServer);
+
+            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            {
+                if (e == null)
+                {
+                    p.VerificationServerFactor = d;
+                }
+            }, vset.VerificationServerFactor);
 
             p.CanNotificationProcessCancel = ns.CanNotificationProcessCancel;
             p.CanNotificationDataEmpty = ns.CanNotificationDataEmpty;

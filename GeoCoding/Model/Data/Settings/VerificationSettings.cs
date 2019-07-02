@@ -13,5 +13,16 @@ namespace GeoCoding
             get => _verificationServer;
             set => Set(ref _verificationServer, value);
         }
+
+
+        private string _verificationServerFactor = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string VerificationServerFactor
+        {
+            get => _verificationServerFactor;
+            set => Set(ref _verificationServerFactor, value);
+        }
     }
 }

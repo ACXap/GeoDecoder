@@ -77,9 +77,9 @@ namespace GeoCoding
         /// <returns>Возвращает ошибку</returns>
         private Exception SetGeoCod(EntityGeoCod data, ConnectSettings cs)
         {
-            if (_geoCodSettings.GeoService.ToLower().Contains("pay") )
+            if (_geoCodSettings.GeoService.ToLower().Contains("pay"))
             {
-                if(_countGeo >= _maxCountGeo)
+                if (_countGeo >= _maxCountGeo)
                 {
                     var e = new Exception(_errorLimit);
                     SetError(data, e.Message);
@@ -234,7 +234,7 @@ namespace GeoCoding
                     {
                         data.Precision = PrecisionType.Exact;
                     }
-                    else if (g.Precision == "1.0")
+                    else if (g.Precision == "1")
                     {
                         data.Precision = PrecisionType.Exact;
                     }

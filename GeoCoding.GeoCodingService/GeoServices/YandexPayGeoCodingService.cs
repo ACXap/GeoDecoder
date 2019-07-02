@@ -6,7 +6,7 @@ namespace GeoCoding.GeoCodingService
     public class YandexPayGeoCodingService: YandexGeoCodingService
     {
         private string _key;
-        private string _keyFile = "key";
+        private string _keyFile = "keyYandex";
         
         /// <summary>
         /// Название геосервиса

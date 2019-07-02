@@ -48,11 +48,13 @@
     <Compile Include="Data\ConnectSettings.cs" />
     <Compile Include="Data\Enumeration\ProxyType.cs" />
     <Compile Include="Data\GeoCod.cs" />
+    <Compile Include="Data\Here.cs" />
     <Compile Include="Data\HereJson.cs" />
     <Compile Include="Data\SputnikJson.cs" />
     <Compile Include="Data\RusGisJson.cs" />
     <Compile Include="Data\YandexJson.cs" />
     <Compile Include="GeoService.cs" />
+    <Compile Include="GeoServices\Here.cs" />
     <Compile Include="GeoServices\HereRusGisGeoCodingService.cs" />
     <Compile Include="GeoServices\RusGisGeoCodingService.cs" />
     <Compile Include="GeoServices\SputnikRusGisGeoCodingService.cs" />
