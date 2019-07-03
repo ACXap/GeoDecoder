@@ -12,7 +12,7 @@
             <local:ConverterStatGeoToProgressState x:Key="ConverterStartGeoToProgress" />
             <local:ConverterKindTypeToString x:Key="ConverterKindTypeToString" />
             <local:ConverterPrecisionTypeToString x:Key="ConverterPrecisionTypeToString" />
-            <local:ConverterCollectionPolygonToString x:Key="ConverterCollectionPolygonToString"/>
+            <local:ConverterCollectionPolygonToString x:Key="ConverterCollectionPolygonToString" />
 
             <ResourceDictionary.MergedDictionaries>
                 <!--  MahApps.Metro resource dictionaries.  -->

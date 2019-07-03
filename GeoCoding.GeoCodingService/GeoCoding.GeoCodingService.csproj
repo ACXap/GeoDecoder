@@ -53,6 +53,7 @@
     <Compile Include="Data\SputnikJson.cs" />
     <Compile Include="Data\RusGisJson.cs" />
     <Compile Include="Data\YandexJson.cs" />
+    <Compile Include="Helpers\Distance.cs" />
     <Compile Include="GeoService.cs" />
     <Compile Include="GeoServices\Here.cs" />
     <Compile Include="GeoServices\HereRusGisGeoCodingService.cs" />

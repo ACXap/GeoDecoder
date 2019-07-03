@@ -76,6 +76,8 @@ namespace GeoCoding.GeoCodingService
             if (polygon != null && polygon.Count == 4)
             {
                 box =  $"&mapview={DoubleToString(polygon[1])}%2C{DoubleToString(polygon[0])}%3B{DoubleToString(polygon[3])}%2C{DoubleToString(polygon[2])}";
+
+                _distance = Distance.DistanceBetweenPlaces(polygon[0], polygon[1], polygon[2], polygon[3])/2;
             }
 
             return $"{_url}app_id={str[0]}&app_code={str[1]}&searchtext={address}{box}";
