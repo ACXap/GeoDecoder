@@ -32,15 +32,8 @@ namespace GeoCoding
 
         private readonly NetSettings _netSettings;
         private readonly GeoCodSettings _geoCodSettings;
+        private readonly PolygonViewModel _polygon;
         private readonly object _lock = new object();
-
-        public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings)
-        {
-            _netSettings = netSettings;
-            _geoCodSettings = geoCodSettings;
-
-            GetLimitCount();
-        }
 
         private void GetLimitCount()
         {
@@ -109,6 +102,10 @@ namespace GeoCoding
                     {
                         data.MainGeoCod = GetMainGeoCod(data.ListGeoCod);
                     }
+                    else
+                    {
+                        data.MainGeoCod = null;
+                    }
 
                     if (data.MainGeoCod != null)
                     {
@@ -140,9 +137,19 @@ namespace GeoCoding
 
                 data.DateTimeGeoCod = DateTime.Now;
 
-            }, data.Address, cs);
+            }, data.Address, cs, GetPolygon());
 
             return error;
+        }
+
+        private List<double> GetPolygon()
+        {
+            if(_geoCodSettings.CanUsePolygon)
+            {
+                return _polygon.Polygon;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -549,7 +556,7 @@ namespace GeoCoding
         public string GetUrlRequest(string address)
         {
             SetGeoService();
-            return _geoCodingService.GetUrlRequest(address);
+            return _geoCodingService.GetUrlRequest(address, GetPolygon());
         }
 
         public Task<Exception> GetAllGeoCod(IEnumerable<EntityGeoCod> collectionGeoCod)
@@ -684,5 +691,14 @@ namespace GeoCoding
         }
 
         #endregion PublicMethod
+
+        public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings, PolygonViewModel polygon)
+        {
+            _netSettings = netSettings;
+            _geoCodSettings = geoCodSettings;
+            _polygon = polygon;
+
+            GetLimitCount();
+        }
     }
 }

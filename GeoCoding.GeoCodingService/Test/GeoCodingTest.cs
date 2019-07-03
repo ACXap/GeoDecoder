@@ -11,7 +11,7 @@ namespace GeoCoding.GeoCodingService.Test
         private readonly Random _rnd = new Random();
         public string Name => "Test";
 
-        public void GetGeoCod(Action<IEnumerable<GeoCod>, Exception> callback, string address, ConnectSettings cs = null)
+        public void GetGeoCod(Action<IEnumerable<GeoCod>, Exception> callback, string address, ConnectSettings cs = null, List<double> polygon= null)
         {
             Exception error = null;
             string[] kind = new string[] { "House", "Street", "Metro", "District", "Locality" };
@@ -44,7 +44,7 @@ namespace GeoCoding.GeoCodingService.Test
             callback(data, error);
         }
 
-        public string GetUrlRequest(string address)
+        public string GetUrlRequest(string address, List<double> polygon)
         {
             return null;
         }

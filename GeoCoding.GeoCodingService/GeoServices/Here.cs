@@ -14,11 +14,14 @@ namespace GeoCoding.GeoCodingService
     {
         private string _key;
         private string _keyFile = "keyHere";
+        private double _distance = 200000;
 
         /// <summary>
         /// Название геосервиса
         /// </summary>
         public override string Name => "Here";
+
+      //  public override bool CanUsePolygon => true;
 
         /// <summary>
         /// Ссылка на геокодер яндекса
@@ -35,7 +38,7 @@ namespace GeoCoding.GeoCodingService
                 Here h = JsonConvert.DeserializeObject<Here>(json);
                 var list = h.Response.View[0].Result;
 
-                data = list.Select(x =>
+                data = list.Where(x=>x.Distance<_distance).Select(x =>
                 {
                     return GetGeo(x);
                 }).ToList();
@@ -65,10 +68,17 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="address">Адрес для вебзапроса</param>
         /// <returns>Урл для вебзапроса</returns>
-        public override string GetUrlRequest(string address)
+        public override string GetUrlRequest(string address, List<double> polygon)
         {
             var str = _key.Split(' ');
-            return $"{_url}app_id={str[0]}&app_code={str[1]}&searchtext={address}";
+            var box = string.Empty;
+
+            if (polygon != null && polygon.Count == 4)
+            {
+                box =  $"&mapview={DoubleToString(polygon[1])}%2C{DoubleToString(polygon[0])}%3B{DoubleToString(polygon[3])}%2C{DoubleToString(polygon[2])}";
+            }
+
+            return $"{_url}app_id={str[0]}&app_code={str[1]}&searchtext={address}{box}";
         }
 
         public HereGeoCodingService()

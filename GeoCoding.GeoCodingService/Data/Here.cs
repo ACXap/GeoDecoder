@@ -45,6 +45,9 @@ namespace GeoCoding.GeoCodingService.Data
         [JsonProperty("Relevance")]
         public double Relevance { get; set; }
 
+        [JsonProperty("Distance")]
+        public double Distance { get; set; }
+
         [JsonProperty("MatchLevel")]
         public string MatchLevel { get; set; }
 

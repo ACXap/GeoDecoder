@@ -1,4 +1,5 @@
 ﻿using GeoCoding.GeoCodingService.Helpers;
+using System.Collections.Generic;
 using System.IO;
 
 namespace GeoCoding.GeoCodingService
@@ -18,14 +19,20 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="address">Адрес для вебзапроса</param>
         /// <returns>Урл для вебзапроса</returns>
-        public override string GetUrlRequest(string address)
+        public override string GetUrlRequest(string address, List<double> polygon)
         {
-            if(string.IsNullOrEmpty(_key))
+            var box = string.Empty;
+            if (polygon != null && polygon.Count == 4)
             {
-                return $"{_url}{address}&format=json";
+                box= $"&bbox={DoubleToString(polygon[0])},{DoubleToString(polygon[1])}~{DoubleToString(polygon[2])},{DoubleToString(polygon[3])}&rspn=1";
             }
 
-            return $"{_url}{address}&apikey={_key}&format=json";
+            if (string.IsNullOrEmpty(_key))
+            {
+                return $"{_url}{address}&format=json{box}";
+            }
+
+            return $"{_url}{address}&apikey={_key}&format=json{box}";
         }
 
         public YandexPayGeoCodingService()

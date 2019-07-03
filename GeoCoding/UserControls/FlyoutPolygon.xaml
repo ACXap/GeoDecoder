@@ -37,10 +37,11 @@
             </StackPanel>
         </GroupBox>
 
-        <GroupBox IsEnabled="{Binding Polygon.CanManualChoicePolygon}"
+        <GroupBox
             Grid.Row="1"
             Margin="5"
-            Header="Выбрать полигон">
+            Header="Выбрать полигон"
+            IsEnabled="{Binding Polygon.CanManualChoicePolygon}">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Text="Регион" />
@@ -50,8 +51,8 @@
                         DisplayMemberPath="Address"
                         ItemsSource="{Binding Polygon.ListRegion}"
                         SelectedItem="{Binding Polygon.СurrentRegion}" />
-                    
-                    
+
+
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
@@ -59,13 +60,20 @@
                     <ComboBox
                         Width="300"
                         Margin="5"
-                        DisplayMemberPath="Address" SelectedItem="{Binding Polygon.CurrentDistrict}"
-                        ItemsSource="{Binding Polygon.ListDistrict}" />
+                        DisplayMemberPath="Address"
+                        ItemsSource="{Binding Polygon.ListDistrict}"
+                        SelectedItem="{Binding Polygon.CurrentDistrict}" />
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Полигон:" VerticalAlignment="Center" Margin="5"/>
-                    <TextBlock Text="{Binding Polygon.Polygon, Converter={StaticResource ConverterCollectionPolygonToString}}" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Text="Полигон:" />
+                    <TextBlock
+                        Margin="5"
+                        VerticalAlignment="Center"
+                        Text="{Binding Polygon.Polygon, Converter={StaticResource ConverterCollectionPolygonToString}}" />
                 </StackPanel>
             </StackPanel>
         </GroupBox>

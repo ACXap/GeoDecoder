@@ -33,7 +33,7 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         /// <param name="address">Адрес для вебзапроса</param>
         /// <returns>Урл для вебзапроса</returns>
-        public override string GetUrlRequest(string address)
+        public override string GetUrlRequest(string address, List<double> polygon)
         {
             return $"{_url}{address}&geoCoderType=HERE";
         }

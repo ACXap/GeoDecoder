@@ -27,14 +27,23 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         public override string Name => "YANDEX";
 
+      //  public override bool CanUsePolygon => true;
+
         /// <summary>
         /// Метод для формирования урла с веб запросом
         /// </summary>
         /// <param name="address">Адрес для вебзапроса</param>
         /// <returns>Урл для вебзапроса</returns>
-        public override string GetUrlRequest(string address)
+        public override string GetUrlRequest(string address, List<double> polygon)
         {
-            return $"{_url}{address}&format=json";
+            var box = string.Empty;
+
+            if (polygon!=null && polygon.Count==4)
+            {
+                box = $"&bbox={DoubleToString(polygon[0])},{DoubleToString(polygon[1])}~{DoubleToString(polygon[2])},{DoubleToString(polygon[3])}&rspn=1";
+            }
+
+            return $"{_url}{address}&format=json{box}";
         }
 
         /// <summary>

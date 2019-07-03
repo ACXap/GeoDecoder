@@ -7,6 +7,5 @@ namespace GeoCodingLocalBD
     {
         List<EntityAddress> GetListAddress();
         List<double> GetPolygonById(int id);
-        List<double> GetPolygonByAddress(string address);
     }
 }

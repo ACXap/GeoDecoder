@@ -43,16 +43,11 @@ namespace GeoCodingLocalBD
             return _data;
         }
 
-        public List<double> GetPolygonByAddress(string address)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<double> GetPolygonById(int id)
         {
             string _data = string.Empty;
 
-            var com = "SELECT Bbox FROM Address Where Id=@Id";
+            var com = "SELECT Bbox FROM Address Where Id=@Id and OrponId>0";
             var param = new DynamicParameters();
             param.Add("@Id", id);
             try

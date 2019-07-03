@@ -142,7 +142,7 @@ namespace GeoCoding
         /// </summary>
         private StatisticsViewModel _stat;
 
-        private PolygonViewModel _polygon = new PolygonViewModel();
+        private PolygonViewModel _polygon;
 
         /// <summary>
         /// Поле для хранения ссылки на команду получения полного имени файла
@@ -1697,6 +1697,7 @@ namespace GeoCoding
         {
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
+            Polygon = new PolygonViewModel();
 
             _netProxyModel = new NetProxyModel();
 
@@ -1714,7 +1715,7 @@ namespace GeoCoding
                     VerificationSettings = vset;
 
                     _notifications = new NotificationsModel(ns);
-                    _geoCodingModel = new GeoCodingModel(_netSettings, _geoCodSettings);
+                    _geoCodingModel = new GeoCodingModel(_netSettings, _geoCodSettings, _polygon);
                     Ver = new VerificationViewModel(_verificationSettings);
                     if (_netSettings.IsListProxy)
                     {

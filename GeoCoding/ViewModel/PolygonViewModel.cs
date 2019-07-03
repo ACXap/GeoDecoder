@@ -18,6 +18,13 @@ namespace GeoCoding
             set => Set(ref _polygon, value);
         }
 
+        private string _addressPolygon = string.Empty;
+        public string AddressPolygon
+        {
+            get => _addressPolygon;
+            set => Set(ref _addressPolygon, value);
+        }
+
         private List<EntityAddress> _listRegion;
         public List<EntityAddress> ListRegion
         {
