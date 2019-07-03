@@ -709,7 +709,8 @@ namespace GeoCoding
                 IsMultipleRequests = p.IsMultipleRequests,
                 CountProxy = p.CountProxy,
                 CountRequests = p.CountRequests,
-                MaxCountError = p.MaxCountError
+                MaxCountError = p.MaxCountError,
+                CanUsePolygon = p.CanUsePolygon
             };
 
             FTPSettings ftp = new FTPSettings()
@@ -857,6 +858,7 @@ namespace GeoCoding
             p.CanUseVerificationModule = gset.CanUseVerificationModule;
             p.CanUseBdModule = gset.CanUseBdModule;
             p.CanUseFtpModule = gset.CanUseFtpModule;
+            p.CanUsePolygon = geoCodSettings.CanUsePolygon;
 
             // ФТП-сервер пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>

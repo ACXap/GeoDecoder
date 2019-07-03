@@ -946,6 +946,25 @@
                             SelectedItem="{Binding GeoCodSettings.GeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource ComboBoxGeoService}"
                             ToolTip="Выбор геокодера" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox
+                                Margin="10,0"
+                                Content="Использовать полигон"
+                                IsChecked="{Binding GeoCodSettings.CanUsePolygon}"
+                                ToolTip="Включить использование ограничительных полигонов для поиска координат (не все геокодеры поддерживают)" />
+                            <ToggleButton
+                                x:Name="tbPolygonBoxSettings"
+                                Command="{Binding Polygon.CommandGetSettingsPolygon}"
+                                Cursor="Hand"
+                                ToolTip="Настройки полигонов">
+                                <ToggleButton.Template>
+                                    <ControlTemplate>
+                                        <TextBlock Style="{StaticResource TextBlockSettings}" />
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                        </StackPanel>
                     </StackPanel>
 
                     <!--  Запуск геокодирования  -->
@@ -1043,8 +1062,6 @@
 
             <!--  Настройки  -->
             <Controls:Flyout
-                MaxWidth="900"
-                MaxHeight="600"
                 Header="Настройки приложения"
                 IsOpen="{Binding ElementName=tbOpenSettings, Path=IsChecked}"
                 Position="Right"
@@ -1056,8 +1073,6 @@
 
             <!--  Список файлов  -->
             <Controls:Flyout
-                MaxWidth="900"
-                MaxHeight="500"
                 Header="Список файлов"
                 IsOpen="{Binding ElementName=tbFilesList, Path=IsChecked}"
                 Position="Left"
@@ -1069,8 +1084,6 @@
 
             <!--  Запрос к базе данных  -->
             <Controls:Flyout
-                MaxWidth="900"
-                MaxHeight="500"
                 Header="SQL-запрос"
                 IsOpen="{Binding ElementName=tbSql, Path=IsChecked}"
                 Position="Left"
@@ -1082,8 +1095,6 @@
 
             <!--  Окно с помощью  -->
             <Controls:Flyout
-                MaxWidth="900"
-                MaxHeight="500"
                 Header="Помощь"
                 IsOpen="{Binding ElementName=tbOpenHelp, Path=IsChecked}"
                 Position="Right"
@@ -1093,6 +1104,17 @@
                         <local:FlowDocumentFromFile FileName="ЧитайМеня.txt" />
                     </i:Interaction.Behaviors>
                 </FlowDocumentScrollViewer>
+            </Controls:Flyout>
+
+            <Controls:Flyout
+                MaxWidth="900"
+                MaxHeight="500"
+                Header="Настройка ограничительного полигона для поиска координат"
+                IsOpen="{Binding ElementName=tbPolygonBoxSettings, Path=IsChecked}"
+                Position="Right"
+                Style="{StaticResource FlyoutStyleMain}">
+
+                <uc:FlyoutPolygon />
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Controls:MetroWindow.Flyouts>

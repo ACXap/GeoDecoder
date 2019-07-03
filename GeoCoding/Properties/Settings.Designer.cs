@@ -691,5 +691,17 @@ namespace GeoCoding.Properties {
                 this["VerificationServerFactor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CanUsePolygon {
+            get {
+                return ((bool)(this["CanUsePolygon"]));
+            }
+            set {
+                this["CanUsePolygon"] = value;
+            }
+        }
     }
 }

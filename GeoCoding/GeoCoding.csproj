@@ -88,6 +88,7 @@
     <Compile Include="CompactMainWindow.xaml.cs">
       <DependentUpon>CompactMainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ConverterCollectionPolygonToString.cs" />
     <Compile Include="Converters\ConverterKintTypeToString.cs" />
     <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
     <Compile Include="Converters\ConverterStatGeoToProgressState.cs" />
@@ -121,9 +122,13 @@
     <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Model\NetProxyModel.cs" />
     <Compile Include="Model\NotificationsModel.cs" />
+    <Compile Include="Model\PolygonModel.cs" />
     <Compile Include="Model\VerificationModel.cs" />
     <Compile Include="UserControls\FlyoutFilesList.xaml.cs">
       <DependentUpon>FlyoutFilesList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FlyoutPolygon.xaml.cs">
+      <DependentUpon>FlyoutPolygon.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\FlyoutSql.xaml.cs">
       <DependentUpon>FlyoutSql.xaml</DependentUpon>
@@ -144,6 +149,7 @@
       <DependentUpon>WorkIndication.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\PolygonViewModel.cs" />
     <Compile Include="ViewModel\StatisticsViewModel.cs" />
     <Compile Include="ViewModel\VerificationViewModel.cs" />
     <Page Include="CompactMainWindow.xaml">
@@ -203,6 +209,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\FlyoutFilesList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\FlyoutPolygon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -276,6 +286,10 @@
     <ProjectReference Include="..\GeoCoding.Resources\GeoCoding.Resources.csproj">
       <Project>{fed4d728-e13c-482c-8795-12484e8d377b}</Project>
       <Name>GeoCoding.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeoCodingLocalBD\GeoCodingLocalBD.csproj">
+      <Project>{856a02fb-0088-421c-a3c4-f1ca6da3ef80}</Project>
+      <Name>GeoCodingLocalBD</Name>
     </ProjectReference>
     <ProjectReference Include="..\GeoDecoder.BDService\GeoCoding.BDService.csproj">
       <Project>{ef2fbc95-76f0-4851-a5ae-3efa6aca4ccf}</Project>

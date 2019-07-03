@@ -1,0 +1,73 @@
+﻿<UserControl
+    x:Class="GeoCoding.UserControls.FlyoutPolygon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GeoCoding.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <d:DesignerProperties.DesignStyle>
+        <Style TargetType="UserControl">
+            <Setter Property="Background" Value="White" />
+        </Style>
+    </d:DesignerProperties.DesignStyle>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <GroupBox
+            Grid.Row="0"
+            Margin="5"
+            Header="Способ выбора полигона">
+            <StackPanel Orientation="Vertical">
+                <RadioButton
+                    Margin="5"
+                    Content="Определять полигон автоматически (медленно)"
+                    IsChecked="{Binding Polygon.CanAutoChoicePolygon}"
+                    ToolTip="Выбирает полигон по адресу, не всегда возможно и медленно" />
+                <RadioButton
+                    Margin="5"
+                    Content="Выбрать полигон вручную"
+                    IsChecked="{Binding Polygon.CanManualChoicePolygon}"
+                    ToolTip="Необходимо выбрать полигон вручную, так же все адреса должны соответствовать выбранному полигону" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox IsEnabled="{Binding Polygon.CanManualChoicePolygon}"
+            Grid.Row="1"
+            Margin="5"
+            Header="Выбрать полигон">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Регион" />
+                    <ComboBox
+                        Width="300"
+                        Margin="5"
+                        DisplayMemberPath="Address"
+                        ItemsSource="{Binding Polygon.ListRegion}"
+                        SelectedItem="{Binding Polygon.СurrentRegion}" />
+                    
+                    
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="Район" />
+                    <ComboBox
+                        Width="300"
+                        Margin="5"
+                        DisplayMemberPath="Address" SelectedItem="{Binding Polygon.CurrentDistrict}"
+                        ItemsSource="{Binding Polygon.ListDistrict}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Полигон:" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Text="{Binding Polygon.Polygon, Converter={StaticResource ConverterCollectionPolygonToString}}" VerticalAlignment="Center" Margin="5"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</UserControl>

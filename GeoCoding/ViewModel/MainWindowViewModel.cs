@@ -142,6 +142,8 @@ namespace GeoCoding
         /// </summary>
         private StatisticsViewModel _stat;
 
+        private PolygonViewModel _polygon = new PolygonViewModel();
+
         /// <summary>
         /// Поле для хранения ссылки на команду получения полного имени файла
         /// </summary>
@@ -421,6 +423,12 @@ namespace GeoCoding
         {
             get => _stat;
             set => Set(ref _stat, value);
+        }
+
+        public PolygonViewModel Polygon
+        {
+            get => _polygon;
+            set => Set(ref _polygon, value);
         }
 
         #endregion PublicPropertys

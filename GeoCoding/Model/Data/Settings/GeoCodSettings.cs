@@ -189,6 +189,17 @@ namespace GeoCoding
             set => Set(ref _maxCountErrorForProxy, value);
         }
 
+
+        private bool _canUsePolygon = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool CanUsePolygon
+        {
+            get => _canUsePolygon;
+            set => Set(ref _canUsePolygon, value);
+        }
+
         /// <summary>
         /// Коллекция всех возможных геосервисов
         /// </summary>

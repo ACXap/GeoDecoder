@@ -399,6 +399,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <CheckBox
                             Grid.Row="2"
@@ -455,7 +456,12 @@
                                     IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}" />
                             </WrapPanel>
                         </GroupBox>
-                        <GroupBox Grid.Row="4" Header="Что делаем сразу после геокодирования">
+                        <GroupBox Grid.Row="4" Header="Использование полигонов">
+                            <WrapPanel Orientation="Vertical">
+                                <CheckBox Content="Использовать ограничительные полигоны" IsChecked="{Binding GeoCodSettings.CanUsePolygon}"/>
+                            </WrapPanel>
+                        </GroupBox>
+                        <GroupBox Grid.Row="5" Header="Что делаем сразу после геокодирования">
                             <WrapPanel Orientation="Vertical">
                                 <CheckBox
                                     Margin="5"
@@ -478,7 +484,7 @@
                                     IsChecked="{Binding GeoCodSettings.CanSaveStatistics}" />
                             </WrapPanel>
                         </GroupBox>
-                        <GroupBox Grid.Row="5" Header="Какой используем геокодер">
+                        <GroupBox Grid.Row="6" Header="Какой используем геокодер">
                             <WrapPanel Orientation="Vertical">
                                 <ComboBox
                                     Margin="5,2"

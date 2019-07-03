@@ -10,5 +10,7 @@
         <Setter Property="CloseButtonIsCancel" Value="True" />
         <Setter Property="IsPinned" Value="False" />
         <Setter Property="Theme" Value="Inverse" />
+        <Setter Property="MaxWidth" Value="900"/>
+        <Setter Property="MaxHeight" Value="600"/>
     </Style>
 </ResourceDictionary>
