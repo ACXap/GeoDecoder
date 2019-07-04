@@ -8,6 +8,11 @@ namespace GeoCoding
     {
         IRepositoryLocal _repository = new BDLocal();
 
+        public bool CheckBD()
+        {
+            return _repository.CheckDB();
+        }
+
         public List<EntityAddress> GetAddress()
         {
             return _repository.GetListAddress();

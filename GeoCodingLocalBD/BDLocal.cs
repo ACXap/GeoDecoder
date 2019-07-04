@@ -4,13 +4,20 @@ using GeoCodingLocalBD.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 
 namespace GeoCodingLocalBD
 {
     public class BDLocal : IRepositoryLocal
     {
-        private readonly string _connectionString = "Data Source=db.db;Version=3;";
+        private const string _fileName = "db.db";
+        private string _connectionString = $"Data Source={_fileName};Version=3;";
+
+        public bool CheckDB()
+        {
+            return File.Exists(_fileName);
+        }
 
         public List<EntityAddress> GetListAddress()
         {

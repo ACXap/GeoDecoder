@@ -9,6 +9,18 @@ namespace GeoCoding
     public class PolygonViewModel : ViewModelBase
     {
         private PolygonModel _model = new PolygonModel();
+        private NotificationsModel _notification;
+
+        public PolygonViewModel(NotificationsModel notification)
+        {
+            _notification = notification;
+
+            if(_model.CheckBD())
+            {
+                _notification.Notification(NotificationType.Error, "Отсутствует база полигонов");
+            }
+        }
+
         private List<EntityAddress> _listAddress;
 
         private List<double> _polygon = new List<double>();
