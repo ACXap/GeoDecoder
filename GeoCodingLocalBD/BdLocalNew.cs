@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace GeoCodingLocalBD
 {
-    public class BDLocal : IRepositoryLocal
+    public class BdLocalNew : IRepositoryLocal
     {
         private const string _fileName = "db.db";
         private string _connectionString = $"Data Source={_fileName};Version=3;";
@@ -22,7 +22,7 @@ namespace GeoCodingLocalBD
         public List<EntityAddress> GetListAddress()
         {
             List<EntityAddress> _data = null;
-            var com = "SELECT Id, Name, OrponId, AdminLevel, ParentId FROM Address";
+            var com = "SELECT Id, Name, OrponId, ParentId FROM AddressOrpon";
             try
             {
                 var connection = new SQLiteConnection(_connectionString);
@@ -35,10 +35,9 @@ namespace GeoCodingLocalBD
                         Id = x.Id,
                         Address = x.Name,
                         OrponId = x.OrponId,
-                        AdminLevel = x.AdminLevel,
-                        ParentId =x.ParentId
+                        ParentId = x.ParentId
                     };
-                }).OrderBy(x=>x.Address).ToList();
+                }).OrderBy(x => x.Address).ToList();
 
                 connection.Close();
             }
@@ -78,9 +77,9 @@ namespace GeoCodingLocalBD
         {
             var str = data.Substring(1, data.Length - 2);
 
-            return str.Split(',').Select(x=>
+            return str.Split(',').Select(x =>
             {
-                return double.Parse(x.Replace('.',','));
+                return double.Parse(x.Replace('.', ','));
             }).ToList();
         }
     }

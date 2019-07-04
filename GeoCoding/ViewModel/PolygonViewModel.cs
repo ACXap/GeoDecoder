@@ -9,13 +9,13 @@ namespace GeoCoding
     public class PolygonViewModel : ViewModelBase
     {
         private PolygonModel _model = new PolygonModel();
-        private NotificationsModel _notification;
+        private INotifications _notification;
 
-        public PolygonViewModel(NotificationsModel notification)
+        public PolygonViewModel(INotifications notification)
         {
             _notification = notification;
 
-            if(_model.CheckBD())
+            if (!_model.CheckBD())
             {
                 _notification.Notification(NotificationType.Error, "Отсутствует база полигонов");
             }
@@ -74,7 +74,7 @@ namespace GeoCoding
             set
             {
                 Set(ref _currentDistrict, value);
-                if(value!=null)
+                if (value != null)
                 {
                     Polygon = _model.GetPolygon(value.Id);
                 }
@@ -85,7 +85,14 @@ namespace GeoCoding
         public bool CanAutoChoicePolygon
         {
             get => _canAutoChoicePolygon;
-            set => Set(ref _canAutoChoicePolygon, value);
+            set
+            {
+                Set(ref _canAutoChoicePolygon, value);
+                if (value)
+                {
+                    GetAddress();
+                }
+            }
         }
 
         private bool _canManualChoicePolygon = false;
@@ -95,7 +102,7 @@ namespace GeoCoding
             set
             {
                 Set(ref _canManualChoicePolygon, value);
-                if(value)
+                if (value)
                 {
                     GetAddress();
                 }
@@ -110,14 +117,54 @@ namespace GeoCoding
                         GetAddress();
                     }));
 
-        private void GetAddress()
+        public List<double> GetPolygon(string address)
         {
-            if (_listAddress == null && _canManualChoicePolygon)
+            if (_canManualChoicePolygon)
+            {
+                return _polygon;
+            }
+
+            foreach (var item in _listRegion)
+            {
+                if (address.Contains(item.Address))
+                {
+                    foreach (var adr in _listAddress.Where(x => x.ParentId == item.Id))
+                    {
+                        if (address.Contains(adr.Address))
+                        {
+                            return _model.GetPolygon(adr.OrponId);
+
+                        }
+                    }
+
+                    return _model.GetPolygon(item.OrponId);
+                }
+            }
+
+            //foreach (var item in _listAddress)
+            //{
+            //    if(address.Contains(item.Address))
+            //    {
+            //        return _model.GetPolygon(item.OrponId);
+            //        break;
+            //    }
+            //}
+
+            return null;
+        }
+
+        public void GetAddress()
+        {
+            if (_listAddress == null)
             {
                 _listAddress = _model.GetAddress();
-
-                ListRegion = _listAddress.Where(x => x.AdminLevel == 4).ToList();
             }
+
+            // if(_canManualChoicePolygon)
+            //{
+            //  ListRegion = _listAddress.Where(x => x.AdminLevel == 4).ToList();
+            ListRegion = _listAddress.Where(x => x.ParentId == 354539191).ToList();
+            // }
         }
     }
 }

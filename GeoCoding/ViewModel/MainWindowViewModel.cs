@@ -534,7 +534,7 @@ namespace GeoCoding
         _commandGetGeoCod ?? (_commandGetGeoCod = new RelayCommand<EntityGeoCod>(
                     geocod =>
                     {
-                        if(_collectionSelectionItem!=null && _collectionSelectionItem.Count>1)
+                        if (_collectionSelectionItem != null && _collectionSelectionItem.Count > 1)
                         {
                             foreach (var item in _collectionSelectionItem)
                             {
@@ -846,18 +846,18 @@ namespace GeoCoding
                             if (obj.AddedItems[0] is GeoCod item)
                             {
                                 var geo = _collectionSelectionItem.FirstOrDefault();
-                                if(geo!=null)
+                                if (geo != null)
                                 {
                                     geo.MainGeoCod = item;
                                     geo.Error = string.Empty;
                                     geo.Status = StatusType.OK;
                                     _stat.UpdateStatisticsCollection();
                                 }
-                                
+
                                 //_currentGeoCod.MainGeoCod = item;
-                               // _currentGeoCod.Error = string.Empty;
+                                // _currentGeoCod.Error = string.Empty;
                                 //_currentGeoCod.Status = StatusType.OK;
-                               
+
                             }
                         }
                     }));
@@ -1697,7 +1697,6 @@ namespace GeoCoding
         {
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
-            Polygon = new PolygonViewModel();
 
             _netProxyModel = new NetProxyModel();
 
@@ -1715,6 +1714,7 @@ namespace GeoCoding
                     VerificationSettings = vset;
 
                     _notifications = new NotificationsModel(ns);
+                    _polygon = new PolygonViewModel(_notifications);
                     _geoCodingModel = new GeoCodingModel(_netSettings, _geoCodSettings, _polygon);
                     Ver = new VerificationViewModel(_verificationSettings);
                     if (_netSettings.IsListProxy)
@@ -1738,6 +1738,10 @@ namespace GeoCoding
                 if (data.PropertyName == "IsStartCompare" && !data.NewValue)
                 {
                     CommandSaveData.Execute(true);
+                }
+                if(data.PropertyName == "CanUsePolygon" && data.NewValue)
+                {
+                    _polygon.GetAddress();
                 }
             });
         }

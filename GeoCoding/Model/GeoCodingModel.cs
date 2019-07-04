@@ -137,16 +137,16 @@ namespace GeoCoding
 
                 data.DateTimeGeoCod = DateTime.Now;
 
-            }, data.Address, cs, GetPolygon());
+            }, data.Address, cs, GetPolygon(data.Address));
 
             return error;
         }
 
-        private List<double> GetPolygon()
+        private List<double> GetPolygon(string address)
         {
             if(_geoCodSettings.CanUsePolygon)
             {
-                return _polygon.Polygon;
+                return _polygon.GetPolygon(address);
             }
 
             return null;
@@ -556,7 +556,7 @@ namespace GeoCoding
         public string GetUrlRequest(string address)
         {
             SetGeoService();
-            return _geoCodingService.GetUrlRequest(address, GetPolygon());
+            return _geoCodingService.GetUrlRequest(address, GetPolygon(address));
         }
 
         public Task<Exception> GetAllGeoCod(IEnumerable<EntityGeoCod> collectionGeoCod)

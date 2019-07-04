@@ -6,7 +6,7 @@ namespace GeoCoding
 {
     public class PolygonModel
     {
-        IRepositoryLocal _repository = new BDLocal();
+        IRepositoryLocal _repository = new BdLocalNew();
 
         public bool CheckBD()
         {

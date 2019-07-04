@@ -197,7 +197,12 @@ namespace GeoCoding
         public bool CanUsePolygon
         {
             get => _canUsePolygon;
-            set => Set(ref _canUsePolygon, value);
+            set
+            {
+                var oldValue = _canUsePolygon;
+                Set(ref _canUsePolygon, value);
+                RaisePropertyChanged("CanUsePolygon", oldValue, value, true);
+            }
         }
 
         /// <summary>
@@ -206,3 +211,5 @@ namespace GeoCoding
         public ReadOnlyCollection<string> CollectionGeoService => GeoCodingService.MainGeoService.AllNameService;
     }
 }
+
+

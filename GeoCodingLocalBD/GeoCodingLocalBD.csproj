@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BDLocal.cs" />
+    <Compile Include="BdLocalNew.cs" />
     <Compile Include="Data\EntityAddress.cs" />
     <Compile Include="Data\Model\Address.cs" />
     <Compile Include="IRepositoryLocal.cs" />
