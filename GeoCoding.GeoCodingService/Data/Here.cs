@@ -51,8 +51,8 @@ namespace GeoCoding.GeoCodingService.Data
         [JsonProperty("MatchLevel")]
         public string MatchLevel { get; set; }
 
-        [JsonProperty("MatchQuality")]
-        public MatchQuality MatchQuality { get; set; }
+     //   [JsonProperty("MatchQuality")]
+     //   public MatchQuality MatchQuality { get; set; }
 
         [JsonProperty("MatchType")]
         public string MatchType { get; set; }
@@ -63,20 +63,20 @@ namespace GeoCoding.GeoCodingService.Data
 
     public partial class Location
     {
-        [JsonProperty("LocationId")]
-        public string LocationId { get; set; }
+     //   [JsonProperty("LocationId")]
+     //   public string LocationId { get; set; }
 
-        [JsonProperty("LocationType")]
-        public string LocationType { get; set; }
+     //   [JsonProperty("LocationType")]
+     //   public string LocationType { get; set; }
 
         [JsonProperty("DisplayPosition")]
         public DisplayPosition DisplayPosition { get; set; }
 
-        [JsonProperty("NavigationPosition")]
-        public DisplayPosition[] NavigationPosition { get; set; }
+      //  [JsonProperty("NavigationPosition")]
+     //   public DisplayPosition[] NavigationPosition { get; set; }
 
-        [JsonProperty("MapView")]
-        public MapView MapView { get; set; }
+       // [JsonProperty("MapView")]
+      //  public MapView MapView { get; set; }
 
         [JsonProperty("Address")]
         public Address Address { get; set; }
@@ -106,15 +106,15 @@ namespace GeoCoding.GeoCodingService.Data
         public string Street { get; set; }
 
         [JsonProperty("HouseNumber")]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long HouseNumber { get; set; }
+       // [JsonConverter(typeof(ParseStringConverter))]
+        public string HouseNumber { get; set; }
 
-        [JsonProperty("PostalCode")]
-        [JsonConverter(typeof(ParseStringConverter))]
-        public long PostalCode { get; set; }
+     //   [JsonProperty("PostalCode")]
+      //  [JsonConverter(typeof(ParseStringConverter))]
+      //  public long PostalCode { get; set; }
 
-        [JsonProperty("AdditionalData")]
-        public AdditionalDatum[] AdditionalData { get; set; }
+      //  [JsonProperty("AdditionalData")]
+      //  public AdditionalDatum[] AdditionalData { get; set; }
     }
 
     public partial class AdditionalDatum

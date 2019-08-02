@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GeoCodingLocalBD.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,7 +18,8 @@ namespace GeoCoding
 
             if (!_model.CheckBD())
             {
-                _notification.Notification(NotificationType.Error, "Отсутствует база полигонов");
+              
+                //  _notification.Notification(NotificationType.Error, "Отсутствует база полигонов");
             }
         }
 
@@ -159,11 +161,25 @@ namespace GeoCoding
             {
                 _listAddress = _model.GetAddress();
             }
+            if (!_model.CheckBD())
+            {
+                _notification.Notification(NotificationType.Error, "Отсутствует база полигонов");
+                return;
+            }
+
 
             // if(_canManualChoicePolygon)
             //{
             //  ListRegion = _listAddress.Where(x => x.AdminLevel == 4).ToList();
-            ListRegion = _listAddress.Where(x => x.ParentId == 354539191).ToList();
+            try
+            {
+                ListRegion = _listAddress.Where(x => x.ParentId == 354539191).ToList();
+            }
+            catch (Exception ex)
+            {
+                _notification.Notification(NotificationType.Error, ex.Message);
+            }
+            
             // }
         }
     }

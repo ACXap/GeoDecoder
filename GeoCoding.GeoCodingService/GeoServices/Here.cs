@@ -36,12 +36,16 @@ namespace GeoCoding.GeoCodingService
             try
             {
                 Here h = JsonConvert.DeserializeObject<Here>(json);
-                var list = h.Response.View[0].Result;
 
-                data = list.Where(x=>x.Distance<_distance).Select(x =>
+                if(h.Response.View.Any())
                 {
-                    return GetGeo(x);
-                }).ToList();
+                    var list = h.Response.View[0].Result;
+
+                    data = list.Where(x => x.Distance < _distance).Select(x =>
+                    {
+                        return GetGeo(x);
+                    }).ToList();
+                }
             }
             catch (Exception ex)
             {

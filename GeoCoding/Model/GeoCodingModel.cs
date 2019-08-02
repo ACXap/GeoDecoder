@@ -34,6 +34,7 @@ namespace GeoCoding
         private readonly GeoCodSettings _geoCodSettings;
         private readonly PolygonViewModel _polygon;
         private readonly object _lock = new object();
+        private Random _rnd = new Random();
 
         private void GetLimitCount()
         {
@@ -408,6 +409,9 @@ namespace GeoCoding
                             {
                                 countError = 0;
                             }
+
+                           // Thread.Sleep(_rnd.Next(10000, 15000));
+
                         });
                     }
                     catch (OperationCanceledException c)

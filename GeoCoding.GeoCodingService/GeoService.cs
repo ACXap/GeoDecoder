@@ -80,10 +80,11 @@ namespace GeoCoding.GeoCodingService
             {
                 ServicePointManager.DefaultConnectionLimit = 100;
 
-                WebRequest request = WebRequest.Create(url);
+                HttpWebRequest request = WebRequest.CreateHttp(url);
                 request.Headers.Add("Content-Encoding: gzip, deflate, br");
+                request.UserAgent = @"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36 OPR/62.0.3331.72";
 
-                if(cs.ProxyType == ProxyType.System)
+                if (cs.ProxyType == ProxyType.System)
                 {
                     request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
                 }

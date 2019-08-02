@@ -17,19 +17,30 @@ namespace GeoCoding.FormKey
             Console.WriteLine("Введите ключ для Yandex:");
             var str = Console.ReadLine();
 
-            var s = ProtectedDataDPAPI.EncryptData(str);
-
-            File.WriteAllText(_keyFileYandex, s);
-            Console.WriteLine("Ключ сформирован успешно");
+            WriteFile(_keyFileYandex, str);
 
             Console.WriteLine("Введите app_id и app_code для Here (через пробел):");
             str = Console.ReadLine();
 
-            s = ProtectedDataDPAPI.EncryptData(str);
+            WriteFile(_keyFileHere, str);
 
-            File.WriteAllText(_keyFileHere, s);
-            Console.WriteLine("Ключ сформирован успешно");
+            Console.WriteLine("Всего Доброго!");
             Console.ReadLine();
+        }
+
+        private static void WriteFile(string fileName, string data)
+        {
+            if (!string.IsNullOrEmpty(data))
+            {
+                var s = ProtectedDataDPAPI.EncryptData(data);
+
+                File.WriteAllText(fileName, s);
+                Console.WriteLine("Ключ сформирован успешно");
+            }
+            else
+            {
+                Console.WriteLine("Ключ не обновлен");
+            }
         }
     }
 }
