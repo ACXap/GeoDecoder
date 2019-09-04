@@ -570,8 +570,8 @@ namespace GeoCoding
                                     geocod.MainGeoCod = new GeoCod()
                                     {
                                         AddressWeb = s[3],
-                                        Longitude = s[4],
-                                        Latitude = s[5],
+                                        Longitude = s[5],
+                                        Latitude = s[4],
                                     };
                                     byte.TryParse(s[6], out byte qcode);
                                     geocod.MainGeoCod.Qcode = qcode;

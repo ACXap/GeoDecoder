@@ -87,6 +87,19 @@ namespace GeoCoding.GeoCodingService
             return $"{_url}app_id={str[0]}&app_code={str[1]}&searchtext={address}{box}";
         }
 
+        public override void SetKeyApi(string keyApi)
+        {
+            if(!string.IsNullOrEmpty(keyApi))
+            {
+                _key = keyApi;
+            }
+        }
+
+        public override string GetKeyApi()
+        {
+            return _key;
+        }
+
         public HereGeoCodingService()
         {
             if (File.Exists(_keyFile))

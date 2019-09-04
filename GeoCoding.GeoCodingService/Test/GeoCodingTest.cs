@@ -44,9 +44,19 @@ namespace GeoCoding.GeoCodingService.Test
             callback(data, error);
         }
 
+        public string GetKeyApi()
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetUrlRequest(string address, List<double> polygon)
         {
             return null;
+        }
+
+        public void SetKeyApi(string keyApi)
+        {
+            throw new NotImplementedException();
         }
     }
 }

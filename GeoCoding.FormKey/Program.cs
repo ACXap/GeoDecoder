@@ -36,6 +36,7 @@ namespace GeoCoding.FormKey
 
                 File.WriteAllText(fileName, s);
                 Console.WriteLine("Ключ сформирован успешно");
+                File.Delete("limit.dat");
             }
             else
             {

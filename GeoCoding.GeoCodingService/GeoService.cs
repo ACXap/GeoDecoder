@@ -192,5 +192,14 @@ namespace GeoCoding.GeoCodingService
 
             callback(data, error);
         }
+
+        public virtual void SetKeyApi(string keyApi)
+        {
+            throw new NotImplementedException();
+        }
+        public virtual string GetKeyApi()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace GeoCoding
 
         private Limit _limitGeo;
         private int _countGeo;
-        private int _maxCountGeo = 10000;
+        private int _maxCountGeo = 25000;
 
         private readonly NetSettings _netSettings;
         private readonly GeoCodSettings _geoCodSettings;
@@ -696,12 +696,30 @@ namespace GeoCoding
 
         #endregion PublicMethod
 
+
+        public string GetKeyApi()
+        {
+            SetGeoService();
+            return _geoCodingService.GetKeyApi();
+        }
+
+        public void SetKeyApi(string key)
+        {
+            SetGeoService();
+            _geoCodingService.SetKeyApi(key);
+        }
+
+        public void ResetLimit()
+        {
+            _limitGeo = 0;
+        }
+
         public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings, PolygonViewModel polygon)
         {
             _netSettings = netSettings;
             _geoCodSettings = geoCodSettings;
             _polygon = polygon;
-
+            
             GetLimitCount();
         }
     }

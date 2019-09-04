@@ -35,6 +35,19 @@ namespace GeoCoding.GeoCodingService
             return $"{_url}{address}&apikey={_key}&format=json{box}";
         }
 
+        public override void SetKeyApi(string keyApi)
+        {
+            if(!string.IsNullOrEmpty(keyApi))
+            {
+                _key = keyApi;
+            }
+        }
+
+        public override string GetKeyApi()
+        {
+            return _key;
+        }
+
         public YandexPayGeoCodingService()
         {
             if(File.Exists(_keyFile))

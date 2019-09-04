@@ -701,7 +701,7 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Проверка данных">
-                    <TabItem.Style>
+                    <!--<TabItem.Style>
                         <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Style.Triggers>
@@ -710,7 +710,7 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TabItem.Style>
+                    </TabItem.Style>-->
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
@@ -723,7 +723,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <GroupBox
+                        <!--<GroupBox
                             Grid.Row="0"
                             Grid.Column="0"
                             Header="Способ проверки"
@@ -857,13 +857,14 @@
                                 Command="{Binding Ver.CommandCommitChanges}"
                                 Content="Зафиксировать" />
                             <Button Command="{Binding MyCommand}" Content="Проверить файлы" />
-                        </StackPanel>
+                        </StackPanel>-->
 
                         <DataGrid
+                                        ScrollViewer.CanContentScroll="True"
+                       
                             Grid.Row="1"
                             Grid.ColumnSpan="3"
-                            ItemsSource="{Binding Ver.CustomerView}"
-                            Style="{StaticResource DataGridMain}">
+                            ItemsSource="{Binding Ver.CustomerView}">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>

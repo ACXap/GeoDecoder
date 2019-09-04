@@ -1690,6 +1690,42 @@ namespace GeoCoding
                         }
                     }));
 
+
+        private RelayCommand _commandGetKeyApi;
+        public RelayCommand CommandGetKeyApi =>
+        _commandGetKeyApi ?? (_commandGetKeyApi = new RelayCommand(
+                    () =>
+                    {
+                        KeyApi = _geoCodingModel.GetKeyApi();
+                    }));
+
+        private RelayCommand _commandSetKeyApi;
+        public RelayCommand CommandSetKeyApi =>
+        _commandSetKeyApi ?? (_commandSetKeyApi = new RelayCommand(
+                    () =>
+                    {
+                        _geoCodingModel.SetKeyApi(_keyApi);
+                    }));
+
+
+        private string _keyApi = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string KeyApi
+        {
+            get => _keyApi;
+            set => Set(ref _keyApi, value);
+        }
+
+        private RelayCommand _commandResetLimit;
+        public RelayCommand CommandResetLimit =>
+        _commandResetLimit ?? (_commandResetLimit = new RelayCommand(
+                    () =>
+                    {
+                        _geoCodingModel.ResetLimit();
+                    }));
+
         /// <summary>
         /// Конструктор по умолчанию
         /// </summary>
@@ -1739,7 +1775,7 @@ namespace GeoCoding
                 {
                     CommandSaveData.Execute(true);
                 }
-                if(data.PropertyName == "CanUsePolygon" && data.NewValue)
+                if (data.PropertyName == "CanUsePolygon" && data.NewValue)
                 {
                     _polygon.GetAddress();
                 }

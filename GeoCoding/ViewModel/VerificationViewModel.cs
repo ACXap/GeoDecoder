@@ -215,13 +215,14 @@ namespace GeoCoding
             Collection = new ObservableCollection<EntityForCompare>(collection.Select(x =>
             {
                 return new EntityForCompare() { GeoCode = x };
-            }));
-            CustomerView = new CollectionViewSource { Source = _collection }.View;
+            }).ToList());
+
+            CustomerView = new CollectionViewSource { Source = Collection }.View;
             CustomerView.Filter = CustomerFilter;
 
-            CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
-            CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
-           // CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
+            // CountGood = _collection.Count(x => x.GeoCode?.MainGeoCod != null && x.GeoCode?.MainGeoCod.Qcode == 1);
+             CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
+             CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
         }
 
         /// <summary>
@@ -231,8 +232,8 @@ namespace GeoCoding
         {
             if (_collection != null && _customerView != null)
             {
-                DispatcherHelper.CheckBeginInvokeOnUI(() => _customerView.Refresh());
-               // CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
+                //DispatcherHelper.CheckBeginInvokeOnUI(() => _customerView?.Refresh());
+                // CountGood = _collection.Count(x => x.GeoCode.MainGeoCod != null && x.GeoCode.MainGeoCod.Qcode == 1);
                 CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
                 CountErrorAfterCompare = _collection.Count(x => x.Status == StatusType.Error);
             }

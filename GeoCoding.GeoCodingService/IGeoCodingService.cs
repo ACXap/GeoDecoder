@@ -23,5 +23,17 @@ namespace GeoCoding.GeoCodingService
         /// <param name="address">Адрес для вебзапроса</param>
         /// <returns>Урл для вебзапроса</returns>
         string GetUrlRequest(string address, List<double> polygon);
+
+        /// <summary>
+        /// Метод установки ключа API
+        /// </summary>
+        /// <param name="keyApi"></param>
+        void SetKeyApi(string keyApi);
+
+        /// <summary>
+        /// Метод просмотра ключа API
+        /// </summary>
+        /// <returns></returns>
+        string GetKeyApi();
     }
 }

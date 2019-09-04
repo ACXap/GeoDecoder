@@ -28,15 +28,15 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <WrapPanel Orientation="Vertical" Grid.Row="0">
+                        <WrapPanel Grid.Row="0" Orientation="Vertical">
                             <WrapPanel Margin="5" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="Цветовая тема приложения" />
                                 <ComboBox
-                            Margin="5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            ItemsSource="{Binding GeneralSettings.ListTheme}"
-                            SelectedItem="{Binding GeneralSettings.ColorTheme}">
+                                    Margin="5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    ItemsSource="{Binding GeneralSettings.ListTheme}"
+                                    SelectedItem="{Binding GeneralSettings.ColorTheme}">
                                     <!--<ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding DisplayName}" />
@@ -44,10 +44,26 @@
                                     </ComboBox.ItemTemplate>-->
                                 </ComboBox>
                             </WrapPanel>
-                            <CheckBox Content="Запускать в компактном виде" IsChecked="{Binding GeneralSettings.CanStartCompact}" Grid.Row="1" Margin="5,2" />
-                            <CheckBox Content="Включить модуль проверки данных" Margin="5,2" x:Name="cbVerModule" IsChecked="{Binding GeneralSettings.CanUseVerificationModule}" />
-                            <CheckBox Content="Включить модуль работы с базой данных" Margin="5,2" x:Name="cbCanBd" IsChecked="{Binding GeneralSettings.CanUseBdModule}"/>
-                            <CheckBox Content="Включить модуль работы с фтп-сервером" Margin="5,2" x:Name="cbCanFtp" IsChecked="{Binding GeneralSettings.CanUseFtpModule}"/>
+                            <CheckBox
+                                Grid.Row="1"
+                                Margin="5,2"
+                                Content="Запускать в компактном виде"
+                                IsChecked="{Binding GeneralSettings.CanStartCompact}" />
+                            <CheckBox
+                                x:Name="cbVerModule"
+                                Margin="5,2"
+                                Content="Включить модуль проверки данных"
+                                IsChecked="{Binding GeneralSettings.CanUseVerificationModule}" />
+                            <CheckBox
+                                x:Name="cbCanBd"
+                                Margin="5,2"
+                                Content="Включить модуль работы с базой данных"
+                                IsChecked="{Binding GeneralSettings.CanUseBdModule}" />
+                            <CheckBox
+                                x:Name="cbCanFtp"
+                                Margin="5,2"
+                                Content="Включить модуль работы с фтп-сервером"
+                                IsChecked="{Binding GeneralSettings.CanUseFtpModule}" />
                         </WrapPanel>
                     </Grid>
                 </ScrollViewer>
@@ -74,98 +90,100 @@
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
                                 <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="Папка для входящих файлов" />
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Папка для входящих файлов" />
                                 <TextBox
-                                Grid.Row="0"
-                                Grid.Column="2"
-                                Style="{StaticResource TextBoxFolderOpen}"
-                                Text="{Binding FilesSettings.FolderInput}" />
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Style="{StaticResource TextBoxFolderOpen}"
+                                    Text="{Binding FilesSettings.FolderInput}" />
                                 <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="Папка для исходящих файлов" />
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Папка для исходящих файлов" />
                                 <TextBox
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                Style="{StaticResource TextBoxFolderOpen}"
-                                Text="{Binding FilesSettings.FolderOutput}" />
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    Style="{StaticResource TextBoxFolderOpen}"
+                                    Text="{Binding FilesSettings.FolderOutput}" />
                                 <TextBlock
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="Папка для временных файлов" />
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Папка для временных файлов" />
                                 <TextBox
-                                Grid.Row="2"
-                                Grid.Column="2"
-                                Style="{StaticResource TextBoxFolderOpen}"
-                                Text="{Binding FilesSettings.FolderTemp}" />
+                                    Grid.Row="2"
+                                    Grid.Column="2"
+                                    Style="{StaticResource TextBoxFolderOpen}"
+                                    Text="{Binding FilesSettings.FolderTemp}" />
                                 <TextBlock
-                                Grid.Row="3"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="Папка для статистики" />
+                                    Grid.Row="3"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Папка для статистики" />
                                 <TextBox
-                                Grid.Row="3"
-                                Grid.Column="2"
-                                Style="{StaticResource TextBoxFolderOpen}"
-                                Text="{Binding FilesSettings.FolderStatistics}" />
+                                    Grid.Row="3"
+                                    Grid.Column="2"
+                                    Style="{StaticResource TextBoxFolderOpen}"
+                                    Text="{Binding FilesSettings.FolderStatistics}" />
                                 <TextBlock
-                                Grid.Row="4"
-                                Grid.Column="0"
-                                VerticalAlignment="Center"
-                                Text="Папка для ошибок" />
+                                    Grid.Row="4"
+                                    Grid.Column="0"
+                                    VerticalAlignment="Center"
+                                    Text="Папка для ошибок" />
                                 <TextBox
-                                Grid.Row="4"
-                                Grid.Column="2"
-                                Style="{StaticResource TextBoxFolderOpen}"
-                                Text="{Binding FilesSettings.FolderErrors}" />
+                                    Grid.Row="4"
+                                    Grid.Column="2"
+                                    Style="{StaticResource TextBoxFolderOpen}"
+                                    Text="{Binding FilesSettings.FolderErrors}" />
                             </Grid>
                         </GroupBox>
                         <WrapPanel
-                        Grid.Row="1"
-                        Margin="0,10,0,0"
-                        Orientation="Vertical">
+                            Grid.Row="1"
+                            Margin="0,10,0,0"
+                            Orientation="Vertical">
                             <CheckBox
-                            Grid.Row="3"
-                            Grid.Column="2"
-                            Margin="5"
-                            Content="Загружать данные из файла сразу"
-                            IsChecked="{Binding FilesSettings.CanGetDataOnce}" />
-                            <CheckBox Visibility="{Binding GeneralSettings.CanUseFtpModule, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Grid.Row="6"
-                            Grid.Column="2"
-                            Margin="5"
-                            Content="Файл находится на FTP сервере"
-                            IsChecked="{Binding FilesSettings.IsFileInputOnFTP}" />
-                            <CheckBox Visibility="{Binding GeneralSettings.CanUseFtpModule, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Grid.Row="7"
-                            Grid.Column="2"
-                            Margin="5"
-                            Content="Скопировать выходной файл на FTP сервер"
-                            IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp}" />
+                                Grid.Row="3"
+                                Grid.Column="2"
+                                Margin="5"
+                                Content="Загружать данные из файла сразу"
+                                IsChecked="{Binding FilesSettings.CanGetDataOnce}" />
+                            <CheckBox
+                                Grid.Row="6"
+                                Grid.Column="2"
+                                Margin="5"
+                                Content="Файл находится на FTP сервере"
+                                IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
+                                Visibility="{Binding GeneralSettings.CanUseFtpModule, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                            <CheckBox
+                                Grid.Row="7"
+                                Grid.Column="2"
+                                Margin="5"
+                                Content="Скопировать выходной файл на FTP сервер"
+                                IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp}"
+                                Visibility="{Binding GeneralSettings.CanUseFtpModule, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             <WrapPanel Orientation="Horizontal">
                                 <CheckBox
-                                Grid.Row="4"
-                                Grid.Column="2"
-                                Margin="5"
-                                Content="Разбить файл на части (по строкам)"
-                                IsChecked="{Binding FilesSettings.CanBreakFileOutput}" />
+                                    Grid.Row="4"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Content="Разбить файл на части (по строкам)"
+                                    IsChecked="{Binding FilesSettings.CanBreakFileOutput}" />
                                 <TextBlock
-                                Grid.Row="5"
-                                Grid.Column="0"
-                                Margin="20,0,0,0"
-                                VerticalAlignment="Center"
-                                Text="Количество строк" />
+                                    Grid.Row="5"
+                                    Grid.Column="0"
+                                    Margin="20,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="Количество строк" />
                                 <TextBox
-                                Grid.Row="5"
-                                Grid.Column="2"
-                                Width="80"
-                                Margin="5"
-                                Text="{Binding FilesSettings.MaxSizePart, UpdateSourceTrigger=PropertyChanged}" />
+                                    Grid.Row="5"
+                                    Grid.Column="2"
+                                    Width="80"
+                                    Margin="5"
+                                    Text="{Binding FilesSettings.MaxSizePart, UpdateSourceTrigger=PropertyChanged}" />
                             </WrapPanel>
                         </WrapPanel>
                     </Grid>
@@ -190,96 +208,100 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="FTP сервер" />
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="FTP сервер" />
                         <TextBox
-                        Grid.Row="0"
-                        Grid.Column="2"
-                        Margin="5" Controls:TextBoxHelper.Watermark="ftp://10.10.10.10"
-                        Text="{Binding FTPSettings.Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Margin="5"
+                            Controls:TextBoxHelper.Watermark="ftp://10.10.10.10"
+                            Text="{Binding FTPSettings.Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Порт" />
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Порт" />
                         <TextBox
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        Margin="5" Controls:TextBoxHelper.Watermark="21"
-                        Text="{Binding FTPSettings.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="5"
+                            Controls:TextBoxHelper.Watermark="21"
+                            Text="{Binding FTPSettings.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Логин" />
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Логин" />
                         <TextBox
-                        Grid.Row="2"
-                        Grid.Column="2"
-                        Margin="5"
-                        Text="{Binding FTPSettings.User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Margin="5"
+                            Text="{Binding FTPSettings.User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Пароль" />
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Пароль" />
 
                         <PasswordBox
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        Margin="5"
-                        Behaviors:PasswordBoxBindingBehavior.Password="{Binding FTPSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Margin="5"
+                            Behaviors:PasswordBoxBindingBehavior.Password="{Binding FTPSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Папка исходящих файлов" />
-                        <TextBox
-                        Grid.Row="4"
-                        Grid.Column="2"
-                        Margin="5" Controls:TextBoxHelper.Watermark="/load/"
-                        Text="{Binding FTPSettings.FolderInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <TextBlock
-                        Grid.Row="5"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Папка входящих файлов" />
-                        <TextBox
-                        Grid.Row="5"
-                        Grid.Column="2"
-                        Margin="5" Controls:TextBoxHelper.Watermark="/upload/"
-                        Text="{Binding FTPSettings.FolderOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <WrapPanel
-                        Grid.Row="6"
-                        Grid.Column="2"
-                        Orientation="Horizontal">
-                            <Button
-                            Margin="10"
-                            HorizontalAlignment="Left"
-                            Command="{Binding CommandCheckConnectFtp}"
-                            Style="{StaticResource ButtonStopStartConnect}"
-                            Tag="{Binding FTPSettings.StatusConnect}" />
-                            <TextBlock
+                            Grid.Row="4"
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="Статус подключения:" />
-                            <TextBlock
+                            Text="Папка исходящих файлов" />
+                        <TextBox
+                            Grid.Row="4"
+                            Grid.Column="2"
                             Margin="5"
+                            Controls:TextBoxHelper.Watermark="/load/"
+                            Text="{Binding FTPSettings.FolderInput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock
+                            Grid.Row="5"
+                            Grid.Column="0"
                             VerticalAlignment="Center"
-                            Text="{Binding FTPSettings.StatusConnect}" />
+                            Text="Папка входящих файлов" />
+                        <TextBox
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            Margin="5"
+                            Controls:TextBoxHelper.Watermark="/upload/"
+                            Text="{Binding FTPSettings.FolderOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <WrapPanel
+                            Grid.Row="6"
+                            Grid.Column="2"
+                            Orientation="Horizontal">
+                            <Button
+                                Margin="10"
+                                HorizontalAlignment="Left"
+                                Command="{Binding CommandCheckConnectFtp}"
+                                Style="{StaticResource ButtonStopStartConnect}"
+                                Tag="{Binding FTPSettings.StatusConnect}" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontWeight="Bold"
+                                Text="Статус подключения:" />
+                            <TextBlock
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding FTPSettings.StatusConnect}" />
                         </WrapPanel>
                         <WrapPanel
-                        Grid.Row="7"
-                        Grid.Column="2"
-                        Orientation="Horizontal">
+                            Grid.Row="7"
+                            Grid.Column="2"
+                            Orientation="Horizontal">
                             <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding FTPSettings.StatusConnect}" />
                             <TextBox
-                            Margin="10"
-                            BorderThickness="0"
-                            Text="{Binding FTPSettings.Error}"
-                            TextWrapping="Wrap" />
+                                Margin="10"
+                                BorderThickness="0"
+                                Text="{Binding FTPSettings.Error}"
+                                TextWrapping="Wrap" />
                         </WrapPanel>
                     </Grid>
                 </ScrollViewer>
@@ -302,89 +324,92 @@
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
                         <TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Сервер" />
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Сервер" />
                         <TextBox
-                        Grid.Row="0"
-                        Grid.Column="2"
-                        Margin="5" Controls:TextBoxHelper.Watermark="10.10.10.10"
-                        Text="{Binding BDSettings.Server, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Grid.Row="0"
+                            Grid.Column="2"
+                            Margin="5"
+                            Controls:TextBoxHelper.Watermark="10.10.10.10"
+                            Text="{Binding BDSettings.Server, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                         <TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="База данных" />
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="База данных" />
                         <TextBox
-                        Grid.Row="1"
-                        Grid.Column="2"
-                        Margin="5" Controls:TextBoxHelper.Watermark="NameBD"
-                        Text="{Binding BDSettings.BDName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Margin="5"
+                            Controls:TextBoxHelper.Watermark="NameBD"
+                            Text="{Binding BDSettings.BDName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                         <TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Порт" />
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Порт" />
                         <TextBox
-                        Grid.Row="2"
-                        Grid.Column="2"
-                        Margin="5" Controls:TextBoxHelper.Watermark="5432"
-                        Text="{Binding BDSettings.Port, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Margin="5"
+                            Controls:TextBoxHelper.Watermark="5432"
+                            Text="{Binding BDSettings.Port, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                         <TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Логин" />
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Логин" />
                         <TextBox
-                        Grid.Row="3"
-                        Grid.Column="2"
-                        Margin="5"
-                        Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Margin="5"
+                            Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                         <TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Пароль" />
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Пароль" />
                         <PasswordBox
-                        Grid.Row="4"
-                        Grid.Column="2"
-                        Margin="5"
-                        Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Grid.Row="4"
+                            Grid.Column="2"
+                            Margin="5"
+                            Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                         <WrapPanel
-                        Grid.Row="5"
-                        Grid.Column="2"
-                        Orientation="Horizontal">
+                            Grid.Row="5"
+                            Grid.Column="2"
+                            Orientation="Horizontal">
                             <Button
-                            Margin="10"
-                            HorizontalAlignment="Left"
-                            Command="{Binding CommandCheckConnect}"
-                            Style="{StaticResource ButtonStopStartConnect}"
-                            Tag="{Binding BDSettings.StatusConnect}" />
+                                Margin="10"
+                                HorizontalAlignment="Left"
+                                Command="{Binding CommandCheckConnect}"
+                                Style="{StaticResource ButtonStopStartConnect}"
+                                Tag="{Binding BDSettings.StatusConnect}" />
                             <TextBlock
-                            VerticalAlignment="Center"
-                            FontWeight="Bold"
-                            Text="Статус подключения:" />
+                                VerticalAlignment="Center"
+                                FontWeight="Bold"
+                                Text="Статус подключения:" />
                             <TextBlock
-                            Margin="5"
-                            VerticalAlignment="Center"
-                            Text="{Binding BDSettings.StatusConnect}" />
+                                Margin="5"
+                                VerticalAlignment="Center"
+                                Text="{Binding BDSettings.StatusConnect}" />
                         </WrapPanel>
                         <WrapPanel
-                        Grid.Row="6"
-                        Grid.Column="2"
-                        Orientation="Horizontal">
+                            Grid.Row="6"
+                            Grid.Column="2"
+                            Orientation="Horizontal">
                             <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding BDSettings.StatusConnect}" />
                             <TextBox
-                            Margin="10"
-                            BorderThickness="0"
-                            Text="{Binding BDSettings.Error}"
-                            TextWrapping="Wrap" />
+                                Margin="10"
+                                BorderThickness="0"
+                                Text="{Binding BDSettings.Error}"
+                                TextWrapping="Wrap" />
                         </WrapPanel>
                     </Grid>
                 </ScrollViewer>
@@ -406,9 +431,19 @@
                             Margin="5"
                             Content="Геокодировать сразу после выбора файла"
                             IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
-                        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="10,0,0,0">
-                            <TextBlock Text="Количество ошибок до прекращения обработки данных" VerticalAlignment="Center" ToolTip="Количество подряд ошибок до прекращения обработки данных программой" />
-                            <TextBox Controls:TextBoxHelper.Watermark="10-100" Margin="3" Width="80" Text="{Binding GeoCodSettings.MaxCountError}" />
+                        <StackPanel
+                            Grid.Row="1"
+                            Margin="10,0,0,0"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Text="Количество ошибок до прекращения обработки данных"
+                                ToolTip="Количество подряд ошибок до прекращения обработки данных программой" />
+                            <TextBox
+                                Width="80"
+                                Margin="3"
+                                Controls:TextBoxHelper.Watermark="10-100"
+                                Text="{Binding GeoCodSettings.MaxCountError}" />
                         </StackPanel>
                         <Grid Grid.Row="0" Margin="5">
                             <Grid.RowDefinitions>
@@ -421,16 +456,45 @@
                                 <ColumnDefinition Width="10" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Параллельная работа:" FontWeight="Bold" Grid.Row="0" />
+                            <TextBlock
+                                Grid.Row="0"
+                                FontWeight="Bold"
+                                Text="Параллельная работа:" />
                             <RadioButton
-                                    Grid.Row="1"
-                                    Grid.Column="0"
-                                    Content="Несколько запросов в параллель"
-                                    Margin="20,1,0,1"
-                                    x:Name="rbParallel" IsChecked="{Binding GeoCodSettings.IsMultipleRequests}" />
-                            <TextBox Grid.Row="1" Text="{Binding GeoCodSettings.CountRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-5" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}" />
-                            <RadioButton Grid.Row="2" IsChecked="{Binding GeoCodSettings.IsMultipleProxy}" Grid.Column="0" Content="Несколько прокси в параллель" Margin="20,1,0,1" x:Name="rbProxy" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
-                            <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="60" Margin="0,1" Controls:TextBoxHelper.Watermark="1-20" VerticalContentAlignment="Center" HorizontalAlignment="Left" IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}" />
+                                x:Name="rbParallel"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="20,1,0,1"
+                                Content="Несколько запросов в параллель"
+                                IsChecked="{Binding GeoCodSettings.IsMultipleRequests}" />
+                            <TextBox
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Width="60"
+                                Margin="0,1"
+                                HorizontalAlignment="Left"
+                                VerticalContentAlignment="Center"
+                                Controls:TextBoxHelper.Watermark="1-5"
+                                IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}"
+                                Text="{Binding GeoCodSettings.CountRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <RadioButton
+                                x:Name="rbProxy"
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Margin="20,1,0,1"
+                                Content="Несколько прокси в параллель"
+                                IsChecked="{Binding GeoCodSettings.IsMultipleProxy}"
+                                IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
+                            <TextBox
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Width="60"
+                                Margin="0,1"
+                                HorizontalAlignment="Left"
+                                VerticalContentAlignment="Center"
+                                Controls:TextBoxHelper.Watermark="1-20"
+                                IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}"
+                                Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                         <GroupBox Grid.Row="3" Header="Какие объекты геокодировать">
                             <WrapPanel Orientation="Vertical">
@@ -458,7 +522,7 @@
                         </GroupBox>
                         <GroupBox Grid.Row="4" Header="Использование полигонов">
                             <WrapPanel Orientation="Vertical">
-                                <CheckBox Content="Использовать ограничительные полигоны" IsChecked="{Binding GeoCodSettings.CanUsePolygon}"/>
+                                <CheckBox Content="Использовать ограничительные полигоны" IsChecked="{Binding GeoCodSettings.CanUsePolygon}" />
                             </WrapPanel>
                         </GroupBox>
                         <GroupBox Grid.Row="5" Header="Что делаем сразу после геокодирования">
@@ -485,7 +549,7 @@
                             </WrapPanel>
                         </GroupBox>
                         <GroupBox Grid.Row="6" Header="Какой используем геокодер">
-                            <WrapPanel Orientation="Vertical">
+                            <WrapPanel Orientation="Horizontal">
                                 <ComboBox
                                     Margin="5,2"
                                     ItemsSource="{Binding GeoCodSettings.CollectionGeoService}"
@@ -496,6 +560,10 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
+                                <TextBlock Text="{Binding KeyApi}" Width="250" VerticalAlignment="Center"/>
+                                <Button Content="Показать ключ" Command="{Binding CommandGetKeyApi}"/>
+                                <Button Content="Установить ключ" Command="{Binding CommandSetKeyApi}"/>
+                                <Button Content="Сбросить дневной лимит" Command="{Binding CommandResetLimit}"/>
                             </WrapPanel>
                         </GroupBox>
                     </Grid>
@@ -514,57 +582,128 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Адрес сервера проверки ОРПОН" VerticalAlignment="Center" />
-                    <TextBox Grid.Column="2" Grid.Row="0" Margin="5" Controls:TextBoxHelper.Watermark="http://example.com" Text="{Binding VerificationSettings.VerificationServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Адрес сервера проверки ОРПОН" />
+                    <TextBox
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Margin="5"
+                        Controls:TextBoxHelper.Watermark="http://example.com"
+                        Text="{Binding VerificationSettings.VerificationServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <WrapPanel Grid.Row="1" Grid.Column="2">
-                        <Button Command="{Binding Ver.CommandCheckServer}"
-                                            Style="{StaticResource ButtonStopStartConnect}"
-                                            Tag="{Binding Ver.Status}" />
+                        <Button
+                            Command="{Binding Ver.CommandCheckServer}"
+                            Style="{StaticResource ButtonStopStartConnect}"
+                            Tag="{Binding Ver.Status}" />
                         <TextBlock
-                                            VerticalAlignment="Center"
-                                            FontWeight="Bold" Margin="10,0"
-                                            Text="Статус подключения:" />
+                            Margin="10,0"
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="Статус подключения:" />
                         <TextBlock
-                                        Margin="10,0"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding Ver.Status}" />
-                        
-                        <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding Ver.Status}" Width="10" Height="10" />
+                            Margin="10,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding Ver.Status}" />
+
+                        <Controls:ProgressRing
+                            Width="10"
+                            Height="10"
+                            Style="{StaticResource ProgressRingConnect}"
+                            Tag="{Binding Ver.Status}" />
                     </WrapPanel>
                     <WrapPanel Grid.Row="2" Grid.Column="2">
-                            <TextBox 
-                            BorderThickness="0" Margin="5"
-                            Text="{Binding Ver.Error}" TextWrapping="Wrap" MaxHeight="150" VerticalScrollBarVisibility="Auto"/>
+                        <TextBox
+                            MaxHeight="150"
+                            Margin="5"
+                            BorderThickness="0"
+                            Text="{Binding Ver.Error}"
+                            TextWrapping="Wrap"
+                            VerticalScrollBarVisibility="Auto" />
                     </WrapPanel>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Адрес сервера проверки Фактор" VerticalAlignment="Center"/>
-                    <TextBox Grid.Column="2" Grid.Row="3" Controls:TextBoxHelper.Watermark="http://10.10.10.10:1010" Margin="5" VerticalContentAlignment="Center" Text="{Binding VerificationSettings.VerificationServerFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Адрес сервера проверки Фактор" />
+                    <TextBox
+                        Grid.Row="3"
+                        Grid.Column="2"
+                        Margin="5"
+                        VerticalContentAlignment="Center"
+                        Controls:TextBoxHelper.Watermark="http://10.10.10.10:1010"
+                        Text="{Binding VerificationSettings.VerificationServerFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </TabItem>
             <TabItem Header="Сеть">
-                <GroupBox Header="Параметры сети" Margin="2">
+                <GroupBox Margin="2" Header="Параметры сети">
                     <WrapPanel Orientation="Vertical">
-                        <RadioButton Content="Без прокси" IsChecked="{Binding NetSettings.IsNotProxy}" GroupName="proxy" Margin="5" />
-                        <RadioButton Content="Использовать системные настройки прокси" Margin="4" IsChecked="{Binding NetSettings.IsSystemProxy}" GroupName="proxy" />
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <RadioButton Content="Ручная настройка прокси" x:Name="rbManualProxy" IsChecked="{Binding NetSettings.IsManualProxy}" GroupName="proxy" />
-                            <TextBlock TextWrapping="Wrap" Text="{Binding NetSettings.Proxy.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0" VerticalAlignment="Center" />
+                        <RadioButton
+                            Margin="5"
+                            Content="Без прокси"
+                            GroupName="proxy"
+                            IsChecked="{Binding NetSettings.IsNotProxy}" />
+                        <RadioButton
+                            Margin="4"
+                            Content="Использовать системные настройки прокси"
+                            GroupName="proxy"
+                            IsChecked="{Binding NetSettings.IsSystemProxy}" />
+                        <StackPanel Margin="5" Orientation="Horizontal">
+                            <RadioButton
+                                x:Name="rbManualProxy"
+                                Content="Ручная настройка прокси"
+                                GroupName="proxy"
+                                IsChecked="{Binding NetSettings.IsManualProxy}" />
+                            <TextBlock
+                                Margin="50,0,0,0"
+                                VerticalAlignment="Center"
+                                Text="{Binding NetSettings.Proxy.Error, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                TextWrapping="Wrap" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="30,0,0,0" IsEnabled="{Binding ElementName=rbManualProxy, Path=IsChecked}">
-                            <TextBlock Text="HTTP прокси" VerticalAlignment="Center" Margin="3" />
+                        <StackPanel
+                            Margin="30,0,0,0"
+                            IsEnabled="{Binding ElementName=rbManualProxy, Path=IsChecked}"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                Margin="3"
+                                VerticalAlignment="Center"
+                                Text="HTTP прокси" />
                             <TextBox
                                 Width="150"
-                                Controls:TextBoxHelper.Watermark="10.10.10.10"
                                 VerticalContentAlignment="Center"
-                                Text="{Binding NetSettings.Proxy.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding NetSettings.Proxy.Delay}" />
-                            <TextBlock Text="Порт" Margin="3" VerticalAlignment="Center" />
-                            <TextBox Width="60" Controls:TextBoxHelper.Watermark="8080" VerticalContentAlignment="Center" Text="{Binding NetSettings.Proxy.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button Margin="4,0" Command="{Binding CommandTestProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Proxy.Status}" />
-                            <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding NetSettings.Proxy.Status}" Height="10" Width="10" />
+                                Controls:TextBoxHelper.Watermark="10.10.10.10"
+                                Text="{Binding NetSettings.Proxy.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ToolTip="{Binding NetSettings.Proxy.Delay}" />
+                            <TextBlock
+                                Margin="3"
+                                VerticalAlignment="Center"
+                                Text="Порт" />
+                            <TextBox
+                                Width="60"
+                                VerticalContentAlignment="Center"
+                                Controls:TextBoxHelper.Watermark="8080"
+                                Text="{Binding NetSettings.Proxy.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button
+                                Margin="4,0"
+                                Command="{Binding CommandTestProxy}"
+                                Style="{StaticResource ButtonStopStartConnect}"
+                                Tag="{Binding NetSettings.Proxy.Status}" />
+                            <Controls:ProgressRing
+                                Width="10"
+                                Height="10"
+                                Style="{StaticResource ProgressRingConnect}"
+                                Tag="{Binding NetSettings.Proxy.Status}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <RadioButton Content="Список прокси" x:Name="rbListProxy" IsChecked="{Binding NetSettings.IsListProxy}" GroupName="proxy" />
+                        <StackPanel Margin="5" Orientation="Horizontal">
+                            <RadioButton
+                                x:Name="rbListProxy"
+                                Content="Список прокси"
+                                GroupName="proxy"
+                                IsChecked="{Binding NetSettings.IsListProxy}" />
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel.Style>
                                     <Style TargetType="{x:Type StackPanel}">
@@ -576,21 +715,37 @@
                                         </Style.Triggers>
                                     </Style>
                                 </StackPanel.Style>
-                                <Button Content="Загрузить список" Margin="2" IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" Command="{Binding CommandGetProxyList}" />
-                                <TextBlock Text="Количество адресов: " VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding NetSettings.CollectionListProxy.Count, FallbackValue=0}" Margin="2" VerticalAlignment="Center" />
-                                
-                                <Button Margin="2" Command="{Binding CommandTestListProxy}" Style="{StaticResource ButtonStopStartConnect}" Tag="{Binding NetSettings.Status}" />
-                                <Controls:ProgressRing Style="{StaticResource ProgressRingConnect}" Tag="{Binding NetSettings.Status}" Height="10" Width="10" />
+                                <Button
+                                    Margin="2"
+                                    Command="{Binding CommandGetProxyList}"
+                                    Content="Загрузить список"
+                                    IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
+                                <TextBlock VerticalAlignment="Center" Text="Количество адресов: " />
+                                <TextBlock
+                                    Margin="2"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding NetSettings.CollectionListProxy.Count, FallbackValue=0}" />
+
+                                <Button
+                                    Margin="2"
+                                    Command="{Binding CommandTestListProxy}"
+                                    Style="{StaticResource ButtonStopStartConnect}"
+                                    Tag="{Binding NetSettings.Status}" />
+                                <Controls:ProgressRing
+                                    Width="10"
+                                    Height="10"
+                                    Style="{StaticResource ProgressRingConnect}"
+                                    Tag="{Binding NetSettings.Status}" />
                             </StackPanel>
                         </StackPanel>
                         <DataGrid
+                            MaxHeight="300"
                             AutoGenerateColumns="False"
+                            CanUserAddRows="False"
                             ItemsSource="{Binding NetSettings.CollectionListProxy}"
-                            VerticalScrollBarVisibility="Visible"
-                            CanUserAddRows="False" MaxHeight="300">
+                            VerticalScrollBarVisibility="Visible">
                             <DataGrid.Style>
-                                <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource DataGridMain}">
+                                <Style BasedOn="{StaticResource DataGridMain}" TargetType="{x:Type DataGrid}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ElementName=rbListProxy, Path=IsChecked}" Value="False">
                                             <Setter Property="Visibility" Value="Collapsed" />
@@ -609,8 +764,9 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <CheckBox
+                                                HorizontalAlignment="Center"
                                                 IsChecked="{Binding IsActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                HorizontalAlignment="Center" ToolTip="{Binding Error}" />
+                                                ToolTip="{Binding Error}" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -642,15 +798,39 @@
             </TabItem>
             <TabItem Header="Оповещения">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <WrapPanel Orientation="Vertical" Margin="5">
-                        <CheckBox Content="Оповещать только об ошибках" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationOnlyError}" />
-                        <CheckBox Content="Оповещать о сохранении данных" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveData}" />
-                        <CheckBox Content="Оповещать о окончании процесса" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataProcessed}" />
-                        <CheckBox Content="Оповещать об отмене процесса пользователем" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationProcessCancel}" />
-                        <CheckBox Content="Оповещать об отсутствии данных для обработки" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationDataEmpty}" />
-                        <CheckBox Content="Оповещать о уже сохраненной статистики" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}" />
-                        <CheckBox Content="Оповещать об успехе сохранения настроек" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}" />
-                        <CheckBox Content="Оповещать ли о закрытии программы" Margin="5" IsChecked="{Binding NotificationSettings.CanNotificationExit}" />
+                    <WrapPanel Margin="5" Orientation="Vertical">
+                        <CheckBox
+                            Margin="5"
+                            Content="Оповещать только об ошибках"
+                            IsChecked="{Binding NotificationSettings.CanNotificationOnlyError}" />
+                        <CheckBox
+                            Margin="5"
+                            Content="Оповещать о сохранении данных"
+                            IsChecked="{Binding NotificationSettings.CanNotificationSaveData}" />
+                        <CheckBox
+                            Margin="5"
+                            Content="Оповещать о окончании процесса"
+                            IsChecked="{Binding NotificationSettings.CanNotificationDataProcessed}" />
+                        <CheckBox
+                            Margin="5"
+                            Content="Оповещать об отмене процесса пользователем"
+                            IsChecked="{Binding NotificationSettings.CanNotificationProcessCancel}" />
+                        <CheckBox
+                            Margin="5"
+                            Content="Оповещать об отсутствии данных для обработки"
+                            IsChecked="{Binding NotificationSettings.CanNotificationDataEmpty}" />
+                        <CheckBox
+                            Margin="5"
+                            Content="Оповещать о уже сохраненной статистики"
+                            IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}" />
+                        <CheckBox
+                            Margin="5"
+                            Content="Оповещать об успехе сохранения настроек"
+                            IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}" />
+                        <CheckBox
+                            Margin="5"
+                            Content="Оповещать ли о закрытии программы"
+                            IsChecked="{Binding NotificationSettings.CanNotificationExit}" />
                     </WrapPanel>
                 </ScrollViewer>
             </TabItem>
