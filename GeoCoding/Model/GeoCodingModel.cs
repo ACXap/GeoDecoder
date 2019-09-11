@@ -210,7 +210,8 @@ namespace GeoCoding
                     {
                         AddressWeb = g.Text,
                         Latitude = g.Latitude.Replace(',', '.'),
-                        Longitude = g.Longitude.Replace(',', '.')
+                        Longitude = g.Longitude.Replace(',', '.'),
+                        MatchQuality = g.MatchQuality
                     };
 
                     if (Enum.TryParse(g.Kind?.ToUpperFistChar(), out KindType kind))
@@ -711,7 +712,8 @@ namespace GeoCoding
 
         public void ResetLimit()
         {
-            _limitGeo = 0;
+            _limitGeo.Count=0;
+            _countGeo = 0;
         }
 
         public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings, PolygonViewModel polygon)

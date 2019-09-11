@@ -66,5 +66,16 @@ namespace GeoCoding
             get => _precision;
             set => Set(ref _precision, value);
         }
+
+
+        private string _matchQuality;
+        /// <summary>
+        /// Точность по сегментам
+        /// </summary>
+        public string MatchQuality
+        {
+            get => _matchQuality;
+            set => Set(ref _matchQuality, value);
+        }
     }
 }

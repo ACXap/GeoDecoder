@@ -475,9 +475,9 @@
 
             <!--  Данные  -->
             <TabControl
-                Grid.Column="0"
+                Grid.Column="0" 
                 Controls:TabControlHelper.Underlined="TabPanel"
-                SelectedIndex="{Binding TabIndex}">
+                SelectedIndex="{Binding TabIndex}" Margin="-5,0,5,0">
                 <TabItem Header="Данные">
                     <DataGrid
                         x:Name="DataGridGeoCod"
@@ -701,7 +701,7 @@
                     </DataGrid>
                 </TabItem>
                 <TabItem Header="Проверка данных">
-                    <!--<TabItem.Style>
+                    <TabItem.Style>
                         <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Style.Triggers>
@@ -710,7 +710,7 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TabItem.Style>-->
+                    </TabItem.Style>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
@@ -738,7 +738,7 @@
                                     Content="Через ОРПОН"
                                     IsChecked="{Binding Ver.IsServerVerOrpon}" />
                             </StackPanel>
-                        </GroupBox>
+                        </GroupBox>-->
 
                         <GroupBox
                             Grid.Row="0"
@@ -857,12 +857,11 @@
                                 Command="{Binding Ver.CommandCommitChanges}"
                                 Content="Зафиксировать" />
                             <Button Command="{Binding MyCommand}" Content="Проверить файлы" />
-                        </StackPanel>-->
+                        </StackPanel>
 
                         <DataGrid
-                                        ScrollViewer.CanContentScroll="True"
-                       
-                            Grid.Row="1"
+                         ScrollViewer.CanContentScroll="True"
+                            Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
                             Grid.ColumnSpan="3"
                             ItemsSource="{Binding Ver.CustomerView}">
                             <DataGrid.Columns>

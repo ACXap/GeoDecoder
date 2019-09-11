@@ -40,6 +40,11 @@ namespace GeoCoding.GeoCodingService
             if(!string.IsNullOrEmpty(keyApi))
             {
                 _key = keyApi;
+
+                ProtectedDataDPAPI.EncryptData((s, e) =>
+                {
+                    File.WriteAllText(_keyFile, s);
+                },keyApi);
             }
         }
 

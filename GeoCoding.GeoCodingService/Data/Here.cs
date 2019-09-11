@@ -51,8 +51,8 @@ namespace GeoCoding.GeoCodingService.Data
         [JsonProperty("MatchLevel")]
         public string MatchLevel { get; set; }
 
-     //   [JsonProperty("MatchQuality")]
-     //   public MatchQuality MatchQuality { get; set; }
+        [JsonProperty("MatchQuality")]
+        public MatchQuality MatchQuality { get; set; }
 
         [JsonProperty("MatchType")]
         public string MatchType { get; set; }
@@ -146,11 +146,11 @@ namespace GeoCoding.GeoCodingService.Data
 
     public partial class MatchQuality
     {
-        [JsonProperty("City")]
-        public long City { get; set; }
-
         [JsonProperty("District")]
         public long District { get; set; }
+
+        [JsonProperty("City")]
+        public long City { get; set; }
 
         [JsonProperty("Street")]
         public long[] Street { get; set; }

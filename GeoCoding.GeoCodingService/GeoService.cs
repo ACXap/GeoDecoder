@@ -195,11 +195,11 @@ namespace GeoCoding.GeoCodingService
 
         public virtual void SetKeyApi(string keyApi)
         {
-            throw new NotImplementedException();
+            
         }
         public virtual string GetKeyApi()
         {
-            throw new NotImplementedException();
+            return "Ключ не требуется!";
         }
     }
 }

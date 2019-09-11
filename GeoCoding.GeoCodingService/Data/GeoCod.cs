@@ -25,5 +25,9 @@
         /// Широта
         /// </summary>
         public string Latitude { get; set; }
+        /// <summary>
+        /// Точность по сегментам
+        /// </summary>
+        public string MatchQuality { get; set; }
     }
 }

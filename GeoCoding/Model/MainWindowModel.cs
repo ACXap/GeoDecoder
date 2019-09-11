@@ -347,14 +347,14 @@ namespace GeoCoding
             {
                 list = new List<string>(data.Count())
                 {
-                    _nameColumnTempFile
+                    _nameColumnTempFile + ";District|City|Street|HouseNumber"
                 };
 
                 list.AddRange(data.Select(x =>
                 {
                     return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.FiasGuid}{_charSplit}{x.MainGeoCod?.AddressWeb}{_charSplit}{x.MainGeoCod?.Latitude}{_charSplit}{x.MainGeoCod?.Longitude}" +
                     $"{_charSplit}{x.MainGeoCod?.Qcode}{_charSplit}{x.Error}{_charSplit}{x.Status}{_charSplit}{x.DateTimeGeoCod}{_charSplit}{x.MainGeoCod?.Kind}" +
-                    $"{_charSplit}{x.MainGeoCod?.Precision}{_charSplit}{x.CountResult}{_charSplit}{x.Proxy}{_charSplit}{x.GeoCoder}";
+                    $"{_charSplit}{x.MainGeoCod?.Precision}{_charSplit}{x.CountResult}{_charSplit}{x.Proxy}{_charSplit}{x.GeoCoder}{_charSplit}{x.MainGeoCod?.MatchQuality}";
                 }));
 
                 _fileService.SaveData(er =>
@@ -657,7 +657,7 @@ namespace GeoCoding
         /// <returns></returns>
         private bool IsFirstStringNameColumnTempFile(string fs)
         {
-            return fs.ToLower() == _nameColumnTempFile.ToLower();
+            return fs.ToLower() == _nameColumnTempFile.ToLower() + ";District|City|Street|HouseNumber".ToLower();
         }
 
         /// <summary>

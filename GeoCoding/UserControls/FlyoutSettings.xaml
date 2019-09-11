@@ -560,10 +560,13 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <TextBlock Text="{Binding KeyApi}" Width="250" VerticalAlignment="Center"/>
-                                <Button Content="Показать ключ" Command="{Binding CommandGetKeyApi}"/>
-                                <Button Content="Установить ключ" Command="{Binding CommandSetKeyApi}"/>
-                                <Button Content="Сбросить дневной лимит" Command="{Binding CommandResetLimit}"/>
+                                <TextBox
+                                    Width="250"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding KeyApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                <Button Command="{Binding CommandGetKeyApi}" Content="Показать ключ" />
+                                <Button Command="{Binding CommandSetKeyApi}" Content="Установить ключ" />
+                                <Button Command="{Binding CommandResetLimit}" Content="Сбросить дневной лимит" />
                             </WrapPanel>
                         </GroupBox>
                     </Grid>

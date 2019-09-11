@@ -57,13 +57,20 @@ namespace GeoCoding.GeoCodingService
 
         private GeoCod GetGeo(Data.Result geo)
         {
+            var qual = geo.MatchQuality;
+            var street = qual.Street;
+            if (street == null || !street.Any())
+            {
+                street = new long[1] { -1 };
+            }
             return new GeoCod()
             {
                 Kind = geo.MatchLevel,
                 Latitude = geo.Location.DisplayPosition.Latitude.ToString(),
                 Longitude = geo.Location.DisplayPosition.Longitude.ToString(),
                 Text = geo.Location.Address.Label,
-                Precision = geo.Relevance.ToString()
+                Precision = geo.Relevance.ToString(),
+                MatchQuality = $"{qual.District}|{qual.City}|{street[0]}|{qual.HouseNumber}"
             };
         }
 
@@ -92,6 +99,11 @@ namespace GeoCoding.GeoCodingService
             if(!string.IsNullOrEmpty(keyApi))
             {
                 _key = keyApi;
+
+                ProtectedDataDPAPI.EncryptData((s, e) =>
+                {
+                    File.WriteAllText(_keyFile, s);
+                }, keyApi);
             }
         }
 
