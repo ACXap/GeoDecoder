@@ -16,16 +16,16 @@ namespace GeoCoding.GeoCodingService
         public static ReadOnlyCollection<IGeoCodingService> AllService =>
             _allService ?? (_allService = new ReadOnlyCollection<IGeoCodingService>(new List<IGeoCodingService>()
             {
-                new YandexGeoCodingService(),
-                new YandexRusGisGeoCodingService(),
+              new YandexPayGeoCodingService(),
+              new HereGeoCodingService(),
+                //  new YandexGeoCodingService(),
+               // new YandexRusGisGeoCodingService(),
                 new SputnikGeoCodingService(),
-                new SputnikRusGisGeoCodingService(),
-                new RusGisDemoGeoCodingService(),
-                new RusGisGeoCodingService(),
-                new HereRusGisGeoCodingService(),
-                new YandexPayGeoCodingService(),
-                new HereGeoCodingService(),
-                new Test.GeoCodingTest()
+               // new SputnikRusGisGeoCodingService(),
+              //  new RusGisDemoGeoCodingService(),
+              //  new RusGisGeoCodingService(),
+             //   new HereRusGisGeoCodingService(),
+              //  new Test.GeoCodingTest()
             }));
         /// <summary>
         /// Свойство для получения коллекции всех имен геосервисов

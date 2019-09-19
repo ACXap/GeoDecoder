@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -1731,6 +1732,8 @@ namespace GeoCoding
         /// </summary>
         public MainWindowViewModel()
         {
+            ServicePointManager.DefaultConnectionLimit = 100;
+
             _model = new MainWindowModel();
             Stat = new StatisticsViewModel();
 

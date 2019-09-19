@@ -475,9 +475,10 @@
 
             <!--  Данные  -->
             <TabControl
-                Grid.Column="0" 
+                Grid.Column="0"
+                Margin="-5,0,5,0"
                 Controls:TabControlHelper.Underlined="TabPanel"
-                SelectedIndex="{Binding TabIndex}" Margin="-5,0,5,0">
+                SelectedIndex="{Binding TabIndex}">
                 <TabItem Header="Данные">
                     <DataGrid
                         x:Name="DataGridGeoCod"
@@ -509,7 +510,7 @@
                             </DataGridTemplateColumn>
 
                             <!--  Колонка широта  -->
-                            <DataGridTemplateColumn Header="Широта">
+                            <DataGridTemplateColumn Header="Широта" SortMemberPath="Latitude">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Latitude}" />
@@ -518,7 +519,7 @@
                             </DataGridTemplateColumn>
 
                             <!--  Колонка долгота  -->
-                            <DataGridTemplateColumn Header="Долгота">
+                            <DataGridTemplateColumn Header="Долгота" SortMemberPath="Longitude">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock HorizontalAlignment="Center" Text="{Binding MainGeoCod.Longitude}" />
@@ -860,10 +861,13 @@
                         </StackPanel>
 
                         <DataGrid
-                         ScrollViewer.CanContentScroll="True"
-                            Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                            Grid.Row="1"
                             Grid.ColumnSpan="3"
-                            ItemsSource="{Binding Ver.CustomerView}">
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            IsReadOnly="True"
+                            ItemsSource="{Binding Ver.CustomerView}"
+                            ScrollViewer.CanContentScroll="True">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>

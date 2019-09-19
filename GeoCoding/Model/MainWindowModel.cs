@@ -347,8 +347,9 @@ namespace GeoCoding
             {
                 list = new List<string>(data.Count())
                 {
-                    _nameColumnTempFile + ";District|City|Street|HouseNumber"
+                    _nameColumnTempFile + ";Country|State|District|Subdistrict|City|Street|HouseNumber|PostalCode|Building|Relevance"
                 };
+               // $"{qual.Country}|{qual.State}|{qual.District}|{qual.Subdistrict}|{qual.City}|{qual.Street?[0]}|{qual.HouseNumber}|{qual.PostalCode}|{qual.Building}|{geo.Relevance}"
 
                 list.AddRange(data.Select(x =>
                 {

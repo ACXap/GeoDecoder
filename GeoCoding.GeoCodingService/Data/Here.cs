@@ -146,17 +146,32 @@ namespace GeoCoding.GeoCodingService.Data
 
     public partial class MatchQuality
     {
+        [JsonProperty("Country")]
+        public double? Country { get; set; }
+
+        [JsonProperty("State")]
+        public double? State { get; set; }
+
         [JsonProperty("District")]
-        public long District { get; set; }
+        public double? District { get; set; }
+
+        [JsonProperty("Subdistrict")]
+        public double? Subdistrict { get; set; }
 
         [JsonProperty("City")]
-        public long City { get; set; }
+        public double? City { get; set; }
 
         [JsonProperty("Street")]
-        public long[] Street { get; set; }
+        public double?[] Street { get; set; }
 
         [JsonProperty("HouseNumber")]
-        public long HouseNumber { get; set; }
+        public double? HouseNumber { get; set; }
+
+        [JsonProperty("PostalCode")]
+        public double? PostalCode { get; set; }
+
+        [JsonProperty("Building")]
+        public double? Building { get; set; }
     }
 
     internal class ParseStringConverter : JsonConverter

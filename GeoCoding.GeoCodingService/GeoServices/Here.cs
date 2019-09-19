@@ -58,11 +58,12 @@ namespace GeoCoding.GeoCodingService
         private GeoCod GetGeo(Data.Result geo)
         {
             var qual = geo.MatchQuality;
-            var street = qual.Street;
-            if (street == null || !street.Any())
-            {
-                street = new long[1] { -1 };
-            }
+            //var street = qual.Street;
+
+            //if (street == null || !street.Any())
+            //{
+            //    street = new double[1] { -1 };
+            //}
             return new GeoCod()
             {
                 Kind = geo.MatchLevel,
@@ -70,7 +71,7 @@ namespace GeoCoding.GeoCodingService
                 Longitude = geo.Location.DisplayPosition.Longitude.ToString(),
                 Text = geo.Location.Address.Label,
                 Precision = geo.Relevance.ToString(),
-                MatchQuality = $"{qual.District}|{qual.City}|{street[0]}|{qual.HouseNumber}"
+                MatchQuality = $"{qual.Country}|{qual.State}|{qual.District}|{qual.Subdistrict}|{qual.City}|{qual.Street?[0]}|{qual.HouseNumber}|{qual.PostalCode}|{qual.Building}|{geo.Relevance}"
             };
         }
 
