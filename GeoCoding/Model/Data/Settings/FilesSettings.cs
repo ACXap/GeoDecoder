@@ -68,6 +68,11 @@ namespace GeoCoding
         private string _folderErrors = string.Empty;
 
         /// <summary>
+        /// Поле для хранения значения использовать ли кодировку ANSI
+        /// </summary>
+        private bool _canUseANSI = true;
+
+        /// <summary>
         /// Имя файла с данными
         /// </summary>
         public string FileInput
@@ -180,6 +185,12 @@ namespace GeoCoding
         {
             get => _folderErrors;
             set => Set(ref _folderErrors, value);
+        }
+
+        public bool CanUseANSI
+        {
+            get => _canUseANSI;
+            set => Set(ref _canUseANSI, value);
         }
     }
 }

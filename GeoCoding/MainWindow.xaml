@@ -150,7 +150,7 @@
 
                                     <!--  Выбор входного файла на ФТП-сервере  -->
                                     <CheckBox
-                                        Margin="2"
+                                        Margin="2,0"
                                         Content="Файл на FTP сервере"
                                         IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
                                         ToolTip="Если настроена работа с ФТП, то откроется папка на ФТП-сервере"
@@ -158,10 +158,17 @@
 
                                     <!--  После выбора файла с данными, данные получаем сразу  -->
                                     <CheckBox
-                                        Margin="2,0,2,0"
+                                        Margin="2,0"
                                         Content="Данные получить сразу"
                                         IsChecked="{Binding FilesSettings.CanGetDataOnce}"
                                         ToolTip="После выбора файла с данными, таблица с данными заполнится сразу" />
+
+                                    <!--  Данные в файле в кодировке ANSI  -->
+                                    <CheckBox
+                                        Margin="2,0"
+                                        Content="Данные в кодировке ANSI"
+                                        IsChecked="{Binding FilesSettings.CanUseANSI}"
+                                        ToolTip="Данные в файле в кодировке ANSI" />
                                 </StackPanel>
 
                                 <!--  Выбор файла с данными, открываем проводник  -->

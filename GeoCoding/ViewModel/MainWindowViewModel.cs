@@ -923,7 +923,7 @@ namespace GeoCoding
             _model.GetDataFromFile((list, error) =>
             {
                 CreateCollection(list, error);
-            }, _filesSettings.FileInput);
+            }, _filesSettings.FileInput, _filesSettings.CanUseANSI);
         }
 
         /// <summary>
@@ -1435,7 +1435,7 @@ namespace GeoCoding
                 {
                     IsStartGetDataAboutFiles = false;
                 }
-            }, _collectionFiles);
+            }, _collectionFiles, _filesSettings.CanUseANSI);
 
         }
 
@@ -1475,7 +1475,7 @@ namespace GeoCoding
                 _model.GetDataFromFile((list, e) =>
                 {
                     CreateCollection(list, e);
-                }, item.NameFile);
+                }, item.NameFile, _filesSettings.CanUseANSI);
 
                 FilesSettings.FileOutput = SetDefNameFileOutput();
 
@@ -1553,7 +1553,7 @@ namespace GeoCoding
                     _model.GetDataFromFile((list, e) =>
                     {
                         CreateCollection(list, e);
-                    }, item.NameFile);
+                    }, item.NameFile, _filesSettings.CanUseANSI);
                 }
 
                 FilesSettings.FileOutput = SetDefNameFileOutput();
@@ -1591,7 +1591,7 @@ namespace GeoCoding
                             _model.GetDataFromFile((list, e) =>
                             {
                                 CreateCollection(list, e);
-                            }, obj.NameFile);
+                            }, obj.NameFile, _filesSettings.CanUseANSI);
                         }
 
                         FilesSettings.FileOutput = SetDefNameFileOutput();

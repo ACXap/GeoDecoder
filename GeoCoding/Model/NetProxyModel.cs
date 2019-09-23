@@ -157,7 +157,7 @@ namespace GeoCoding
                     error = e;
                 }
 
-            }, _fileNameProxyList);
+            }, _fileNameProxyList, false);
 
             callback(data, error);
         }

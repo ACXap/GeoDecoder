@@ -104,7 +104,7 @@ namespace GeoCoding.FileService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами множество строк и ошибка</param>
         /// <param name="file">Полное имя файла</param>
-        public void GetData(Action<IEnumerable<string>, Exception> callback, string file)
+        public void GetData(Action<IEnumerable<string>, Exception> callback, string file, bool canUseAnsi)
         {
             Exception error = null;
             List<string> data = null;
@@ -115,7 +115,12 @@ namespace GeoCoding.FileService
 
                 try
                 {
-                    using (StreamReader sr = new StreamReader(File.Open(file, FileMode.Open, FileAccess.Read, FileShare.Read), Encoding.UTF8))
+                    var enc = Encoding.UTF8;
+                    if(canUseAnsi)
+                    {
+                        enc = Encoding.Default;
+                    }
+                    using (StreamReader sr = new StreamReader(File.Open(file, FileMode.Open, FileAccess.Read, FileShare.Read), enc))
                     {
                         while (!sr.EndOfStream)
                         {

@@ -34,7 +34,8 @@ namespace GeoCoding.FileService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами множество строк и ошибка</param>
         /// <param name="file">Полное имя файла</param>
-        void GetData(Action<IEnumerable<string>, Exception> callback, string file);
+        /// <param name="canUseAnsi">Использовать ли кодировку ANSI</param>
+        void GetData(Action<IEnumerable<string>, Exception> callback, string file, bool canUseAnsi);
 
         /// <summary>
         /// Метод для выбора имени(папки) файла для сохранения данных

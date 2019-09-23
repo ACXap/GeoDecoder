@@ -118,7 +118,7 @@ namespace GeoCoding
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="data">Набор файлов</param>
-        public async void GetDataAboutFiles(Action<Exception> callback, IEnumerable<EntityFile> data)
+        public async void GetDataAboutFiles(Action<Exception> callback, IEnumerable<EntityFile> data, bool canUseAnsi)
         {
             Exception error = null;
             string firstString = string.Empty;
@@ -153,7 +153,7 @@ namespace GeoCoding
                                 item.FileType = FileType.Data;
                             }
                         }
-                    }, item.NameFile);
+                    }, item.NameFile, canUseAnsi);
                 }
 
                 callback(error);
@@ -185,7 +185,7 @@ namespace GeoCoding
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: множество объектов и ошибка</param>
         /// <param name="file">Полное имя файла с данными</param>
-        public void GetDataFromFile(Action<IEnumerable<EntityGeoCod>, Exception> callback, string file)
+        public void GetDataFromFile(Action<IEnumerable<EntityGeoCod>, Exception> callback, string file, bool canUseAnsi)
         {
             Exception error = null;
             List<EntityGeoCod> data = null;
@@ -204,7 +204,7 @@ namespace GeoCoding
                         }
                     }, d);
                 }
-            }, file);
+            }, file, canUseAnsi);
 
             if (error == null && data == null)
             {
@@ -458,7 +458,7 @@ namespace GeoCoding
                 {
                     data = d.ToList();
                 }
-            }, file);
+            }, file, false);
 
             foreach (var str in data)
             {
@@ -692,7 +692,8 @@ namespace GeoCoding
                 FolderErrors = $"{curDir}\\{p.FolderErrors}",
                 IsFileInputOnFTP = p.IsFileInputOnFTP,
                 MaxSizePart = p.MaxSizePart,
-                CanGetDataOnce = p.CanGetDataOnce
+                CanGetDataOnce = p.CanGetDataOnce,
+                CanUseANSI = p.CanUseANSI
             };
 
             GeoCodSettings g = new GeoCodSettings()
@@ -860,6 +861,7 @@ namespace GeoCoding
             p.CanUseBdModule = gset.CanUseBdModule;
             p.CanUseFtpModule = gset.CanUseFtpModule;
             p.CanUsePolygon = geoCodSettings.CanUsePolygon;
+            p.CanUseANSI = filesSettings.CanUseANSI;
 
             // ФТП-сервер пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
