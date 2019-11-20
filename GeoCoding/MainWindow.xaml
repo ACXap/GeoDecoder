@@ -380,8 +380,6 @@
                         </Grid>
                     </Border>
                 </TabItem>
-
-
             </TabControl>
 
             <!--  Панель работы с выходным файлом  -->
@@ -928,6 +926,79 @@
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
+                </TabItem>
+                <TabItem Header="Фоновая работа">
+                    <TabItem.Style>
+                        <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding GeneralSettings.BackgroundGeo}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TabItem.Style>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="2" IsEnabled="{Binding ElementName=rbAuto, Path=IsChecked}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    ItemsSource="{Binding GeneralSettings.ListDayWeek}">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Дни запуска">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <WrapPanel Orientation="Horizontal">
+                                                        <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
+                                                    </WrapPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Часы запуска">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Controls:TimePicker Culture="ru-RU" SelectedDateTime="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <WrapPanel Grid.Column="2" Orientation="Vertical">
+                                    <RadioButton
+                                        Margin="5"
+                                        Content="Брать первый файл в папке входящих файлов"
+                                        IsEnabled="False" />
+                                    <RadioButton
+                                        Margin="5"
+                                        Content="Выполнять запрос к базе данных по скрипту пользователя"
+                                        IsChecked="{Binding GeneralSettings.UseScriptBackGeo}" />
+                                    <TextBox Height="200" Text="{Binding GeneralSettings.SkpriptBackgroundGeo}" />
+                                </WrapPanel>
+                                <Grid Grid.Column="4">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Button Content="Запуcтить" />
+                                </Grid>
+
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
                 </TabItem>
             </TabControl>
 

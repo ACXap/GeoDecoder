@@ -64,6 +64,11 @@
                                 Margin="5,2"
                                 Content="Включить модуль работы с фтп-сервером"
                                 IsChecked="{Binding GeneralSettings.CanUseFtpModule}" />
+                            <CheckBox
+                                x:Name="cbCanBackgroundGeo"
+                                Margin="5,2"
+                                Content="Включить модуль фоновой работы"
+                                IsChecked="{Binding GeneralSettings.BackgroundGeo}" />
                         </WrapPanel>
                     </Grid>
                 </ScrollViewer>
@@ -837,6 +842,65 @@
                     </WrapPanel>
                 </ScrollViewer>
             </TabItem>
+            <!--<TabItem Header="Режим работы">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <RadioButton
+                            Grid.Row="0"
+                            Margin="5"
+                            Content="Ручной режим"
+                            IsChecked="{Binding GeneralSettings.ManualMode}"
+                            ToolTip="Вы сами выбирает данные и запускаете процедуру геокодирования" />
+                        <RadioButton
+                            x:Name="rbAuto"
+                            Grid.Row="1"
+                            Margin="5"
+                            Content="Автоматический режим"
+                            IsChecked="{Binding GeneralSettings.AutoMode}"
+                            ToolTip="Геокодирование выполняется согласно настройкам режима" />
+                        <Grid Grid.Row="2" IsEnabled="{Binding ElementName=rbAuto, Path=IsChecked}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                ItemsSource="{Binding GeneralSettings.ListDayWeek}">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Дни запуска">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <WrapPanel Orientation="Horizontal">
+                                                    <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
+                                                </WrapPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Часы запуска">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Controls:TimePicker Culture="ru-RU" SelectedDateTime="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <WrapPanel Orientation="Vertical" Grid.Column="2">
+                                <RadioButton Content="Брать первый файл в папке входящих файлов" Margin="5"/>
+                                <RadioButton Content="Выполнять запрос к базе данных по скрипту пользователя" Margin="5"/>
+                            </WrapPanel>
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>-->
         </TabControl>
         <Button
             Grid.Row="1"

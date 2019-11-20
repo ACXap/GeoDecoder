@@ -48,9 +48,48 @@ namespace GeoCoding
             set => Set(ref _canStartCompact, value);
         }
 
+        private bool _backgroundGeo = false;
+        /// <summary>
+        /// Автоматический режим работы приложения
+        /// </summary>
+        public bool BackgroundGeo
+        {
+            get => _backgroundGeo;
+            set => Set(ref _backgroundGeo, value);
+        }
+
+        private List<DayWeek> _listDayWeek;
+        /// <summary>
+        /// Список настроек по дням недели
+        /// </summary>
+        public List<DayWeek> ListDayWeek
+        {
+            get => _listDayWeek;
+            set => Set(ref _listDayWeek, value);
+        }
+        private string _skpriptBackgroundGeo = string.Empty;
+        /// <summary>
+        /// Скрипт получения данных из базы для фоновой работы
+        /// </summary>
+        public string SkpriptBackgroundGeo
+        {
+            get => _skpriptBackgroundGeo ;
+            set => Set(ref _skpriptBackgroundGeo , value);
+        }
+        private bool _useScriptBackGeo = true;
+        /// <summary>
+        /// Использовать скрипт запроса к базе данных в фоновом режиме
+        /// </summary>
+        public bool UseScriptBackGeo
+        {
+            get => _useScriptBackGeo;
+            set => Set(ref _useScriptBackGeo, value);
+        }
+        
+
         private string _colorTheme = "Light.Blue";
         /// <summary>
-        /// 
+        /// Тема оформления приложения
         /// </summary>
         public string ColorTheme
         {

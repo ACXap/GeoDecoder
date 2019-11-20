@@ -28,7 +28,7 @@ namespace GeoCoding
 
         private Limit _limitGeo;
         private int _countGeo;
-        private int _maxCountGeo = 25000;
+        private int _maxCountGeo = 10000;
 
         private readonly NetSettings _netSettings;
         private readonly GeoCodSettings _geoCodSettings;

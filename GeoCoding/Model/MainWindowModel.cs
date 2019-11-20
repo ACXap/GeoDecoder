@@ -1,8 +1,10 @@
 ﻿using GeoCoding.BDService;
 using GeoCoding.FileService;
 using GeoCoding.FTPService;
+using GeoCoding.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -349,7 +351,7 @@ namespace GeoCoding
                 {
                     _nameColumnTempFile + ";Country|State|District|Subdistrict|City|Street|HouseNumber|PostalCode|Building|Relevance"
                 };
-               // $"{qual.Country}|{qual.State}|{qual.District}|{qual.Subdistrict}|{qual.City}|{qual.Street?[0]}|{qual.HouseNumber}|{qual.PostalCode}|{qual.Building}|{geo.Relevance}"
+                // $"{qual.Country}|{qual.State}|{qual.District}|{qual.Subdistrict}|{qual.City}|{qual.Street?[0]}|{qual.HouseNumber}|{qual.PostalCode}|{qual.Building}|{geo.Relevance}"
 
                 list.AddRange(data.Select(x =>
                 {
@@ -795,8 +797,26 @@ namespace GeoCoding
                 CanUseBdModule = p.CanUseBdModule,
                 CanUseFtpModule = p.CanUseFtpModule,
                 CanUseVerificationModule = p.CanUseVerificationModule,
-                ColorTheme = p.ColorTheme
+                ColorTheme = p.ColorTheme,
+                BackgroundGeo = p.BackgroundGeo,
+                SkpriptBackgroundGeo = p.SkpriptBackgroundGeo,
+                UseScriptBackGeo = p.UseScriptBackGeo
             };
+
+            var listDayWeek = ObjectToStringJson.GetObjectOfstring<List<DayWeek>>(p.ListDayWeekMode);
+            if (listDayWeek == null || !listDayWeek.Any())
+            {
+                listDayWeek = new List<DayWeek>();
+                foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    listDayWeek.Add(new DayWeek() {Day = d });
+                }
+            }
+            var s = listDayWeek.First(x => x.Day == 0);
+            listDayWeek.Remove(s);
+            listDayWeek.Insert(listDayWeek.Count, s);
+
+            gset.ListDayWeek = listDayWeek;
 
             VerificationSettings vset = new VerificationSettings();
 
@@ -862,6 +882,9 @@ namespace GeoCoding
             p.CanUseFtpModule = gset.CanUseFtpModule;
             p.CanUsePolygon = geoCodSettings.CanUsePolygon;
             p.CanUseANSI = filesSettings.CanUseANSI;
+            p.BackgroundGeo = gset.BackgroundGeo;
+            p.UseScriptBackGeo = gset.UseScriptBackGeo;
+            p.SkpriptBackgroundGeo = gset.SkpriptBackgroundGeo;
 
             // ФТП-сервер пароль шифруем
             Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
@@ -934,6 +957,9 @@ namespace GeoCoding
             p.CanNotificationStatAlreadySave = ns.CanNotificationStatAlreadySave;
             p.CanNotificationOnlyError = ns.CanNotificationOnlyError;
             p.CanNotificationExit = ns.CanNotificationExit;
+
+            var listDayWeek = ObjectToStringJson.GetStringOfObject(gset.ListDayWeek);
+            p.ListDayWeekMode = listDayWeek;
 
             try
             {
