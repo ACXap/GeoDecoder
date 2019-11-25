@@ -185,7 +185,7 @@
     <Setting Name="ListDayWeekMode" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="SkpriptBackgroundGeo" Type="System.String" Scope="User">
+    <Setting Name="ScpriptBackgroundGeo" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="UseScriptBackGeo" Type="System.Boolean" Scope="User">

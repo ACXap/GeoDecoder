@@ -67,14 +67,14 @@ namespace GeoCoding
             get => _listDayWeek;
             set => Set(ref _listDayWeek, value);
         }
-        private string _skpriptBackgroundGeo = string.Empty;
+        private string _scpriptBackgroundGeo = string.Empty;
         /// <summary>
         /// Скрипт получения данных из базы для фоновой работы
         /// </summary>
-        public string SkpriptBackgroundGeo
+        public string ScpriptBackgroundGeo
         {
-            get => _skpriptBackgroundGeo ;
-            set => Set(ref _skpriptBackgroundGeo , value);
+            get => _scpriptBackgroundGeo ;
+            set => Set(ref _scpriptBackgroundGeo , value);
         }
         private bool _useScriptBackGeo = true;
         /// <summary>

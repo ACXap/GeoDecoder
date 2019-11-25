@@ -743,12 +743,12 @@ namespace GeoCoding.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SkpriptBackgroundGeo {
+        public string ScpriptBackgroundGeo {
             get {
-                return ((string)(this["SkpriptBackgroundGeo"]));
+                return ((string)(this["ScpriptBackgroundGeo"]));
             }
             set {
-                this["SkpriptBackgroundGeo"] = value;
+                this["ScpriptBackgroundGeo"] = value;
             }
         }
         

@@ -725,7 +725,7 @@ namespace GeoCoding
                 FolderOutput = p.FtpFolderOutput
             };
 
-            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            ProtectedDataDPAPI.DecryptData((d, e) =>
             {
                 if (e == null)
                 {
@@ -733,7 +733,7 @@ namespace GeoCoding
                 }
             }, p.FtpServer);
 
-            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            ProtectedDataDPAPI.DecryptData((d, e) =>
             {
                 if (e == null)
                 {
@@ -749,7 +749,7 @@ namespace GeoCoding
                 Password = p.BDPassword
             };
 
-            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            ProtectedDataDPAPI.DecryptData((d, e) =>
             {
                 if (e == null)
                 {
@@ -757,7 +757,7 @@ namespace GeoCoding
                 }
             }, p.BDServer);
 
-            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            ProtectedDataDPAPI.DecryptData((d, e) =>
             {
                 if (e == null)
                 {
@@ -799,7 +799,7 @@ namespace GeoCoding
                 CanUseVerificationModule = p.CanUseVerificationModule,
                 ColorTheme = p.ColorTheme,
                 BackgroundGeo = p.BackgroundGeo,
-                SkpriptBackgroundGeo = p.SkpriptBackgroundGeo,
+                ScpriptBackgroundGeo = p.ScpriptBackgroundGeo,
                 UseScriptBackGeo = p.UseScriptBackGeo
             };
 
@@ -809,7 +809,7 @@ namespace GeoCoding
                 listDayWeek = new List<DayWeek>();
                 foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    listDayWeek.Add(new DayWeek() {Day = d });
+                    listDayWeek.Add(new DayWeek() { Day = d });
                 }
             }
             var s = listDayWeek.First(x => x.Day == 0);
@@ -820,7 +820,7 @@ namespace GeoCoding
 
             VerificationSettings vset = new VerificationSettings();
 
-            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            ProtectedDataDPAPI.DecryptData((d, e) =>
             {
                 if (e == null)
                 {
@@ -828,7 +828,7 @@ namespace GeoCoding
                 }
             }, p.VerificationServer);
 
-            Helpers.ProtectedDataDPAPI.DecryptData((d, e) =>
+            ProtectedDataDPAPI.DecryptData((d, e) =>
             {
                 if (e == null)
                 {
@@ -851,115 +851,136 @@ namespace GeoCoding
             Exception error = null;
             var p = Properties.Settings.Default;
 
-            p.CanBreakFileOutput = filesSettings.CanBreakFileOutput;
-            p.CanCopyFileOutputToFtp = filesSettings.CanCopyFileOutputToFtp;
-            p.CanGeoCodGetAll = geoCodSettings.CanGeoCodGetAll;
-            p.CanGeoCodGetError = geoCodSettings.CanGeoCodGetError;
-            p.CanGeoCodGetNotGeo = geoCodSettings.CanGeoCodGetNotGeo;
-            p.CanGetDataOnce = filesSettings.CanGetDataOnce;
-            p.CanOpenFolderAfter = geoCodSettings.CanOpenFolderAfter;
-            p.CanSaveDataAsFinished = geoCodSettings.CanSaveDataAsFinished;
-            p.CanSaveDataAsTemp = geoCodSettings.CanSaveDataAsTemp;
-            p.GeoService = geoCodSettings.GeoService;
-            p.FtpFolderInput = ftpSettings.FolderInput;
-            p.FtpFolderOutput = ftpSettings.FolderOutput;
-            p.IsFileInputOnFTP = filesSettings.IsFileInputOnFTP;
-            p.MaxSizePart = filesSettings.MaxSizePart;
-            p.CanStartCompact = gset.CanStartCompact;
-            p.IsMultipleProxy = geoCodSettings.IsMultipleProxy;
-            p.IsMultipleRequests = geoCodSettings.IsMultipleRequests;
-            p.IsNotProxy = netSettings.IsNotProxy;
-            p.IsManualProxy = netSettings.IsManualProxy;
-            p.IsSystemProxy = netSettings.IsSystemProxy;
-            p.IsListProxy = netSettings.IsListProxy;
-            p.ProxyPort = netSettings.Proxy.Port;
-            p.ProxyAddress = netSettings.Proxy.Address;
-            p.CountProxy = geoCodSettings.CountProxy;
-            p.CountRequests = geoCodSettings.CountRequests;
-            p.MaxCountError = geoCodSettings.MaxCountError;
-            p.CanUseVerificationModule = gset.CanUseVerificationModule;
-            p.CanUseBdModule = gset.CanUseBdModule;
-            p.CanUseFtpModule = gset.CanUseFtpModule;
-            p.CanUsePolygon = geoCodSettings.CanUsePolygon;
-            p.CanUseANSI = filesSettings.CanUseANSI;
-            p.BackgroundGeo = gset.BackgroundGeo;
-            p.UseScriptBackGeo = gset.UseScriptBackGeo;
-            p.SkpriptBackgroundGeo = gset.SkpriptBackgroundGeo;
-
-            // ФТП-сервер пароль шифруем
-            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            if (filesSettings != null)
             {
-                if (e == null)
-                {
-                    p.FtpPassword = d;
-                }
-            }, ftpSettings.Password);
+                p.CanBreakFileOutput = filesSettings.CanBreakFileOutput;
+                p.CanCopyFileOutputToFtp = filesSettings.CanCopyFileOutputToFtp;
+                p.IsFileInputOnFTP = filesSettings.IsFileInputOnFTP;
+                p.MaxSizePart = filesSettings.MaxSizePart;
+                p.CanGetDataOnce = filesSettings.CanGetDataOnce;
+                p.CanUseANSI = filesSettings.CanUseANSI;
+            }
 
-            // ФТП-сервер шифруем
-            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            if (ftpSettings != null)
             {
-                if (e == null)
+                p.FtpPort = ftpSettings.Port;
+                p.FtpUser = ftpSettings.User;
+                p.FtpFolderInput = ftpSettings.FolderInput;
+                // ФТП-сервер пароль шифруем
+                ProtectedDataDPAPI.EncryptData((d, e) =>
                 {
-                    p.FtpServer = d;
-                }
-            }, ftpSettings.Server);
+                    if (e == null)
+                    {
+                        p.FtpPassword = d;
+                    }
+                }, ftpSettings.Password);
+                // ФТП-сервер шифруем
+                ProtectedDataDPAPI.EncryptData((d, e) =>
+                {
+                    if (e == null)
+                    {
+                        p.FtpServer = d;
+                    }
+                }, ftpSettings.Server);
 
-            p.FtpPort = ftpSettings.Port;
-            p.FtpUser = ftpSettings.User;
-            p.CanGeoCodAfterGetFile = geoCodSettings.CanGeoCodAfterGetFile;
-            p.CanSaveStatistics = geoCodSettings.CanSaveStatistics;
-            p.ColorTheme = gset.ColorTheme;
+            }
 
-            p.BDPort = bdSettings.Port;
-            p.BDName = bdSettings.BDName;
-            p.BDLogin = bdSettings.Login;
-
-            // БД сервер шифруем
-            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            if (geoCodSettings != null)
             {
-                if (e == null)
-                {
-                    p.BDServer = d;
-                }
-            }, bdSettings.Server);
+                p.CanGeoCodGetAll = geoCodSettings.CanGeoCodGetAll;
+                p.CanGeoCodGetError = geoCodSettings.CanGeoCodGetError;
+                p.CanGeoCodGetNotGeo = geoCodSettings.CanGeoCodGetNotGeo;
+                p.CanOpenFolderAfter = geoCodSettings.CanOpenFolderAfter;
+                p.CanSaveDataAsFinished = geoCodSettings.CanSaveDataAsFinished;
+                p.CanSaveDataAsTemp = geoCodSettings.CanSaveDataAsTemp;
+                p.GeoService = geoCodSettings.GeoService;
+                p.IsMultipleProxy = geoCodSettings.IsMultipleProxy;
+                p.IsMultipleRequests = geoCodSettings.IsMultipleRequests;
+                p.CountProxy = geoCodSettings.CountProxy;
+                p.CountRequests = geoCodSettings.CountRequests;
+                p.MaxCountError = geoCodSettings.MaxCountError;
+                p.CanGeoCodAfterGetFile = geoCodSettings.CanGeoCodAfterGetFile;
+                p.CanSaveStatistics = geoCodSettings.CanSaveStatistics;
+                p.CanUsePolygon = geoCodSettings.CanUsePolygon;
+            }
 
-            // БД пароль шифруем
-            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            if (gset != null)
             {
-                if (e == null)
-                {
-                    p.BDPassword = d;
-                }
-            }, bdSettings.Password);
+                p.CanStartCompact = gset.CanStartCompact;
+                p.CanUseVerificationModule = gset.CanUseVerificationModule;
+                p.CanUseBdModule = gset.CanUseBdModule;
+                p.CanUseFtpModule = gset.CanUseFtpModule;
+                p.BackgroundGeo = gset.BackgroundGeo;
+                p.UseScriptBackGeo = gset.UseScriptBackGeo;
+                p.ScpriptBackgroundGeo = gset.ScpriptBackgroundGeo;
+                p.ColorTheme = gset.ColorTheme;
+                p.ListDayWeekMode = ObjectToStringJson.GetStringOfObject(gset.ListDayWeek);
+            }
 
-            // Сервер проверки адресов шифруем
-            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            if (netSettings != null)
             {
-                if (e == null)
-                {
-                    p.VerificationServer = d;
-                }
-            }, vset.VerificationServer);
+                p.IsNotProxy = netSettings.IsNotProxy;
+                p.IsManualProxy = netSettings.IsManualProxy;
+                p.IsSystemProxy = netSettings.IsSystemProxy;
+                p.IsListProxy = netSettings.IsListProxy;
+                p.ProxyPort = netSettings.Proxy.Port;
+                p.ProxyAddress = netSettings.Proxy.Address;
+            }
 
-            Helpers.ProtectedDataDPAPI.EncryptData((d, e) =>
+            if (bdSettings != null)
             {
-                if (e == null)
+                p.BDPort = bdSettings.Port;
+                p.BDName = bdSettings.BDName;
+                p.BDLogin = bdSettings.Login;
+                // БД сервер шифруем
+                ProtectedDataDPAPI.EncryptData((d, e) =>
                 {
-                    p.VerificationServerFactor = d;
-                }
-            }, vset.VerificationServerFactor);
+                    if (e == null)
+                    {
+                        p.BDServer = d;
+                    }
+                }, bdSettings.Server);
+                // БД пароль шифруем
+                ProtectedDataDPAPI.EncryptData((d, e) =>
+                {
+                    if (e == null)
+                    {
+                        p.BDPassword = d;
+                    }
+                }, bdSettings.Password);
+            }
 
-            p.CanNotificationProcessCancel = ns.CanNotificationProcessCancel;
-            p.CanNotificationDataEmpty = ns.CanNotificationDataEmpty;
-            p.CanNotificationDataProcessed = ns.CanNotificationDataProcessed;
-            p.CanNotificationSaveData = ns.CanNotificationSaveData;
-            p.CanNotificationSaveSettings = ns.CanNotificationSaveSettings;
-            p.CanNotificationStatAlreadySave = ns.CanNotificationStatAlreadySave;
-            p.CanNotificationOnlyError = ns.CanNotificationOnlyError;
-            p.CanNotificationExit = ns.CanNotificationExit;
+            if (vset != null)
+            {
+                // Сервер проверки адресов шифруем
+                ProtectedDataDPAPI.EncryptData((d, e) =>
+                {
+                    if (e == null)
+                    {
+                        p.VerificationServer = d;
+                    }
+                }, vset.VerificationServer);
 
-            var listDayWeek = ObjectToStringJson.GetStringOfObject(gset.ListDayWeek);
-            p.ListDayWeekMode = listDayWeek;
+                ProtectedDataDPAPI.EncryptData((d, e) =>
+                {
+                    if (e == null)
+                    {
+                        p.VerificationServerFactor = d;
+                    }
+                }, vset.VerificationServerFactor);
+            }
+
+            if (ns != null)
+            {
+                p.CanNotificationProcessCancel = ns.CanNotificationProcessCancel;
+                p.CanNotificationDataEmpty = ns.CanNotificationDataEmpty;
+                p.CanNotificationDataProcessed = ns.CanNotificationDataProcessed;
+                p.CanNotificationSaveData = ns.CanNotificationSaveData;
+                p.CanNotificationSaveSettings = ns.CanNotificationSaveSettings;
+                p.CanNotificationStatAlreadySave = ns.CanNotificationStatAlreadySave;
+                p.CanNotificationOnlyError = ns.CanNotificationOnlyError;
+                p.CanNotificationExit = ns.CanNotificationExit;
+            }
 
             try
             {

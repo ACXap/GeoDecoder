@@ -34,7 +34,6 @@ namespace GeoCoding
         private readonly GeoCodSettings _geoCodSettings;
         private readonly PolygonViewModel _polygon;
         private readonly object _lock = new object();
-        private Random _rnd = new Random();
 
         private void GetLimitCount()
         {
@@ -388,6 +387,7 @@ namespace GeoCoding
                             {
                                 data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
                             }
+                            System.Diagnostics.Debug.WriteLine(data.Address);
                             var e = SetGeoCod(data, connect);
 
                             if (e != null)
@@ -696,7 +696,6 @@ namespace GeoCoding
         }
 
         #endregion PublicMethod
-
 
         public string GetKeyApi()
         {
