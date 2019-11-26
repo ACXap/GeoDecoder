@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:local="clr-namespace:GeoCoding">
 
     <Style
@@ -9,35 +10,41 @@
         TargetType="{x:Type Button}">
         <Setter Property="Margin" Value="2" />
         <Setter Property="Padding" Value="2" />
-        <Setter Property="Width" Value="90"/>
+        <Setter Property="Width" Value="90" />
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        Text="{Binding}"
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
     <Style
-        x:Key="ButtonStopStart" 
+        x:Key="ButtonStopStart"
         BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}"
         TargetType="{x:Type Button}">
         <Setter Property="Command" Value="{Binding CommandGetAllGeoCod}" />
         <Setter Property="Height" Value="80" />
-        
+
         <Setter Property="Margin" Value="2" />
         <Setter Property="Padding" Value="2" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Content">
             <Setter.Value>
-                    <Controls:ContentControlEx
-                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Content="Геокодировать"  ToolTip="Запустить геокодирование"
-                        ContentCharacterCasing="Upper" />
+                <Controls:ContentControlEx
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="Геокодировать"
+                    ContentCharacterCasing="Upper"
+                    ToolTip="Запустить геокодирование" />
             </Setter.Value>
         </Setter>
         <Style.Triggers>
@@ -46,16 +53,26 @@
                     <Setter.Value>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Controls:ContentControlEx Grid.Row="0"
-                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Content="Стоп" ToolTip="Остановить геокодирование"
-                        ContentCharacterCasing="Upper" />
-                            <TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
-                            <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" EllipseDiameter="7"/>
+                            <Controls:ContentControlEx
+                                Grid.Row="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="Стоп"
+                                ContentCharacterCasing="Upper"
+                                ToolTip="Остановить геокодирование" />
+                            <TextBlock
+                                Grid.Row="1"
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" />
+                            <Controls:MetroProgressBar
+                                Grid.Row="2"
+                                EllipseDiameter="7"
+                                IsIndeterminate="{Binding IsStartGeoCoding}" />
                         </Grid>
                     </Setter.Value>
                 </Setter>
@@ -63,21 +80,31 @@
             </DataTrigger>
 
             <DataTrigger Binding="{Binding IsRequestedStop}" Value="True">
-                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="IsEnabled" Value="False" />
                 <Setter Property="Content">
                     <Setter.Value>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Controls:ContentControlEx Grid.Row="0"
-                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Content="Останавливаем" ToolTip="Завершаются все запущеные процессы"
-                        ContentCharacterCasing="Upper" />
-                            <TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
-                            <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" EllipseDiameter="7"/>
+                            <Controls:ContentControlEx
+                                Grid.Row="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="Останавливаем"
+                                ContentCharacterCasing="Upper"
+                                ToolTip="Завершаются все запущеные процессы" />
+                            <TextBlock
+                                Grid.Row="1"
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" />
+                            <Controls:MetroProgressBar
+                                Grid.Row="2"
+                                EllipseDiameter="7"
+                                IsIndeterminate="{Binding IsStartGeoCoding}" />
                         </Grid>
                     </Setter.Value>
                 </Setter>
@@ -87,7 +114,7 @@
     </Style>
 
     <Style
-        x:Key="ButtonStopStartCompare" 
+        x:Key="ButtonStopStartCompare"
         BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}"
         TargetType="{x:Type Button}">
         <Setter Property="Command" Value="{Binding Ver.CommandCompare}" />
@@ -96,15 +123,17 @@
         <Setter Property="Margin" Value="2" />
         <Setter Property="Padding" Value="2" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="Bold" />
         <Setter Property="Content">
             <Setter.Value>
                 <Controls:ContentControlEx
-                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Content="Сравнить"  ToolTip="Запустить сравнение"
-                        ContentCharacterCasing="Upper" />
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="Сравнить"
+                    ContentCharacterCasing="Upper"
+                    ToolTip="Запустить сравнение" />
             </Setter.Value>
         </Setter>
         <Style.Triggers>
@@ -113,14 +142,17 @@
                     <Setter.Value>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Controls:ContentControlEx Grid.Row="0"
-                        VerticalAlignment="Center" HorizontalAlignment="Center"
-                        Content="Стоп" ToolTip="Остановить"
-                        ContentCharacterCasing="Upper" />
+                            <Controls:ContentControlEx
+                                Grid.Row="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="Стоп"
+                                ContentCharacterCasing="Upper"
+                                ToolTip="Остановить" />
                             <!--<TextBlock Grid.Row="1" Text="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}" HorizontalAlignment="Center" FontSize="14"/>
                             <Controls:MetroProgressBar Grid.Row="2" IsIndeterminate="{Binding IsStartGeoCoding}" EllipseDiameter="7"/>-->
                         </Grid>
@@ -153,15 +185,12 @@
         </Style.Triggers>
     </Style>
 
-
-
-
     <Style
         x:Key="ButtonStopStartConnect"
         BasedOn="{StaticResource ButtonMainStyle}"
         TargetType="{x:Type Button}">
         <Setter Property="Content" Value="Проверить подключение" />
-        <Setter Property="Width" Value="160"/>
+        <Setter Property="Width" Value="160" />
         <Style.Triggers>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.Processed}">
                 <Setter Property="Content" Value="Идет подключение..." />
@@ -177,7 +206,7 @@
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <TextBlock Style="{StaticResource TextBlockGeoCod}"/>
+                    <TextBlock Style="{StaticResource TextBlockGeoCod}" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -186,7 +215,7 @@
                 <Setter Property="IsEnabled" Value="False" />
             </Trigger>
             <DataTrigger Binding="{Binding SingleGeoCod.Address}" Value="">
-                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="IsEnabled" Value="False" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

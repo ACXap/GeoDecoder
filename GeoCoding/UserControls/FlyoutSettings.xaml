@@ -36,13 +36,7 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
                                     ItemsSource="{Binding GeneralSettings.ListTheme}"
-                                    SelectedItem="{Binding GeneralSettings.ColorTheme}">
-                                    <!--<ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding DisplayName}" />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>-->
-                                </ComboBox>
+                                    SelectedItem="{Binding GeneralSettings.ColorTheme}" />
                             </WrapPanel>
                             <CheckBox
                                 Grid.Row="1"
@@ -64,11 +58,6 @@
                                 Margin="5,2"
                                 Content="Включить модуль работы с фтп-сервером"
                                 IsChecked="{Binding GeneralSettings.CanUseFtpModule}" />
-                            <CheckBox
-                                x:Name="cbCanBackgroundGeo"
-                                Margin="5,2"
-                                Content="Включить модуль фоновой работы"
-                                IsChecked="{Binding GeneralSettings.BackgroundGeo}" />
                         </WrapPanel>
                     </Grid>
                 </ScrollViewer>
@@ -565,13 +554,13 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <TextBox
+                                <!--<TextBox
                                     Width="250"
                                     VerticalAlignment="Center"
-                                    Text="{Binding KeyApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                <Button Command="{Binding CommandGetKeyApi}" Content="Показать ключ" />
+                                    Text="{Binding KeyApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
+                                <!--<Button Command="{Binding CommandGetKeyApi}" Content="Показать ключ" />
                                 <Button Command="{Binding CommandSetKeyApi}" Content="Установить ключ" />
-                                <Button Command="{Binding CommandResetLimit}" Content="Сбросить дневной лимит" />
+                                <Button Command="{Binding CommandResetLimit}" Content="Сбросить дневной лимит" />-->
                             </WrapPanel>
                         </GroupBox>
                     </Grid>
@@ -601,12 +590,11 @@
                         Margin="5"
                         Controls:TextBoxHelper.Watermark="http://example.com"
                         Text="{Binding VerificationSettings.VerificationServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
                     <WrapPanel Grid.Row="1" Grid.Column="2">
                         <Button
-                            Command="{Binding Ver.CommandCheckServer}"
+                            Command="{Binding CommandCheckServer}"
                             Style="{StaticResource ButtonStopStartConnect}"
-                            Tag="{Binding Ver.Status}" />
+                            Tag="{Binding VerificationSettings.StatusConnect}" />
                         <TextBlock
                             Margin="10,0"
                             VerticalAlignment="Center"
@@ -615,25 +603,25 @@
                         <TextBlock
                             Margin="10,0"
                             VerticalAlignment="Center"
-                            Text="{Binding Ver.Status}" />
+                            Text="{Binding VerificationSettings.StatusConnect}" />
 
                         <Controls:ProgressRing
                             Width="10"
                             Height="10"
                             Style="{StaticResource ProgressRingConnect}"
-                            Tag="{Binding Ver.Status}" />
+                            Tag="{Binding VerificationSettings.StatusConnect}" />
                     </WrapPanel>
                     <WrapPanel Grid.Row="2" Grid.Column="2">
                         <TextBox
                             MaxHeight="150"
                             Margin="5"
                             BorderThickness="0"
-                            Text="{Binding Ver.Error}"
+                            Text="{Binding VerificationSettings.Error}"
                             TextWrapping="Wrap"
                             VerticalScrollBarVisibility="Auto" />
                     </WrapPanel>
 
-                    <TextBlock
+                    <!--<TextBlock
                         Grid.Row="3"
                         Grid.Column="0"
                         VerticalAlignment="Center"
@@ -644,7 +632,7 @@
                         Margin="5"
                         VerticalContentAlignment="Center"
                         Controls:TextBoxHelper.Watermark="http://10.10.10.10:1010"
-                        Text="{Binding VerificationSettings.VerificationServerFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        Text="{Binding VerificationSettings.VerificationServerFactor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                 </Grid>
             </TabItem>
             <TabItem Header="Сеть">
@@ -842,65 +830,136 @@
                     </WrapPanel>
                 </ScrollViewer>
             </TabItem>
-            <!--<TabItem Header="Режим работы">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <RadioButton
-                            Grid.Row="0"
-                            Margin="5"
-                            Content="Ручной режим"
-                            IsChecked="{Binding GeneralSettings.ManualMode}"
-                            ToolTip="Вы сами выбирает данные и запускаете процедуру геокодирования" />
-                        <RadioButton
-                            x:Name="rbAuto"
-                            Grid.Row="1"
-                            Margin="5"
-                            Content="Автоматический режим"
-                            IsChecked="{Binding GeneralSettings.AutoMode}"
-                            ToolTip="Геокодирование выполняется согласно настройкам режима" />
-                        <Grid Grid.Row="2" IsEnabled="{Binding ElementName=rbAuto, Path=IsChecked}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="5" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
-                            <DataGrid
-                                AutoGenerateColumns="False"
-                                CanUserAddRows="False"
-                                ItemsSource="{Binding GeneralSettings.ListDayWeek}">
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="Дни запуска">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <WrapPanel Orientation="Horizontal">
-                                                    <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
-                                                </WrapPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="Часы запуска">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Controls:TimePicker Culture="ru-RU" SelectedDateTime="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                            <WrapPanel Orientation="Vertical" Grid.Column="2">
-                                <RadioButton Content="Брать первый файл в папке входящих файлов" Margin="5"/>
-                                <RadioButton Content="Выполнять запрос к базе данных по скрипту пользователя" Margin="5"/>
+            <TabItem Header="API ключи">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button
+                        Grid.Column="3"
+                        Width="25"
+                        Height="25"
+                        Margin="5"
+                        Padding="0"
+                        VerticalContentAlignment="Center"
+                        FontSize="10">
+                        <TextBlock Style="{StaticResource TextBlockPlus}" />
+                    </Button>
+                    <TextBlock
+                        Grid.Column="0"
+                        VerticalAlignment="Center"
+                        Text="Ключ" />
+                    <ComboBox
+                        Grid.Column="2"
+                        Margin="4"
+                        ItemsSource="{Binding CollectionApiKeys}"
+                        SelectedItem="{Binding CurrentKey}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ApiKey}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <DataGrid
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            ItemsSource="{Binding CurrentKey.CollectionDayWeekSettings}">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Дни запуска">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel Orientation="Horizontal">
+                                                <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
+                                            </WrapPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Часы запуска">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Controls:TimePicker Culture="ru-RU" SelectedDateTime="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Дневной лимит">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBox Text="{Binding MaxCount, UpdateSourceTrigger=PropertyChanged}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="2,0,0,0" Text="Ключ:" />
+                            <TextBox
+                                Grid.Row="1"
+                                Margin="5,0,5,5"
+                                AcceptsReturn="True"
+                                MaxLines="5"
+                                Text="{Binding CurrentKey.Description}" />
+
+                            <TextBlock
+                                Grid.Row="2"
+                                Margin="2,0,0,0"
+                                Text="Описание:" />
+                            <TextBox
+                                Grid.Row="3"
+                                Margin="5,0,5,5"
+                                AcceptsReturn="True"
+                                MaxLines="5"
+                                Text="{Binding CurrentKey.Description}" />
+
+                            <WrapPanel Grid.Row="4" Margin="10">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Лимит на сегодня: " />
+                                <TextBlock
+                                    Margin="25,0,0,0"
+                                    FontSize="32"
+                                    Text="{Binding CurrentKey.CurrentLimit, FallbackValue=0}" />
                             </WrapPanel>
+
+                            <WrapPanel Grid.Row="5" Margin="10">
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Text="Потрачено сегодня:" />
+                                <TextBlock
+                                    Margin="18,0,0,0"
+                                    FontSize="32"
+                                    Text="{Binding CurrentKey.CurrentSpent, FallbackValue=0}" />
+                            </WrapPanel>
+
+                            <Button Grid.Row="6" Content="Сохранить" />
                         </Grid>
                     </Grid>
-                </ScrollViewer>
-            </TabItem>-->
+                </Grid>
+            </TabItem>
         </TabControl>
         <Button
             Grid.Row="1"

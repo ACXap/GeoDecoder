@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight.Threading;
+using System;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Windows;
 
 namespace GeoCoding
@@ -10,6 +12,7 @@ namespace GeoCoding
         static App()
         {
             DispatcherHelper.Initialize();
+            ServicePointManager.DefaultConnectionLimit = 100;
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -23,6 +26,14 @@ namespace GeoCoding
                     StartCompact();
                     return;
                 }
+
+                comp = arg.Count(x => x == "-b" || x == "-B");
+                if (comp > 0)
+                {
+                    StartBackGeo();
+                    return;
+                }
+
             }
 
             try
@@ -46,6 +57,12 @@ namespace GeoCoding
                 Width = GetWidth()
             };
             win.Show();
+        }
+
+        private void StartBackGeo()
+        {
+            BackGeoMainWindow bwin = new BackGeoMainWindow();
+            bwin.Show();
         }
 
         private void StartCompact()

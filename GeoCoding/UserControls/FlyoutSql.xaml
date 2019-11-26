@@ -28,7 +28,7 @@
             Controls:TextBoxHelper.ClearTextButton="True"
             AcceptsReturn="True"
             FontSize="20"
-            Text="{Binding BDSettings.SQLQuery, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+            Text="{Binding AppSettings.BDSettings.SQLQuery, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             TextWrapping="Wrap" />
 
         <StackPanel

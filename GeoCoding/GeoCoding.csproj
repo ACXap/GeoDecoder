@@ -88,6 +88,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BackGeoMainWindow.xaml.cs">
+      <DependentUpon>BackGeoMainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CompactMainWindow.xaml.cs">
       <DependentUpon>CompactMainWindow.xaml</DependentUpon>
     </Compile>
@@ -101,13 +104,17 @@
     <Compile Include="Helpers\ObjectToStringJson.cs" />
     <Compile Include="Helpers\PersistGroupExpandedStateBehavior.cs" />
     <Compile Include="Helpers\ProtectedDataDPAPI.cs" />
+    <Compile Include="Model\Data\EntityApiKey.cs" />
     <Compile Include="Model\Data\EntityFile.cs" />
     <Compile Include="Model\Data\EntityForCompare.cs" />
+    <Compile Include="Model\Data\EntityResult.cs" />
+    <Compile Include="Model\Data\Enumeration\SaveDataType.cs" />
     <Compile Include="Model\Data\Enumeration\FileType.cs" />
     <Compile Include="Model\Data\Enumeration\NotificationType.cs" />
     <Compile Include="Model\Data\GeoCod.cs" />
     <Compile Include="Model\Data\Limit.cs" />
     <Compile Include="Model\Data\ProxyEntity.cs" />
+    <Compile Include="Model\AppSettings.cs" />
     <Compile Include="Model\Data\Settings\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
     <Compile Include="Model\Data\Settings\DayWeek.cs" />
@@ -128,6 +135,7 @@
     <Compile Include="Model\NetProxyModel.cs" />
     <Compile Include="Model\NotificationsModel.cs" />
     <Compile Include="Model\PolygonModel.cs" />
+    <Compile Include="Model\SettingsModel.cs" />
     <Compile Include="Model\VerificationModel.cs" />
     <Compile Include="UserControls\FlyoutFilesList.xaml.cs">
       <DependentUpon>FlyoutFilesList.xaml</DependentUpon>
@@ -153,10 +161,15 @@
     <Compile Include="UserControls\WorkIndication.xaml.cs">
       <DependentUpon>WorkIndication.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\BackGeoViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\PolygonViewModel.cs" />
     <Compile Include="ViewModel\StatisticsViewModel.cs" />
     <Compile Include="ViewModel\VerificationViewModel.cs" />
+    <Page Include="BackGeoMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CompactMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -309,10 +322,12 @@
     <Resource Include="geo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ProxyList.csv">
+    <None Include="ЧитайМеня.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="ЧитайМеня.txt">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ЧитайМеняФон.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

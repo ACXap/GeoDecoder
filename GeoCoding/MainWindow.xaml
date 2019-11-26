@@ -61,7 +61,7 @@
 
             <!--  Кнопка открытия папки программы  -->
             <Button
-                Command="{Binding CommandOpenFolder}"
+                Command="{Binding AppSettings.CommandOpenFolder}"
                 CommandParameter="AppFolder"
                 ToolTip="Папка программы">
                 <TextBlock Style="{StaticResource TextBlockFolder}" />
@@ -123,7 +123,7 @@
                                 Controls:TextBoxHelper.Watermark="Выбрать файл с данными"
                                 IsReadOnly="True"
                                 Style="{StaticResource TextBoxFolderOpen}"
-                                Text="{Binding FilesSettings.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                Text="{Binding AppSettings.FilesSettings.FileInput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                             <!--  Управление входным файлом  -->
                             <Grid Grid.Row="1">
@@ -152,22 +152,22 @@
                                     <CheckBox
                                         Margin="2,0"
                                         Content="Файл на FTP сервере"
-                                        IsChecked="{Binding FilesSettings.IsFileInputOnFTP}"
+                                        IsChecked="{Binding AppSettings.FilesSettings.IsFileInputOnFTP}"
                                         ToolTip="Если настроена работа с ФТП, то откроется папка на ФТП-сервере"
-                                        Visibility="{Binding GeneralSettings.CanUseFtpModule, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        Visibility="{Binding AppSettings.GeneralSettings.CanUseFtpModule, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                                     <!--  После выбора файла с данными, данные получаем сразу  -->
                                     <CheckBox
                                         Margin="2,0"
                                         Content="Данные получить сразу"
-                                        IsChecked="{Binding FilesSettings.CanGetDataOnce}"
+                                        IsChecked="{Binding AppSettings.FilesSettings.CanGetDataOnce}"
                                         ToolTip="После выбора файла с данными, таблица с данными заполнится сразу" />
 
                                     <!--  Данные в файле в кодировке ANSI  -->
                                     <CheckBox
                                         Margin="2,0"
                                         Content="Данные в кодировке ANSI"
-                                        IsChecked="{Binding FilesSettings.CanUseANSI}"
+                                        IsChecked="{Binding AppSettings.FilesSettings.CanUseANSI}"
                                         ToolTip="Данные в файле в кодировке ANSI" />
                                 </StackPanel>
 
@@ -247,7 +247,7 @@
                 </TabItem>
 
                 <!--  Работа с базой данных  -->
-                <TabItem Visibility="{Binding GeneralSettings.CanUseBdModule, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TabItem Visibility="{Binding AppSettings.GeneralSettings.CanUseBdModule, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TabItem.Header>
                         <TextBlock Style="{StaticResource TextBlockBd}" />
                     </TabItem.Header>
@@ -402,7 +402,7 @@
                         Controls:TextBoxHelper.Watermark="Выбрать файл для сохранения"
                         IsReadOnly="True"
                         Style="{StaticResource TextBoxFolderOpen}"
-                        Text="{Binding FilesSettings.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        Text="{Binding AppSettings.FilesSettings.FileOutput, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                     <!--  Управление выходным файлом  -->
                     <Grid Grid.Row="1">
@@ -431,22 +431,22 @@
                             <CheckBox
                                 VerticalAlignment="Center"
                                 Content="Cкопировать данный файл на FTP сервер"
-                                IsChecked="{Binding FilesSettings.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
+                                IsChecked="{Binding AppSettings.FilesSettings.CanCopyFileOutputToFtp, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="После сохранения файла на локальном диске, файл будет скопирован на FTP сервер (если он настроен на вкладке FTP)"
-                                Visibility="{Binding GeneralSettings.CanUseFtpModule, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                Visibility="{Binding AppSettings.GeneralSettings.CanUseFtpModule, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
                             <!--  Настройка разбиения выходного файла  -->
                             <StackPanel Orientation="Horizontal" ToolTip="Разбить выходной файл на части (по количеству строк), 0 - без разбиения">
 
                                 <!--  Разбивать ли выходной файл на части (по количеству строк)  -->
-                                <CheckBox Content="Разбить файл на части (по строкам):" IsChecked="{Binding FilesSettings.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox Content="Разбить файл на части (по строкам):" IsChecked="{Binding AppSettings.FilesSettings.CanBreakFileOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <!--  Максимальное количество строк в файле  -->
                                 <TextBox
                                     MinWidth="50"
                                     Margin="5,0,0,0"
-                                    IsEnabled="{Binding FilesSettings.CanBreakFileOutput}"
-                                    Text="{Binding FilesSettings.MaxSizePart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    IsEnabled="{Binding AppSettings.FilesSettings.CanBreakFileOutput}"
+                                    Text="{Binding AppSettings.FilesSettings.MaxSizePart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </StackPanel>
 
@@ -711,7 +711,7 @@
                         <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding GeneralSettings.CanUseVerificationModule}" Value="True">
+                                <DataTrigger Binding="{Binding AppSettings.GeneralSettings.CanUseVerificationModule}" Value="True">
                                     <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -728,24 +728,6 @@
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
-                        <!--<GroupBox
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Header="Способ проверки"
-                            IsEnabled="False">
-                            <StackPanel Orientation="Vertical">
-                                <RadioButton
-                                    Margin="5"
-                                    Content="Через Фактор"
-                                    IsChecked="{Binding Ver.IsServerVerFactor}" />
-                                <RadioButton
-                                    Margin="5"
-                                    Content="Через ОРПОН"
-                                    IsChecked="{Binding Ver.IsServerVerOrpon}" />
-                            </StackPanel>
-                        </GroupBox>-->
-
                         <GroupBox
                             Grid.Row="0"
                             Grid.Column="1"
@@ -927,138 +909,6 @@
                         </DataGrid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Фоновая работа">
-                    <!--<TabItem.Style>
-                        <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
-                            <Setter Property="Visibility" Value="Collapsed" />
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding GeneralSettings.BackgroundGeo}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TabItem.Style>-->
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="5" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <WrapPanel
-                                    Grid.Column="0"
-                                    Margin="2"
-                                    Orientation="Vertical">
-                                    <DataGrid
-                                        AutoGenerateColumns="False"
-                                        CanUserAddRows="False"
-                                        ItemsSource="{Binding GeneralSettings.ListDayWeek}">
-                                        <DataGrid.Columns>
-                                            <DataGridTemplateColumn Header="Дни запуска">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <WrapPanel Orientation="Horizontal">
-                                                            <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
-                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
-                                                        </WrapPanel>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn Header="Часы запуска">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <Controls:TimePicker Culture="ru-RU" SelectedDateTime="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                    <Button Command="{Binding CommandSaveSettingsBackGeo}" Content="Сохранить" />
-                                </WrapPanel>
-
-                                <WrapPanel Grid.Column="2" Orientation="Vertical">
-                                    <RadioButton
-                                        Margin="5"
-                                        Content="Брать первый файл в папке входящих файлов"
-                                        IsEnabled="False" />
-                                    <RadioButton
-                                        Margin="5"
-                                        Content="Выполнять запрос к базе данных по скрипту пользователя"
-                                        IsChecked="{Binding GeneralSettings.UseScriptBackGeo}" />
-                                    <TextBox
-                                        Height="200"
-                                        AcceptsReturn="True"
-                                        Text="{Binding GeneralSettings.ScpriptBackgroundGeo, UpdateSourceTrigger=PropertyChanged}" />
-                                </WrapPanel>
-                                <DataGrid
-                                    Grid.Column="3"
-                                    Height="250"
-                                    ItemsSource="{Binding CollectionBackGeo}"
-                                    Style="{StaticResource DataGridMainAll}">
-                                    <DataGrid.Columns>
-                                        <!--  Колонка статуса  -->
-                                        <DataGridTemplateColumn SortMemberPath="Status">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Style="{StaticResource TextBlockStatus}" Tag="{Binding Status}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-
-                                        <!--  Колонка адреса  -->
-                                        <DataGridTemplateColumn Header="Адрес" SortMemberPath="Address">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding Address}" TextWrapping="Wrap" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-
-                            </Grid>
-                            <Grid
-                                Grid.Row="4"
-                                Grid.Column="4"
-                                Margin="5">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
-                                <Button Command="{Binding StartBackGeo}" Content="Запустить" />
-                                <Button Command="{Binding StopBackGeo}" Content="Остановить">
-                                    <Button.Style>
-                                        <Style BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}" TargetType="{x:Type Button}">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsStartBackGeo}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                                <WrapPanel Grid.Row="1" Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" Text="До следующего запуска геокодирования: " />
-                                    <TextBlock FontSize="15" Text="{Binding NextStartGeo}" />
-                                </WrapPanel>
-                                <TextBlock Grid.Row="2" Text="{Binding Work}" />
-
-
-                            </Grid>
-                        </Grid>
-                    </ScrollViewer>
-                </TabItem>
             </TabControl>
 
             <!--  Статистика, кнопка запуска геокодирования, настройки геокодирования  -->
@@ -1083,8 +933,8 @@
 
                         <ComboBox
                             Margin="5,2"
-                            ItemsSource="{Binding GeoCodSettings.CollectionGeoService}"
-                            SelectedItem="{Binding GeoCodSettings.GeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            ItemsSource="{Binding AppSettings.GeoCodSettings.CollectionGeoService}"
+                            SelectedItem="{Binding AppSettings.GeoCodSettings.GeoService, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Style="{StaticResource ComboBoxGeoService}"
                             ToolTip="Выбор геокодера" />
 
@@ -1092,7 +942,7 @@
                             <CheckBox
                                 Margin="10,0"
                                 Content="Использовать полигон"
-                                IsChecked="{Binding GeoCodSettings.CanUsePolygon}"
+                                IsChecked="{Binding AppSettings.GeoCodSettings.CanUsePolygon}"
                                 ToolTip="Включить использование ограничительных полигонов для поиска координат (не все геокодеры поддерживают)" />
                             <ToggleButton
                                 x:Name="tbPolygonBoxSettings"
@@ -1133,21 +983,21 @@
                             <RadioButton
                                 Margin="10,2,2,5"
                                 Content="Все"
-                                IsChecked="{Binding GeoCodSettings.CanGeoCodGetAll}"
+                                IsChecked="{Binding AppSettings.GeoCodSettings.CanGeoCodGetAll}"
                                 ToolTip="Будут геокодированы все адреса в таблице" />
 
                             <!--  Геокодировать только объекты со статусом "Ошибка"  -->
                             <RadioButton
                                 Margin="10,2,2,5"
                                 Content="С ошибками"
-                                IsChecked="{Binding GeoCodSettings.CanGeoCodGetError}"
+                                IsChecked="{Binding AppSettings.GeoCodSettings.CanGeoCodGetError}"
                                 ToolTip="Будут геокодированы все адреса геокодированные с ошибками" />
 
                             <!--  Геокодировать только объекты со статусом "Негеокодирован"  -->
                             <RadioButton
                                 Margin="10,2,2,5"
                                 Content="Негеокодированные"
-                                IsChecked="{Binding GeoCodSettings.CanGeoCodGetNotGeo}"
+                                IsChecked="{Binding AppSettings.GeoCodSettings.CanGeoCodGetNotGeo}"
                                 ToolTip="Будут геокодированы все негеокодированные адреса" />
                         </StackPanel>
 
@@ -1161,7 +1011,7 @@
                                 <ColumnDefinition Width="150" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <CheckBox IsChecked="{Binding GeoCodSettings.CanSaveDataAsTemp}" ToolTip="Сохранить все данные в формате программы, во временную папку">
+                            <CheckBox IsChecked="{Binding AppSettings.GeoCodSettings.CanSaveDataAsTemp}" ToolTip="Сохранить все данные в формате программы, во временную папку">
                                 <TextBlock Text="Сохранить временные результаты" TextWrapping="Wrap" />
                             </CheckBox>
                             <Button
@@ -1182,12 +1032,12 @@
                         <CheckBox
                             Margin="10,2,2,5"
                             Content="Сохранить результаты"
-                            IsChecked="{Binding GeoCodSettings.CanSaveDataAsFinished}"
+                            IsChecked="{Binding AppSettings.GeoCodSettings.CanSaveDataAsFinished}"
                             ToolTip="Сохранить все данные в формате для базы данных" />
 
                         <CheckBox
                             Margin="10,2,2,5"
-                            IsChecked="{Binding GeoCodSettings.CanOpenFolderAfter}"
+                            IsChecked="{Binding AppSettings.GeoCodSettings.CanOpenFolderAfter}"
                             ToolTip="После сохранения файла с результатами, откроется папка с этим файлом">
                             <TextBlock Text="Открыть папку результатов" />
                         </CheckBox>
@@ -1209,7 +1059,7 @@
                 Style="{StaticResource FlyoutStyleMain}">
 
                 <!--  Юзер-контрол для отображения настроек приложения  -->
-                <uc:FlyoutSettings />
+                <uc:FlyoutSettings DataContext="{Binding AppSettings}" />
             </Controls:Flyout>
 
             <!--  Список файлов  -->

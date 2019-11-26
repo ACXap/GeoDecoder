@@ -14,15 +14,34 @@ namespace GeoCoding
             set => Set(ref _verificationServer, value);
         }
 
-
-        private string _verificationServerFactor = string.Empty;
+        private StatusType _statusConnect = StatusType.NotProcessed;
         /// <summary>
-        /// 
+        /// Статус подключения
         /// </summary>
-        public string VerificationServerFactor
+        public StatusType StatusConnect
         {
-            get => _verificationServerFactor;
-            set => Set(ref _verificationServerFactor, value);
+            get => _statusConnect;
+            set => Set(ref _statusConnect, value);
         }
+        private string _error = string.Empty;
+        /// <summary>
+        /// Текст ошибки при подключении
+        /// </summary>
+        public string Error
+        {
+            get => _error;
+            set => Set(ref _error, value);
+        }
+
+
+        //private string _verificationServerFactor = string.Empty;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public string VerificationServerFactor
+        //{
+        //    get => _verificationServerFactor;
+        //    set => Set(ref _verificationServerFactor, value);
+        //}
     }
 }

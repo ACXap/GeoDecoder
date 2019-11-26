@@ -17,7 +17,6 @@ namespace GeoCoding
             get => _canUseVerificationModule;
             set => Set(ref _canUseVerificationModule, value);
         }
-
         private bool _canUseBdModule = false;
         /// <summary>
         /// 
@@ -27,7 +26,6 @@ namespace GeoCoding
             get => _canUseBdModule;
             set => Set(ref _canUseBdModule, value);
         }
-
         private bool _canUseFtpModule = false;
         /// <summary>
         /// 
@@ -37,7 +35,6 @@ namespace GeoCoding
             get => _canUseFtpModule;
             set => Set(ref _canUseFtpModule, value);
         }
-
         private bool _canStartCompact = false;
         /// <summary>
         /// 
@@ -47,7 +44,6 @@ namespace GeoCoding
             get => _canStartCompact;
             set => Set(ref _canStartCompact, value);
         }
-
         private bool _backgroundGeo = false;
         /// <summary>
         /// Автоматический режим работы приложения
@@ -57,7 +53,6 @@ namespace GeoCoding
             get => _backgroundGeo;
             set => Set(ref _backgroundGeo, value);
         }
-
         private List<DayWeek> _listDayWeek;
         /// <summary>
         /// Список настроек по дням недели
@@ -73,8 +68,8 @@ namespace GeoCoding
         /// </summary>
         public string ScpriptBackgroundGeo
         {
-            get => _scpriptBackgroundGeo ;
-            set => Set(ref _scpriptBackgroundGeo , value);
+            get => _scpriptBackgroundGeo;
+            set => Set(ref _scpriptBackgroundGeo, value);
         }
         private bool _useScriptBackGeo = true;
         /// <summary>
@@ -85,8 +80,6 @@ namespace GeoCoding
             get => _useScriptBackGeo;
             set => Set(ref _useScriptBackGeo, value);
         }
-        
-
         private string _colorTheme = "Light.Blue";
         /// <summary>
         /// Тема оформления приложения
@@ -100,10 +93,9 @@ namespace GeoCoding
                 ThemeManager.ChangeTheme(Application.Current, value);
             }
         }
-
         /// <summary>
         /// Коллекция всех возможных тем оформления окна
         /// </summary>
-        public List<string> ListTheme => ThemeManager.Themes.Select(x=>x.Name).OrderBy(x=>x).ToList();
+        public List<string> ListTheme => ThemeManager.Themes.Select(x => x.Name).OrderBy(x => x).ToList();
     }
 }

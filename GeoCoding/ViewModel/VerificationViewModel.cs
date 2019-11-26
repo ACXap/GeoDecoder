@@ -31,16 +31,6 @@ namespace GeoCoding
         private ICollectionView _customerView;
 
         /// <summary>
-        /// Поле для хранения статуса подключения к серверу
-        /// </summary>
-        private StatusType _status = StatusType.NotProcessed;
-
-        /// <summary>
-        /// Поле для хранения ошибки при подключении к серверу
-        /// </summary>
-        private string _error = string.Empty;
-
-        /// <summary>
         /// Сверять все данные
         /// </summary>
         private bool _canCompareAllData = true;
@@ -64,11 +54,6 @@ namespace GeoCoding
         /// Количество точных данных после проверки
         /// </summary>
         private int _countGoodAfterCompare = 0;
-
-        /// <summary>
-        /// Поле для хранения ссылки на команду проверки подключения к сереру
-        /// </summary>
-        private RelayCommand _commandCheckServer;
 
         /// <summary>
         /// Поле для хранения ссылки на команду зафиксировать изменения данных проверки
@@ -105,24 +90,6 @@ namespace GeoCoding
         {
             get => _customerView;
             set => Set(ref _customerView, value);
-        }
-
-        /// <summary>
-        /// Статус подключения к серверу
-        /// </summary>
-        public StatusType Status
-        {
-            get => _status;
-            set => Set(ref _status, value);
-        }
-
-        /// <summary>
-        /// Ошибка подключения к серверу
-        /// </summary>
-        public string Error
-        {
-            get => _error;
-            set => Set(ref _error, value);
         }
 
         /// <summary>
@@ -242,32 +209,6 @@ namespace GeoCoding
         #endregion PublicMethod
 
         #region PublicCommand
-
-        /// <summary>
-        /// Команда проверки подключения к серверу
-        /// </summary>
-        public RelayCommand CommandCheckServer =>
-            _commandCheckServer ?? (_commandCheckServer = new RelayCommand(
-            () =>
-            {
-                _model.SettingsService(_verificationSettings.VerificationServer);
-
-                Status = StatusType.Processed;
-
-                _model.CheckServerAsync(e =>
-                {
-                    if (e != null)
-                    {
-                        Error = e.Message;
-                        Status = StatusType.Error;
-                    }
-                    else
-                    {
-                        Error = string.Empty;
-                        Status = StatusType.OK;
-                    }
-                });
-            }, () => !string.IsNullOrEmpty(_verificationSettings.VerificationServer)));
 
         /// <summary>
         /// Команда для фиксации данных после проверки
@@ -440,12 +381,12 @@ namespace GeoCoding
             });
         }
 
-        private bool _isServerVerFactor = false;
-        public bool IsServerVerFactor
-        {
-            get => _isServerVerFactor;
-            set => Set(ref _isServerVerFactor, value);
-        }
+        //private bool _isServerVerFactor = false;
+        //public bool IsServerVerFactor
+        //{
+        //    get => _isServerVerFactor;
+        //    set => Set(ref _isServerVerFactor, value);
+        //}
 
         private bool _isServerVerOrpon = true;
         public bool IsServerVerOrpon
