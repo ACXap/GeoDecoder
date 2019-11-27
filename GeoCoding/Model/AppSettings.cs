@@ -1,33 +1,28 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using GeoCoding.GeoCodingService;
 using GeoCoding.Helpers;
 using GeoCoding.Model.Data;
+using GeoCoding.Model.Data.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeoCoding.Model
 {
     public class AppSettings : ViewModelBase
     {
-        //тут можно будет забахать модель работы с получением настроек из разных источников
-        //private SettingsModel _modelSettings = new SettingsModel(); 
-
-        MainWindowModel _model;
-        VerificationModel _modelVer;
-        INotifications _notifications;
-        NetProxyModel _netProxyModel = new NetProxyModel();
-
         public AppSettings(MainWindowModel model)
         {
             _model = model;
             GetSettings();
+
             _notifications = new NotificationsModel(NotificationSettings);
             _modelVer = new VerificationModel(_verificationSettings.VerificationServer);
+
+            GetApiKey();
 
             if (_netSettings.IsListProxy)
             {
@@ -41,61 +36,15 @@ namespace GeoCoding.Model
                     GeoCodSettings.IsMultipleRequests = true;
                 }
             });
-
-            NewCollction();
-        }
-
-        private void NewCollction()
-        {
-            CollectionApiKeys = new ObservableCollection<EntityApiKey>();
-
-                var listDayWeek = new List<DayWeek>();
-                foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
-                {
-                    listDayWeek.Add(new DayWeek() { Day = d });
-                }
-            var s = listDayWeek.First(x => x.Day == 0);
-            listDayWeek.Remove(s);
-            listDayWeek.Insert(listDayWeek.Count, s);
-
-            var key = new EntityApiKey()
-            {
-                ApiKey = "123",
-                Description = "test",
-                CurrentLimit = 100,
-                CurrentSpent = 100,
-                CollectionDayWeekSettings = listDayWeek
-            };
-
-            CollectionApiKeys.Add(key);
-        }
-
-        private EntityApiKey _currentKey;
-        /// <summary>
-        /// 
-        /// </summary>
-        public EntityApiKey CurrentKey
-        {
-            get => _currentKey;
-            set => Set(ref _currentKey, value);
-        }
-
-        public INotifications GetNotification()
-        {
-            return _notifications;
-        }
-
-        private ObservableCollection<EntityApiKey> _collectionApiKeys;
-        /// <summary>
-        /// 
-        /// </summary>
-        public ObservableCollection<EntityApiKey> CollectionApiKeys
-        {
-            get => _collectionApiKeys;
-            set => Set(ref _collectionApiKeys, value);
         }
 
         #region PrivateField
+        MainWindowModel _model;
+        VerificationModel _modelVer;
+        INotifications _notifications;
+        NetProxyModel _netProxyModel = new NetProxyModel();
+
+        private ApiKeySettings _apiKeySettings;
         private FilesSettings _filesSettings;
         private GeoCodSettings _geoCodSettings;
         private FTPSettings _ftpSettings;
@@ -109,7 +58,16 @@ namespace GeoCoding.Model
         #region PublicProperties
 
         /// <summary>
-        /// 
+        /// Настройки апи-ключей
+        /// </summary>
+        public ApiKeySettings ApiKeySettings
+        {
+            get => _apiKeySettings;
+            set => Set(ref _apiKeySettings, value);
+        }
+
+        /// <summary>
+        /// Настройки по работе с файлами
         /// </summary>
         public FilesSettings FilesSettings
         {
@@ -118,7 +76,7 @@ namespace GeoCoding.Model
         }
 
         /// <summary>
-        /// 
+        /// Настройки по работе с геокодером
         /// </summary>
         public GeoCodSettings GeoCodSettings
         {
@@ -127,7 +85,7 @@ namespace GeoCoding.Model
         }
 
         /// <summary>
-        /// 
+        /// настройки по работе с фтп-сервером
         /// </summary>
         public FTPSettings FTPSettings
         {
@@ -136,7 +94,7 @@ namespace GeoCoding.Model
         }
 
         /// <summary>
-        /// 
+        /// Настройки по работе с базой данных
         /// </summary>
         public BDSettings BDSettings
         {
@@ -145,7 +103,7 @@ namespace GeoCoding.Model
         }
 
         /// <summary>
-        /// 
+        /// Основные настройки приложения
         /// </summary>
         public GeneralSettings GeneralSettings
         {
@@ -154,7 +112,7 @@ namespace GeoCoding.Model
         }
 
         /// <summary>
-        /// 
+        /// Настройки по оповещению
         /// </summary>
         public NotificationSettings NotificationSettings
         {
@@ -163,7 +121,7 @@ namespace GeoCoding.Model
         }
 
         /// <summary>
-        /// 
+        /// Настройки по работе с сетью
         /// </summary>
         public NetSettings NetSettings
         {
@@ -172,13 +130,14 @@ namespace GeoCoding.Model
         }
 
         /// <summary>
-        /// 
+        /// Настройки сервера проверки данных
         /// </summary>
         public VerificationSettings VerificationSettings
         {
             get => _verificationSettings;
             set => Set(ref _verificationSettings, value);
         }
+
         #endregion PublicProperties
 
         #region Command
@@ -187,7 +146,6 @@ namespace GeoCoding.Model
         /// Поле для хранения ссылки на команду сохранения настроек
         /// </summary>
         private RelayCommand _commandSaveSettings;
-
         /// <summary>
         /// Команда для сохранения настроек
         /// </summary>
@@ -202,7 +160,6 @@ namespace GeoCoding.Model
         /// Поле для хранения ссылки на команду проверки соединения с базой
         /// </summary>
         private RelayCommand _commandCheckConnect;
-
         /// <summary>
         /// Команда для проверки соединения с базой
         /// </summary>
@@ -232,7 +189,6 @@ namespace GeoCoding.Model
         /// Поле для хранения ссылки на команду проверки соединения с фтп-сервером
         /// </summary>
         private RelayCommand _commandCheckConnectFtp;
-
         /// <summary>
         /// Команда для проверки соединения с фтп-сервером
         /// </summary>
@@ -257,7 +213,6 @@ namespace GeoCoding.Model
                             }
                         }, FTPSettings);
                     }, () => !string.IsNullOrEmpty(_ftpSettings.Server) || _ftpSettings.StatusConnect == StatusType.Processed));
-
 
         /// <summary>
         /// Поле для хранения ссылки на команду проверки подключения к сереру
@@ -333,7 +288,122 @@ namespace GeoCoding.Model
                         NetSettings.Status = StatusType.OK;
                     }, () => _netSettings.CollectionListProxy != null && _netSettings.CollectionListProxy.Any()));
 
-       #endregion Command
+        /// <summary>
+        /// Поле для хранения ссылки на команду открытия папки
+        /// </summary>
+        private RelayCommand<string> _commandOpenFolder;
+        /// <summary>
+        /// Команда открытия папки
+        /// </summary>
+        public RelayCommand<string> CommandOpenFolder =>
+        _commandOpenFolder ?? (_commandOpenFolder = new RelayCommand<string>(
+                    str =>
+                    {
+                        OpenFolder(str);
+                    }, str => !string.IsNullOrEmpty(str)));
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду сохранения основных настроек
+        /// </summary>
+        private RelayCommand _commandSaveGeneralSettings;
+        /// <summary>
+        /// Команда для сохранения основных настроек приложения
+        /// </summary>
+        public RelayCommand CommandSaveGeneralSettings =>
+        _commandSaveGeneralSettings ?? (_commandSaveGeneralSettings = new RelayCommand(
+                    () =>
+                    {
+                        SaveGeneralSettings();
+                    }));
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду сохранения апи-ключей
+        /// </summary>
+        private RelayCommand _commandSaveApiKeys;
+        /// <summary>
+        /// Команда для сохранения апи ключей
+        /// </summary>
+        public RelayCommand CommandSaveApiKeys =>
+        _commandSaveApiKeys ?? (_commandSaveApiKeys = new RelayCommand(
+                    () =>
+                    {
+                        var c = _apiKeySettings.CollectionApiKeys.FirstOrDefault(k => k.ApiKey == _apiKeySettings.CurrentKey.ApiKey);
+                        if (c == null)
+                        {
+                            _apiKeySettings.CollectionApiKeys.Add(_apiKeySettings.CurrentKey);
+                        }
+                        SaveApiKey();
+                    }));
+
+        /// <summary>
+        /// Поле для хранения команды для добавления апи-ключа 
+        /// </summary>
+        private RelayCommand _commandAddApiKey;
+        /// <summary>
+        /// Команда для добавления апи-ключа
+        /// </summary>
+        public RelayCommand CommandAddApiKey =>
+        _commandAddApiKey ?? (_commandAddApiKey = new RelayCommand(
+                    () =>
+                    {
+                        _apiKeySettings.CurrentKey = new EntityApiKey();
+                        new List<DayWeek>();
+
+                        var listDayWeek = new List<DayWeek>();
+                        foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
+                        {
+                            listDayWeek.Add(new DayWeek() { Day = d });
+                        }
+                        var s = listDayWeek.First(x => x.Day == 0);
+                        listDayWeek.Remove(s);
+                        listDayWeek.Insert(listDayWeek.Count, s);
+
+                        _apiKeySettings.CurrentKey.CollectionDayWeekSettings = listDayWeek;
+                    }));
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду удаления апи-ключа
+        /// </summary>
+        private RelayCommand _commandRemoveApiKey;
+        /// <summary>
+        /// Команда для удаления апи-ключа
+        /// </summary>
+        public RelayCommand CommandRemoveApiKey =>
+        _commandRemoveApiKey ?? (_commandRemoveApiKey = new RelayCommand(
+                    () =>
+                    {
+                        _apiKeySettings.CollectionApiKeys.Remove(_apiKeySettings.CurrentKey);
+                        _apiKeySettings.CurrentKey = _apiKeySettings.CollectionApiKeys.FirstOrDefault();
+                    }));
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду проверки потраченного лимита на сервере
+        /// </summary>
+        private RelayCommand _commandUpdateCurrentSpentServer;
+        /// <summary>
+        /// Команда проверки потраченного лимита на сервере
+        /// </summary>
+        public RelayCommand CommandUpdateCurrentSpentServer =>
+        _commandUpdateCurrentSpentServer ?? (_commandUpdateCurrentSpentServer = new RelayCommand(
+                    () =>
+                    {
+                        try
+                        {
+                            var a = StatGeoCodingService.GetStat(_apiKeySettings.CurrentKey.ApiKeyDevelop, _apiKeySettings.CurrentKey.ApiKeyStat);
+                            if (a != -1)
+                            {
+                                _apiKeySettings.CurrentKey.CurrentSpentServer = a;
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            _notifications.Notification(NotificationType.Error, ex.Message);
+                        }
+                        
+                        
+                    }));
+
+        #endregion Command
 
         #region PrivateMethod
 
@@ -444,13 +514,13 @@ namespace GeoCoding.Model
                 UseScriptBackGeo = p.UseScriptBackGeo
             };
 
-            var listDayWeek = ObjectToStringJson.GetObjectOfstring<List<DayWeek>>(p.ListDayWeekMode);
+            var listDayWeek = ObjectToStringJson.GetObjectOfstring<List<DayWeekWithTime>>(p.ListDayWeekMode);
             if (listDayWeek == null || !listDayWeek.Any())
             {
-                listDayWeek = new List<DayWeek>();
+                listDayWeek = new List<DayWeekWithTime>();
                 foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
                 {
-                    listDayWeek.Add(new DayWeek() { Day = d });
+                    listDayWeek.Add(new DayWeekWithTime() { Day = d });
                 }
             }
             var s = listDayWeek.First(x => x.Day == 0);
@@ -466,6 +536,30 @@ namespace GeoCoding.Model
 
             //res = ProtectedDataDPAPI.DecryptData(p.VerificationServerFactor);
             //if (res.Successfully) VerificationSettings.VerificationServerFactor = res.Object;
+        }
+
+        private void GetApiKey()
+        {
+            ApiKeySettings = new ApiKeySettings();
+
+            _model.ReadFile((er, data) =>
+            {
+                if (er != null)
+                {
+                    ApiKeySettings.CollectionApiKeys = new ObservableCollection<EntityApiKey>();
+                }
+                else
+                {
+                    if (data != null && data.Any())
+                    {
+                        var a = ObjectToStringJson.GetObjectOfstring<IEnumerable<EntityApiKey>>(data.First());
+                        if (a != null && a.Any())
+                        {
+                            ApiKeySettings.CollectionApiKeys = new ObservableCollection<EntityApiKey>(a);
+                        }
+                    }
+                }
+            }, _apiKeySettings.File);
         }
 
         /// <summary>
@@ -486,13 +580,10 @@ namespace GeoCoding.Model
             });
         }
 
-        #endregion PrivateMethod
-
-        #region PublicMethod
         /// <summary>
         /// Метод для сохранения всех настроек
         /// </summary>
-        public void SaveSettings()
+        private void SaveSettings()
         {
             var p = Properties.Settings.Default;
 
@@ -597,6 +688,7 @@ namespace GeoCoding.Model
 
             p.Save();
         }
+
         /// <summary>
         /// Метод для сохранения только основных настроек
         /// </summary>
@@ -619,22 +711,18 @@ namespace GeoCoding.Model
 
             p.Save();
         }
-        #endregion PublicMethod
-
 
         /// <summary>
-        /// Поле для хранения ссылки на команду открытия папки
+        /// Метод сохранения апи-ключей
         /// </summary>
-        private RelayCommand<string> _commandOpenFolder;
-        /// <summary>
-        /// Команда открытия папки
-        /// </summary>
-        public RelayCommand<string> CommandOpenFolder =>
-        _commandOpenFolder ?? (_commandOpenFolder = new RelayCommand<string>(
-                    str =>
-                    {
-                        OpenFolder(str);
-                    }, str => !string.IsNullOrEmpty(str)));
+        private void SaveApiKey()
+        {
+            var s = ObjectToStringJson.GetStringOfObject(_apiKeySettings.CollectionApiKeys);
+            _model.SaveFile((e) =>
+            {
+                if (e != null) _notifications.Notification(NotificationType.Error, e.Message);
+            }, new string[] { s }, _apiKeySettings.File);
+        }
 
         /// <summary>
         /// Открыть папку
@@ -655,5 +743,19 @@ namespace GeoCoding.Model
                 _notifications.Notification(NotificationType.Error, e);
             }, str);
         }
+
+        #endregion PrivateMethod
+
+        #region PublicMethod
+        /// <summary>
+        /// Метод для получения модели информирования
+        /// </summary>
+        /// <returns></returns>
+        public INotifications GetNotification()
+        {
+            return _notifications;
+        }
+
+        #endregion PublicMethod
     }
 }

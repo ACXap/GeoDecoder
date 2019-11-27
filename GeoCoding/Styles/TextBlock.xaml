@@ -65,6 +65,11 @@
         <Setter Property="ToolTip" Value="Добавить"/>
     </Style>
 
+    <Style x:Key="TextBlockMinus" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockIconAwesome}">
+        <Setter Property="Text" Value="{StaticResource FontAwesomeMinus}" />
+        <Setter Property="ToolTip" Value="Убрать"/>
+    </Style>
+
     <Style x:Key="TextBlockGeoCodWithToolTip" TargetType="{x:Type TextBlock}">
         <Setter Property="ToolTip">
             <Setter.Value>

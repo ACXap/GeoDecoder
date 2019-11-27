@@ -115,8 +115,10 @@
     <Compile Include="Model\Data\Limit.cs" />
     <Compile Include="Model\Data\ProxyEntity.cs" />
     <Compile Include="Model\AppSettings.cs" />
+    <Compile Include="Model\Data\Settings\ApiKeySettings.cs" />
     <Compile Include="Model\Data\Settings\BDSettings.cs" />
     <Compile Include="Model\Data\EntityGeoCod.cs" />
+    <Compile Include="Model\Data\Settings\DayWeekWithTime.cs" />
     <Compile Include="Model\Data\Settings\DayWeek.cs" />
     <Compile Include="Model\Data\Settings\FilesSettings.cs" />
     <Compile Include="Model\Data\Settings\FTPSettings.cs" />
@@ -135,7 +137,6 @@
     <Compile Include="Model\NetProxyModel.cs" />
     <Compile Include="Model\NotificationsModel.cs" />
     <Compile Include="Model\PolygonModel.cs" />
-    <Compile Include="Model\SettingsModel.cs" />
     <Compile Include="Model\VerificationModel.cs" />
     <Compile Include="UserControls\FlyoutFilesList.xaml.cs">
       <DependentUpon>FlyoutFilesList.xaml</DependentUpon>

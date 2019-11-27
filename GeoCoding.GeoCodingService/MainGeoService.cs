@@ -20,7 +20,7 @@ namespace GeoCoding.GeoCodingService
               new HereGeoCodingService(),
                 //  new YandexGeoCodingService(),
                // new YandexRusGisGeoCodingService(),
-                new SputnikGeoCodingService(),
+                //new SputnikGeoCodingService(),
                // new SputnikRusGisGeoCodingService(),
               //  new RusGisDemoGeoCodingService(),
               //  new RusGisGeoCodingService(),

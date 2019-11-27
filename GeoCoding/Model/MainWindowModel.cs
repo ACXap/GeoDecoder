@@ -308,7 +308,7 @@ namespace GeoCoding
         /// <param name="file">Имя файла</param>
         public void SaveError(Action<Exception> callback, IEnumerable<EntityGeoCod> data, string file)
         {
-            if (data == null) 
+            if (data == null)
             {
                 callback(null);
                 return;
@@ -322,8 +322,8 @@ namespace GeoCoding
             Exception error = null;
             List<string> list = null;
             var d = data.Where(x => x.Status == StatusType.Error);
-            
-            if (d.Count()>0)
+
+            if (d.Count() > 0)
             {
                 list = new List<string>(data.Count())
                 {
@@ -365,7 +365,7 @@ namespace GeoCoding
                 {
                     _nameColumnTempFile
                 };
-               
+
                 list.AddRange(data.Select(x =>
                 {
                     return $"{x.GlobalID}{_charSplit}{x.Address}{_charSplit}{x.FiasGuid}{_charSplit}{x.MainGeoCod?.AddressWeb}{_charSplit}{x.MainGeoCod?.Latitude}{_charSplit}{x.MainGeoCod?.Longitude}" +
@@ -825,6 +825,22 @@ namespace GeoCoding
                 FolderInput = ftps.FolderInput,
                 FolderOutput = ftps.FolderOutput
             };
+        }
+
+        public void SaveFile(Action<Exception> callback, string[] data, string file)
+        {
+            _fileService.SaveData(er =>
+            {
+                callback(er);
+            }, data, file);
+        }
+
+        public void ReadFile(Action<Exception, IEnumerable<string>> callback, string file)
+        {
+            _fileService.GetData((data, er) =>
+            {
+                callback(er, data);
+            }, file, false);
         }
     }
 }

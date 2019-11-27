@@ -53,11 +53,11 @@ namespace GeoCoding
             get => _backgroundGeo;
             set => Set(ref _backgroundGeo, value);
         }
-        private List<DayWeek> _listDayWeek;
+        private List<DayWeekWithTime> _listDayWeek;
         /// <summary>
         /// Список настроек по дням недели
         /// </summary>
-        public List<DayWeek> ListDayWeek
+        public List<DayWeekWithTime> ListDayWeek
         {
             get => _listDayWeek;
             set => Set(ref _listDayWeek, value);

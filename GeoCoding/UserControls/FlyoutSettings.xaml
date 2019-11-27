@@ -439,7 +439,7 @@
                                 Controls:TextBoxHelper.Watermark="10-100"
                                 Text="{Binding GeoCodSettings.MaxCountError}" />
                         </StackPanel>
-                        <Grid Grid.Row="0" Margin="5">
+                        <Grid Grid.Row="3" Margin="5">
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
@@ -490,7 +490,7 @@
                                 IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}"
                                 Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
-                        <GroupBox Grid.Row="3" Header="Какие объекты геокодировать">
+                        <GroupBox Grid.Row="6" Header="Какие объекты геокодировать">
                             <WrapPanel Orientation="Vertical">
                                 <RadioButton
                                     Grid.Row="0"
@@ -542,7 +542,7 @@
                                     IsChecked="{Binding GeoCodSettings.CanSaveStatistics}" />
                             </WrapPanel>
                         </GroupBox>
-                        <GroupBox Grid.Row="6" Header="Какой используем геокодер">
+                        <GroupBox Grid.Row="0" Header="Какой используем геокодер">
                             <WrapPanel Orientation="Horizontal">
                                 <ComboBox
                                     Margin="5,2"
@@ -831,134 +831,187 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="API ключи">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Button
-                        Grid.Column="3"
-                        Width="25"
-                        Height="25"
-                        Margin="5"
-                        Padding="0"
-                        VerticalContentAlignment="Center"
-                        FontSize="10">
-                        <TextBlock Style="{StaticResource TextBlockPlus}" />
-                    </Button>
-                    <TextBlock
-                        Grid.Column="0"
-                        VerticalAlignment="Center"
-                        Text="Ключ" />
-                    <ComboBox
-                        Grid.Column="2"
-                        Margin="4"
-                        ItemsSource="{Binding CollectionApiKeys}"
-                        SelectedItem="{Binding CurrentKey}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding ApiKey}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <Grid Grid.Row="1" Grid.ColumnSpan="4">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="5" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                        <DataGrid
-                            AutoGenerateColumns="False"
-                            CanUserAddRows="False"
-                            ItemsSource="{Binding CurrentKey.CollectionDayWeekSettings}">
-                            <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Дни запуска">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <WrapPanel Orientation="Horizontal">
-                                                <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
-                                            </WrapPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Часы запуска">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Controls:TimePicker Culture="ru-RU" SelectedDateTime="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Дневной лимит">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBox Text="{Binding MaxCount, UpdateSourceTrigger=PropertyChanged}" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Button
+                            Grid.Column="3"
+                            Width="25"
+                            Height="25"
+                            Margin="5"
+                            Padding="0"
+                            VerticalContentAlignment="Center"
+                            Command="{Binding CommandAddApiKey}"
+                            FontSize="10">
+                            <TextBlock Style="{StaticResource TextBlockPlus}" />
+                        </Button>
+                        <Button
+                            Grid.Column="4"
+                            Width="25"
+                            Height="25"
+                            Margin="5"
+                            Padding="0"
+                            VerticalContentAlignment="Center"
+                            Command="{Binding CommandRemoveApiKey}"
+                            FontSize="10">
+                            <TextBlock Style="{StaticResource TextBlockMinus}" />
+                        </Button>
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Text="Ключ" />
+                        <ComboBox
+                            Grid.Column="2"
+                            Margin="4"
+                            ItemsSource="{Binding ApiKeySettings.CollectionApiKeys}"
+                            SelectedItem="{Binding ApiKeySettings.CurrentKey}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ApiKey}" ToolTip="{Binding Description}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Grid Grid.Row="1" Grid.ColumnSpan="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                ItemsSource="{Binding ApiKeySettings.CurrentKey.CollectionDayWeekSettings}">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Дни">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <WrapPanel Orientation="Horizontal">
+                                                    <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
+                                                </WrapPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Лимит">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding MaxCount, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
 
-                        </DataGrid>
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                            </Grid.RowDefinitions>
-                            <TextBlock Margin="2,0,0,0" Text="Ключ:" />
-                            <TextBox
-                                Grid.Row="1"
-                                Margin="5,0,5,5"
-                                AcceptsReturn="True"
-                                MaxLines="5"
-                                Text="{Binding CurrentKey.Description}" />
+                            </DataGrid>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock Margin="2,0,0,0" Text="Ключ:" />
+                                <TextBox
+                                    Grid.Row="1"
+                                    Margin="5,0,5,5"
+                                    Text="{Binding ApiKeySettings.CurrentKey.ApiKey}" />
 
-                            <TextBlock
-                                Grid.Row="2"
-                                Margin="2,0,0,0"
-                                Text="Описание:" />
-                            <TextBox
-                                Grid.Row="3"
-                                Margin="5,0,5,5"
-                                AcceptsReturn="True"
-                                MaxLines="5"
-                                Text="{Binding CurrentKey.Description}" />
-
-                            <WrapPanel Grid.Row="4" Margin="10">
                                 <TextBlock
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Text="Лимит на сегодня: " />
-                                <TextBlock
-                                    Margin="25,0,0,0"
-                                    FontSize="32"
-                                    Text="{Binding CurrentKey.CurrentLimit, FallbackValue=0}" />
-                            </WrapPanel>
+                                    Grid.Row="2"
+                                    Margin="2,0,0,0"
+                                    Text="Описание:" />
+                                <TextBox
+                                    Grid.Row="3"
+                                    Margin="5,0,5,5"
+                                    AcceptsReturn="True"
+                                    MaxLines="5"
+                                    Text="{Binding ApiKeySettings.CurrentKey.Description}" />
 
-                            <WrapPanel Grid.Row="5" Margin="10">
                                 <TextBlock
-                                    VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Text="Потрачено сегодня:" />
-                                <TextBlock
-                                    Margin="18,0,0,0"
-                                    FontSize="32"
-                                    Text="{Binding CurrentKey.CurrentSpent, FallbackValue=0}" />
-                            </WrapPanel>
+                                    Grid.Row="4"
+                                    Margin="2,0,0,0"
+                                    Text="Ключ разработчика:" />
+                                <TextBox
+                                    Grid.Row="5"
+                                    Margin="5,0,5,5"
+                                    AcceptsReturn="True"
+                                    MaxLines="5"
+                                    Text="{Binding ApiKeySettings.CurrentKey.ApiKeyDevelop}" />
 
-                            <Button Grid.Row="6" Content="Сохранить" />
+                                <TextBlock
+                                    Grid.Row="6"
+                                    Margin="2,0,0,0"
+                                    Text="Ключ для получения статистики:" />
+                                <TextBox
+                                    Grid.Row="7"
+                                    Margin="5,0,5,5"
+                                    AcceptsReturn="True"
+                                    MaxLines="5"
+                                    Text="{Binding ApiKeySettings.CurrentKey.ApiKeyStat}" />
+
+                                <WrapPanel Grid.Row="8" Margin="10">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="Лимит на сегодня: " />
+                                    <TextBlock
+                                        Margin="25,0,0,0"
+                                        FontSize="32"
+                                        Text="{Binding ApiKeySettings.CurrentKey.CurrentLimit, FallbackValue=0}" />
+                                </WrapPanel>
+
+                                <WrapPanel Grid.Row="9" Margin="10">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="Потрачено " />
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="{Binding ApiKeySettings.CurrentKey.DateCurrentSpent, StringFormat=\{0:d\}}" />
+                                    <TextBlock
+                                        Margin="18,0,0,0"
+                                        FontSize="32"
+                                        Text="{Binding ApiKeySettings.CurrentKey.CurrentSpent, FallbackValue=0}" />
+
+                                    <TextBlock
+                                        Margin="100,0,0,0"
+                                        VerticalAlignment="Center"
+                                        FontSize="16"
+                                        Text="По данным с сервера:" />
+                                    <TextBlock
+                                        Margin="10,0,0,0"
+                                        FontSize="32"
+                                        Text="{Binding ApiKeySettings.CurrentKey.CurrentSpentServer, FallbackValue=0}" />
+                                    <Button
+                                        Margin="10,0,0,0"
+                                        Command="{Binding CommandUpdateCurrentSpentServer}"
+                                        Content="Обновить" />
+                                </WrapPanel>
+
+                                <Button
+                                    Grid.Row="10"
+                                    Command="{Binding CommandSaveApiKeys}"
+                                    Content="Сохранить" />
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
         <Button

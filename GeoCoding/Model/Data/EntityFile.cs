@@ -7,7 +7,7 @@ namespace GeoCoding
     {
         private string _nameFile = string.Empty;
         /// <summary>
-        /// 
+        /// Имя файла
         /// </summary>
         public string NameFile
         {

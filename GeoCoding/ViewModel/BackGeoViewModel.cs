@@ -19,10 +19,10 @@ namespace GeoCoding
 
             _notifications = _appSettings.GetNotification();
             _geoCodingModel = new GeoCodingModel(_appSettings.NetSettings, _appSettings.GeoCodSettings, null);
-            Ver = new VerificationViewModel(_appSettings.VerificationSettings);
         }
 
         #region PrivateField
+
         /// <summary>
         /// Настройки приложения
         /// </summary>
@@ -32,18 +32,26 @@ namespace GeoCoding
         /// Поле для хранения ссылки на модель
         /// </summary>
         private readonly MainWindowModel _model;
-        private VerificationViewModel _ver;
 
-        private INotifications _notifications;
         /// <summary>
         /// Поле для хранения ссылки на модельгеокодирования
         /// </summary>
-        private GeoCodingModel _geoCodingModel;
+        private readonly GeoCodingModel _geoCodingModel;
+
+        /// <summary>
+        /// Поле для хранения ссылки на модель информирования
+        /// </summary>
+        private readonly INotifications _notifications;
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду закрытия приложения
+        /// </summary>
         private RelayCommand<CancelEventArgs> _commandClosing;
 
         #endregion PrivateField
 
         #region PublicProperties
+       
         /// <summary>
         /// Настройки приложения
         /// </summary>
@@ -52,19 +60,15 @@ namespace GeoCoding
             get => _appSettings;
             set => Set(ref _appSettings, value);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        public VerificationViewModel Ver
-        {
-            get => _ver;
-            set => Set(ref _ver, value);
-        }
 
+        /// <summary>
+        /// Модель информирования
+        /// </summary>
         public INotifications Notifications => _notifications;
         #endregion PublicProperties
 
         #region Command
+
         /// <summary>
         /// Команда для обработки закрытия программы
         /// </summary>
@@ -88,6 +92,7 @@ namespace GeoCoding
                         //    }
                         //}
                     }));
+        
         #endregion Command
 
         #region PrivateMethod

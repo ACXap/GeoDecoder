@@ -12,7 +12,7 @@
     xmlns:uc="clr-namespace:GeoCoding.UserControls"
     x:Name="metroWindow"
     Title="Геокодирование"
-    Width="700"
+    Width="800"
     Height="600"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource AccentColorBrush}"
@@ -97,7 +97,7 @@
                                         </DataGridTemplateColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
-                                <Button Command="{Binding CommandSaveSettingsBackGeo}" Content="Сохранить" />
+                                <Button Command="{Binding AppSettings.CommandSaveGeneralSettings}" Content="Сохранить" />
                             </WrapPanel>
 
                             <WrapPanel Grid.Column="2" Orientation="Vertical">
@@ -125,7 +125,7 @@
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <Button Command="{Binding StartBackGeo}" Content="Запустить" />
+                            <!--<Button Command="{Binding StartBackGeo}" Content="Запустить" />
                             <Button Command="{Binding StopBackGeo}" Content="Остановить">
                                 <Button.Style>
                                     <Style BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}" TargetType="{x:Type Button}">
@@ -137,12 +137,12 @@
                                         </Style.Triggers>
                                     </Style>
                                 </Button.Style>
-                            </Button>
-                            <WrapPanel Grid.Row="1" Orientation="Horizontal">
+                            </Button>-->
+                            <!--<WrapPanel Grid.Row="1" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="До следующего запуска геокодирования: " />
                                 <TextBlock FontSize="15" Text="{Binding NextStartGeo}" />
                             </WrapPanel>
-                            <TextBlock Grid.Row="2" Text="{Binding Work}" />
+                            <TextBlock Grid.Row="2" Text="{Binding Work}" />-->
                         </Grid>
                     </Grid>
                 </ScrollViewer>

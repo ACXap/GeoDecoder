@@ -6,7 +6,7 @@ namespace GeoCoding
     /// <summary>
     /// Класс для хранения настроек дня недели
     /// </summary>
-    public class DayWeek: ViewModelBase
+    public class DayWeekWithTime : ViewModelBase
     {
         private bool _selected = false;
         /// <summary>
@@ -26,6 +26,15 @@ namespace GeoCoding
             get => _day;
             set => Set(ref _day, value);
         }
+        private DateTime _time;
+        /// <summary>
+        /// Время чего либо в этот день
+        /// </summary>
+        public DateTime Time
+        {
+            get => _time;
+            set => Set(ref _time, value);
+        }
         private int _maxCount = 0;
         /// <summary>
         /// Максимальное допустимое значение чего либо в этот день
@@ -34,6 +43,15 @@ namespace GeoCoding
         {
             get => _maxCount;
             set => Set(ref _maxCount, value);
+        }
+        private int _currentCount = 0;
+        /// <summary>
+        /// Текущее значение чего либо в этот день
+        /// </summary>
+        public int CurrentCount
+        {
+            get => _currentCount;
+            set => Set(ref _currentCount, value);
         }
     }
 }

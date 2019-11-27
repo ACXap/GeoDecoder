@@ -21,5 +21,6 @@
     <system:String x:Key="FontAwesomeAddress">&#xf276;</system:String>
     <system:String x:Key="FontAwesomeGeoCod">&#xf041;</system:String>
     <system:String x:Key="FontAwesomePlus">&#xf067;</system:String>
+    <system:String x:Key="FontAwesomeMinus">&#xf068;</system:String>
 
 </ResourceDictionary>
