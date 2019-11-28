@@ -94,6 +94,7 @@
     <Compile Include="CompactMainWindow.xaml.cs">
       <DependentUpon>CompactMainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ConverterApiKeyToString.cs" />
     <Compile Include="Converters\ConverterCollectionPolygonToString.cs" />
     <Compile Include="Converters\ConverterKintTypeToString.cs" />
     <Compile Include="Converters\ConverterPrecisionTypeToString.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Model\Data\EntityApiKey.cs" />
     <Compile Include="Model\Data\EntityFile.cs" />
     <Compile Include="Model\Data\EntityForCompare.cs" />
+    <Compile Include="Model\Data\EntityGeoCoder.cs" />
     <Compile Include="Model\Data\EntityResult.cs" />
     <Compile Include="Model\Data\Enumeration\SaveDataType.cs" />
     <Compile Include="Model\Data\Enumeration\FileType.cs" />

@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
+using GeoCoding.Model.Data;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace GeoCoding
 {
@@ -8,6 +10,10 @@ namespace GeoCoding
     /// </summary>
     public class GeoCodSettings : ViewModelBase
     {
+        /// <summary>
+        /// Поле для хранения имени файла для сохранения геокодеров
+        /// </summary>
+        private string _file = Directory.GetCurrentDirectory() + "//geocoder.dat";
         /// <summary>
         /// Поле для хранения параметра геокодировать все объекты
         /// </summary>
@@ -46,6 +52,14 @@ namespace GeoCoding
         /// Поле для хранения параметра сохранять ли статистику
         /// </summary>
         private bool _canSaveStatistics = true;
+        /// <summary>
+        /// Имя файла для сохранения геокодеров
+        /// </summary>
+        public string File
+        {
+            get => _file;
+            private set => Set(ref _file, value);
+        }
 
         /// <summary>
         /// Геокодировать все объекты
@@ -129,6 +143,16 @@ namespace GeoCoding
             set => Set(ref _geoService, value);
         }
 
+        private string _key = string.Empty;
+        /// <summary>
+        /// Апи-ключ
+        /// </summary>
+        public string Key
+        {
+            get => _key;
+            set => Set(ref _key, value);
+        }
+
         private bool _isMultipleRequests = true;
         /// <summary>
         /// 
@@ -189,7 +213,6 @@ namespace GeoCoding
             set => Set(ref _maxCountErrorForProxy, value);
         }
 
-
         private bool _canUsePolygon = false;
         /// <summary>
         /// 
@@ -201,8 +224,28 @@ namespace GeoCoding
             {
                 var oldValue = _canUsePolygon;
                 Set(ref _canUsePolygon, value);
-                RaisePropertyChanged("CanUsePolygon", oldValue, value, true);
+                RaisePropertyChanged(nameof(CanUsePolygon), oldValue, value, true);
             }
+        }
+
+        private ObservableCollection<EntityGeoCoder> _collectionGeoCoder;
+        /// <summary>
+        /// Коллекция геокодеров
+        /// </summary>
+        public ObservableCollection<EntityGeoCoder> CollectionGeoCoder
+        {
+            get => _collectionGeoCoder;
+            set => Set(ref _collectionGeoCoder, value);
+        }
+
+        private EntityGeoCoder _currentGeoCoder;
+        /// <summary>
+        /// Текущий геокодер
+        /// </summary>
+        public EntityGeoCoder CurrentGeoCoder
+        {
+            get => _currentGeoCoder;
+            set => Set(ref _currentGeoCoder, value);
         }
 
         /// <summary>
@@ -211,5 +254,3 @@ namespace GeoCoding
         public ReadOnlyCollection<string> CollectionGeoService => GeoCodingService.MainGeoService.AllNameService;
     }
 }
-
-

@@ -7,7 +7,7 @@ namespace GeoCoding
     /// </summary>
     public class NotificationSettings : ViewModelBase
     {
-        private bool _canNotificationSaveSettings = false;
+        private bool _canNotificationSaveSettings = true;
         /// <summary>
         /// Оповещать ли о успешном сохранении настроек
         /// </summary>
@@ -24,7 +24,7 @@ namespace GeoCoding
             }
         }
 
-        private bool _canNotificationSaveData = false;
+        private bool _canNotificationSaveData = true;
         /// <summary>
         /// Оповещать ли о сохранении файла
         /// </summary>
@@ -41,7 +41,7 @@ namespace GeoCoding
             }
         }
 
-        private bool _canNotificationProcessCancel = false;
+        private bool _canNotificationProcessCancel = true;
         /// <summary>
         /// Оповещать ли об отмене операции
         /// </summary>
@@ -92,7 +92,7 @@ namespace GeoCoding
             }
         }
 
-        private bool _canNotificationStatAlreadySave = false;
+        private bool _canNotificationStatAlreadySave = true;
         /// <summary>
         /// Оповещать если уже статистика была сохранена
         /// </summary>
@@ -109,7 +109,7 @@ namespace GeoCoding
             }
         }
 
-        private bool _canNotificationOnlyError = false;
+        private bool _canNotificationOnlyError = true;
         /// <summary>
         /// Все оповещения отключить, кроме ошибок
         /// </summary>
@@ -131,7 +131,7 @@ namespace GeoCoding
             }
         }
 
-        private bool _canNotificationExit = false;
+        private bool _canNotificationExit = true;
         /// <summary>
         /// Оповещать ли о закрытии
         /// </summary>

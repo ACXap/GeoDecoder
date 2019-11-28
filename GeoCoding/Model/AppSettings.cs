@@ -9,20 +9,22 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GeoCoding.Model
 {
     public class AppSettings : ViewModelBase
     {
-        public AppSettings(MainWindowModel model)
+        public AppSettings(MainWindowModel model, INotifications notifications)
         {
             _model = model;
             GetSettings();
 
-            _notifications = new NotificationsModel(NotificationSettings);
+            _notifications = notifications;
             _modelVer = new VerificationModel(_verificationSettings.VerificationServer);
 
             GetApiKey();
+            GetCollectionGeocoder();
 
             if (_netSettings.IsListProxy)
             {
@@ -387,21 +389,27 @@ namespace GeoCoding.Model
         _commandUpdateCurrentSpentServer ?? (_commandUpdateCurrentSpentServer = new RelayCommand(
                     () =>
                     {
-                        try
+                        Task.Factory.StartNew(() =>
                         {
-                            var a = StatGeoCodingService.GetStat(_apiKeySettings.CurrentKey.ApiKeyDevelop, _apiKeySettings.CurrentKey.ApiKeyStat);
-                            if (a != -1)
+                            try
                             {
-                                _apiKeySettings.CurrentKey.CurrentSpentServer = a;
+                                var a = StatGeoCodingService.GetStat(_apiKeySettings.CurrentKey.ApiKeyDevelop, _apiKeySettings.CurrentKey.ApiKeyStat);
+                                if (a != -1)
+                                {
+                                    _apiKeySettings.CurrentKey.CurrentSpentServer = a;
+                                }
                             }
-                        }
-                        catch(Exception ex)
-                        {
-                            _notifications.Notification(NotificationType.Error, ex.Message);
-                        }
-                        
-                        
-                    }));
+                            catch (Exception ex)
+                            {
+                                _notifications.Notification(NotificationType.Error, ex.Message);
+                            }
+                        });
+                    }, () =>
+                    {
+                        var a = _apiKeySettings.CurrentKey;
+                        return a != null && !string.IsNullOrEmpty(a.ApiKeyDevelop) && !string.IsNullOrEmpty(a.ApiKeyStat);
+                    }
+                    ));
 
         #endregion Command
 
@@ -448,6 +456,9 @@ namespace GeoCoding.Model
                 MaxCountError = p.MaxCountError,
                 CanUsePolygon = p.CanUsePolygon
             };
+
+            //var res = ProtectedDataDPAPI.DecryptData(p.CollectionGeocoder);
+            //if (res.Successfully) GeoCodSettings.Key = res.Object;
 
             FTPSettings = new FTPSettings()
             {
@@ -522,10 +533,10 @@ namespace GeoCoding.Model
                 {
                     listDayWeek.Add(new DayWeekWithTime() { Day = d });
                 }
+                var s = listDayWeek.First(x => x.Day == 0);
+                listDayWeek.Remove(s);
+                listDayWeek.Insert(listDayWeek.Count, s);
             }
-            var s = listDayWeek.First(x => x.Day == 0);
-            listDayWeek.Remove(s);
-            listDayWeek.Insert(listDayWeek.Count, s);
 
             GeneralSettings.ListDayWeek = listDayWeek;
 
@@ -552,14 +563,48 @@ namespace GeoCoding.Model
                 {
                     if (data != null && data.Any())
                     {
-                        var a = ObjectToStringJson.GetObjectOfstring<IEnumerable<EntityApiKey>>(data.First());
-                        if (a != null && a.Any())
+                        try
                         {
-                            ApiKeySettings.CollectionApiKeys = new ObservableCollection<EntityApiKey>(a);
+                            var a = ObjectToStringJson.GetObjectOfstring<IEnumerable<EntityApiKey>>(data.First());
+                            if (a != null && a.Any())
+                            {
+                                ApiKeySettings.CollectionApiKeys = new ObservableCollection<EntityApiKey>(a);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
                         }
                     }
                 }
             }, _apiKeySettings.File);
+        }
+
+        private void GetCollectionGeocoder()
+        {
+            _model.ReadFile((er, data) =>
+            {
+                if (er != null)
+                {
+                    _geoCodSettings.CollectionGeoCoder = new ObservableCollection<EntityGeoCoder>();
+                }
+                else
+                {
+                    if (data != null && data.Any())
+                    {
+                        try
+                        {
+                            var a = ObjectToStringJson.GetObjectOfstring<IEnumerable<EntityGeoCoder>>(data.First());
+                            if (a != null && a.Any())
+                            {
+                                _geoCodSettings.CollectionGeoCoder = new ObservableCollection<EntityGeoCoder>(a);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+                }
+            }, _geoCodSettings.File);
         }
 
         /// <summary>
@@ -720,7 +765,11 @@ namespace GeoCoding.Model
             var s = ObjectToStringJson.GetStringOfObject(_apiKeySettings.CollectionApiKeys);
             _model.SaveFile((e) =>
             {
-                if (e != null) _notifications.Notification(NotificationType.Error, e.Message);
+                if (e != null)
+                {
+                    _notifications.Notification(NotificationType.Error, e.Message);
+                    _apiKeySettings.CollectionKey = _apiKeySettings.CollectionApiKeys.Select(x => x.ApiKey).ToList();
+                }
             }, new string[] { s }, _apiKeySettings.File);
         }
 
@@ -744,6 +793,15 @@ namespace GeoCoding.Model
             }, str);
         }
 
+        private void SaveGeoCoder()
+        {
+            var s = ObjectToStringJson.GetStringOfObject(_geoCodSettings.CollectionGeoCoder);
+            _model.SaveFile((e) =>
+            {
+                if (e != null) _notifications.Notification(NotificationType.Error, e.Message);
+            }, new string[] { s }, _geoCodSettings.File);
+        }
+
         #endregion PrivateMethod
 
         #region PublicMethod
@@ -757,5 +815,30 @@ namespace GeoCoding.Model
         }
 
         #endregion PublicMethod
+
+        private RelayCommand _commandSaveGeoCoder;
+        public RelayCommand CommandSaveGeoCoder =>
+        _commandSaveGeoCoder ?? (_commandSaveGeoCoder = new RelayCommand(
+                    () =>
+                    {
+                        SaveGeoCoder();
+                    }));
+
+        private RelayCommand _commandAddGeoCoder;
+        public RelayCommand CommandAddGeoCoder =>
+        _commandAddGeoCoder ?? (_commandAddGeoCoder = new RelayCommand(
+                    () =>
+                    {
+                        if (_geoCodSettings.CollectionGeoCoder == null)
+                        {
+                            _geoCodSettings.CollectionGeoCoder = new ObservableCollection<EntityGeoCoder>();
+                        }
+                        int id = 0;
+                        if (_geoCodSettings.CollectionGeoCoder.Any())
+                        {
+                            id = _geoCodSettings.CollectionGeoCoder.Select(x => x.Id).Max() + 1;
+                        }
+                        _geoCodSettings.CollectionGeoCoder.Add(new EntityGeoCoder() { Id = id, Name = "Новый" });
+                    }));
     }
 }

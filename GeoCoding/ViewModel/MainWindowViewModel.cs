@@ -28,9 +28,10 @@ namespace GeoCoding
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
-            AppSettings = new AppSettings(_model);
+            Notifications = new NotificationsModel();
 
-            _notifications = _appSettings.GetNotification();
+            AppSettings = new AppSettings(_model, _notifications);
+            _notifications.SetSettings(_appSettings.NotificationSettings);
             _polygon = new PolygonViewModel(_notifications);
             _geoCodingModel = new GeoCodingModel(_appSettings.NetSettings, _appSettings.GeoCodSettings, _polygon);
             Stat = new StatisticsViewModel();
@@ -256,7 +257,11 @@ namespace GeoCoding
         /// <summary>
         /// Модель работы с оповещениями
         /// </summary>
-        public INotifications Notifications => _notifications;
+        public INotifications Notifications
+        {
+            get => _notifications;
+            set => Set(ref _notifications, value);
+        }
 
         /// <summary>
         /// Коллекция с данными

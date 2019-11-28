@@ -61,5 +61,10 @@ namespace GeoCoding
         /// <param name="body">Текст сообщения</param>
         /// <returns>Возвращает результат диалога</returns>
         bool NotificationWithConfirmation(NotificationType notificationType, string body);
+        /// <summary>
+        /// Установка настроек оповещения
+        /// </summary>
+        /// <param name="settings">Настройки оповещения</param>
+        void SetSettings(NotificationSettings settings);
     }
 }

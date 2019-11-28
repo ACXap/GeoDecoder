@@ -79,7 +79,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения ссылки на настройки оповещений
         /// </summary>
-        private readonly NotificationSettings _notificationSettings;
+        private NotificationSettings _notificationSettings;
         #endregion PrivateField
 
         #region PublicMethod
@@ -343,6 +343,16 @@ namespace GeoCoding
         public NotificationsModel(NotificationSettings settings)
         {
             _notificationSettings = settings;
+        }
+
+        public void SetSettings(NotificationSettings settings)
+        {
+            _notificationSettings = settings;
+        }
+
+        public NotificationsModel()
+        {
+            _notificationSettings = new NotificationSettings();
         }
     }
 }

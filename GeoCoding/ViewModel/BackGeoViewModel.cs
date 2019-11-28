@@ -15,9 +15,11 @@ namespace GeoCoding
         public BackGeoViewModel()
         {
             _model = new MainWindowModel();
-            AppSettings = new AppSettings(_model);
+            Notifications = new NotificationsModel();
 
-            _notifications = _appSettings.GetNotification();
+            AppSettings = new AppSettings(_model, _notifications);
+
+            _notifications.SetSettings(_appSettings.NotificationSettings);
             _geoCodingModel = new GeoCodingModel(_appSettings.NetSettings, _appSettings.GeoCodSettings, null);
         }
 
@@ -41,7 +43,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения ссылки на модель информирования
         /// </summary>
-        private readonly INotifications _notifications;
+        private INotifications _notifications;
 
         /// <summary>
         /// Поле для хранения ссылки на команду закрытия приложения
@@ -64,7 +66,11 @@ namespace GeoCoding
         /// <summary>
         /// Модель информирования
         /// </summary>
-        public INotifications Notifications => _notifications;
+        public INotifications Notifications
+        {
+            get => _notifications;
+            set => Set(ref _notifications, value);
+        }
         #endregion PublicProperties
 
         #region Command

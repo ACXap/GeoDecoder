@@ -1,5 +1,4 @@
 ﻿<UserControl
-    x:Class="GeoCoding.UserControls.FlyoutSettings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Behaviors="clr-namespace:MahApps.Metro.Behaviors;assembly=MahApps.Metro"
@@ -7,14 +6,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GeoCoding"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Converters="clr-namespace:GeoCoding.Converters"
+    x:Class="GeoCoding.UserControls.FlyoutSettings"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <d:DesignerProperties.DesignStyle>
-        <Style TargetType="UserControl">
-            <Setter Property="Background" Value="White" />
-        </Style>
-    </d:DesignerProperties.DesignStyle>
+    <UserControl.Resources>
+        <Converters:ConverterApiKeyToString x:Key="ConverterApiKeyToString"/>
+        <CollectionViewSource x:Key="ItemsGeoCoder" Source="{Binding GeoCodSettings.CollectionGeoService}" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -327,7 +327,7 @@
                             Grid.Column="2"
                             Margin="5"
                             Controls:TextBoxHelper.Watermark="10.10.10.10"
-                            Text="{Binding BDSettings.Server, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding BDSettings.Server, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock
                             Grid.Row="1"
@@ -339,7 +339,7 @@
                             Grid.Column="2"
                             Margin="5"
                             Controls:TextBoxHelper.Watermark="NameBD"
-                            Text="{Binding BDSettings.BDName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding BDSettings.BDName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock
                             Grid.Row="2"
@@ -351,7 +351,7 @@
                             Grid.Column="2"
                             Margin="5"
                             Controls:TextBoxHelper.Watermark="5432"
-                            Text="{Binding BDSettings.Port, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding BDSettings.Port, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock
                             Grid.Row="3"
@@ -362,7 +362,7 @@
                             Grid.Row="3"
                             Grid.Column="2"
                             Margin="5"
-                            Text="{Binding BDSettings.Login, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding BDSettings.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <TextBlock
                             Grid.Row="4"
@@ -373,7 +373,7 @@
                             Grid.Row="4"
                             Grid.Column="2"
                             Margin="5"
-                            Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Behaviors:PasswordBoxBindingBehavior.Password="{Binding BDSettings.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                         <WrapPanel
                             Grid.Row="5"
@@ -420,76 +420,76 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <CheckBox
-                            Grid.Row="2"
-                            Margin="5"
-                            Content="Геокодировать сразу после выбора файла"
-                            IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
-                        <StackPanel
-                            Grid.Row="1"
-                            Margin="10,0,0,0"
-                            Orientation="Horizontal">
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                Text="Количество ошибок до прекращения обработки данных"
-                                ToolTip="Количество подряд ошибок до прекращения обработки данных программой" />
-                            <TextBox
-                                Width="80"
-                                Margin="3"
-                                Controls:TextBoxHelper.Watermark="10-100"
-                                Text="{Binding GeoCodSettings.MaxCountError}" />
-                        </StackPanel>
-                        <Grid Grid.Row="3" Margin="5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Grid.Row="0"
-                                FontWeight="Bold"
-                                Text="Параллельная работа:" />
-                            <RadioButton
-                                x:Name="rbParallel"
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Margin="20,1,0,1"
-                                Content="Несколько запросов в параллель"
-                                IsChecked="{Binding GeoCodSettings.IsMultipleRequests}" />
-                            <TextBox
-                                Grid.Row="1"
-                                Grid.Column="2"
-                                Width="60"
-                                Margin="0,1"
-                                HorizontalAlignment="Left"
-                                VerticalContentAlignment="Center"
-                                Controls:TextBoxHelper.Watermark="1-5"
-                                IsEnabled="{Binding ElementName=rbParallel, Path=IsChecked}"
-                                Text="{Binding GeoCodSettings.CountRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <RadioButton
-                                x:Name="rbProxy"
-                                Grid.Row="2"
-                                Grid.Column="0"
-                                Margin="20,1,0,1"
-                                Content="Несколько прокси в параллель"
-                                IsChecked="{Binding GeoCodSettings.IsMultipleProxy}"
-                                IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
-                            <TextBox
-                                Grid.Row="2"
-                                Grid.Column="2"
-                                Width="60"
-                                Margin="0,1"
-                                HorizontalAlignment="Left"
-                                VerticalContentAlignment="Center"
-                                Controls:TextBoxHelper.Watermark="1-20"
-                                IsEnabled="{Binding ElementName=rbProxy, Path=IsChecked}"
-                                Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </Grid>
+                        <GroupBox Grid.Row="2" Header="Основные параметры">
+                            <WrapPanel Orientation="Vertical">
+                                <CheckBox
+                                    Margin="5"
+                                    Content="Геокодировать сразу после выбора файла"
+                                    IsChecked="{Binding GeoCodSettings.CanGeoCodAfterGetFile}" />
+                                <StackPanel Margin="10,0,0,0" Orientation="Horizontal">
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        Text="Количество ошибок до прекращения обработки данных"
+                                        ToolTip="Количество подряд ошибок до прекращения обработки данных программой" />
+                                    <TextBox
+                                        Width="80"
+                                        Margin="3"
+                                        Controls:TextBoxHelper.Watermark="10-100"
+                                        Text="{Binding GeoCodSettings.MaxCountError}" />
+                                </StackPanel>
+                                <Grid Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Row="0"
+                                        FontWeight="Bold"
+                                        Text="Параллельная работа:" />
+                                    <RadioButton
+                                        x:Name="rbParallel"
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="20,1,0,1"
+                                        Content="Несколько запросов в параллель"
+                                        IsChecked="{Binding GeoCodSettings.IsMultipleRequests}" />
+                                    <TextBox
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Width="60"
+                                        Margin="0,1"
+                                        HorizontalAlignment="Left"
+                                        VerticalContentAlignment="Center"
+                                        Controls:TextBoxHelper.Watermark="1-5"
+                                        IsEnabled="{Binding IsChecked, ElementName=rbParallel}"
+                                        Text="{Binding GeoCodSettings.CountRequests, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <RadioButton
+                                        x:Name="rbProxy"
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="20,1,0,1"
+                                        Content="Несколько прокси в параллель"
+                                        IsChecked="{Binding GeoCodSettings.IsMultipleProxy}"
+                                        IsEnabled="{Binding IsChecked, ElementName=rbListProxy}" />
+                                    <TextBox
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        Width="60"
+                                        Margin="0,1"
+                                        HorizontalAlignment="Left"
+                                        VerticalContentAlignment="Center"
+                                        Controls:TextBoxHelper.Watermark="1-20"
+                                        IsEnabled="{Binding IsChecked, ElementName=rbProxy}"
+                                        Text="{Binding GeoCodSettings.CountProxy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                            </WrapPanel>
+                        </GroupBox>
                         <GroupBox Grid.Row="6" Header="Какие объекты геокодировать">
                             <WrapPanel Orientation="Vertical">
                                 <RadioButton
@@ -515,7 +515,7 @@
                             </WrapPanel>
                         </GroupBox>
                         <GroupBox Grid.Row="4" Header="Использование полигонов">
-                            <WrapPanel Orientation="Vertical">
+                            <WrapPanel Margin="5" Orientation="Vertical">
                                 <CheckBox Content="Использовать ограничительные полигоны" IsChecked="{Binding GeoCodSettings.CanUsePolygon}" />
                             </WrapPanel>
                         </GroupBox>
@@ -543,7 +543,162 @@
                             </WrapPanel>
                         </GroupBox>
                         <GroupBox Grid.Row="0" Header="Какой используем геокодер">
-                            <WrapPanel Orientation="Horizontal">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    CanUserDeleteRows="True"
+                                    ItemsSource="{Binding GeoCodSettings.CollectionGeoCoder}">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Основной">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox HorizontalAlignment="Center" IsChecked="{Binding IsDefault}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn Binding="{Binding Name}" Header="Название" />
+                                        <DataGridTextColumn Binding="{Binding Description}" Header="Описание" />
+                                        <DataGridComboBoxColumn
+                                            Header="Геокодер"
+                                            ItemsSource="{Binding Source={StaticResource ItemsGeoCoder}}"
+                                            SelectedItemBinding="{Binding GeoCoder}" />
+                                        <DataGridTemplateColumn Header="Ключ">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Key}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                            <DataGridTemplateColumn.CellEditingTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox DisplayMemberPath="ApiKey"
+                                                        ItemsSource="{Binding DataContext.ApiKeySettings.CollectionApiKeys, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                        SelectedItem="{Binding Key, Converter={StaticResource ConverterApiKeyToString}}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellEditingTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <WrapPanel Grid.Column="1" Orientation="Vertical">
+                                    <Button
+                                        Margin="10"
+                                        Command="{Binding CommandAddGeoCoder}"
+                                        Content="Добавить гекодер" />
+                                    <Button
+                                        Margin="10"
+                                        Command="{Binding CommandSaveGeoCoder}"
+                                        Content="Сохранить" />
+                                </WrapPanel>
+
+                            </Grid>
+
+                            <!--<Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="5" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <TextBlock VerticalAlignment="Center" Text="Геокодер" />
+                                <ComboBox
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    ItemsSource="{Binding GeoCodSettings.СollectionGeoCoder}"
+                                    SelectedItem="{Binding CurrentGeoCoder}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}">
+                                                <TextBlock.ToolTip>
+                                                    <WrapPanel>
+                                                        <TextBlock Text="{Binding GeoCoder}" />
+                                                        <TextBlock Text="{Binding Description}" />
+                                                        <TextBlock Text="{Binding Key}" />
+                                                    </WrapPanel>
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button
+                                    Grid.Column="3"
+                                    Width="25"
+                                    Height="25"
+                                    Margin="5"
+                                    Padding="0"
+                                    VerticalContentAlignment="Center"
+                                    Command="{Binding CommandAddGeoCoder}"
+                                    FontSize="10">
+                                    <TextBlock Style="{StaticResource TextBlockPlus}" />
+                                </Button>
+                                <Button
+                                    Grid.Column="4"
+                                    Width="25"
+                                    Height="25"
+                                    Margin="5"
+                                    Padding="0"
+                                    VerticalContentAlignment="Center"
+                                    Command="{Binding CommandRemoveGeoCoder}"
+                                    FontSize="10">
+                                    <TextBlock Style="{StaticResource TextBlockMinus}" />
+                                </Button>
+                                <Grid Grid.Row="1" Grid.ColumnSpan="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Margin="2,0,0,0" Text="Пользовательское наименование геокодера:" />
+                                    <TextBox
+                                        Grid.Row="1"
+                                        Margin="5,0,5,5"
+                                        Text="{Binding GeoCodSettings.CurrentGeoCoder.Name}" />
+
+                                    <TextBlock
+                                        Grid.Row="2"
+                                        Margin="2,0,0,0"
+                                        Text="Геокодер:" />
+                                    <TextBox
+                                        Grid.Row="3"
+                                        Margin="5,0,5,5"
+                                        Text="{Binding GeoCodSettings.CurrentGeoCoder.GeoCoder}" />
+
+                                    <TextBlock
+                                        Grid.Row="4"
+                                        Margin="2,0,0,0"
+                                        Text="Описание:" />
+                                    <TextBox
+                                        Grid.Row="5"
+                                        Margin="5,0,5,5"
+                                        Text="{Binding GeoCodSettings.CurrentGeoCoder.Description}" />
+                                    <Button
+                                        Grid.Row="6"
+                                        Command="{Binding CommandSaveGeoCoder}"
+                                        Content="Запомнить выбор" />
+                                </Grid>
+                            </Grid>-->
+                            <!--<WrapPanel Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="2"
+                                    VerticalAlignment="Center"
+                                    Text="Геокодер:" />
                                 <ComboBox
                                     Margin="5,2"
                                     ItemsSource="{Binding GeoCodSettings.CollectionGeoService}"
@@ -554,19 +709,39 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <!--<TextBox
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="Какой ключ?"
+                                    ToolTip="{Binding GeoCodSettings.Key}" />
+                                <TextBlock
+                                    Margin="50,2,2,2"
+                                    VerticalAlignment="Center"
+                                    Text="Апи-ключ:" />
+                                <ComboBox
+                                    Width="250"
+                                    Margin="5,2"
+                                    ItemsSource="{Binding ApiKeySettings.CollectionApiKeys}"
+                                    SelectedItem="{Binding ApiKeySettings.CurrentKeyUse}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ApiKey}" ToolTip="{Binding Description}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button Command="{Binding CommandSaveGeoCoder}" Content="Запомнить выбор" />-->
+                            <!--<TextBox
                                     Width="250"
                                     VerticalAlignment="Center"
                                     Text="{Binding KeyApi, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
-                                <!--<Button Command="{Binding CommandGetKeyApi}" Content="Показать ключ" />
+                            <!--<Button Command="{Binding CommandGetKeyApi}" Content="Показать ключ" />
                                 <Button Command="{Binding CommandSetKeyApi}" Content="Установить ключ" />
                                 <Button Command="{Binding CommandResetLimit}" Content="Сбросить дневной лимит" />-->
-                            </WrapPanel>
+                            <!--</WrapPanel>-->
                         </GroupBox>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Проверка данных" Visibility="{Binding ElementName=cbVerModule, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <TabItem Header="Проверка данных" Visibility="{Binding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=cbVerModule}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
@@ -662,7 +837,7 @@
                         </StackPanel>
                         <StackPanel
                             Margin="30,0,0,0"
-                            IsEnabled="{Binding ElementName=rbManualProxy, Path=IsChecked}"
+                            IsEnabled="{Binding IsChecked, ElementName=rbManualProxy}"
                             Orientation="Horizontal">
                             <TextBlock
                                 Margin="3"
@@ -705,7 +880,7 @@
                                     <Style TargetType="{x:Type StackPanel}">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=rbListProxy, Path=IsChecked}" Value="True">
+                                            <DataTrigger Binding="{Binding IsChecked, ElementName=rbListProxy}" Value="True">
                                                 <Setter Property="Visibility" Value="Visible" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -715,7 +890,7 @@
                                     Margin="2"
                                     Command="{Binding CommandGetProxyList}"
                                     Content="Загрузить список"
-                                    IsEnabled="{Binding ElementName=rbListProxy, Path=IsChecked}" />
+                                    IsEnabled="{Binding IsChecked, ElementName=rbListProxy}" />
                                 <TextBlock VerticalAlignment="Center" Text="Количество адресов: " />
                                 <TextBlock
                                     Margin="2"
@@ -743,7 +918,7 @@
                             <DataGrid.Style>
                                 <Style BasedOn="{StaticResource DataGridMain}" TargetType="{x:Type DataGrid}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=rbListProxy, Path=IsChecked}" Value="False">
+                                        <DataTrigger Binding="{Binding IsChecked, ElementName=rbListProxy}" Value="False">
                                             <Setter Property="Visibility" Value="Collapsed" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding NetSettings.CollectionListProxy.Count}" Value="0">
@@ -911,104 +1086,115 @@
                                 </DataGrid.Columns>
 
                             </DataGrid>
-                            <Grid Grid.Column="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
-                                <TextBlock Margin="2,0,0,0" Text="Ключ:" />
-                                <TextBox
-                                    Grid.Row="1"
-                                    Margin="5,0,5,5"
-                                    Text="{Binding ApiKeySettings.CurrentKey.ApiKey}" />
-
-                                <TextBlock
-                                    Grid.Row="2"
-                                    Margin="2,0,0,0"
-                                    Text="Описание:" />
-                                <TextBox
-                                    Grid.Row="3"
-                                    Margin="5,0,5,5"
-                                    AcceptsReturn="True"
-                                    MaxLines="5"
-                                    Text="{Binding ApiKeySettings.CurrentKey.Description}" />
-
-                                <TextBlock
-                                    Grid.Row="4"
-                                    Margin="2,0,0,0"
-                                    Text="Ключ разработчика:" />
-                                <TextBox
-                                    Grid.Row="5"
-                                    Margin="5,0,5,5"
-                                    AcceptsReturn="True"
-                                    MaxLines="5"
-                                    Text="{Binding ApiKeySettings.CurrentKey.ApiKeyDevelop}" />
-
-                                <TextBlock
-                                    Grid.Row="6"
-                                    Margin="2,0,0,0"
-                                    Text="Ключ для получения статистики:" />
-                                <TextBox
-                                    Grid.Row="7"
-                                    Margin="5,0,5,5"
-                                    AcceptsReturn="True"
-                                    MaxLines="5"
-                                    Text="{Binding ApiKeySettings.CurrentKey.ApiKeyStat}" />
-
-                                <WrapPanel Grid.Row="8" Margin="10">
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        FontSize="16"
-                                        Text="Лимит на сегодня: " />
-                                    <TextBlock
-                                        Margin="25,0,0,0"
-                                        FontSize="32"
-                                        Text="{Binding ApiKeySettings.CurrentKey.CurrentLimit, FallbackValue=0}" />
-                                </WrapPanel>
-
-                                <WrapPanel Grid.Row="9" Margin="10">
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        FontSize="16"
-                                        Text="Потрачено " />
-                                    <TextBlock
-                                        VerticalAlignment="Center"
-                                        FontSize="16"
-                                        Text="{Binding ApiKeySettings.CurrentKey.DateCurrentSpent, StringFormat=\{0:d\}}" />
-                                    <TextBlock
-                                        Margin="18,0,0,0"
-                                        FontSize="32"
-                                        Text="{Binding ApiKeySettings.CurrentKey.CurrentSpent, FallbackValue=0}" />
+                            <Border
+                                Grid.Column="1"
+                                Margin="3"
+                                Padding="3"
+                                BorderBrush="{StaticResource AccentColorBrush}"
+                                BorderThickness="1">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Margin="2,0,0,0" Text="Ключ:" />
+                                    <TextBox
+                                        Grid.Row="1"
+                                        Margin="5,0,5,5"
+                                        Text="{Binding ApiKeySettings.CurrentKey.ApiKey}" />
 
                                     <TextBlock
-                                        Margin="100,0,0,0"
-                                        VerticalAlignment="Center"
-                                        FontSize="16"
-                                        Text="По данным с сервера:" />
+                                        Grid.Row="2"
+                                        Margin="2,0,0,0"
+                                        Text="Описание:" />
+                                    <TextBox
+                                        Grid.Row="3"
+                                        Margin="5,0,5,5"
+                                        AcceptsReturn="True"
+                                        MaxLines="5"
+                                        Text="{Binding ApiKeySettings.CurrentKey.Description}" />
+
                                     <TextBlock
-                                        Margin="10,0,0,0"
-                                        FontSize="32"
-                                        Text="{Binding ApiKeySettings.CurrentKey.CurrentSpentServer, FallbackValue=0}" />
+                                        Grid.Row="4"
+                                        Margin="2,0,0,0"
+                                        Text="Ключ разработчика:" />
+                                    <TextBox
+                                        Grid.Row="5"
+                                        Margin="5,0,5,5"
+                                        AcceptsReturn="True"
+                                        MaxLines="5"
+                                        Text="{Binding ApiKeySettings.CurrentKey.ApiKeyDevelop}" />
+
+                                    <TextBlock
+                                        Grid.Row="6"
+                                        Margin="2,0,0,0"
+                                        Text="Ключ для получения статистики:" />
+                                    <TextBox
+                                        Grid.Row="7"
+                                        Margin="5,0,5,5"
+                                        AcceptsReturn="True"
+                                        MaxLines="5"
+                                        Text="{Binding ApiKeySettings.CurrentKey.ApiKeyStat}" />
+
+                                    <WrapPanel
+                                        Grid.Row="8"
+                                        Margin="5"
+                                        HorizontalAlignment="Center">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="Лимит на сегодня: " />
+                                        <TextBlock
+                                            Margin="25,0,0,0"
+                                            FontSize="32"
+                                            Text="{Binding ApiKeySettings.CurrentKey.CurrentLimit, FallbackValue=0}" />
+                                    </WrapPanel>
+
+                                    <WrapPanel Grid.Row="9" Margin="5">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="Потрачено " />
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="{Binding ApiKeySettings.CurrentKey.DateCurrentSpent, StringFormat=\{0:d\}}" />
+                                        <TextBlock
+                                            Margin="18,0,0,0"
+                                            FontSize="32"
+                                            Text="{Binding ApiKeySettings.CurrentKey.CurrentSpent, FallbackValue=0}" />
+
+                                        <TextBlock
+                                            Margin="100,0,0,0"
+                                            VerticalAlignment="Center"
+                                            FontSize="16"
+                                            Text="По данным с сервера:" />
+                                        <TextBlock
+                                            Margin="10,0,0,0"
+                                            FontSize="32"
+                                            Text="{Binding ApiKeySettings.CurrentKey.CurrentSpentServer, FallbackValue=0}" />
+                                        <Button
+                                            Margin="10,0,0,0"
+                                            Command="{Binding CommandUpdateCurrentSpentServer}"
+                                            Content="Обновить" />
+                                    </WrapPanel>
+
                                     <Button
-                                        Margin="10,0,0,0"
-                                        Command="{Binding CommandUpdateCurrentSpentServer}"
-                                        Content="Обновить" />
-                                </WrapPanel>
+                                        Grid.Row="10"
+                                        Command="{Binding CommandSaveApiKeys}"
+                                        Content="Сохранить" />
+                                </Grid>
+                            </Border>
 
-                                <Button
-                                    Grid.Row="10"
-                                    Command="{Binding CommandSaveApiKeys}"
-                                    Content="Сохранить" />
-                            </Grid>
                         </Grid>
                     </Grid>
                 </ScrollViewer>
