@@ -17,9 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.FTPService", "Geo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.VerificationService", "GeoDecoder.Verification\GeoCoding.VerificationService.csproj", "{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.FormKey", "GeoCoding.FormKey\GeoCoding.FormKey.csproj", "{A412E237-3222-4A0D-BCE7-D079F1F78F6A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCodingLocalBD", "GeoCodingLocalBD\GeoCodingLocalBD.csproj", "{856A02FB-0088-421C-A3C4-F1CA6DA3EF80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.GeoCodingLimitsService", "GeoCoding.GeoCodingLimitsService\GeoCoding.GeoCodingLimitsService.csproj", "{24D0C231-5E67-4A9C-B3AD-53F2ECFCA938}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.Entities", "GeoCoding.Entities\GeoCoding.Entities.csproj", "{8D32D6EB-FE92-4293-BE78-21309E2797E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.Test", "GeoCoding.Test\GeoCoding.Test.csproj", "{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,14 +59,22 @@ Global
 		{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A412E237-3222-4A0D-BCE7-D079F1F78F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A412E237-3222-4A0D-BCE7-D079F1F78F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A412E237-3222-4A0D-BCE7-D079F1F78F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A412E237-3222-4A0D-BCE7-D079F1F78F6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{856A02FB-0088-421C-A3C4-F1CA6DA3EF80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{856A02FB-0088-421C-A3C4-F1CA6DA3EF80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{856A02FB-0088-421C-A3C4-F1CA6DA3EF80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{856A02FB-0088-421C-A3C4-F1CA6DA3EF80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24D0C231-5E67-4A9C-B3AD-53F2ECFCA938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24D0C231-5E67-4A9C-B3AD-53F2ECFCA938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24D0C231-5E67-4A9C-B3AD-53F2ECFCA938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24D0C231-5E67-4A9C-B3AD-53F2ECFCA938}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D32D6EB-FE92-4293-BE78-21309E2797E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D32D6EB-FE92-4293-BE78-21309E2797E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D32D6EB-FE92-4293-BE78-21309E2797E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D32D6EB-FE92-4293-BE78-21309E2797E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

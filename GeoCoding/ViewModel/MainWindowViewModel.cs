@@ -201,6 +201,11 @@ namespace GeoCoding
         /// Поле для хранения ссылки на команду сохранение статистики
         /// </summary>
         private RelayCommand _commandSaveStatistics;
+        
+        /// <summary>
+        /// Поле для хранения ссылки на команду открытия папки
+        /// </summary>
+        private RelayCommand<string> _commandOpenFolder;
 
         /// <summary>
         /// Поле для хранения ссылки на команду копирования ссылки на запрос
@@ -509,12 +514,12 @@ namespace GeoCoding
         /// <summary>
         /// Команда открытия папки
         /// </summary>
-        //public RelayCommand<string> CommandOpenFolder =>
-        //_commandOpenFolder ?? (_commandOpenFolder = new RelayCommand<string>(
-        //            str =>
-        //            {
-        //                OpenFolder(str);
-        //            }, str => !string.IsNullOrEmpty(str)));
+        public RelayCommand<string> CommandOpenFolder =>
+        _commandOpenFolder ?? (_commandOpenFolder = new RelayCommand<string>(
+                    str =>
+                    {
+                        OpenFolder(str);
+                    }, str => !string.IsNullOrEmpty(str)));
 
         /// <summary>
         /// Команда для получения координат для множества объектов
@@ -778,6 +783,26 @@ namespace GeoCoding
         #region PrivateMethod
 
         /// <summary>
+        /// Открыть папку
+        /// </summary>
+        /// <param name="str">Путь к файлу или папке</param>
+        public void OpenFolder(string str)
+        {
+            if (str == "AppFolder")
+            {
+                str = Environment.CurrentDirectory;
+            }
+            if (str == "StatFolder")
+            {
+                str = _appSettings.FilesSettings.FolderStatistics;
+            }
+            _model.OpenFolder(e =>
+            {
+                _notifications.Notification(NotificationType.Error, e);
+            }, str);
+        }
+
+        /// <summary>
         /// Метод для получения данных из файла
         /// </summary>
         private void GetDataFromFile()
@@ -819,26 +844,6 @@ namespace GeoCoding
                 }
             }, _collectionGeoCod, _appSettings.FilesSettings.FileOutput, parSize, _appSettings.FilesSettings.CanCopyFileOutputToFtp, _appSettings.FTPSettings);
         }
-
-        /// <summary>
-        /// Открыть папку
-        /// </summary>
-        /// <param name="str">Путь к файлу или папке</param>
-        //private void OpenFolder(string str)
-        //{
-        //    if (str == "AppFolder")
-        //    {
-        //        str = Environment.CurrentDirectory;
-        //    }
-        //    if (str == "StatFolder")
-        //    {
-        //        str = _appSettings.FilesSettings.FolderStatistics;
-        //    }
-        //    _model.OpenFolder(e =>
-        //    {
-        //        _notifications.Notification(NotificationType.Error, e);
-        //    }, str);
-        //}
 
         /// <summary>
         /// Метод установки файла с данными
@@ -1000,7 +1005,8 @@ namespace GeoCoding
             {
                 // Отображаем индикацию работы процесса
                 IsStartGeoCoding = true;
-                _stat.Start(_appSettings.GeoCodSettings.GeoService);
+                //_stat.Start(_appSettings.GeoCodSettings.GeoService);
+                _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder);
 
                 _geoCodingModel.GetAllGeoCod(e =>
                {
@@ -1270,7 +1276,8 @@ namespace GeoCoding
 
                 int countData = data.Count();
 
-                _stat.Start(_appSettings.GeoCodSettings.GeoService);
+                //_stat.Start(_appSettings.GeoCodSettings.GeoService);
+                _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder);
 
                 var error = await _geoCodingModel.GetAllGeoCod(data);
 
@@ -1472,39 +1479,39 @@ namespace GeoCoding
                         }
                     }));
 
-        private RelayCommand _commandGetKeyApi;
-        public RelayCommand CommandGetKeyApi =>
-        _commandGetKeyApi ?? (_commandGetKeyApi = new RelayCommand(
-                    () =>
-                    {
-                        KeyApi = _geoCodingModel.GetKeyApi();
-                    }));
+        //private RelayCommand _commandGetKeyApi;
+        //public RelayCommand CommandGetKeyApi =>
+        //_commandGetKeyApi ?? (_commandGetKeyApi = new RelayCommand(
+        //            () =>
+        //            {
+        //                KeyApi = _geoCodingModel.GetKeyApi();
+        //            }));
 
-        private RelayCommand _commandSetKeyApi;
-        public RelayCommand CommandSetKeyApi =>
-        _commandSetKeyApi ?? (_commandSetKeyApi = new RelayCommand(
-                    () =>
-                    {
-                        _geoCodingModel.SetKeyApi(_keyApi);
-                    }));
+        //private RelayCommand _commandSetKeyApi;
+        //public RelayCommand CommandSetKeyApi =>
+        //_commandSetKeyApi ?? (_commandSetKeyApi = new RelayCommand(
+        //            () =>
+        //            {
+        //                _geoCodingModel.SetKeyApi(_keyApi);
+        //            }));
 
-        private string _keyApi = string.Empty;
-        /// <summary>
-        /// 
-        /// </summary>
-        public string KeyApi
-        {
-            get => _keyApi;
-            set => Set(ref _keyApi, value);
-        }
+        //private string _keyApi = string.Empty;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public string KeyApi
+        //{
+        //    get => _keyApi;
+        //    set => Set(ref _keyApi, value);
+        //}
 
-        private RelayCommand _commandResetLimit;
-        public RelayCommand CommandResetLimit =>
-        _commandResetLimit ?? (_commandResetLimit = new RelayCommand(
-                    () =>
-                    {
-                        _geoCodingModel.ResetLimit();
-                    }));
+        //private RelayCommand _commandResetLimit;
+        //public RelayCommand CommandResetLimit =>
+        //_commandResetLimit ?? (_commandResetLimit = new RelayCommand(
+        //            () =>
+        //            {
+        //                _geoCodingModel.ResetLimit();
+        //            }));
 
         #endregion NeedToMakeOut
     }

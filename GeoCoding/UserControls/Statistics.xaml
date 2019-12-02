@@ -33,7 +33,7 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>
-                        <Button Command="{Binding DataContext.CommandOpenFolder, ElementName=gb}" CommandParameter="StatFolder">
+                        <Button Command="{Binding DataContext.AppSettings.CommandOpenFolder, ElementName=gb}" CommandParameter="StatFolder">
                             <Button.Template>
                                 <ControlTemplate>
                                     <TextBlock Margin="5,0" Style="{StaticResource TextBlockFolder}" />

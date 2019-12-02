@@ -15,7 +15,13 @@
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock Text="Тут текст сообщения будет" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="32" Foreground="Red"/>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="32"
+                            FontWeight="Bold"
+                            Foreground="Red"
+                            Text="Тут текст сообщения будет" />
                     </DataTemplate>
                 </Setter.Value>
             </Setter>

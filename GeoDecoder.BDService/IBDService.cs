@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeoCoding.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace GeoCoding.BDService
@@ -14,12 +15,12 @@ namespace GeoCoding.BDService
         /// <param name="callback">Функция обратного вызова,с параметрами: множество объектов, ошибка</param>
         /// <param name="conSettings">Свойства подключения</param>
         /// <param name="query">Пользовательский запрос</param>
-        void ExecuteUserQuery(Action<IEnumerable<Entity>, Exception> callback, ConnectionSettings conSettings, string query);
+        void ExecuteUserQuery(Action<IEnumerable<Entity>, Exception> callback, ConnectionSettingsDb conSettings, string query);
         /// <summary>
         /// Метод для проверки соединения с базой данных 
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: ошибка</param>
         /// <param name="conSettings">Свойства подключения</param>
-        void ConnectBD(Action<Exception> callback, ConnectionSettings conSettings);
+        void ConnectBD(Action<Exception> callback, ConnectionSettingsDb conSettings);
     }
 }

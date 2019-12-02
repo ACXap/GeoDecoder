@@ -1,18 +1,18 @@
 ﻿<UserControl
+    x:Class="GeoCoding.UserControls.FlyoutSettings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Behaviors="clr-namespace:MahApps.Metro.Behaviors;assembly=MahApps.Metro"
     xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:Converters="clr-namespace:GeoCoding.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GeoCoding"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Converters="clr-namespace:GeoCoding.Converters"
-    x:Class="GeoCoding.UserControls.FlyoutSettings"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <Converters:ConverterApiKeyToString x:Key="ConverterApiKeyToString"/>
+        <Converters:ConverterApiKeyToString x:Key="ConverterApiKeyToString" />
         <CollectionViewSource x:Key="ItemsGeoCoder" Source="{Binding GeoCodSettings.CollectionGeoService}" />
     </UserControl.Resources>
     <Grid>
@@ -575,7 +575,8 @@
                                             </DataGridTemplateColumn.CellTemplate>
                                             <DataGridTemplateColumn.CellEditingTemplate>
                                                 <DataTemplate>
-                                                    <ComboBox DisplayMemberPath="ApiKey"
+                                                    <ComboBox
+                                                        DisplayMemberPath="ApiKey"
                                                         ItemsSource="{Binding DataContext.ApiKeySettings.CollectionApiKeys, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
                                                         SelectedItem="{Binding Key, Converter={StaticResource ConverterApiKeyToString}}" />
                                                 </DataTemplate>

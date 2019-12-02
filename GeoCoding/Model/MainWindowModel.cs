@@ -1,4 +1,5 @@
 ﻿using GeoCoding.BDService;
+using GeoCoding.Entities;
 using GeoCoding.FileService;
 using GeoCoding.FTPService;
 using GeoCoding.Helpers;
@@ -699,7 +700,7 @@ namespace GeoCoding
                 _bdService.ConnectBD(e =>
                 {
                     error = e;
-                }, new BDService.ConnectionSettings()
+                }, new ConnectionSettingsDb()
                 {
                     Server = bds.Server,
                     BDName = bds.BDName,
@@ -759,7 +760,7 @@ namespace GeoCoding
                     {
                         error = e;
                     }
-                }, new BDService.ConnectionSettings()
+                }, new ConnectionSettingsDb()
                 {
                     Server = bds.Server,
                     BDName = bds.BDName,

@@ -32,13 +32,17 @@ namespace GeoCoding.GeoCodingService
         /// </summary>
         public static ReadOnlyCollection<string> AllNameService => new ReadOnlyCollection<string>(AllService.Select(x => x.Name).ToList());
         /// <summary>
-        /// Метод получения геокодера по имени, если не найден, возвращает первый из коллекции
+        /// Метод получения геокодера по имени
         /// </summary>
         /// <param name="name">Имя геосервиса</param>
+        /// <param name="key">Апи - ключ</param>
         /// <returns>Геосервис</returns>
-        public static IGeoCodingService GetServiceByName(string name)
+        public static IGeoCodingService GetServiceByName(string name, string key)
         {
-            return AllService.FirstOrDefault(x => x.Name == name) ?? AllService.FirstOrDefault();
+            var g = AllService.FirstOrDefault(x => x.Name == name);
+            g.SetKeyApi(key);
+
+            return g;
         }
     }
 }

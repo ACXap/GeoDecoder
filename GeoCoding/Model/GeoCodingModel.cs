@@ -17,7 +17,7 @@ namespace GeoCoding
     public class GeoCodingModel
     {
         #region PrivateField
-        private const string _limitFile = "limit.dat";
+        //private const string _limitFile = "limit.dat";
         private const string _errorGeoCodNotFound = "Адрес не найден";
         private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
         private const string _errorLimit = "Ваш лимит исчерпан";
@@ -26,39 +26,39 @@ namespace GeoCoding
         private IGeoCodingService _geoCodingService;
         private CancellationTokenSource _cts;
 
-        private Limit _limitGeo;
-        private int _countGeo;
-        private int _maxCountGeo = 10000;
+        //private Limit _limitGeo;
+        //private int _countGeo;
+        //private int _maxCountGeo = 10000;
 
         private readonly NetSettings _netSettings;
         private readonly GeoCodSettings _geoCodSettings;
         private readonly PolygonViewModel _polygon;
         private readonly object _lock = new object();
 
-        private void GetLimitCount()
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
+        //private void GetLimitCount()
+        //{
+        //    BinaryFormatter formatter = new BinaryFormatter();
 
-            using (var f = new FileStream(_limitFile, FileMode.OpenOrCreate))
-            {
-                if (f.Length > 0)
-                {
-                    _limitGeo = formatter.Deserialize(f) as Limit;
-                    if (_limitGeo != null && _limitGeo.Date.Date == DateTime.Now.Date)
-                    {
-                        _countGeo = _limitGeo.Count;
-                    }
-                    else
-                    {
-                        _countGeo = 0;
-                    }
-                }
-                else
-                {
-                    _countGeo = 0;
-                }
-            }
-        }
+        //    using (var f = new FileStream(_limitFile, FileMode.OpenOrCreate))
+        //    {
+        //        if (f.Length > 0)
+        //        {
+        //            _limitGeo = formatter.Deserialize(f) as Limit;
+        //            if (_limitGeo != null && _limitGeo.Date.Date == DateTime.Now.Date)
+        //            {
+        //                _countGeo = _limitGeo.Count;
+        //            }
+        //            else
+        //            {
+        //                _countGeo = 0;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            _countGeo = 0;
+        //        }
+        //    }
+        //}
         #endregion PrivateField
 
         #region PrivateMethod
@@ -70,25 +70,26 @@ namespace GeoCoding
         /// <returns>Возвращает ошибку</returns>
         private Exception SetGeoCod(EntityGeoCod data, ConnectSettings cs)
         {
-            if (_geoCodSettings.GeoService.ToLower().Contains("pay"))
-            {
-                if (_countGeo >= _maxCountGeo)
-                {
-                    var e = new Exception(_errorLimit);
-                    SetError(data, e.Message);
-                    data.CountResult = 0;
+            //if (_geoCodSettings.GeoService.ToLower().Contains("pay"))
+            //{
+            //    if (_countGeo >= _maxCountGeo)
+            //    {
+            //        var e = new Exception(_errorLimit);
+            //        SetError(data, e.Message);
+            //        data.CountResult = 0;
 
-                    return e;
-                }
+            //        return e;
+            //    }
 
-                Interlocked.Increment(ref _countGeo);
-            }
+            //    Interlocked.Increment(ref _countGeo);
+            //}
 
             Exception error = null;
             string errorMsg = string.Empty;
 
             data.Status = StatusType.Processed;
-            data.GeoCoder = _geoCodSettings.GeoService;
+            //data.GeoCoder = _geoCodSettings.GeoService;
+            data.GeoCoder = _geoCodSettings.CurrentGeoCoder.GeoCoder;
 
             _geoCodingService.GetGeoCod((d, e) =>
             {
@@ -353,7 +354,10 @@ namespace GeoCoding
         /// <param name="geoService">Ссылка на геосервис</param>
         private void SetGeoService()
         {
-            _geoCodingService = MainGeoService.GetServiceByName(_geoCodSettings.GeoService);
+            //_geoCodingService = MainGeoService.GetServiceByName(_geoCodSettings.GeoService);
+            var g = _geoCodSettings.CurrentGeoCoder;
+
+            _geoCodingService = MainGeoService.GetServiceByName(g.GeoCoder, g.Key);
         }
 
         /// <summary>
@@ -511,7 +515,7 @@ namespace GeoCoding
                 }, _cts.Token);
             }
 
-            SaveLimit();
+            //SaveLimit();
             callback(error);
         }
 
@@ -532,26 +536,26 @@ namespace GeoCoding
                 error = SetGeoCod(data, GetConnect());
             });
 
-            SaveLimit();
+            //SaveLimit();
             callback(error);
         }
 
-        private void SaveLimit()
-        {
-            if (_limitGeo == null)
-            {
-                _limitGeo = new Limit();
-            }
+        //private void SaveLimit()
+        //{
+        //    if (_limitGeo == null)
+        //    {
+        //        _limitGeo = new Limit();
+        //    }
 
-            _limitGeo.Date = DateTime.Now;
-            _limitGeo.Count = _countGeo;
+        //    _limitGeo.Date = DateTime.Now;
+        //    _limitGeo.Count = _countGeo;
 
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (var f = new FileStream(_limitFile, FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(f, _limitGeo);
-            }
-        }
+        //    BinaryFormatter formatter = new BinaryFormatter();
+        //    using (var f = new FileStream(_limitFile, FileMode.OpenOrCreate))
+        //    {
+        //        formatter.Serialize(f, _limitGeo);
+        //    }
+        //}
 
         /// <summary>
         /// Метод для получения урл-адреса запроса
@@ -697,23 +701,23 @@ namespace GeoCoding
 
         #endregion PublicMethod
 
-        public string GetKeyApi()
-        {
-            SetGeoService();
-            return _geoCodingService.GetKeyApi();
-        }
+        //public string GetKeyApi()
+        //{
+        //    SetGeoService();
+        //    return _geoCodingService.GetKeyApi();
+        //}
 
-        public void SetKeyApi(string key)
-        {
-            SetGeoService();
-            _geoCodingService.SetKeyApi(key);
-        }
+        //public void SetKeyApi(string key)
+        //{
+        //    SetGeoService();
+        //    _geoCodingService.SetKeyApi(key);
+        //}
 
-        public void ResetLimit()
-        {
-            _limitGeo.Count=0;
-            _countGeo = 0;
-        }
+        //public void ResetLimit()
+        //{
+        //    _limitGeo.Count=0;
+        //    _countGeo = 0;
+        //}
 
         public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings, PolygonViewModel polygon)
         {
@@ -721,7 +725,7 @@ namespace GeoCoding
             _geoCodSettings = geoCodSettings;
             _polygon = polygon;
             
-            GetLimitCount();
+            //GetLimitCount();
         }
     }
 }

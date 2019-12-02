@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 using System;
 
 namespace GeoCoding
@@ -6,12 +7,14 @@ namespace GeoCoding
     /// <summary>
     /// Класс для хранения настроек дня недели
     /// </summary>
+    [JsonObject(MemberSerialization.OptIn)]
     public class DayWeek: ViewModelBase
     {
         private bool _selected = false;
         /// <summary>
         /// Выбран ли день недели
         /// </summary>
+        [JsonProperty("Selected")]
         public bool Selected
         {
             get => _selected;
@@ -21,6 +24,7 @@ namespace GeoCoding
         /// <summary>
         /// Имя дня недели
         /// </summary>
+        [JsonProperty("Day")]
         public DayOfWeek Day
         {
             get => _day;
@@ -30,6 +34,7 @@ namespace GeoCoding
         /// <summary>
         /// Максимальное допустимое значение чего либо в этот день
         /// </summary>
+        [JsonProperty("MaxCount")]
         public int MaxCount
         {
             get => _maxCount;

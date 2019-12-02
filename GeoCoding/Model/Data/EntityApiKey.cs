@@ -1,15 +1,19 @@
 ﻿using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 namespace GeoCoding.Model.Data
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class EntityApiKey:ViewModelBase
     {
         private string _apiKey = string.Empty;
+
         /// <summary>
         /// Сам ключ
         /// </summary>
+        [JsonProperty("ApiKey")]
         public string ApiKey
         {
             get => _apiKey;
@@ -20,6 +24,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Ключ для получения статистики
         /// </summary>
+        [JsonProperty("ApiKeyStat")]
         public string ApiKeyStat
         {
             get => _apiKeyStat;
@@ -30,6 +35,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Ключ разработчика
         /// </summary>
+        [JsonProperty("ApiKeyDevelop")]
         public string ApiKeyDevelop
         {
             get => _apiKeyDevelop;
@@ -40,6 +46,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Описание ключа
         /// </summary>
+        [JsonProperty("Description")]
         public string Description
         {
             get => _description;
@@ -90,6 +97,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Настройки по дням недели
         /// </summary>
+        [JsonProperty("CollectionDayWeekSettings")]
         public List<DayWeek> CollectionDayWeekSettings
         {
             get => _collectionDayWeekSettings;

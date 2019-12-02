@@ -25,6 +25,7 @@ namespace GeoCoding.Model
 
             GetApiKey();
             GetCollectionGeocoder();
+            SetCurrentGeocoder();
 
             if (_netSettings.IsListProxy)
             {
@@ -411,6 +412,43 @@ namespace GeoCoding.Model
                     }
                     ));
 
+        /// <summary>
+        /// Поле для хранения ссылки на команду сохранения геокодера
+        /// </summary>
+        private RelayCommand _commandSaveGeoCoder;
+        /// <summary>
+        /// Команда сохранения геокодеров
+        /// </summary>
+        public RelayCommand CommandSaveGeoCoder =>
+        _commandSaveGeoCoder ?? (_commandSaveGeoCoder = new RelayCommand(
+                    () =>
+                    {
+                        SaveGeoCoder();
+                    }));
+       
+        /// <summary>
+        /// Поле для хранения ссылки на команду добавления нового геокодера
+        /// </summary>
+        private RelayCommand _commandAddGeoCoder;
+        /// <summary>
+        /// Команда добавления новго геокодера
+        /// </summary>
+        public RelayCommand CommandAddGeoCoder =>
+        _commandAddGeoCoder ?? (_commandAddGeoCoder = new RelayCommand(
+                    () =>
+                    {
+                        if (_geoCodSettings.CollectionGeoCoder == null)
+                        {
+                            _geoCodSettings.CollectionGeoCoder = new ObservableCollection<EntityGeoCoder>();
+                        }
+                        int id = 0;
+                        if (_geoCodSettings.CollectionGeoCoder.Any())
+                        {
+                            id = _geoCodSettings.CollectionGeoCoder.Select(x => x.Id).Max() + 1;
+                        }
+                        _geoCodSettings.CollectionGeoCoder.Add(new EntityGeoCoder() { Id = id, Name = "Новый" });
+                    }));
+       
         #endregion Command
 
         #region PrivateMethod
@@ -448,7 +486,6 @@ namespace GeoCoding.Model
                 CanOpenFolderAfter = p.CanOpenFolderAfter,
                 CanGeoCodAfterGetFile = p.CanGeoCodAfterGetFile,
                 CanSaveStatistics = p.CanSaveStatistics,
-                GeoService = p.GeoService,
                 IsMultipleProxy = p.IsMultipleProxy,
                 IsMultipleRequests = p.IsMultipleRequests,
                 CountProxy = p.CountProxy,
@@ -469,10 +506,10 @@ namespace GeoCoding.Model
             };
 
             var res = ProtectedDataDPAPI.DecryptData(p.FtpServer);
-            if (res.Successfully) FTPSettings.Server = res.Object;
+            if (res.Successfully) FTPSettings.Server = res.Entity;
 
             res = ProtectedDataDPAPI.DecryptData(p.FtpPassword);
-            if (res.Successfully) FTPSettings.Password = res.Object;
+            if (res.Successfully) FTPSettings.Password = res.Entity;
 
             BDSettings = new BDSettings()
             {
@@ -483,10 +520,10 @@ namespace GeoCoding.Model
             };
 
             res = ProtectedDataDPAPI.DecryptData(p.BDServer);
-            if (res.Successfully) BDSettings.Server = res.Object;
+            if (res.Successfully) BDSettings.Server = res.Entity;
 
             res = ProtectedDataDPAPI.DecryptData(p.BDPassword);
-            if (res.Successfully) BDSettings.Password = res.Object;
+            if (res.Successfully) BDSettings.Password = res.Entity;
 
             NotificationSettings = new NotificationSettings()
             {
@@ -543,12 +580,15 @@ namespace GeoCoding.Model
             VerificationSettings = new VerificationSettings();
 
             res = ProtectedDataDPAPI.DecryptData(p.VerificationServer);
-            if (res.Successfully) VerificationSettings.VerificationServer = res.Object;
+            if (res.Successfully) VerificationSettings.VerificationServer = res.Entity;
 
             //res = ProtectedDataDPAPI.DecryptData(p.VerificationServerFactor);
             //if (res.Successfully) VerificationSettings.VerificationServerFactor = res.Object;
         }
 
+        /// <summary>
+        /// Получение данных о апи-ключах из файла
+        /// </summary>
         private void GetApiKey()
         {
             ApiKeySettings = new ApiKeySettings();
@@ -578,7 +618,10 @@ namespace GeoCoding.Model
                 }
             }, _apiKeySettings.File);
         }
-
+        
+        /// <summary>
+        /// Получение данных огеокодерах из файла
+        /// </summary>
         private void GetCollectionGeocoder()
         {
             _model.ReadFile((er, data) =>
@@ -649,10 +692,10 @@ namespace GeoCoding.Model
                 p.FtpFolderInput = _ftpSettings.FolderInput;
 
                 var res = ProtectedDataDPAPI.EncryptData(_ftpSettings.Password);
-                if (res.Successfully) p.FtpPassword = res.Object;
+                if (res.Successfully) p.FtpPassword = res.Entity;
 
                 res = ProtectedDataDPAPI.EncryptData(_ftpSettings.Server);
-                if (res.Successfully) p.FtpServer = res.Object;
+                if (res.Successfully) p.FtpServer = res.Entity;
             }
 
             if (_geoCodSettings != null)
@@ -663,7 +706,6 @@ namespace GeoCoding.Model
                 p.CanOpenFolderAfter = _geoCodSettings.CanOpenFolderAfter;
                 p.CanSaveDataAsFinished = _geoCodSettings.CanSaveDataAsFinished;
                 p.CanSaveDataAsTemp = _geoCodSettings.CanSaveDataAsTemp;
-                p.GeoService = _geoCodSettings.GeoService;
                 p.IsMultipleProxy = _geoCodSettings.IsMultipleProxy;
                 p.IsMultipleRequests = _geoCodSettings.IsMultipleRequests;
                 p.CountProxy = _geoCodSettings.CountProxy;
@@ -704,16 +746,16 @@ namespace GeoCoding.Model
                 p.BDLogin = _BDSettings.Login;
 
                 var res = ProtectedDataDPAPI.EncryptData(_BDSettings.Password);
-                if (res.Successfully) p.BDPassword = res.Object;
+                if (res.Successfully) p.BDPassword = res.Entity;
 
                 res = ProtectedDataDPAPI.EncryptData(_BDSettings.Server);
-                if (res.Successfully) p.BDServer = res.Object;
+                if (res.Successfully) p.BDServer = res.Entity;
             }
 
             if (_verificationSettings != null)
             {
                 var res = ProtectedDataDPAPI.EncryptData(_verificationSettings.VerificationServer);
-                if (res.Successfully) p.VerificationServer = res.Object;
+                if (res.Successfully) p.VerificationServer = res.Entity;
 
                 //res = ProtectedDataDPAPI.EncryptData(_verificationSettings.VerificationServerFactor);
                 //if (res.Successfully) p.VerificationServerFactor = res.Object;
@@ -793,6 +835,9 @@ namespace GeoCoding.Model
             }, str);
         }
 
+        /// <summary>
+        /// Метод сохранения геокодеров
+        /// </summary>
         private void SaveGeoCoder()
         {
             var s = ObjectToStringJson.GetStringOfObject(_geoCodSettings.CollectionGeoCoder);
@@ -800,6 +845,14 @@ namespace GeoCoding.Model
             {
                 if (e != null) _notifications.Notification(NotificationType.Error, e.Message);
             }, new string[] { s }, _geoCodSettings.File);
+        }
+
+        /// <summary>
+        /// Установка текущего геокодера
+        /// </summary>
+        private void SetCurrentGeocoder()
+        {
+            _geoCodSettings.CurrentGeoCoder = _geoCodSettings.CollectionGeoCoder.First(x => x.IsDefault);
         }
 
         #endregion PrivateMethod
@@ -815,30 +868,5 @@ namespace GeoCoding.Model
         }
 
         #endregion PublicMethod
-
-        private RelayCommand _commandSaveGeoCoder;
-        public RelayCommand CommandSaveGeoCoder =>
-        _commandSaveGeoCoder ?? (_commandSaveGeoCoder = new RelayCommand(
-                    () =>
-                    {
-                        SaveGeoCoder();
-                    }));
-
-        private RelayCommand _commandAddGeoCoder;
-        public RelayCommand CommandAddGeoCoder =>
-        _commandAddGeoCoder ?? (_commandAddGeoCoder = new RelayCommand(
-                    () =>
-                    {
-                        if (_geoCodSettings.CollectionGeoCoder == null)
-                        {
-                            _geoCodSettings.CollectionGeoCoder = new ObservableCollection<EntityGeoCoder>();
-                        }
-                        int id = 0;
-                        if (_geoCodSettings.CollectionGeoCoder.Any())
-                        {
-                            id = _geoCodSettings.CollectionGeoCoder.Select(x => x.Id).Max() + 1;
-                        }
-                        _geoCodSettings.CollectionGeoCoder.Add(new EntityGeoCoder() { Id = id, Name = "Новый" });
-                    }));
     }
 }

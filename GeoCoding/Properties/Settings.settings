@@ -92,9 +92,6 @@
     <Setting Name="BDPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="GeoService" Type="System.String" Scope="User">
-      <Value Profile="(Default)">YANDEX</Value>
-    </Setting>
     <Setting Name="CanNotificationSaveSettings" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

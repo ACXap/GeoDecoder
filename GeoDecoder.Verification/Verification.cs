@@ -10,7 +10,7 @@ namespace GeoCoding.VerificationService
         private readonly BasicHttpBinding _binding = new BasicHttpBinding()
         {
             Name = "SearchAddress",
-            MaxReceivedMessageSize = 1000000,
+            MaxReceivedMessageSize = 1500000,
             SendTimeout = new TimeSpan(0, 8, 0),
             ReceiveTimeout = new TimeSpan(0, 8, 0),
             OpenTimeout = new TimeSpan(0, 8, 0),

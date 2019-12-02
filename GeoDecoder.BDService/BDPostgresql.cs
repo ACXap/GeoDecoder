@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using GeoCoding.Entities;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +13,7 @@ namespace GeoCoding.BDService
         /// <param name="callback">Функция обратного вызова,с параметрами: множество объектов, ошибка</param>
         /// <param name="conSettings">Свойства подключения</param>
         /// <param name="query">Пользовательский запрос</param>
-        public void ExecuteUserQuery(Action<IEnumerable<Entity>, Exception> callback, ConnectionSettings conSettings, string query)
+        public void ExecuteUserQuery(Action<IEnumerable<Entity>, Exception> callback, ConnectionSettingsDb conSettings, string query)
         {
             Exception error = null;
             List<Entity> data = new List<Entity>();
@@ -63,7 +64,7 @@ namespace GeoCoding.BDService
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметрами: ошибка</param>
         /// <param name="conSettings">Свойства подключения</param>
-        public void ConnectBD(Action<Exception> callback, ConnectionSettings conSettings)
+        public void ConnectBD(Action<Exception> callback, ConnectionSettingsDb conSettings)
         {
             Exception error = null;
 
@@ -87,7 +88,7 @@ namespace GeoCoding.BDService
         /// </summary>
         /// <param name="conSettings">Свойства подключения</param>
         /// <returns>Строка подключения</returns>
-        private string GetConnectionString(ConnectionSettings conSettings)
+        private string GetConnectionString(ConnectionSettingsDb conSettings)
         {
             return $"Server={conSettings.Server};Port={conSettings.Port};User Id={conSettings.Login};Password={conSettings.Password};Database={conSettings.BDName};Timeout=300;CommandTimeout=300;";
         }

@@ -46,7 +46,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения названия геосервиса
         /// </summary>
-        private string _geoService = "YANDEX";
+        //private string _geoService = "YANDEX";
 
         /// <summary>
         /// Поле для хранения параметра сохранять ли статистику
@@ -137,11 +137,11 @@ namespace GeoCoding
         /// <summary>
         /// Название геосервиса
         /// </summary>
-        public string GeoService
-        {
-            get => _geoService;
-            set => Set(ref _geoService, value);
-        }
+        //public string GeoService
+        //{
+        //    get => _geoService;
+        //    set => Set(ref _geoService, value);
+        //}
 
         private string _key = string.Empty;
         /// <summary>
