@@ -751,5 +751,65 @@ namespace GeoCoding.Properties {
                 this["UseScriptBackGeo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BDAccessoryServer {
+            get {
+                return ((string)(this["BDAccessoryServer"]));
+            }
+            set {
+                this["BDAccessoryServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BDAccessoryName {
+            get {
+                return ((string)(this["BDAccessoryName"]));
+            }
+            set {
+                this["BDAccessoryName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int BDAccessoryPort {
+            get {
+                return ((int)(this["BDAccessoryPort"]));
+            }
+            set {
+                this["BDAccessoryPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BDAccessoryLogin {
+            get {
+                return ((string)(this["BDAccessoryLogin"]));
+            }
+            set {
+                this["BDAccessoryLogin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BDAccessoryPassword {
+            get {
+                return ((string)(this["BDAccessoryPassword"]));
+            }
+            set {
+                this["BDAccessoryPassword"] = value;
+            }
+        }
     }
 }

@@ -1,13 +1,16 @@
 ﻿using GalaSoft.MvvmLight;
+using Newtonsoft.Json;
 
 namespace GeoCoding.Model.Data
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class EntityGeoCoder : ViewModelBase
     {
         private int _id = 0;
         /// <summary>
         /// Идентификатор геокодера
         /// </summary>
+        [JsonProperty("Id")]
         public int Id
         {
             get => _id;
@@ -17,6 +20,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Пользовательское имя геокодера
         /// </summary>
+        [JsonProperty("Name")]
         public string Name
         {
             get => _name;
@@ -26,6 +30,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Название геокодера
         /// </summary>
+        [JsonProperty("GeoCoder")]
         public string GeoCoder
         {
             get => _geoCoder;
@@ -35,6 +40,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Описание
         /// </summary>
+        [JsonProperty("Description")]
         public string Description
         {
             get => _description;
@@ -44,6 +50,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Апи-ключ
         /// </summary>
+        [JsonProperty("Key")]
         public string Key
         {
             get => _key;
@@ -53,6 +60,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Использовать по умолчанию
         /// </summary>
+        [JsonProperty("IsDefault")]
         public bool IsDefault
         {
             get => _isDefault;

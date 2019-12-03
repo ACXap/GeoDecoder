@@ -2,12 +2,8 @@
 using GeoCoding.Entities;
 using GeoCoding.FileService;
 using GeoCoding.FTPService;
-using GeoCoding.Helpers;
-using GeoCoding.Model.Data;
-using GeoCoding.Model.Data.Enumeration;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 

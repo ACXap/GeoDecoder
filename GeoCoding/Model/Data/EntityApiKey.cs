@@ -103,5 +103,25 @@ namespace GeoCoding.Model.Data
             get => _collectionDayWeekSettings;
             set => Set(ref _collectionDayWeekSettings, value);
         }
+
+        private StatusSyncType _statusSync = StatusSyncType.NotSync;
+        /// <summary>
+        /// Статус синхронизации апи-ключа с базой данных
+        /// </summary>
+        public StatusSyncType StatusSync
+        {
+            get => _statusSync;
+            set => Set(ref _statusSync, value);
+        }
+
+        private string _error = string.Empty;
+        /// <summary>
+        /// Ошибка синхронизации
+        /// </summary>
+        public string Error
+        {
+            get => _error;
+            set => Set(ref _error, value);
+        }
     }
 }

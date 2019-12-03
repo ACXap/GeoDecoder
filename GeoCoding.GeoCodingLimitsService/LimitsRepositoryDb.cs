@@ -63,15 +63,23 @@ namespace GeoCoding.GeoCodingLimitsService
                         cmd.Parameters.AddWithValue("key", key);
                         using (var reader = cmd.ExecuteReader())
                         {
-                            var k = new ApiKey();
-                            while (reader.Read())
+                            if (reader.HasRows)
                             {
-                                k.Id = reader.GetInt32(0);
-                                k.Key = reader.GetString(1);
-                                k.Description = reader.IsDBNull(2) ? reader.GetString(2) : string.Empty;
+                                var k = new ApiKey();
+                                while (reader.Read())
+                                {
+                                    k.Id = reader.GetInt32(0);
+                                    k.Key = reader.GetString(1);
+                                    k.Description = reader.IsDBNull(2) ? reader.GetString(2) : string.Empty;
+                                }
+                                result.Entity = k;
+                                result.Successfully = true;
                             }
-                            result.Entity = k;
-                            result.Successfully = true;
+                            else
+                            {
+                                result.Successfully = false;
+                                result.Error = new Exception("Key not found");
+                            }
 
                             reader.Close();
                             conn.Close();
@@ -102,7 +110,7 @@ namespace GeoCoding.GeoCodingLimitsService
                     {
                         cmd.Parameters.AddWithValue("key", key);
                         result.Entity = cmd.ExecuteNonQuery();
-                        result.Successfully = true;
+                        result.Successfully = result.Entity > 0;
                         conn.Close();
                     }
                 }
@@ -157,22 +165,22 @@ namespace GeoCoding.GeoCodingLimitsService
                 {
                     conn.Open();
                     string selectApiKey = $"Select k.key, l.value, l.date_time From {TABLE_KEY} k" +
-                        $"left join {TABLE_LIMITS} l on l.id=k.id Where k.key=@key";
+                        $" left join {TABLE_LIMITS} l on l.id_key=k.id Where k.key=@key";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(selectApiKey, conn))
                     {
                         cmd.Parameters.AddWithValue("key", key);
                         using (var reader = cmd.ExecuteReader())
                         {
-                            var list = new List<UseLimits>();
-                            while (reader.Read())
+                            if (reader.HasRows)
                             {
-                                var k = reader.IsDBNull(0) ? reader.GetString(0) : string.Empty;
-                                if (!string.IsNullOrEmpty(k))
+                                var list = new List<UseLimits>();
+                                while (reader.Read())
                                 {
-                                    var isExistValue = reader.IsDBNull(1);
+                                    var isExistValue = !reader.IsDBNull(1);
                                     if (isExistValue)
                                     {
+                                        var k = reader.GetString(0);
                                         var value = reader.GetInt32(1);
                                         var date = reader.GetDateTime(2);
                                         var u = new UseLimits()
@@ -184,15 +192,15 @@ namespace GeoCoding.GeoCodingLimitsService
                                         list.Add(u);
                                     }
                                 }
-                                else
-                                {
-                                    result.Successfully = false;
-                                    result.Error = new Exception("Key not found");
-                                }
-                            }
 
-                            result.Entities = list;
-                            result.Successfully = true;
+                                result.Entities = list;
+                                result.Successfully = true;
+                            }
+                            else
+                            {
+                                result.Successfully = false;
+                                result.Error = new Exception("Key not found");
+                            }
 
                             reader.Close();
                             conn.Close();
@@ -208,6 +216,7 @@ namespace GeoCoding.GeoCodingLimitsService
 
             return result;
         }
+
         public EntityResult<UseLimits> GetLastUseUpLimits(string key)
         {
             EntityResult<UseLimits> result = new EntityResult<UseLimits>();
@@ -218,21 +227,21 @@ namespace GeoCoding.GeoCodingLimitsService
                 {
                     conn.Open();
                     string selectApiKey = $"Select k.key, l.value, l.date_time From {TABLE_KEY} k" +
-                        $"left join {TABLE_LIMITS} l on l.id=k.id Where k.key=@key order by l.date_time desc limit 1";
+                        $" left join {TABLE_LIMITS} l on l.id_key=k.id Where k.key=@key order by l.date_time desc limit 1";
 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(selectApiKey, conn))
                     {
                         cmd.Parameters.AddWithValue("key", key);
                         using (var reader = cmd.ExecuteReader())
                         {
-                            while (reader.Read())
+                            if (reader.HasRows)
                             {
-                                var k = reader.IsDBNull(0) ? reader.GetString(0) : string.Empty;
-                                if (!string.IsNullOrEmpty(k))
+                                while (reader.Read())
                                 {
-                                    var isExistValue = reader.IsDBNull(1);
+                                    var isExistValue = !reader.IsDBNull(1);
                                     if (isExistValue)
                                     {
+                                        var k = reader.GetString(0);
                                         var value = reader.GetInt32(1);
                                         var date = reader.GetDateTime(2);
                                         var u = new UseLimits()
@@ -244,17 +253,51 @@ namespace GeoCoding.GeoCodingLimitsService
                                         result.Entity = u;
                                         result.Successfully = true;
                                     }
+                                    else
+                                    {
+                                        result.Entity = new UseLimits() {Key = key, Value = 0 };
+                                        result.Successfully = true;
+                                    }
                                 }
-                                else
-                                {
-                                    result.Successfully = false;
-                                    result.Error = new Exception("Key not found");
-                                }
+                            }
+                            else
+                            {
+                                result.Successfully = false;
+                                result.Error = new Exception("Key not found");
                             }
 
                             reader.Close();
                             conn.Close();
                         }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Successfully = false;
+                result.Error = ex;
+            }
+
+            return result;
+        }
+
+
+        public EntityResult<bool> CheckRepository()
+        {
+            EntityResult<bool> result = new EntityResult<bool>();
+
+            try
+            {
+                using (NpgsqlConnection conn = new NpgsqlConnection(_connectString))
+                {
+                    conn.Open();
+                    string existsTable = $"SELECT '{TABLE_KEY}'::regclass";
+
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(existsTable, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                        result.Successfully = true;
+                        conn.Close();
                     }
                 }
             }

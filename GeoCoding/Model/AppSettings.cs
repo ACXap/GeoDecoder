@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
+using GeoCoding.GeoCodingLimitsService;
 using GeoCoding.GeoCodingService;
 using GeoCoding.Helpers;
 using GeoCoding.Model.Data;
@@ -24,13 +25,14 @@ namespace GeoCoding.Model
             _modelVer = new VerificationModel(_verificationSettings.VerificationServer);
 
             GetApiKey();
+
+            _limitsModel = GetLimitsModel();
+
+            _limitsModel.SetStatusSyncApiKey(_apiKeySettings.CollectionApiKeys);
+
             GetCollectionGeocoder();
             SetCurrentGeocoder();
-
-            if (_netSettings.IsListProxy)
-            {
-                GetProxyList();
-            }
+            GetProxyList();
 
             Messenger.Default.Register<PropertyChangedMessage<bool>>(this, data =>
             {
@@ -46,12 +48,14 @@ namespace GeoCoding.Model
         VerificationModel _modelVer;
         INotifications _notifications;
         NetProxyModel _netProxyModel = new NetProxyModel();
+        LimitsModel _limitsModel;
 
         private ApiKeySettings _apiKeySettings;
         private FilesSettings _filesSettings;
         private GeoCodSettings _geoCodSettings;
         private FTPSettings _ftpSettings;
         private BDSettings _BDSettings;
+        private BDSettings _BDAccessorySettings;
         private GeneralSettings _generalSettings;
         private NotificationSettings _notificationSettings;
         private NetSettings _netSettings;
@@ -103,6 +107,15 @@ namespace GeoCoding.Model
         {
             get => _BDSettings;
             set => Set(ref _BDSettings, value);
+        }
+
+        /// <summary>
+        /// Настройки по работе с вспомогательной базой данных
+        /// </summary>
+        public BDSettings BDAccessorySettings
+        {
+            get => _BDAccessorySettings;
+            set => Set(ref _BDAccessorySettings, value);
         }
 
         /// <summary>
@@ -186,7 +199,37 @@ namespace GeoCoding.Model
                                 BDSettings.Error = string.Empty;
                             }
                         }, BDSettings);
-                    }, () => !string.IsNullOrEmpty(_BDSettings.Server) || !string.IsNullOrEmpty(_BDSettings.BDName) || _BDSettings.StatusConnect == StatusType.Processed));
+                    }, () => !string.IsNullOrEmpty(_BDSettings.Server) && !string.IsNullOrEmpty(_BDSettings.BDName) && _BDSettings.StatusConnect != StatusType.Processed));
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду проверки подключения к вспомогательной базе данных
+        /// </summary>
+        private RelayCommand _commandCheckConnectAccessoryBD;
+        /// <summary>
+        /// Команда для проверки подключения к вспомогательной базе данных
+        /// </summary>
+        public RelayCommand CommandCheckConnectAccessoryBD =>
+        _commandCheckConnectAccessoryBD ?? (_commandCheckConnectAccessoryBD = new RelayCommand(
+                    () =>
+                    {
+                        BDAccessorySettings.StatusConnect = StatusType.Processed;
+                        BDAccessorySettings.Error = string.Empty;
+                        Task.Factory.StartNew(() =>
+                        {
+                            var result = _limitsModel.CheckRepo();
+                            if (result.Successfully)
+                            {
+                                BDAccessorySettings.StatusConnect = StatusType.OK;
+                                BDAccessorySettings.Error = string.Empty;
+                            }
+                            else
+                            {
+                                BDAccessorySettings.StatusConnect = StatusType.Error;
+                                BDAccessorySettings.Error = result.Error.Message;
+                            }
+                        });
+
+                    }, () => !string.IsNullOrEmpty(_BDAccessorySettings.Server) && !string.IsNullOrEmpty(_BDAccessorySettings.BDName) && _BDAccessorySettings.StatusConnect != StatusType.Processed));
 
         /// <summary>
         /// Поле для хранения ссылки на команду проверки соединения с фтп-сервером
@@ -425,7 +468,7 @@ namespace GeoCoding.Model
                     {
                         SaveGeoCoder();
                     }));
-       
+
         /// <summary>
         /// Поле для хранения ссылки на команду добавления нового геокодера
         /// </summary>
@@ -448,10 +491,44 @@ namespace GeoCoding.Model
                         }
                         _geoCodSettings.CollectionGeoCoder.Add(new EntityGeoCoder() { Id = id, Name = "Новый" });
                     }));
-       
+
+        /// <summary>
+        /// Поле для хранения ссылки на команду синхронизации ключа с базой
+        /// </summary>
+        private RelayCommand _commandSyncApiKey;
+        /// <summary>
+        /// Команда для синхронизации ключа с базой
+        /// </summary>
+        public RelayCommand CommandSyncApiKey =>
+        _commandSyncApiKey ?? (_commandSyncApiKey = new RelayCommand(
+        async () =>
+        {
+            var result = await _limitsModel.SyncApiKey(_apiKeySettings.CurrentKey);
+            if (!result.Successfully && result.Error != null)
+            {
+                _notifications.Notification(NotificationType.Error, result.Error);
+            }
+        }));
+
         #endregion Command
 
         #region PrivateMethod
+
+        /// <summary>
+        /// Метод для получения модуля по работе с лимитами
+        /// </summary>
+        /// <returns></returns>
+        private LimitsModel GetLimitsModel()
+        {
+            return new LimitsModel(new LimitsRepositoryDb(new Entities.ConnectionSettingsDb()
+            {
+                BDName = _BDAccessorySettings.BDName,
+                Login = _BDAccessorySettings.Login,
+                Password = _BDAccessorySettings.Password,
+                Port = _BDAccessorySettings.Port,
+                Server = _BDAccessorySettings.Server
+            }));
+        }
 
         /// <summary>
         /// Метод для получения настроек приложения
@@ -515,8 +592,7 @@ namespace GeoCoding.Model
             {
                 BDName = p.BDName,
                 Port = p.BDPort,
-                Login = p.BDLogin,
-                Password = p.BDPassword
+                Login = p.BDLogin
             };
 
             res = ProtectedDataDPAPI.DecryptData(p.BDServer);
@@ -524,6 +600,19 @@ namespace GeoCoding.Model
 
             res = ProtectedDataDPAPI.DecryptData(p.BDPassword);
             if (res.Successfully) BDSettings.Password = res.Entity;
+
+            BDAccessorySettings = new BDSettings()
+            {
+                BDName = p.BDAccessoryName,
+                Port = p.BDAccessoryPort,
+                Login = p.BDAccessoryLogin
+            };
+
+            res = ProtectedDataDPAPI.DecryptData(p.BDAccessoryServer);
+            if (res.Successfully) BDAccessorySettings.Server = res.Entity;
+
+            res = ProtectedDataDPAPI.DecryptData(p.BDAccessoryPassword);
+            if (res.Successfully) BDAccessorySettings.Password = res.Entity;
 
             NotificationSettings = new NotificationSettings()
             {
@@ -618,7 +707,7 @@ namespace GeoCoding.Model
                 }
             }, _apiKeySettings.File);
         }
-        
+
         /// <summary>
         /// Получение данных огеокодерах из файла
         /// </summary>
@@ -655,6 +744,8 @@ namespace GeoCoding.Model
         /// </summary>
         private void GetProxyList()
         {
+            if (!_netSettings.IsListProxy) return;
+
             _netProxyModel.GetProxyList((d, e) =>
             {
                 if (e == null)
@@ -750,6 +841,19 @@ namespace GeoCoding.Model
 
                 res = ProtectedDataDPAPI.EncryptData(_BDSettings.Server);
                 if (res.Successfully) p.BDServer = res.Entity;
+            }
+
+            if (_BDAccessorySettings != null)
+            {
+                p.BDAccessoryPort = _BDAccessorySettings.Port;
+                p.BDAccessoryName = _BDAccessorySettings.BDName;
+                p.BDAccessoryLogin = _BDAccessorySettings.Login;
+
+                var res = ProtectedDataDPAPI.EncryptData(_BDAccessorySettings.Password);
+                if (res.Successfully) p.BDAccessoryPassword = res.Entity;
+
+                res = ProtectedDataDPAPI.EncryptData(_BDAccessorySettings.Server);
+                if (res.Successfully) p.BDAccessoryServer = res.Entity;
             }
 
             if (_verificationSettings != null)
@@ -868,5 +972,26 @@ namespace GeoCoding.Model
         }
 
         #endregion PublicMethod
+
+        private RelayCommand _commandUpdateCurrentSpentDB;
+        public RelayCommand CommandUpdateCurrentSpentDB =>
+        _commandUpdateCurrentSpentDB ?? (_commandUpdateCurrentSpentDB = new RelayCommand(
+        () =>
+        {
+            Task.Factory.StartNew(() =>
+            {
+                if (_apiKeySettings.CurrentKey.StatusSync == StatusSyncType.Sync)
+                {
+                    _apiKeySettings.CurrentKey.StatusSync = StatusSyncType.SyncProcessed;
+                    var r = _limitsModel.GetLastUseLimits(_apiKeySettings.CurrentKey.ApiKey);
+                    if (r.Successfully)
+                    {
+                        _apiKeySettings.CurrentKey.CurrentSpent = r.Entity.Value;
+                        _apiKeySettings.CurrentKey.DateCurrentSpent = r.Entity.DateTime;
+                    }
+                    _apiKeySettings.CurrentKey.StatusSync = StatusSyncType.Sync;
+                }
+            });
+        }));
     }
 }

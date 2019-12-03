@@ -15,6 +15,17 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="ProgressRingSync" TargetType="{x:Type Controls:ProgressRing}">
+        <Setter Property="IsActive" Value="False" />
+        <Setter Property="Visibility" Value="Collapsed" />
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="{x:Static local:StatusSyncType.SyncProcessed}">
+                <Setter Property="IsActive" Value="True" />
+                <Setter Property="Visibility" Value="Visible" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="ProgressRingGetGeo" TargetType="{x:Type Controls:ProgressRing}">
         <Setter Property="IsActive" Value="False" />
         <Setter Property="Visibility" Value="Collapsed" />

@@ -102,6 +102,7 @@
     <Compile Include="Converters\ConverterStatGeoToProgressState.cs" />
     <Compile Include="Converters\ConverterStatToProgress.cs" />
     <Compile Include="ExMethods\ExtensionMethods.cs" />
+    <Compile Include="Helpers\HashHelper.cs" />
     <Compile Include="Helpers\FlowDocumentFromFile.cs" />
     <Compile Include="Helpers\ObjectToStringJson.cs" />
     <Compile Include="Helpers\PersistGroupExpandedStateBehavior.cs" />
@@ -113,8 +114,8 @@
     <Compile Include="Model\Data\Enumeration\SaveDataType.cs" />
     <Compile Include="Model\Data\Enumeration\FileType.cs" />
     <Compile Include="Model\Data\Enumeration\NotificationType.cs" />
+    <Compile Include="Model\Data\Enumeration\StatusSyncType.cs" />
     <Compile Include="Model\Data\GeoCod.cs" />
-    <Compile Include="Model\Data\Limit.cs" />
     <Compile Include="Model\Data\ProxyEntity.cs" />
     <Compile Include="Model\AppSettings.cs" />
     <Compile Include="Model\Data\Settings\ApiKeySettings.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Model\Data\Enumeration\StatusType.cs" />
     <Compile Include="Model\GeoCodingModel.cs" />
     <Compile Include="Model\Interfaces\INotifications.cs" />
+    <Compile Include="Model\LimitsModel.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Model\NetProxyModel.cs" />
     <Compile Include="Model\NotificationsModel.cs" />

@@ -13,5 +13,7 @@ namespace GeoCoding.GeoCodingLimitsService
         EntityResult<int> AddUseUpLimits(UseLimits useLimits);
         EntityResult<UseLimits> GetLastUseUpLimits(string key);
         EntityResult<UseLimits> GetAllUseUpLimits(string key);
+
+        EntityResult<bool> CheckRepository();
     }
 }

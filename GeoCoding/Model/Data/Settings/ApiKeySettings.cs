@@ -50,21 +50,6 @@ namespace GeoCoding.Model.Data.Settings
             }
         }
 
-        //private EntityApiKey _currentKeyUse;
-        ///// <summary>
-        ///// Текущий выбранный апи-ключ для работы
-        ///// </summary>
-        //public EntityApiKey CurrentKeyUse
-        //{
-        //    get => _currentKeyUse;
-        //    set
-        //    {
-        //        Set(ref _currentKeyUse, value);
-        //        var l = _currentKeyUse.CollectionDayWeekSettings.FirstOrDefault(x => x.Day == DateTime.Now.DayOfWeek && x.Selected)?.MaxCount;
-        //        _currentKeyUse.CurrentLimit = l != null ? (int)l : 0;
-        //    }
-        //}
-
         private ObservableCollection<EntityApiKey> _collectionApiKeys;
         /// <summary>
         /// Коллекция апи-ключей
