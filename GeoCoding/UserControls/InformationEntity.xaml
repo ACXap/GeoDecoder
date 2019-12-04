@@ -73,7 +73,8 @@
         <TextBlock
             Grid.Row="9"
             Grid.Column="2"
-            Style="{StaticResource TextBlockTime}" />
+            Style="{StaticResource TextBlockTime}"
+            Tag="{Binding DateTimeGeoCod}" />
         <TextBlock
             Grid.Row="10"
             Grid.Column="2"

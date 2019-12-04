@@ -1,13 +1,12 @@
 ﻿using GeoCoding.GeoCodingService;
-using GeoCoding.Model.Data;
+using GeoCoding.Model;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight.Messaging;
+using GeoCoding.Entities;
 
 namespace GeoCoding
 {
@@ -16,8 +15,16 @@ namespace GeoCoding
     /// </summary>
     public class GeoCodingModel
     {
+        public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings, LimitsModel limitsModel)
+        {
+            _netSettings = netSettings;
+            _geoCodSettings = geoCodSettings;
+            _limitsModel = limitsModel;
+            //_polygon = polygon;
+        }
+
         #region PrivateField
-        //private const string _limitFile = "limit.dat";
+
         private const string _errorGeoCodNotFound = "Адрес не найден";
         private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
         private const string _errorLimit = "Ваш лимит исчерпан";
@@ -26,42 +33,38 @@ namespace GeoCoding
         private IGeoCodingService _geoCodingService;
         private CancellationTokenSource _cts;
 
-        //private Limit _limitGeo;
-        //private int _countGeo;
-        //private int _maxCountGeo = 10000;
-
         private readonly NetSettings _netSettings;
         private readonly GeoCodSettings _geoCodSettings;
-        private readonly PolygonViewModel _polygon;
+        private readonly LimitsModel _limitsModel;
+        //private readonly PolygonViewModel _polygon;
         private readonly object _lock = new object();
 
-        //private void GetLimitCount()
-        //{
-        //    BinaryFormatter formatter = new BinaryFormatter();
-
-        //    using (var f = new FileStream(_limitFile, FileMode.OpenOrCreate))
-        //    {
-        //        if (f.Length > 0)
-        //        {
-        //            _limitGeo = formatter.Deserialize(f) as Limit;
-        //            if (_limitGeo != null && _limitGeo.Date.Date == DateTime.Now.Date)
-        //            {
-        //                _countGeo = _limitGeo.Count;
-        //            }
-        //            else
-        //            {
-        //                _countGeo = 0;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            _countGeo = 0;
-        //        }
-        //    }
-        //}
         #endregion PrivateField
 
         #region PrivateMethod
+
+        /// <summary>
+        /// Метод установки текущего геосериса
+        /// </summary>
+        /// <param name="geoService">Ссылка на геосервис</param>
+        public async Task<EntityResult<bool>> SetGeoService()
+        {
+            EntityResult<bool> result = new EntityResult<bool>();
+
+            var g = _geoCodSettings.CurrentGeoCoder;
+            var r = await _limitsModel.InitApiKey(g.Key);
+            if (r.Successfully)
+            {
+                _geoCodingService = MainGeoService.GetServiceByName(g.GeoCoder, g.Key);
+                result.Successfully = true;
+            }
+            else
+            {
+                result.Error = r.Error;
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Функция для получения координат для объекта
@@ -70,25 +73,21 @@ namespace GeoCoding
         /// <returns>Возвращает ошибку</returns>
         private Exception SetGeoCod(EntityGeoCod data, ConnectSettings cs)
         {
-            //if (_geoCodSettings.GeoService.ToLower().Contains("pay"))
-            //{
-            //    if (_countGeo >= _maxCountGeo)
-            //    {
-            //        var e = new Exception(_errorLimit);
-            //        SetError(data, e.Message);
-            //        data.CountResult = 0;
+            var key = _geoCodingService.GetKeyApi();
+            var canGeo = _limitsModel.CanGeo(key);
 
-            //        return e;
-            //    }
-
-            //    Interlocked.Increment(ref _countGeo);
-            //}
-
+            if (!canGeo)
+            {
+                var e = new Exception(_errorLimit);
+                SetError(data, e.Message);
+                data.CountResult = 0;
+                return e;
+            }
+            
             Exception error = null;
             string errorMsg = string.Empty;
 
             data.Status = StatusType.Processed;
-            //data.GeoCoder = _geoCodSettings.GeoService;
             data.GeoCoder = _geoCodSettings.CurrentGeoCoder.GeoCoder;
 
             _geoCodingService.GetGeoCod((d, e) =>
@@ -142,13 +141,13 @@ namespace GeoCoding
 
             return error;
         }
-
+        
         private List<double> GetPolygon(string address)
         {
-            if(_geoCodSettings.CanUsePolygon)
-            {
-                return _polygon.GetPolygon(address);
-            }
+            //if(_geoCodSettings.CanUsePolygon)
+            //{
+            //    return _polygon.GetPolygon(address);
+            //}
 
             return null;
         }
@@ -349,18 +348,6 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Метод установки текущего геосериса
-        /// </summary>
-        /// <param name="geoService">Ссылка на геосервис</param>
-        private void SetGeoService()
-        {
-            //_geoCodingService = MainGeoService.GetServiceByName(_geoCodSettings.GeoService);
-            var g = _geoCodSettings.CurrentGeoCoder;
-
-            _geoCodingService = MainGeoService.GetServiceByName(g.GeoCoder, g.Key);
-        }
-
-        /// <summary>
         /// Метод для получения координат для множества объектов
         /// </summary>
         /// <param name="callback">Функция обратного вызова, с параметром: завершился ли процесс, на каком номере завершился, ошибка</param>
@@ -368,7 +355,7 @@ namespace GeoCoding
         public async void GetAllGeoCod(Action<Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
         {
             Exception error = null;
-            SetGeoService();
+            //await SetGeoService();
 
             _cts = new CancellationTokenSource();
 
@@ -529,33 +516,15 @@ namespace GeoCoding
             Exception error = null;
             data.MainGeoCod = null;
             data.CountResult = 0;
-            SetGeoService();
+            //await SetGeoService();
 
             await Task.Factory.StartNew(() =>
             {
                 error = SetGeoCod(data, GetConnect());
             });
 
-            //SaveLimit();
             callback(error);
         }
-
-        //private void SaveLimit()
-        //{
-        //    if (_limitGeo == null)
-        //    {
-        //        _limitGeo = new Limit();
-        //    }
-
-        //    _limitGeo.Date = DateTime.Now;
-        //    _limitGeo.Count = _countGeo;
-
-        //    BinaryFormatter formatter = new BinaryFormatter();
-        //    using (var f = new FileStream(_limitFile, FileMode.OpenOrCreate))
-        //    {
-        //        formatter.Serialize(f, _limitGeo);
-        //    }
-        //}
 
         /// <summary>
         /// Метод для получения урл-адреса запроса
@@ -564,168 +533,140 @@ namespace GeoCoding
         /// <returns>Возвращает ссылку на запрос</returns>
         public string GetUrlRequest(string address)
         {
-            SetGeoService();
             return _geoCodingService.GetUrlRequest(address, GetPolygon(address));
         }
 
-        public Task<Exception> GetAllGeoCod(IEnumerable<EntityGeoCod> collectionGeoCod)
-        {
-            Exception error = null;
-            SetGeoService();
+        //public Task<Exception> GetAllGeoCod(IEnumerable<EntityGeoCod> collectionGeoCod)
+        //{
+        //    Exception error = null;
+        //    SetGeoService();
 
-            _cts = new CancellationTokenSource();
+        //    _cts = new CancellationTokenSource();
 
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    if (_geoCodSettings.IsMultipleRequests)
-                    {
-                        int countError = 0;
-                        ParallelOptions po = new ParallelOptions
-                        {
-                            CancellationToken = _cts.Token,
-                            MaxDegreeOfParallelism = _geoCodSettings.CountRequests
-                        };
-                        var connect = GetConnect();
-                        var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
-                        {
-                            if (!string.IsNullOrEmpty(connect.ProxyAddress))
-                            {
-                                data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
-                            }
-                            var e = SetGeoCod(data, connect);
+        //    return Task.Factory.StartNew(() =>
+        //    {
+        //        try
+        //        {
+        //            if (_geoCodSettings.IsMultipleRequests)
+        //            {
+        //                int countError = 0;
+        //                ParallelOptions po = new ParallelOptions
+        //                {
+        //                    CancellationToken = _cts.Token,
+        //                    MaxDegreeOfParallelism = _geoCodSettings.CountRequests
+        //                };
+        //                var connect = GetConnect();
+        //                var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
+        //                {
+        //                    if (!string.IsNullOrEmpty(connect.ProxyAddress))
+        //                    {
+        //                        data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
+        //                    }
+        //                    var e = SetGeoCod(data, connect);
 
-                            if (e != null)
-                            {
-                                if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
-                                {
-                                    error = e;
-                                    pl.Break();
-                                }
-                                else
-                                {
-                                    if (++countError >= _geoCodSettings.MaxCountError)
-                                    {
-                                        error = new Exception(_errorLotOfMistakes);
-                                        pl.Break();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                countError = 0;
-                            }
-                        });
-                    }
-                    else
-                    {
-                        ParallelOptions po = new ParallelOptions
-                        {
-                            CancellationToken = _cts.Token,
-                            MaxDegreeOfParallelism = _geoCodSettings.CountProxy
-                        };
+        //                    if (e != null)
+        //                    {
+        //                        if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
+        //                        {
+        //                            error = e;
+        //                            pl.Break();
+        //                        }
+        //                        else
+        //                        {
+        //                            if (++countError >= _geoCodSettings.MaxCountError)
+        //                            {
+        //                                error = new Exception(_errorLotOfMistakes);
+        //                                pl.Break();
+        //                            }
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        countError = 0;
+        //                    }
+        //                });
+        //            }
+        //            else
+        //            {
+        //                ParallelOptions po = new ParallelOptions
+        //                {
+        //                    CancellationToken = _cts.Token,
+        //                    MaxDegreeOfParallelism = _geoCodSettings.CountProxy
+        //                };
 
-                        var parallelResult = Parallel.ForEach(_netSettings.CollectionListProxy, po, (data, pl) =>
-                        {
-                            EntityGeoCod geo = null;
-                            var connect = GetConnect(data);
-                            int countError = 0;
+        //                var parallelResult = Parallel.ForEach(_netSettings.CollectionListProxy, po, (data, pl) =>
+        //                {
+        //                    EntityGeoCod geo = null;
+        //                    var connect = GetConnect(data);
+        //                    int countError = 0;
 
-                            while (data.IsActive)
-                            {
-                                if (po.CancellationToken.IsCancellationRequested)
-                                {
-                                    break;
-                                }
-                                lock (_lock)
-                                {
-                                    geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotProcessed
-                                                                      || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne
-                                                                                                        && x.Error != _errorGeoCodNotFound)));
-                                    if (geo != null)
-                                    {
-                                        geo.Status = StatusType.Processed;
-                                    }
-                                }
+        //                    while (data.IsActive)
+        //                    {
+        //                        if (po.CancellationToken.IsCancellationRequested)
+        //                        {
+        //                            break;
+        //                        }
+        //                        lock (_lock)
+        //                        {
+        //                            geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotProcessed
+        //                                                              || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne
+        //                                                                                                && x.Error != _errorGeoCodNotFound)));
+        //                            if (geo != null)
+        //                            {
+        //                                geo.Status = StatusType.Processed;
+        //                            }
+        //                        }
 
-                                if (geo != null)
-                                {
-                                    geo.Proxy = $"{data.Address}:{data.Port}";
-                                    var e = SetGeoCod(geo, connect);
-                                    if (e != null)
-                                    {
-                                        if (e.Message == _errorLimit)
-                                        {
-                                            data.IsActive = false;
-                                            data.Error = _errorLimit;
-                                        }
-                                        else
-                                        {
-                                            if (++countError >= _geoCodSettings.MaxCountError)
-                                            {
-                                                data.Error = _errorLotOfMistakes;
-                                                data.IsActive = false;
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        countError = 0;
-                                    }
-                                }
-                                else
-                                {
-                                    break;
-                                }
-                            }
-                        });
-                    }
-                }
-                catch (OperationCanceledException c)
-                {
-                    error = c;
-                }
-                catch (Exception ex)
-                {
-                    error = ex;
-                }
-                finally
-                {
-                    _cts?.Dispose();
-                }
+        //                        if (geo != null)
+        //                        {
+        //                            geo.Proxy = $"{data.Address}:{data.Port}";
+        //                            var e = SetGeoCod(geo, connect);
+        //                            if (e != null)
+        //                            {
+        //                                if (e.Message == _errorLimit)
+        //                                {
+        //                                    data.IsActive = false;
+        //                                    data.Error = _errorLimit;
+        //                                }
+        //                                else
+        //                                {
+        //                                    if (++countError >= _geoCodSettings.MaxCountError)
+        //                                    {
+        //                                        data.Error = _errorLotOfMistakes;
+        //                                        data.IsActive = false;
+        //                                    }
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                countError = 0;
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            break;
+        //                        }
+        //                    }
+        //                });
+        //            }
+        //        }
+        //        catch (OperationCanceledException c)
+        //        {
+        //            error = c;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            error = ex;
+        //        }
+        //        finally
+        //        {
+        //            _cts?.Dispose();
+        //        }
 
-                return error;
-            }, _cts.Token);
-        }
+        //        return error;
+        //    }, _cts.Token);
+        //}
 
         #endregion PublicMethod
-
-        //public string GetKeyApi()
-        //{
-        //    SetGeoService();
-        //    return _geoCodingService.GetKeyApi();
-        //}
-
-        //public void SetKeyApi(string key)
-        //{
-        //    SetGeoService();
-        //    _geoCodingService.SetKeyApi(key);
-        //}
-
-        //public void ResetLimit()
-        //{
-        //    _limitGeo.Count=0;
-        //    _countGeo = 0;
-        //}
-
-        public GeoCodingModel(NetSettings netSettings, GeoCodSettings geoCodSettings, PolygonViewModel polygon)
-        {
-            _netSettings = netSettings;
-            _geoCodSettings = geoCodSettings;
-            _polygon = polygon;
-            
-            //GetLimitCount();
-        }
     }
 }

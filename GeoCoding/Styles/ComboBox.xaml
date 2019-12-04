@@ -1,9 +1,13 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:GeoCoding.Styles">
-    
-    <Style x:Key="ComboBoxGeoService"  TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MetroComboBox}">
-        <Setter Property="IsEnabled" Value="True"/>
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:GeoCoding.Styles">
+
+    <Style
+        x:Key="ComboBoxGeoService"
+        BasedOn="{StaticResource MetroComboBox}"
+        TargetType="{x:Type ComboBox}">
+        <Setter Property="IsEnabled" Value="True" />
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -13,7 +17,10 @@
         </Setter>
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsStartGeoCoding}" Value="True">
-                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="IsEnabled" Value="False" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsGeoCodingModelBusy}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

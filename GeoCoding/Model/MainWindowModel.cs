@@ -811,9 +811,9 @@ namespace GeoCoding
         /// </summary>
         /// <param name="ftps">Настройки фтп-сервера</param>
         /// <returns>Возвращает настройки фтп-сервера в формате</returns>
-        private FTPService.ConnectionSettings GetConSettings(FTPSettings ftps)
+        private ConnectionSettings GetConSettings(FTPSettings ftps)
         {
-            return new FTPService.ConnectionSettings()
+            return new ConnectionSettings()
             {
                 Server = ftps.Server,
                 Port = ftps.Port,

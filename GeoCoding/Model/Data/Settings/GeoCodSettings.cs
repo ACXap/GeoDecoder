@@ -245,7 +245,12 @@ namespace GeoCoding
         public EntityGeoCoder CurrentGeoCoder
         {
             get => _currentGeoCoder;
-            set => Set(ref _currentGeoCoder, value);
+            set
+            {
+                var oldValue = _currentGeoCoder;
+                Set(ref _currentGeoCoder, value);
+                RaisePropertyChanged(nameof(CurrentGeoCoder), oldValue, value, true);
+            }
         }
 
         /// <summary>

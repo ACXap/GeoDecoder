@@ -27,27 +27,7 @@ namespace GeoCoding.Model.Data.Settings
         public EntityApiKey CurrentKey
         {
             get => _currentKey;
-            set
-            {
-                Set(ref _currentKey, value);
-                if (value != null)
-                {
-                    if (value.CollectionDayWeekSettings == null)
-                    {
-                        var listDayWeek = new List<DayWeek>();
-                        foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
-                        {
-                            listDayWeek.Add(new DayWeek() { Day = d });
-                        }
-                        var s = listDayWeek.First(x => x.Day == 0);
-                        listDayWeek.Remove(s);
-                        listDayWeek.Insert(listDayWeek.Count, s);
-                        value.CollectionDayWeekSettings = listDayWeek;
-                    }
-                    var l = value.CollectionDayWeekSettings.FirstOrDefault(x => x.Day == DateTime.Now.DayOfWeek && x.Selected)?.MaxCount;
-                    value.CurrentLimit = l != null ? (int)l : 0;
-                }
-            }
+            set =>Set(ref _currentKey, value);
         }
 
         private ObservableCollection<EntityApiKey> _collectionApiKeys;

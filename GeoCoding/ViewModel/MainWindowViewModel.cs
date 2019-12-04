@@ -3,14 +3,13 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
 using GeoCoding.Model;
+using GeoCoding.Model.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,11 +28,12 @@ namespace GeoCoding
         {
             _model = new MainWindowModel();
             Notifications = new NotificationsModel();
+            AppSettings = new AppSettings(_notifications);
 
-            AppSettings = new AppSettings(_model, _notifications);
-            _notifications.SetSettings(_appSettings.NotificationSettings);
-            _polygon = new PolygonViewModel(_notifications);
-            _geoCodingModel = new GeoCodingModel(_appSettings.NetSettings, _appSettings.GeoCodSettings, _polygon);
+            //_polygon = new PolygonViewModel(_notifications);
+            _geoCodingModel = new GeoCodingModel(_appSettings.NetSettings, _appSettings.GeoCodSettings, _appSettings.GetLimitsModel());
+            SetGeoService();
+
             Stat = new StatisticsViewModel();
             Ver = new VerificationViewModel(_appSettings.VerificationSettings);
 
@@ -43,11 +43,30 @@ namespace GeoCoding
                 {
                     CommandSaveData.Execute(true);
                 }
-                if (data.PropertyName == "CanUsePolygon" && data.NewValue)
+                //if (data.PropertyName == "CanUsePolygon" && data.NewValue)
+                //{
+                //    _polygon.GetAddress();
+                //}
+            });
+
+            Messenger.Default.Register<PropertyChangedMessage<EntityGeoCoder>>(this, data =>
+            {
+                if (data.PropertyName == "CurrentGeoCoder")
                 {
-                    _polygon.GetAddress();
+                    SetGeoService();
                 }
             });
+        }
+
+        private async void SetGeoService()
+        {
+            IsGeoCodingModelBusy = true;
+            var r = await _geoCodingModel.SetGeoService();
+            if (!r.Successfully)
+            {
+                _notifications.Notification(NotificationType.Error, r.Error.Message);
+            }
+            IsGeoCodingModelBusy = false;
         }
 
         #region PrivateConst
@@ -90,7 +109,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения ссылки на модельгеокодирования
         /// </summary>
-        private GeoCodingModel _geoCodingModel;
+        private readonly GeoCodingModel _geoCodingModel;
 
         /// <summary>
         /// Поле для хранения ссылки на коллекцию с данными
@@ -201,7 +220,7 @@ namespace GeoCoding
         /// Поле для хранения ссылки на команду сохранение статистики
         /// </summary>
         private RelayCommand _commandSaveStatistics;
-        
+
         /// <summary>
         /// Поле для хранения ссылки на команду открытия папки
         /// </summary>
@@ -528,15 +547,15 @@ namespace GeoCoding
         _commandGetAllGeoCod ?? (_commandGetAllGeoCod = new RelayCommand(
                     () =>
                     {
-                        if (_collectionFiles != null && _collectionFiles.Any())
-                        {
-                            GetAllGeooForFiles();
-                        }
-                        else
-                        {
-                            GetAllGeoCod(_collectionGeoCod);
-                        }
-                    }, () => (_collectionGeoCod != null && _collectionGeoCod.Any()) || (_collectionFiles != null && _collectionFiles.Any())));
+                        //if (_collectionFiles != null && _collectionFiles.Any())
+                        //{
+                        //    GetAllGeooForFiles();
+                        //}
+                        //else
+                        //{
+                        GetAllGeoCod(_collectionGeoCod);
+                        //}
+                    }, () => (_collectionGeoCod != null && _collectionGeoCod.Any()) && !_isGeoCodingModelBusy));
 
         /// <summary>
         /// Команда остановки геокодирования
@@ -1240,85 +1259,85 @@ namespace GeoCoding
             set => Set(ref _isStartGetDataAboutFiles, value);
         }
 
-        private RelayCommand _commandGetGeoForListFile;
-        public RelayCommand CommandGetGeoForListFile =>
-        _commandGetGeoForListFile ?? (_commandGetGeoForListFile = new RelayCommand(
-                    () =>
-                    {
-                        GetAllGeooForFiles();
-                    }));
+        //private RelayCommand _commandGetGeoForListFile;
+        //public RelayCommand CommandGetGeoForListFile =>
+        //_commandGetGeoForListFile ?? (_commandGetGeoForListFile = new RelayCommand(
+        //            () =>
+        //            {
+        //                GetAllGeooForFiles();
+        //            }));
 
-        private async void GetAllGeooForFiles()
-        {
-            IsStartGeoCoding = true;
+        //private async void GetAllGeooForFiles()
+        //{
+        //    IsStartGeoCoding = true;
 
-            foreach (var item in _collectionFiles)
-            {
-                if (item.FileType == FileType.Other)
-                {
-                    continue;
-                }
+        //    foreach (var item in _collectionFiles)
+        //    {
+        //        if (item.FileType == FileType.Other)
+        //        {
+        //            continue;
+        //        }
 
-                item.Status = StatusType.Processed;
+        //        item.Status = StatusType.Processed;
 
-                _appSettings.FilesSettings.FileInput = item.NameFile;
+        //        _appSettings.FilesSettings.FileInput = item.NameFile;
 
-                _model.GetDataFromFile((list, e) =>
-                {
-                    CreateCollection(list, e);
-                }, item.NameFile, _appSettings.FilesSettings.CanUseANSI);
+        //        _model.GetDataFromFile((list, e) =>
+        //        {
+        //            CreateCollection(list, e);
+        //        }, item.NameFile, _appSettings.FilesSettings.CanUseANSI);
 
-                _appSettings.FilesSettings.FileOutput = SetDefNameFileOutput();
+        //        _appSettings.FilesSettings.FileOutput = SetDefNameFileOutput();
 
-                IEnumerable<EntityGeoCod> data = null;
+        //        IEnumerable<EntityGeoCod> data = null;
 
-                data = GetCollectionWithFilter(_collectionGeoCod).Where(x => !string.IsNullOrEmpty(x.Address));
+        //        data = GetCollectionWithFilter(_collectionGeoCod).Where(x => !string.IsNullOrEmpty(x.Address));
 
-                int countData = data.Count();
+        //        int countData = data.Count();
 
-                //_stat.Start(_appSettings.GeoCodSettings.GeoService);
-                _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder);
+        //        //_stat.Start(_appSettings.GeoCodSettings.GeoService);
+        //        _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder);
 
-                var error = await _geoCodingModel.GetAllGeoCod(data);
+        //        var error = await _geoCodingModel.GetAllGeoCod(data);
 
-                if (_appSettings.GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_appSettings.FilesSettings.FileOutput))
-                {
-                    SaveData();
-                    SaveErrors();
-                }
-                if (_appSettings.GeoCodSettings.CanSaveDataAsTemp)
-                {
-                    SaveTemp();
-                }
-                if (_appSettings.GeoCodSettings.CanSaveStatistics)
-                {
-                    SaveStatistics();
-                }
+        //        if (_appSettings.GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_appSettings.FilesSettings.FileOutput))
+        //        {
+        //            SaveData();
+        //            SaveErrors();
+        //        }
+        //        if (_appSettings.GeoCodSettings.CanSaveDataAsTemp)
+        //        {
+        //            SaveTemp();
+        //        }
+        //        if (_appSettings.GeoCodSettings.CanSaveStatistics)
+        //        {
+        //            SaveStatistics();
+        //        }
 
-                item.Collection = _collectionGeoCod.ToList();
-                _stat.Stop();
+        //        item.Collection = _collectionGeoCod.ToList();
+        //        _stat.Stop();
 
-                if (error == null)
-                {
-                    item.Status = StatusType.OK;
-                }
-                else if (error.Message == _errorCancel)
-                {
-                    item.Status = StatusType.Error;
-                    item.Error = error.Message;
-                    _notifications.Notification(NotificationType.Cancel);
-                    break;
-                }
-                else
-                {
-                    item.Status = StatusType.Error;
-                    item.Error = error.Message;
-                }
-            }
+        //        if (error == null)
+        //        {
+        //            item.Status = StatusType.OK;
+        //        }
+        //        else if (error.Message == _errorCancel)
+        //        {
+        //            item.Status = StatusType.Error;
+        //            item.Error = error.Message;
+        //            _notifications.Notification(NotificationType.Cancel);
+        //            break;
+        //        }
+        //        else
+        //        {
+        //            item.Status = StatusType.Error;
+        //            item.Error = error.Message;
+        //        }
+        //    }
 
-            _notifications.Notification(NotificationType.Ok, "Обработка файлов завершена");
-            IsStartGeoCoding = false;
-        }
+        //    _notifications.Notification(NotificationType.Ok, "Обработка файлов завершена");
+        //    IsStartGeoCoding = false;
+        //}
 
         private RelayCommand _myCommand;
         public RelayCommand MyCommand =>
@@ -1479,40 +1498,16 @@ namespace GeoCoding
                         }
                     }));
 
-        //private RelayCommand _commandGetKeyApi;
-        //public RelayCommand CommandGetKeyApi =>
-        //_commandGetKeyApi ?? (_commandGetKeyApi = new RelayCommand(
-        //            () =>
-        //            {
-        //                KeyApi = _geoCodingModel.GetKeyApi();
-        //            }));
-
-        //private RelayCommand _commandSetKeyApi;
-        //public RelayCommand CommandSetKeyApi =>
-        //_commandSetKeyApi ?? (_commandSetKeyApi = new RelayCommand(
-        //            () =>
-        //            {
-        //                _geoCodingModel.SetKeyApi(_keyApi);
-        //            }));
-
-        //private string _keyApi = string.Empty;
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public string KeyApi
-        //{
-        //    get => _keyApi;
-        //    set => Set(ref _keyApi, value);
-        //}
-
-        //private RelayCommand _commandResetLimit;
-        //public RelayCommand CommandResetLimit =>
-        //_commandResetLimit ?? (_commandResetLimit = new RelayCommand(
-        //            () =>
-        //            {
-        //                _geoCodingModel.ResetLimit();
-        //            }));
-
         #endregion NeedToMakeOut
+
+        private bool _isGeoCodingModelBusy = false;
+        /// <summary>
+        /// Отображать когда геокодер занят
+        /// </summary>
+        public bool IsGeoCodingModelBusy
+        {
+            get => _isGeoCodingModelBusy;
+            set => Set(ref _isGeoCodingModelBusy, value);
+        }
     }
 }

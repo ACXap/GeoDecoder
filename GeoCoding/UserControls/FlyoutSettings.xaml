@@ -1345,49 +1345,69 @@
                                         Orientation="Vertical">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="5"/>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="5"/>
-                                                <ColumnDefinition Width="auto"/>
-                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="5" />
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="5" />
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition Width="auto" />
                                             </Grid.ColumnDefinitions>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="auto"/>
-                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto" />
+                                                <RowDefinition Height="auto" />
                                             </Grid.RowDefinitions>
-                                            <TextBlock Text="Потрачено: " VerticalAlignment="Center" Grid.RowSpan="2" Grid.Column="0" FontSize="23"/>
-                                            <TextBlock Grid.Row="0" Grid.Column="1"
+                                            <TextBlock
+                                                Grid.RowSpan="2"
+                                                Grid.Column="0"
+                                                VerticalAlignment="Center"
+                                                FontSize="23"
+                                                Text="Потрачено: " />
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="1"
                                                 VerticalAlignment="Center"
                                                 FontSize="16"
                                                 Text="По данным с базы: " />
-                                            <TextBlock Grid.Row="0" Grid.Column="3"
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="3"
                                                 FontSize="32"
                                                 Text="{Binding ApiKeySettings.CurrentKey.CurrentSpent, FallbackValue=0}" />
-                                            <Button Grid.Row="0" Grid.Column="5" Margin="5"
+                                            <Button
+                                                Grid.Row="0"
+                                                Grid.Column="5"
+                                                Margin="5"
                                                 Command="{Binding CommandUpdateCurrentSpentDB}"
                                                 Content="Обновить" />
-                                            <TextBlock Grid.Row="0" Grid.Column="6"
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="6"
                                                 VerticalAlignment="Center"
                                                 FontSize="16"
-                                                Text="{Binding ApiKeySettings.CurrentKey.DateCurrentSpent, StringFormat=\{0:d\}}" />
+                                                Style="{StaticResource TextBlockTime}"
+                                                Tag="{Binding ApiKeySettings.CurrentKey.DateCurrentSpent}" />
 
-                                            <TextBlock Grid.Row="1" Grid.Column="1"
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="1"
                                                 VerticalAlignment="Center"
                                                 FontSize="16"
                                                 Text="По данным с сервера:" />
-                                            <TextBlock Grid.Row="1" Grid.Column="3"
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Grid.Column="3"
                                                 FontSize="32"
                                                 Text="{Binding ApiKeySettings.CurrentKey.CurrentSpentServer, FallbackValue=0}" />
-                                            <Button Grid.Row="1" Grid.Column="5" Margin="5"
+                                            <Button
+                                                Grid.Row="1"
+                                                Grid.Column="5"
+                                                Margin="5"
                                                 Command="{Binding CommandUpdateCurrentSpentServer}"
                                                 Content="Обновить" />
                                         </Grid>
 
-                                        <WrapPanel Orientation="Horizontal">
-                                           
-                                        </WrapPanel>
+                                        <WrapPanel Orientation="Horizontal" />
 
                                     </WrapPanel>
 

@@ -16,19 +16,19 @@ namespace GeoCoding.Model
 {
     public class AppSettings : ViewModelBase
     {
-        public AppSettings(MainWindowModel model, INotifications notifications)
+        public AppSettings(INotifications notifications)
         {
-            _model = model;
+            _model = new MainWindowModel();
             GetSettings();
 
             _notifications = notifications;
+            _notifications.SetSettings(_notificationSettings);
             _modelVer = new VerificationModel(_verificationSettings.VerificationServer);
 
             GetApiKey();
 
             _limitsModel = GetLimitsModel();
-
-            _limitsModel.SetStatusSyncApiKey(_apiKeySettings.CollectionApiKeys);
+            _limitsModel.SetStatusSyncApiKey();
 
             GetCollectionGeocoder();
             SetCurrentGeocoder();
@@ -437,10 +437,14 @@ namespace GeoCoding.Model
                         {
                             try
                             {
-                                var a = StatGeoCodingService.GetStat(_apiKeySettings.CurrentKey.ApiKeyDevelop, _apiKeySettings.CurrentKey.ApiKeyStat);
-                                if (a != -1)
+                                var result = _limitsModel.GetLastUseLimitsServer(_apiKeySettings.CurrentKey);
+                                if (result.Successfully)
                                 {
-                                    _apiKeySettings.CurrentKey.CurrentSpentServer = a;
+                                    _apiKeySettings.CurrentKey.CurrentSpentServer = result.Entity.Value;
+                                }
+                                else
+                                {
+                                    _notifications.Notification(NotificationType.Error, result.Error.Message);
                                 }
                             }
                             catch (Exception ex)
@@ -518,7 +522,7 @@ namespace GeoCoding.Model
         /// Метод для получения модуля по работе с лимитами
         /// </summary>
         /// <returns></returns>
-        private LimitsModel GetLimitsModel()
+        public LimitsModel GetLimitsModel()
         {
             return new LimitsModel(new LimitsRepositoryDb(new Entities.ConnectionSettingsDb()
             {
@@ -527,7 +531,7 @@ namespace GeoCoding.Model
                 Password = _BDAccessorySettings.Password,
                 Port = _BDAccessorySettings.Port,
                 Server = _BDAccessorySettings.Server
-            }));
+            }), _apiKeySettings.CollectionApiKeys);
         }
 
         /// <summary>
@@ -698,6 +702,25 @@ namespace GeoCoding.Model
                             if (a != null && a.Any())
                             {
                                 ApiKeySettings.CollectionApiKeys = new ObservableCollection<EntityApiKey>(a);
+
+                                foreach(var k in ApiKeySettings.CollectionApiKeys)
+                                {
+                                    if (k.CollectionDayWeekSettings == null)
+                                    {
+                                                var listDayWeek = new List<DayWeek>();
+                                                foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
+                                                {
+                                                    listDayWeek.Add(new DayWeek() { Day = d });
+                                                }
+                                                var s = listDayWeek.First(x => x.Day == 0);
+                                                listDayWeek.Remove(s);
+                                                listDayWeek.Insert(listDayWeek.Count, s);
+                                                k.CollectionDayWeekSettings = listDayWeek;
+                                    }
+                                    
+                                    var l = k.CollectionDayWeekSettings.FirstOrDefault(x => x.Day == DateTime.Now.DayOfWeek && x.Selected)?.MaxCount;
+                                    k.CurrentLimit = l != null ? (int)l : 0;
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -709,7 +732,7 @@ namespace GeoCoding.Model
         }
 
         /// <summary>
-        /// Получение данных огеокодерах из файла
+        /// Получение данных о геокодерах из файла
         /// </summary>
         private void GetCollectionGeocoder()
         {
