@@ -62,6 +62,19 @@ namespace GeoCoding.Model
                     _currentApiKey.DateCurrentSpent = dateNow;
                     _currentApiKey.CurrentSpent = 0;
                 }
+                else
+                {
+                    if(_currentApiKey.DateCurrentSpent > lastDb.Entity.DateTime)
+                    {
+                        var r = SetLastUseLimits();
+                    }
+
+                    if (_currentApiKey.DateCurrentSpent < lastDb.Entity.DateTime)
+                    {
+                        _currentApiKey.DateCurrentSpent = lastDb.Entity.DateTime;
+                        _currentApiKey.CurrentSpent = lastDb.Entity.Value;
+                    }
+                }
 
                 result.Successfully = true;
                 return result;
@@ -76,10 +89,10 @@ namespace GeoCoding.Model
 
             lock (_lock)
             {
-                _currentApiKey.CurrentSpent += 1;
-                _currentApiKey.DateCurrentSpent = DateTime.Now;
                 if (_currentApiKey.CurrentSpent < _currentApiKey.CurrentLimit)
                 {
+                    _currentApiKey.CurrentSpent += 1;
+                    _currentApiKey.DateCurrentSpent = DateTime.Now;
                     result = true;
                 }
             }
@@ -116,7 +129,7 @@ namespace GeoCoding.Model
             {
                 ParallelOptions po = new ParallelOptions()
                 {
-                    MaxDegreeOfParallelism = 5
+                    MaxDegreeOfParallelism = 2
                 };
                 Parallel.ForEach(_collectionKey, po, (k) =>
                 {
@@ -192,6 +205,18 @@ namespace GeoCoding.Model
                 result.Error = r.Error;
             }
             return result;
+        }
+
+        public EntityResult<bool> SetLastUseLimits()
+        {
+            var useLimits = new UseLimits()
+            {
+                Key = HashHelper.HashString(_currentApiKey.ApiKey),
+                DateTime = _currentApiKey.DateCurrentSpent,
+                Value = _currentApiKey.CurrentSpent
+            };
+
+            return SetLastUseLimits(useLimits);
         }
 
         public EntityResult<UseLimits> GetLastUseLimits(string apiKey)

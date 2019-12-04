@@ -58,17 +58,6 @@ namespace GeoCoding
             });
         }
 
-        private async void SetGeoService()
-        {
-            IsGeoCodingModelBusy = true;
-            var r = await _geoCodingModel.SetGeoService();
-            if (!r.Successfully)
-            {
-                _notifications.Notification(NotificationType.Error, r.Error.Message);
-            }
-            IsGeoCodingModelBusy = false;
-        }
-
         #region PrivateConst
 
         /// <summary>
@@ -1508,6 +1497,17 @@ namespace GeoCoding
         {
             get => _isGeoCodingModelBusy;
             set => Set(ref _isGeoCodingModelBusy, value);
+        }
+
+        private async void SetGeoService()
+        {
+            IsGeoCodingModelBusy = true;
+            var r = await _geoCodingModel.SetGeoService();
+            if (!r.Successfully)
+            {
+                _notifications.Notification(NotificationType.Error, r.Error.Message);
+            }
+            IsGeoCodingModelBusy = false;
         }
     }
 }

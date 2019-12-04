@@ -1,12 +1,11 @@
-﻿using GeoCoding.GeoCodingService;
+﻿using GeoCoding.Entities;
+using GeoCoding.GeoCodingService;
 using GeoCoding.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Messaging;
-using GeoCoding.Entities;
 
 namespace GeoCoding
 {
@@ -44,29 +43,6 @@ namespace GeoCoding
         #region PrivateMethod
 
         /// <summary>
-        /// Метод установки текущего геосериса
-        /// </summary>
-        /// <param name="geoService">Ссылка на геосервис</param>
-        public async Task<EntityResult<bool>> SetGeoService()
-        {
-            EntityResult<bool> result = new EntityResult<bool>();
-
-            var g = _geoCodSettings.CurrentGeoCoder;
-            var r = await _limitsModel.InitApiKey(g.Key);
-            if (r.Successfully)
-            {
-                _geoCodingService = MainGeoService.GetServiceByName(g.GeoCoder, g.Key);
-                result.Successfully = true;
-            }
-            else
-            {
-                result.Error = r.Error;
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Функция для получения координат для объекта
         /// </summary>
         /// <param name="data">Объект</param>
@@ -83,7 +59,7 @@ namespace GeoCoding
                 data.CountResult = 0;
                 return e;
             }
-            
+
             Exception error = null;
             string errorMsg = string.Empty;
 
@@ -141,7 +117,7 @@ namespace GeoCoding
 
             return error;
         }
-        
+
         private List<double> GetPolygon(string address)
         {
             //if(_geoCodSettings.CanUsePolygon)
@@ -356,6 +332,7 @@ namespace GeoCoding
         {
             Exception error = null;
             //await SetGeoService();
+            await _limitsModel.InitApiKey(_geoCodingService.GetKeyApi());
 
             _cts = new CancellationTokenSource();
 
@@ -401,9 +378,6 @@ namespace GeoCoding
                             {
                                 countError = 0;
                             }
-
-                           // Thread.Sleep(_rnd.Next(10000, 15000));
-
                         });
                     }
                     catch (OperationCanceledException c)
@@ -502,7 +476,7 @@ namespace GeoCoding
                 }, _cts.Token);
             }
 
-            //SaveLimit();
+            SaveLimit();
             callback(error);
         }
 
@@ -517,11 +491,14 @@ namespace GeoCoding
             data.MainGeoCod = null;
             data.CountResult = 0;
             //await SetGeoService();
+            await _limitsModel.InitApiKey(_geoCodingService.GetKeyApi());
 
             await Task.Factory.StartNew(() =>
             {
                 error = SetGeoCod(data, GetConnect());
             });
+
+            SaveLimit();
 
             callback(error);
         }
@@ -533,7 +510,38 @@ namespace GeoCoding
         /// <returns>Возвращает ссылку на запрос</returns>
         public string GetUrlRequest(string address)
         {
-            return _geoCodingService.GetUrlRequest(address, GetPolygon(address));
+            var key = _geoCodingService.GetKeyApi();
+            var canGeo = _limitsModel.CanGeo(key);
+            if (canGeo)
+            {
+                SaveLimit();
+                return _geoCodingService.GetUrlRequest(address, GetPolygon(address));
+            }
+
+            return _errorLimit;
+        }
+
+        /// <summary>
+        /// Метод установки текущего геосериса
+        /// </summary>
+        /// <param name="geoService">Ссылка на геосервис</param>
+        public async Task<EntityResult<bool>> SetGeoService()
+        {
+            EntityResult<bool> result = new EntityResult<bool>();
+
+            var g = _geoCodSettings.CurrentGeoCoder;
+            var r = await _limitsModel.InitApiKey(g.Key);
+            if (r.Successfully)
+            {
+                _geoCodingService = MainGeoService.GetServiceByName(g.GeoCoder, g.Key);
+                result.Successfully = true;
+            }
+            else
+            {
+                result.Error = r.Error;
+            }
+
+            return result;
         }
 
         //public Task<Exception> GetAllGeoCod(IEnumerable<EntityGeoCod> collectionGeoCod)
@@ -668,5 +676,19 @@ namespace GeoCoding
         //}
 
         #endregion PublicMethod
+
+        
+        private bool _isStartSaveLimit;
+        private void SaveLimit()
+        {
+            if (_isStartSaveLimit) return;
+
+            Task.Factory.StartNew(() =>
+            {
+                _isStartSaveLimit = true;
+                var result = _limitsModel.SetLastUseLimits();
+                _isStartSaveLimit = false;
+            });
+        }
     }
 }

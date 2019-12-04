@@ -2,7 +2,6 @@
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GeoCoding.GeoCodingLimitsService;
-using GeoCoding.GeoCodingService;
 using GeoCoding.Helpers;
 using GeoCoding.Model.Data;
 using GeoCoding.Model.Data.Settings;
@@ -28,7 +27,7 @@ namespace GeoCoding.Model
             GetApiKey();
 
             _limitsModel = GetLimitsModel();
-            _limitsModel.SetStatusSyncApiKey();
+            //_limitsModel.SetStatusSyncApiKey();
 
             GetCollectionGeocoder();
             SetCurrentGeocoder();
