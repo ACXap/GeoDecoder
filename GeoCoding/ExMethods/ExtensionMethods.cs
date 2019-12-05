@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GeoCoding
@@ -12,7 +14,7 @@ namespace GeoCoding
         /// <returns></returns>
         public static string ToUpperFistChar(this string str)
         {
-            if (!string.IsNullOrEmpty(str) && str.Length > 0)
+            if (!string.IsNullOrEmpty(str))
             {
                 str = str.ToLower();
                 var chars = str.ToCharArray();

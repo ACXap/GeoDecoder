@@ -1,4 +1,6 @@
-﻿using GeoCoding.FileService;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GeoCoding.FileService;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -66,11 +68,11 @@ namespace GeoCoding
                 proxy.Error = ex.Message;
                 proxy.Status = StatusType.Error;
                 proxy.IsActive = false;
-                sw?.Stop();
+                sw.Stop();
             }
             finally
             {
-                sw?.Stop();
+                sw.Stop();
             }
         }
         /// <summary>

@@ -1,4 +1,6 @@
-﻿using GeoCoding.Entities;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GeoCoding.Entities;
 using GeoCoding.GeoCodingService;
 using GeoCoding.Model;
 using System;
@@ -94,7 +96,7 @@ namespace GeoCoding
                         {
                             errorMsg = _errorGeoCodNotFound;
                         }
-                        if (data.CountResult > 1 && data.MainGeoCod == null)
+                        if (data.CountResult > 1)
                         {
                             errorMsg = _errorGeoCodFoundResultMoreOne;
                         }
@@ -214,7 +216,7 @@ namespace GeoCoding
                     {
                         data.Precision = PrecisionType.None;
                     }
-                    else if (g.Precision?.ToLower() == "true")
+                    else if (g.Precision.ToLower() == "true")
                     {
                         data.Precision = PrecisionType.Exact;
                     }
@@ -330,9 +332,19 @@ namespace GeoCoding
         /// <param name="collectionGeoCod">Множество объектов</param>
         public async void GetAllGeoCod(Action<Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
         {
+            if (!_isGoodGeoCoder)
+            {
+                callback(new Exception("Key is error"));
+                return;
+            }
             Exception error = null;
             //await SetGeoService();
-            await _limitsModel.InitApiKey(_geoCodingService.GetKeyApi());
+            var r = await _limitsModel.InitApiKey(_geoCodingService.GetKeyApi());
+            if (!r.Successfully)
+            {
+                callback(r.Error);
+                return;
+            }
 
             _cts = new CancellationTokenSource();
 
@@ -487,6 +499,12 @@ namespace GeoCoding
         /// <param name="data">Объект для которого нужны координаты</param>
         public async void GetGeoCod(Action<Exception> callback, EntityGeoCod data)
         {
+            if (!_isGoodGeoCoder)
+            {
+                callback(new Exception("Key is error"));
+                return;
+            }
+
             Exception error = null;
             data.MainGeoCod = null;
             data.CountResult = 0;
@@ -510,6 +528,7 @@ namespace GeoCoding
         /// <returns>Возвращает ссылку на запрос</returns>
         public string GetUrlRequest(string address)
         {
+            if (!_isGoodGeoCoder) return "Key is error";
             var key = _geoCodingService.GetKeyApi();
             var canGeo = _limitsModel.CanGeo(key);
             if (canGeo)
@@ -535,9 +554,11 @@ namespace GeoCoding
             {
                 _geoCodingService = MainGeoService.GetServiceByName(g.GeoCoder, g.Key);
                 result.Successfully = true;
+                _isGoodGeoCoder = true;
             }
             else
             {
+                _isGoodGeoCoder = false;
                 result.Error = r.Error;
             }
 
@@ -677,7 +698,8 @@ namespace GeoCoding
 
         #endregion PublicMethod
 
-        
+        private bool _isGoodGeoCoder;
+
         private bool _isStartSaveLimit;
         private void SaveLimit()
         {

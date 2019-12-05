@@ -1,4 +1,6 @@
-﻿using System;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -19,13 +21,9 @@ namespace GeoCoding.FTPService
                 ftpRequest.Credentials = new NetworkCredential(conSettings.Login, conSettings.Password);
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
 
-                using (FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse())
-                {
-                    using (StreamReader sr = new StreamReader(ftpResponse.GetResponseStream()))
-                    {
-                        data = sr.ReadToEnd();
-                    }
-                }
+                using FtpWebResponse ftpResponse = (FtpWebResponse)ftpRequest.GetResponse();
+                using StreamReader sr = new StreamReader(ftpResponse.GetResponseStream());
+                sr.ReadToEnd();
             }
             catch (Exception ex)
             {

@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using Newtonsoft.Json;
 using System;
 
 namespace GeoCoding.GeoCodingService
@@ -70,21 +72,34 @@ namespace GeoCoding.GeoCodingService
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (reader != null && string.IsNullOrEmpty((string)reader.Value))
+            if (reader != null)
             {
-                return null;
+                var desc = reader.Value as string;
+                if (!string.IsNullOrEmpty(desc))
+                {
+                    var res = desc.Replace(@"\", "").Replace("[", "").Replace("]", "");
+                    var a = JsonConvert.DeserializeObject<Description>(res);
+                    return a;
+                }
+                else
+                {
+                    return null;
+                }
             }
-            try
-            {
-                var desc = (string)reader.Value;
-                var res = desc.Replace(@"\", "").Replace("[", "").Replace("]", "");
-                var a = JsonConvert.DeserializeObject<Description>(res);
-                return a;
-            }
-            catch
-            {
-                throw;
-            }
+            return null;
+            //if (reader != null && string.IsNullOrEmpty((string)reader.Value))
+            //{
+            //    return null;
+            //}
+            //try
+            //{
+            //    var desc = (string)reader.Value;
+
+            //}
+            //catch
+            //{
+            //    throw;
+            //}
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

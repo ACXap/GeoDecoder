@@ -1,4 +1,6 @@
-﻿using GeoCoding.Entities;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GeoCoding.Entities;
 using GeoCoding.GeoCodingLimitsService;
 using GeoCoding.GeoCodingLimitsService.Data;
 using GeoCoding.GeoCodingLimitsService.Data.Model;
@@ -6,7 +8,6 @@ using GeoCoding.Helpers;
 using GeoCoding.Model.Data;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace GeoCoding.Model
         #endregion PrivateMethod
 
         private EntityApiKey _currentApiKey;
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
         #region PublicMethod
 
@@ -44,7 +45,7 @@ namespace GeoCoding.Model
             {
                 EntityResult<bool> result = new EntityResult<bool>();
 
-                _currentApiKey = _collectionKey.Single(x => x.ApiKey == key);
+                    _currentApiKey = _collectionKey.Single(x => x.ApiKey == key);
 
                 var lastDb = GetLastUseLimits(_currentApiKey.ApiKey);
                 var lastServ = GetLastUseLimitsServer(_currentApiKey);
@@ -53,8 +54,13 @@ namespace GeoCoding.Model
                 {
                     result.Successfully = false;
                     result.Error = lastDb.Error ?? lastServ.Error;
+                    _currentApiKey.Error = result.Error.Message;
+                    _currentApiKey.StatusSync = StatusSyncType.Error;
                     return result;
                 }
+
+                _currentApiKey.Error = string.Empty;
+                _currentApiKey.StatusSync = StatusSyncType.Sync;
 
                 var dateNow = DateTime.Now;
                 if (dateNow.Date > _currentApiKey.DateCurrentSpent.Date && dateNow.Date > lastDb.Entity.DateTime.Date)
@@ -86,6 +92,7 @@ namespace GeoCoding.Model
             var result = false;
             var apiKey = _collectionKey.Single(x => x.ApiKey == key);
             if (apiKey != _currentApiKey) throw new Exception("Key Error");
+            if (apiKey.StatusSync != StatusSyncType.Sync) throw new Exception("Key Not Sync with BD");
 
             lock (_lock)
             {

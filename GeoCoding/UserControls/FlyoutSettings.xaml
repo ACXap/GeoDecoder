@@ -1125,7 +1125,7 @@
                             IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}" />
                         <CheckBox
                             Margin="5"
-                            Content="Оповещать ли о закрытии программы"
+                            Content="Оповещать о закрытии программы"
                             IsChecked="{Binding NotificationSettings.CanNotificationExit}" />
                     </WrapPanel>
                 </ScrollViewer>

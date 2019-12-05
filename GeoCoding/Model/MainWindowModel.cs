@@ -1,4 +1,6 @@
-﻿using GeoCoding.BDService;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GeoCoding.BDService;
 using GeoCoding.Entities;
 using GeoCoding.FileService;
 using GeoCoding.FTPService;

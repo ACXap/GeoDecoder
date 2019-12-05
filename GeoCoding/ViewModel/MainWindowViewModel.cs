@@ -1,4 +1,6 @@
-﻿using GalaSoft.MvvmLight;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Threading;
@@ -1006,60 +1008,68 @@ namespace GeoCoding
                 data = collectionItem;
             }
 
-            data = data.Where(x => !string.IsNullOrEmpty(x.Address));
-
-            int countData = data.Count();
-            if (countData > 0)
+            if(data != null)
             {
-                // Отображаем индикацию работы процесса
-                IsStartGeoCoding = true;
-                //_stat.Start(_appSettings.GeoCodSettings.GeoService);
-                _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder);
+                data = data.Where(x => !string.IsNullOrEmpty(x.Address));
 
-                _geoCodingModel.GetAllGeoCod(e =>
-               {
-                   IsStartGeoCoding = false;
-                   _stat.Stop();
-                   _customerView?.Refresh();
+                int countData = data.Count();
+                if (countData > 0)
+                {
+                    // Отображаем индикацию работы процесса
+                    IsStartGeoCoding = true;
+                    //_stat.Start(_appSettings.GeoCodSettings.GeoService);
+                    _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder);
 
-                   if (e == null)
-                   {
-                       // Оповещаем о завершении получении координат
-                       _notifications.Notification(NotificationType.DataProcessed, $"{_processedcompleted} {countData}");
-                   }
-                   else if (e.Message == _errorCancel)
-                   {
-                       // Оповещаем если сами отменили
-                       _notifications.Notification(NotificationType.Cancel);
-                   }
-                   else
-                   {
-                       // Оповещаем если были ошибки
-                       _notifications.Notification(NotificationType.Error, e.Message);
-                   }
+                    _geoCodingModel.GetAllGeoCod(e =>
+                    {
+                        IsStartGeoCoding = false;
+                        _stat.Stop();
+                        _customerView?.Refresh();
 
-                   if (_appSettings.GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_appSettings.FilesSettings.FileOutput))
-                   {
-                       SaveData();
-                       SaveErrors();
-                   }
+                        if (e == null)
+                        {
+                            // Оповещаем о завершении получении координат
+                            _notifications.Notification(NotificationType.DataProcessed, $"{_processedcompleted} {countData}");
+                        }
+                        else if (e.Message == _errorCancel)
+                        {
+                            // Оповещаем если сами отменили
+                            _notifications.Notification(NotificationType.Cancel);
+                        }
+                        else
+                        {
+                            // Оповещаем если были ошибки
+                            _notifications.Notification(NotificationType.Error, e.Message);
+                        }
 
-                   if (_appSettings.GeoCodSettings.CanSaveDataAsTemp)
-                   {
-                       SaveTemp();
-                   }
-                   if (_appSettings.GeoCodSettings.CanSaveStatistics)
-                   {
-                       SaveStatistics();
-                   }
+                        if (_appSettings.GeoCodSettings.CanSaveDataAsFinished && !string.IsNullOrEmpty(_appSettings.FilesSettings.FileOutput))
+                        {
+                            SaveData();
+                            SaveErrors();
+                        }
 
-                   _ver.SetCollection(_collectionGeoCod);
-               }, data);
+                        if (_appSettings.GeoCodSettings.CanSaveDataAsTemp)
+                        {
+                            SaveTemp();
+                        }
+                        if (_appSettings.GeoCodSettings.CanSaveStatistics)
+                        {
+                            SaveStatistics();
+                        }
+
+                        _ver.SetCollection(_collectionGeoCod);
+                    }, data);
+                }
+                else
+                {
+                    _notifications.Notification(NotificationType.DataEmpty);
+                }
             }
             else
             {
                 _notifications.Notification(NotificationType.DataEmpty);
             }
+
         }
 
         /// <summary>

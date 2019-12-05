@@ -1,4 +1,6 @@
-﻿using GalaSoft.MvvmLight;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using GeoCoding.GeoCodingLimitsService;
@@ -27,7 +29,6 @@ namespace GeoCoding.Model
             GetApiKey();
 
             _limitsModel = GetLimitsModel();
-            //_limitsModel.SetStatusSyncApiKey();
 
             GetCollectionGeocoder();
             SetCurrentGeocoder();
@@ -43,11 +44,11 @@ namespace GeoCoding.Model
         }
 
         #region PrivateField
-        MainWindowModel _model;
-        VerificationModel _modelVer;
-        INotifications _notifications;
-        NetProxyModel _netProxyModel = new NetProxyModel();
-        LimitsModel _limitsModel;
+        private readonly MainWindowModel _model;
+        private readonly VerificationModel _modelVer;
+        private readonly INotifications _notifications;
+        private readonly NetProxyModel _netProxyModel = new NetProxyModel();
+        private readonly LimitsModel _limitsModel;
 
         private ApiKeySettings _apiKeySettings;
         private FilesSettings _filesSettings;
@@ -702,21 +703,21 @@ namespace GeoCoding.Model
                             {
                                 ApiKeySettings.CollectionApiKeys = new ObservableCollection<EntityApiKey>(a);
 
-                                foreach(var k in ApiKeySettings.CollectionApiKeys)
+                                foreach (var k in ApiKeySettings.CollectionApiKeys)
                                 {
                                     if (k.CollectionDayWeekSettings == null)
                                     {
-                                                var listDayWeek = new List<DayWeek>();
-                                                foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
-                                                {
-                                                    listDayWeek.Add(new DayWeek() { Day = d });
-                                                }
-                                                var s = listDayWeek.First(x => x.Day == 0);
-                                                listDayWeek.Remove(s);
-                                                listDayWeek.Insert(listDayWeek.Count, s);
-                                                k.CollectionDayWeekSettings = listDayWeek;
+                                        var listDayWeek = new List<DayWeek>();
+                                        foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
+                                        {
+                                            listDayWeek.Add(new DayWeek() { Day = d });
+                                        }
+                                        var s = listDayWeek.First(x => x.Day == 0);
+                                        listDayWeek.Remove(s);
+                                        listDayWeek.Insert(listDayWeek.Count, s);
+                                        k.CollectionDayWeekSettings = listDayWeek;
                                     }
-                                    
+
                                     var l = k.CollectionDayWeekSettings.FirstOrDefault(x => x.Day == DateTime.Now.DayOfWeek && x.Selected)?.MaxCount;
                                     k.CurrentLimit = l != null ? (int)l : 0;
                                 }
@@ -931,6 +932,7 @@ namespace GeoCoding.Model
         private void SaveApiKey()
         {
             var s = ObjectToStringJson.GetStringOfObject(_apiKeySettings.CollectionApiKeys);
+            
             _model.SaveFile((e) =>
             {
                 if (e != null)
@@ -939,6 +941,12 @@ namespace GeoCoding.Model
                     _apiKeySettings.CollectionKey = _apiKeySettings.CollectionApiKeys.Select(x => x.ApiKey).ToList();
                 }
             }, new string[] { s }, _apiKeySettings.File);
+
+            foreach (var k in ApiKeySettings.CollectionApiKeys)
+            {
+                var l = k.CollectionDayWeekSettings.FirstOrDefault(x => x.Day == DateTime.Now.DayOfWeek && x.Selected)?.MaxCount;
+                k.CurrentLimit = l != null ? (int)l : 0;
+            }
         }
 
         /// <summary>
