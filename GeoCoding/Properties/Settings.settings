@@ -176,9 +176,6 @@
     <Setting Name="CanUseANSI" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="BackgroundGeo" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="ListDayWeekMode" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -202,6 +199,15 @@
     </Setting>
     <Setting Name="BDAccessoryPassword" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CountNewAddress" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="UseGetNewBadAddressBackGeo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="UseGetNewAddressBackGeo" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

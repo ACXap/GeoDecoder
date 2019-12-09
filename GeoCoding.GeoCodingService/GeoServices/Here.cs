@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using GeoCoding.GeoCodingService.Helpers;
 using Newtonsoft.Json;
 using GeoCoding.GeoCodingService.Data;
 
@@ -15,7 +14,6 @@ namespace GeoCoding.GeoCodingService
     public class HereGeoCodingService : GeoService, IGeoCodingService
     {
         private string _key;
-        private string _keyFile = "keyHere";
         private double _distance = 200000;
 
         /// <summary>
@@ -99,32 +97,12 @@ namespace GeoCoding.GeoCodingService
 
         public override void SetKeyApi(string keyApi)
         {
-            if(!string.IsNullOrEmpty(keyApi))
-            {
-                _key = keyApi;
-
-                ProtectedDataDPAPI.EncryptData((s, e) =>
-                {
-                    File.WriteAllText(_keyFile, s);
-                }, keyApi);
-            }
+            _key = keyApi;
         }
 
         public override string GetKeyApi()
         {
             return _key;
-        }
-
-        public HereGeoCodingService()
-        {
-            if (File.Exists(_keyFile))
-            {
-                var str = File.ReadAllText(_keyFile);
-                ProtectedDataDPAPI.DecryptData((s, e) =>
-                {
-                    _key = s;
-                }, str);
-            }
         }
     }
 }

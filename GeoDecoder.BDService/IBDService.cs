@@ -1,8 +1,6 @@
 ﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 using GeoCoding.Entities;
-using System;
-using System.Collections.Generic;
 
 namespace GeoCoding.BDService
 {
@@ -14,15 +12,27 @@ namespace GeoCoding.BDService
         /// <summary>
         /// Метод для выполнения пользовательского запроса к базе данных
         /// </summary>
-        /// <param name="callback">Функция обратного вызова,с параметрами: множество объектов, ошибка</param>
         /// <param name="conSettings">Свойства подключения</param>
         /// <param name="query">Пользовательский запрос</param>
-        void ExecuteUserQuery(Action<IEnumerable<Entity>, Exception> callback, ConnectionSettingsDb conSettings, string query);
+        EntityResult<EntityAddress> ExecuteUserQuery(ConnectionSettingsDb conSettings, string query);
         /// <summary>
         /// Метод для проверки соединения с базой данных 
         /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметрами: ошибка</param>
         /// <param name="conSettings">Свойства подключения</param>
-        void ConnectBD(Action<Exception> callback, ConnectionSettingsDb conSettings);
+        EntityResult<bool> ConnectBD(ConnectionSettingsDb conSettings);
+
+        /// <summary>
+        /// Метод для получения адресов без координат
+        /// </summary>
+        /// <param name="conSettings">Свойства подключения</param>
+        /// <param name="limitRow">Лимит строк</param>
+        EntityResult<EntityAddress> GetNewAddress(ConnectionSettingsDb conSettings, int limitRow);
+
+        /// <summary>
+        /// Метод для получения адресов с плохими координатами
+        /// </summary>
+        /// <param name="conSettings">Свойства подключения</param>
+        /// <param name="limitRow">Лимит строк</param>
+        EntityResult<EntityAddress> GetBadAddress(ConnectionSettingsDb conSettings, int limitRow);
     }
 }

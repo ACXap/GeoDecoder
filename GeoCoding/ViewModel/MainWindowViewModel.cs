@@ -29,6 +29,8 @@ namespace GeoCoding
         public MainWindowViewModel()
         {
             _model = new MainWindowModel();
+            _modelBd = new BdModel();
+
             Notifications = new NotificationsModel();
             AppSettings = new AppSettings(_notifications);
 
@@ -94,6 +96,11 @@ namespace GeoCoding
         /// Поле для хранения ссылки на модель
         /// </summary>
         private readonly MainWindowModel _model;
+
+        /// <summary>
+        /// Поле для хранения ссылки на модель работы с базой
+        /// </summary>
+        private readonly BdModel _modelBd;
 
         private INotifications _notifications;
 
@@ -632,26 +639,26 @@ namespace GeoCoding
                                     SetFileInput(a[0]);
                                 }
                             }
-                            else if (a.Length > 1)
-                            {
-                                SetCollectionFiles(a);
-                            }
+                            //else if (a.Length > 1)
+                            //{
+                            //    SetCollectionFiles(a);
+                            //}
                         }
                     }, obj => !_isStartGeoCoding));
 
-        /// <summary>
-        /// Команда обработки перетаскивания файлов в список файлов
-        /// </summary>
-        public RelayCommand<DragEventArgs> CommandDragDropFileForList =>
-        _commandDragDropFileForList ?? (_commandDragDropFileForList = new RelayCommand<DragEventArgs>(
-                    obj =>
-                    {
-                        if (obj.Data.GetDataPresent(DataFormats.FileDrop, true) == true)
-                        {
-                            var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
-                            SetCollectionFiles(a);
-                        }
-                    }));
+        ///// <summary>
+        ///// Команда обработки перетаскивания файлов в список файлов
+        ///// </summary>
+        //public RelayCommand<DragEventArgs> CommandDragDropFileForList =>
+        //_commandDragDropFileForList ?? (_commandDragDropFileForList = new RelayCommand<DragEventArgs>(
+        //            obj =>
+        //            {
+        //                if (obj.Data.GetDataPresent(DataFormats.FileDrop, true) == true)
+        //                {
+        //                    var a = (string[])obj.Data.GetData(DataFormats.FileDrop, true);
+        //                    SetCollectionFiles(a);
+        //                }
+        //            }));
 
         /// <summary>
         /// Команда для сохранения статистики
@@ -685,20 +692,20 @@ namespace GeoCoding
         /// </summary>
         public RelayCommand CommandGetDataFromBD =>
         _commandGetDataFromBD ?? (_commandGetDataFromBD = new RelayCommand(
-                    () =>
+                    async () =>
                     {
                         IsStartGetDataFromBD = true;
-                        _model.GetDataFromBDAsync((data, error) =>
+                        
+                        
+                       var result = await _modelBd.GetDataUserScriptFromBDAsync(_appSettings.BDSettings);
+                        
+                        CreateCollection(result.Entities, result.Error);
+                        IsStartGetDataFromBD = false;
+
+                        if (result.Error == null)
                         {
-                            CreateCollection(data, error);
-                            IsStartGetDataFromBD = false;
-
-                            if (error == null)
-                            {
-                                _appSettings.FilesSettings.FileOutput = SetDefNameFileOutput();
-                            }
-
-                        }, _appSettings.BDSettings, _appSettings.BDSettings.SQLQuery);
+                            _appSettings.FilesSettings.FileOutput = SetDefNameFileOutput();
+                        }
                     }, () => !string.IsNullOrEmpty(_appSettings.BDSettings.SQLQuery) && !_isStartGetDataFromBD && !_isStartGeoCoding));
 
         /// <summary>
@@ -1169,94 +1176,94 @@ namespace GeoCoding
             }
         }
 
-        private ObservableCollection<EntityFile> _collectionFiles;
-        /// <summary>
-        /// 
-        /// </summary>
-        public ObservableCollection<EntityFile> CollectionFiles
-        {
-            get => _collectionFiles;
-            set => Set(ref _collectionFiles, value);
-        }
+        //private ObservableCollection<EntityFile> _collectionFiles;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public ObservableCollection<EntityFile> CollectionFiles
+        //{
+        //    get => _collectionFiles;
+        //    set => Set(ref _collectionFiles, value);
+        //}
 
-        private RelayCommand _commandGetFiles;
-        public RelayCommand CommandGetFiles =>
-        _commandGetFiles ?? (_commandGetFiles = new RelayCommand(
-                    () =>
-                    {
-                        _model.GetFiles((d, e) =>
-                        {
-                            // Оповещаем если ошибка
-                            _notifications.Notification(NotificationType.Error, e);
+        //private RelayCommand _commandGetFiles;
+        //public RelayCommand CommandGetFiles =>
+        //_commandGetFiles ?? (_commandGetFiles = new RelayCommand(
+        //            () =>
+        //            {
+        //                _model.GetFiles((d, e) =>
+        //                {
+        //                    // Оповещаем если ошибка
+        //                    _notifications.Notification(NotificationType.Error, e);
 
-                            if (e == null)
-                            {
-                                SetCollectionFiles(d);
-                            }
-                        });
-                    }, () => !_isStartGeoCoding));
+        //                    if (e == null)
+        //                    {
+        //                        SetCollectionFiles(d);
+        //                    }
+        //                });
+        //            }, () => !_isStartGeoCoding));
 
-        private RelayCommand _commandClearCollectionFiles;
-        public RelayCommand CommandClearCollectionFiles =>
-        _commandClearCollectionFiles ?? (_commandClearCollectionFiles = new RelayCommand(
-                    () =>
-                    {
-                        CollectionFiles?.Clear();
-                    }, () => !_isStartGeoCoding && _collectionFiles != null && _collectionFiles.Any()));
+        //private RelayCommand _commandClearCollectionFiles;
+        //public RelayCommand CommandClearCollectionFiles =>
+        //_commandClearCollectionFiles ?? (_commandClearCollectionFiles = new RelayCommand(
+        //            () =>
+        //            {
+        //                CollectionFiles?.Clear();
+        //            }, () => !_isStartGeoCoding && _collectionFiles != null && _collectionFiles.Any()));
 
-        private RelayCommand<EntityFile> _commandRemoveFilesFromCollection;
-        public RelayCommand<EntityFile> CommandRemoveFilesFromCollection =>
-        _commandRemoveFilesFromCollection ?? (_commandRemoveFilesFromCollection = new RelayCommand<EntityFile>(
-                    obj =>
-                    {
-                        _collectionFiles.Remove(obj);
-                    }, !_isStartGeoCoding));
+        //private RelayCommand<EntityFile> _commandRemoveFilesFromCollection;
+        //public RelayCommand<EntityFile> CommandRemoveFilesFromCollection =>
+        //_commandRemoveFilesFromCollection ?? (_commandRemoveFilesFromCollection = new RelayCommand<EntityFile>(
+        //            obj =>
+        //            {
+        //                _collectionFiles.Remove(obj);
+        //            }, !_isStartGeoCoding));
 
-        private void SetCollectionFiles(IEnumerable<string> d)
-        {
-            if (d != null && d.Any())
-            {
-                if (_collectionFiles == null || !_collectionFiles.Any())
-                {
-                    CollectionFiles = new ObservableCollection<EntityFile>(d.Select(x =>
-                    {
-                        return new EntityFile() { NameFile = x };
-                    }));
-                }
-                else
-                {
-                    foreach (var item in d)
-                    {
-                        _collectionFiles.Add(new EntityFile() { NameFile = item });
-                    }
-                }
+        //private void SetCollectionFiles(IEnumerable<string> d)
+        //{
+        //    if (d != null && d.Any())
+        //    {
+        //        if (_collectionFiles == null || !_collectionFiles.Any())
+        //        {
+        //            CollectionFiles = new ObservableCollection<EntityFile>(d.Select(x =>
+        //            {
+        //                return new EntityFile() { NameFile = x };
+        //            }));
+        //        }
+        //        else
+        //        {
+        //            foreach (var item in d)
+        //            {
+        //                _collectionFiles.Add(new EntityFile() { NameFile = item });
+        //            }
+        //        }
 
-                GetDataAboutFiles();
-            }
-        }
+        //        GetDataAboutFiles();
+        //    }
+        //}
 
-        private void GetDataAboutFiles()
-        {
-            IsStartGetDataAboutFiles = true;
+        //private void GetDataAboutFiles()
+        //{
+        //    IsStartGetDataAboutFiles = true;
 
-            _model.GetDataAboutFiles(e =>
-            {
-                if (e == null)
-                {
-                    IsStartGetDataAboutFiles = false;
-                }
-            }, _collectionFiles, _appSettings.FilesSettings.CanUseANSI);
-        }
+        //    _model.GetDataAboutFiles(e =>
+        //    {
+        //        if (e == null)
+        //        {
+        //            IsStartGetDataAboutFiles = false;
+        //        }
+        //    }, _collectionFiles, _appSettings.FilesSettings.CanUseANSI);
+        //}
 
-        private bool _isStartGetDataAboutFiles = false;
-        /// <summary>
-        /// 
-        /// </summary>
-        public bool IsStartGetDataAboutFiles
-        {
-            get => _isStartGetDataAboutFiles;
-            set => Set(ref _isStartGetDataAboutFiles, value);
-        }
+        //private bool _isStartGetDataAboutFiles = false;
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public bool IsStartGetDataAboutFiles
+        //{
+        //    get => _isStartGetDataAboutFiles;
+        //    set => Set(ref _isStartGetDataAboutFiles, value);
+        //}
 
         //private RelayCommand _commandGetGeoForListFile;
         //public RelayCommand CommandGetGeoForListFile =>
@@ -1338,70 +1345,70 @@ namespace GeoCoding
         //    IsStartGeoCoding = false;
         //}
 
-        private RelayCommand _myCommand;
-        public RelayCommand MyCommand =>
-        _myCommand ?? (_myCommand = new RelayCommand(
-                    () =>
-                    {
-                        CheckAllGeoFromFiles();
-                    }));
+        //private RelayCommand _myCommand;
+        //public RelayCommand MyCommand =>
+        //_myCommand ?? (_myCommand = new RelayCommand(
+        //            () =>
+        //            {
+        //                CheckAllGeoFromFiles();
+        //            }));
 
-        private async void CheckAllGeoFromFiles()
-        {
-            foreach (var item in _collectionFiles)
-            {
-                if (item.FileType == FileType.Other)
-                {
-                    continue;
-                }
+        //private async void CheckAllGeoFromFiles()
+        //{
+        //    foreach (var item in _collectionFiles)
+        //    {
+        //        if (item.FileType == FileType.Other)
+        //        {
+        //            continue;
+        //        }
 
-                item.Status = StatusType.Processed;
-                _appSettings.FilesSettings.FileInput = item.NameFile;
+        //        item.Status = StatusType.Processed;
+        //        _appSettings.FilesSettings.FileInput = item.NameFile;
 
-                if (item.FileType == FileType.Temp)
-                {
-                    _model.GetDataFromFile((list, e) =>
-                    {
-                        CreateCollection(list, e);
-                    }, item.NameFile, _appSettings.FilesSettings.CanUseANSI);
-                }
+        //        if (item.FileType == FileType.Temp)
+        //        {
+        //            _model.GetDataFromFile((list, e) =>
+        //            {
+        //                CreateCollection(list, e);
+        //            }, item.NameFile, _appSettings.FilesSettings.CanUseANSI);
+        //        }
 
-                _appSettings.FilesSettings.FileOutput = SetDefNameFileOutput();
+        //        _appSettings.FilesSettings.FileOutput = SetDefNameFileOutput();
 
-                var error = await _ver.CheckAll();
-                if (error == null)
-                {
-                    item.Status = StatusType.OK;
-                }
-                else
-                {
-                    item.Error = error.Message;
-                    item.Status = StatusType.Error;
-                }
-            }
-        }
+        //        var error = await _ver.CheckAll();
+        //        if (error == null)
+        //        {
+        //            item.Status = StatusType.OK;
+        //        }
+        //        else
+        //        {
+        //            item.Error = error.Message;
+        //            item.Status = StatusType.Error;
+        //        }
+        //    }
+        //}
 
-        private RelayCommand<EntityFile> _commandOpenFile;
-        public RelayCommand<EntityFile> CommandOpenFile =>
-        _commandOpenFile ?? (_commandOpenFile = new RelayCommand<EntityFile>(
-                    obj =>
-                    {
-                        _appSettings.FilesSettings.FileInput = obj.NameFile;
+        //private RelayCommand<EntityFile> _commandOpenFile;
+        //public RelayCommand<EntityFile> CommandOpenFile =>
+        //_commandOpenFile ?? (_commandOpenFile = new RelayCommand<EntityFile>(
+        //            obj =>
+        //            {
+        //                _appSettings.FilesSettings.FileInput = obj.NameFile;
 
-                        if (obj.Collection != null && obj.Collection.Any())
-                        {
-                            CreateCollection(obj.Collection, null);
-                        }
-                        else
-                        {
-                            _model.GetDataFromFile((list, e) =>
-                            {
-                                CreateCollection(list, e);
-                            }, obj.NameFile, _appSettings.FilesSettings.CanUseANSI);
-                        }
+        //                if (obj.Collection != null && obj.Collection.Any())
+        //                {
+        //                    CreateCollection(obj.Collection, null);
+        //                }
+        //                else
+        //                {
+        //                    _model.GetDataFromFile((list, e) =>
+        //                    {
+        //                        CreateCollection(list, e);
+        //                    }, obj.NameFile, _appSettings.FilesSettings.CanUseANSI);
+        //                }
 
-                        _appSettings.FilesSettings.FileOutput = SetDefNameFileOutput();
-                    }, obj => obj != null && obj.FileType != FileType.Other));
+        //                _appSettings.FilesSettings.FileOutput = SetDefNameFileOutput();
+        //            }, obj => obj != null && obj.FileType != FileType.Other));
 
         private RelayCommand<EntityGeoCod> _commandCopyGeoDatad;
         public RelayCommand<EntityGeoCod> CommandCopyGeoData =>

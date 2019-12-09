@@ -20,6 +20,7 @@ namespace GeoCoding.Model
         public AppSettings(INotifications notifications)
         {
             _model = new MainWindowModel();
+            _modelBd = new BdModel();
             GetSettings();
 
             _notifications = notifications;
@@ -45,6 +46,7 @@ namespace GeoCoding.Model
 
         #region PrivateField
         private readonly MainWindowModel _model;
+        private readonly BdModel _modelBd;
         private readonly VerificationModel _modelVer;
         private readonly INotifications _notifications;
         private readonly NetProxyModel _netProxyModel = new NetProxyModel();
@@ -181,24 +183,24 @@ namespace GeoCoding.Model
         /// </summary>
         public RelayCommand CommandCheckConnect =>
         _commandCheckConnect ?? (_commandCheckConnect = new RelayCommand(
-                    () =>
+                    async () =>
                     {
                         BDSettings.StatusConnect = StatusType.Processed;
                         BDSettings.Error = string.Empty;
-                        _model.ConnectBDAsync(e =>
+
+                        var result = await _modelBd.ConnectBDAsync(_BDSettings);
+
+                        if (result.Successfully)
                         {
-                            if (e != null)
-                            {
-                                _notifications.Notification(NotificationType.Error, e);
-                                BDSettings.StatusConnect = StatusType.Error;
-                                BDSettings.Error = e.Message;
-                            }
-                            else
-                            {
-                                BDSettings.StatusConnect = StatusType.OK;
-                                BDSettings.Error = string.Empty;
-                            }
-                        }, BDSettings);
+                            BDSettings.StatusConnect = StatusType.OK;
+                            BDSettings.Error = string.Empty;
+                        }
+                        else
+                        {
+                            _notifications.Notification(NotificationType.Error, result.Error.Message);
+                            BDSettings.StatusConnect = StatusType.Error;
+                            BDSettings.Error = result.Error.Message;
+                        }
                     }, () => !string.IsNullOrEmpty(_BDSettings.Server) && !string.IsNullOrEmpty(_BDSettings.BDName) && _BDSettings.StatusConnect != StatusType.Processed));
 
         /// <summary>
@@ -650,9 +652,11 @@ namespace GeoCoding.Model
                 CanUseFtpModule = p.CanUseFtpModule,
                 CanUseVerificationModule = p.CanUseVerificationModule,
                 ColorTheme = p.ColorTheme,
-                BackgroundGeo = p.BackgroundGeo,
                 ScpriptBackgroundGeo = p.ScpriptBackgroundGeo,
-                UseScriptBackGeo = p.UseScriptBackGeo
+                UseScriptBackGeo = p.UseScriptBackGeo,
+                CountNewAddress = p.CountNewAddress,
+                UseGetNewAddressBackGeo = p.UseGetNewAddressBackGeo,
+                UseGetNewBadAddressBackGeo = p.UseGetNewBadAddressBackGeo
             };
 
             var listDayWeek = ObjectToStringJson.GetObjectOfstring<List<DayWeekWithTime>>(p.ListDayWeekMode);
@@ -836,10 +840,12 @@ namespace GeoCoding.Model
                 p.CanUseVerificationModule = _generalSettings.CanUseVerificationModule;
                 p.CanUseBdModule = _generalSettings.CanUseBdModule;
                 p.CanUseFtpModule = _generalSettings.CanUseFtpModule;
-                p.BackgroundGeo = _generalSettings.BackgroundGeo;
                 p.UseScriptBackGeo = _generalSettings.UseScriptBackGeo;
                 p.ScpriptBackgroundGeo = _generalSettings.ScpriptBackgroundGeo;
                 p.ColorTheme = _generalSettings.ColorTheme;
+                p.CountNewAddress = _generalSettings.CountNewAddress;
+                p.UseGetNewAddressBackGeo = _generalSettings.UseGetNewAddressBackGeo;
+                p.UseGetNewBadAddressBackGeo = _generalSettings.UseGetNewBadAddressBackGeo;
                 p.ListDayWeekMode = ObjectToStringJson.GetStringOfObject(_generalSettings.ListDayWeek);
             }
 
@@ -916,10 +922,12 @@ namespace GeoCoding.Model
                 p.CanUseVerificationModule = _generalSettings.CanUseVerificationModule;
                 p.CanUseBdModule = _generalSettings.CanUseBdModule;
                 p.CanUseFtpModule = _generalSettings.CanUseFtpModule;
-                p.BackgroundGeo = _generalSettings.BackgroundGeo;
                 p.UseScriptBackGeo = _generalSettings.UseScriptBackGeo;
                 p.ScpriptBackgroundGeo = _generalSettings.ScpriptBackgroundGeo;
                 p.ColorTheme = _generalSettings.ColorTheme;
+                p.CountNewAddress = _generalSettings.CountNewAddress;
+                p.UseGetNewAddressBackGeo = _generalSettings.UseGetNewAddressBackGeo;
+                p.UseGetNewBadAddressBackGeo = _generalSettings.UseGetNewBadAddressBackGeo;
                 p.ListDayWeekMode = ObjectToStringJson.GetStringOfObject(_generalSettings.ListDayWeek);
             }
 
@@ -932,7 +940,7 @@ namespace GeoCoding.Model
         private void SaveApiKey()
         {
             var s = ObjectToStringJson.GetStringOfObject(_apiKeySettings.CollectionApiKeys);
-            
+
             _model.SaveFile((e) =>
             {
                 if (e != null)

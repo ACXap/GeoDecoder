@@ -1,6 +1,5 @@
 ﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
-using GeoCoding.GeoCodingService.Helpers;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,7 +8,6 @@ namespace GeoCoding.GeoCodingService
     public class YandexPayGeoCodingService: YandexGeoCodingService
     {
         private string _key;
-        private string _keyFile = "keyYandex";
         
         /// <summary>
         /// Название геосервиса
@@ -39,33 +37,12 @@ namespace GeoCoding.GeoCodingService
 
         public override void SetKeyApi(string keyApi)
         {
-            if(!string.IsNullOrEmpty(keyApi))
-            {
-                _key = keyApi;
-
-                ProtectedDataDPAPI.EncryptData((s, e) =>
-                {
-                    File.WriteAllText(_keyFile, s);
-                },keyApi);
-            }
+            _key = keyApi;
         }
 
         public override string GetKeyApi()
         {
             return _key;
-        }
-
-        public YandexPayGeoCodingService()
-        {
-            if(File.Exists(_keyFile))
-            {
-                var str = File.ReadAllText(_keyFile);
-
-                ProtectedDataDPAPI.DecryptData((s, e) =>
-                {
-                    _key = s;
-                }, str);
-            }
         }
     }
 }

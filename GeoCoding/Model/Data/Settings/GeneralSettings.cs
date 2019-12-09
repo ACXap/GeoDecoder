@@ -46,15 +46,7 @@ namespace GeoCoding
             get => _canStartCompact;
             set => Set(ref _canStartCompact, value);
         }
-        private bool _backgroundGeo = false;
-        /// <summary>
-        /// Автоматический режим работы приложения
-        /// </summary>
-        public bool BackgroundGeo
-        {
-            get => _backgroundGeo;
-            set => Set(ref _backgroundGeo, value);
-        }
+
         private List<DayWeekWithTime> _listDayWeek;
         /// <summary>
         /// Список настроек по дням недели
@@ -73,7 +65,7 @@ namespace GeoCoding
             get => _scpriptBackgroundGeo;
             set => Set(ref _scpriptBackgroundGeo, value);
         }
-        private bool _useScriptBackGeo = true;
+        private bool _useScriptBackGeo = false;
         /// <summary>
         /// Использовать скрипт запроса к базе данных в фоновом режиме
         /// </summary>
@@ -82,6 +74,37 @@ namespace GeoCoding
             get => _useScriptBackGeo;
             set => Set(ref _useScriptBackGeo, value);
         }
+
+        private bool _useGetNewAddressBackGeo = false;
+        /// <summary>
+        /// Использовать загрузку только новых адресов для фонового геокодирования
+        /// </summary>
+        public bool UseGetNewAddressBackGeo
+        {
+            get => _useGetNewAddressBackGeo;
+            set => Set(ref _useGetNewAddressBackGeo, value);
+        }
+
+        private bool _useGetNewBadAddressBackGeo = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool UseGetNewBadAddressBackGeo
+        {
+            get => _useGetNewBadAddressBackGeo;
+            set => Set(ref _useGetNewBadAddressBackGeo, value);
+        }
+
+        private int _countNewAddress = 1000;
+        /// <summary>
+        /// Количество новых адресов в выборке новых и старых
+        /// </summary>
+        public int CountNewAddress
+        {
+            get => _countNewAddress;
+            set => Set(ref _countNewAddress, value);
+        }
+
         private string _colorTheme = "Light.Blue";
         /// <summary>
         /// Тема оформления приложения

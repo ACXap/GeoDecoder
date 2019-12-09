@@ -1,10 +1,8 @@
 ﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 using GalaSoft.MvvmLight.Threading;
-using System;
 using System.Configuration;
 using System.Linq;
-using System.Net;
 using System.Windows;
 
 namespace GeoCoding
@@ -14,7 +12,6 @@ namespace GeoCoding
         static App()
         {
             DispatcherHelper.Initialize();
-            ServicePointManager.DefaultConnectionLimit = 100;
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -35,7 +32,6 @@ namespace GeoCoding
                     StartBackGeo();
                     return;
                 }
-
             }
 
             try

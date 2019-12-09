@@ -63,7 +63,6 @@
     <Compile Include="GeoServices\RusGisGeoCodingService.cs" />
     <Compile Include="GeoServices\SputnikRusGisGeoCodingService.cs" />
     <Compile Include="GeoServices\YandexPayGeoCodingService.cs" />
-    <Compile Include="Helpers\Protected.cs" />
     <Compile Include="IGeoCodingService.cs" />
     <Compile Include="MainGeoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

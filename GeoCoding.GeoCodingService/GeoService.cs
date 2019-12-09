@@ -80,9 +80,7 @@ namespace GeoCoding.GeoCodingService
 
             try
             {
-                ServicePointManager.DefaultConnectionLimit = 100;
-
-                HttpWebRequest request = WebRequest.CreateHttp(url);
+                HttpWebRequest request = WebRequest.CreateHttp(new Uri(url));
                 request.Headers.Add("Content-Encoding: gzip, deflate, br");
                 request.UserAgent = @"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36 OPR/62.0.3331.72";
 
@@ -99,19 +97,13 @@ namespace GeoCoding.GeoCodingService
                     WebProxy proxy = new WebProxy(cs.ProxyAddress, cs.ProxyPort);
                     request.Proxy = proxy;
                 }
-                
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+
+                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                using Stream dataStream = response.GetResponseStream();
+                if (dataStream != null)
                 {
-                    using (Stream dataStream = response.GetResponseStream())
-                    {
-                        if (dataStream != null)
-                        {
-                            using (StreamReader reader = new StreamReader(dataStream))
-                            {
-                                json = reader.ReadToEnd();
-                            }
-                        }
-                    }
+                    using StreamReader reader = new StreamReader(dataStream);
+                    json = reader.ReadToEnd();
                 }
             }
             catch (WebException wex)

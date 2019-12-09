@@ -58,7 +58,7 @@ namespace GeoCoding
         public StatusType Status
         {
             get => _status;
-            set => Set("Status", ref _status, value, true);
+            set => Set(ref _status, value);
         }
 
         private DateTime _dateTimeGeoCod;

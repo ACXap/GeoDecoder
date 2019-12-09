@@ -296,6 +296,15 @@ namespace GeoCoding
             return cs;
         }
 
+        public async Task<EntityResult<int>> GetCurrentLimit()
+        {
+            var key = _geoCodingService.GetKeyApi();
+            EntityResult<int> result;
+
+            result = await _limitsModel.GetCurrentLimit(key);
+            return result;
+        }
+
         /// <summary>
         /// Метод для создания настроек подключения с настройками прокси вручную
         /// </summary>

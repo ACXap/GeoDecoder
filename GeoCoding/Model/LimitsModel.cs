@@ -37,6 +37,25 @@ namespace GeoCoding.Model
         private EntityApiKey _currentApiKey;
         private readonly object _lock = new object();
 
+        public async Task<EntityResult<int>> GetCurrentLimit(string key)
+        {
+            EntityResult<int> result = new EntityResult<int>();
+            
+            var r = await InitApiKey(key);
+            
+            if (r.Successfully)
+            {
+                result.Successfully = true;
+                result.Entity = _currentApiKey.CurrentLimit - _currentApiKey.CurrentSpent;
+            }
+            else
+            {
+                result.Error = r.Error;
+            }
+
+            return result;
+        }
+
         #region PublicMethod
 
         public Task<EntityResult<bool>> InitApiKey(string key)
@@ -45,7 +64,7 @@ namespace GeoCoding.Model
             {
                 EntityResult<bool> result = new EntityResult<bool>();
 
-                    _currentApiKey = _collectionKey.Single(x => x.ApiKey == key);
+                _currentApiKey = _collectionKey.Single(x => x.ApiKey == key);
 
                 var lastDb = GetLastUseLimits(_currentApiKey.ApiKey);
                 var lastServ = GetLastUseLimitsServer(_currentApiKey);
@@ -70,7 +89,7 @@ namespace GeoCoding.Model
                 }
                 else
                 {
-                    if(_currentApiKey.DateCurrentSpent > lastDb.Entity.DateTime)
+                    if (_currentApiKey.DateCurrentSpent > lastDb.Entity.DateTime)
                     {
                         var r = SetLastUseLimits();
                     }

@@ -37,7 +37,6 @@ namespace GeoCoding
         #endregion PrivateConst
 
         private readonly IFileService _fileService = new FileService.FileService();
-        private readonly IBDService _bdService = new BDPostgresql();
         private readonly IFtpService _ftpService = new FtpService();
 
         //globalid;Latitude;Longitude;Qcode
@@ -683,92 +682,6 @@ namespace GeoCoding
         private bool IsFirstStringNameColumnErrorFile(string fs)
         {
             return fs.ToLower() == _nameColumnErrorFile;
-        }
-
-        /// <summary>
-        /// Метод для подключения к базе данных
-        /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметром: ошибка</param>
-        /// <param name="bds">Настройки подключения к базе данных</param>
-        public async void ConnectBDAsync(Action<Exception> callback, BDSettings bds)
-        {
-            Exception error = null;
-            await Task.Factory.StartNew(() =>
-            {
-                _bdService.ConnectBD(e =>
-                {
-                    error = e;
-                }, new ConnectionSettingsDb()
-                {
-                    Server = bds.Server,
-                    BDName = bds.BDName,
-                    Port = bds.Port,
-                    Login = bds.Login,
-                    Password = bds.Password
-                });
-
-                callback(error);
-            });
-        }
-
-        /// <summary>
-        /// Метод для получения данных из базы данных
-        /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметром, коллекция данных, ошибка</param>
-        /// <param name="bds">Настройки подключения к базе данных</param>
-        /// <param name="query">Sql-запрос к базе данных</param>
-        public async void GetDataFromBDAsync(Action<IEnumerable<EntityGeoCod>, Exception> callback, BDSettings bds, string query)
-        {
-            Exception error = null;
-            List<EntityGeoCod> data = new List<EntityGeoCod>();
-
-            await Task.Factory.StartNew(() =>
-            {
-                _bdService.ExecuteUserQuery((d, e) =>
-                {
-                    if (e == null)
-                    {
-                        foreach (var item in d)
-                        {
-                            var a = new EntityGeoCod();
-
-                            if (item.OrponId == 0)
-                            {
-                                SetError(a, _errorIsFormatIDWrong);
-                            }
-                            else
-                            {
-                                a.GlobalID = item.OrponId;
-                            }
-
-                            if (string.IsNullOrEmpty(item.Address))
-                            {
-                                SetError(a, _errorIsAddressEmpty);
-                            }
-                            else
-                            {
-                                a.Address = item.Address;
-                            }
-                            a.FiasGuid = item.FiasGuid;
-
-                            data.Add(a);
-                        }
-                    }
-                    else
-                    {
-                        error = e;
-                    }
-                }, new ConnectionSettingsDb()
-                {
-                    Server = bds.Server,
-                    BDName = bds.BDName,
-                    Port = bds.Port,
-                    Login = bds.Login,
-                    Password = bds.Password
-                }, query);
-
-                callback(data, error);
-            });
         }
 
         /// <summary>

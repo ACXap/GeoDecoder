@@ -23,8 +23,8 @@ namespace GeoCoding.Helpers
         /// <returns>Энтропию</returns>
         private static byte[] GetEntropy()
         {
-            MD5 md5 = MD5.Create();
-            return md5.ComputeHash(Encoding.UTF8.GetBytes(_entropyString));
+            using SHA512 sha = SHA512.Create();
+            return sha.ComputeHash(Encoding.UTF8.GetBytes(_entropyString));
         }
 
         /// <summary>

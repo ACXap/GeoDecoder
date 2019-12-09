@@ -7,7 +7,7 @@ namespace GeoCoding.BDService
     /// <summary>
     /// Класс для хранения объекта из базы данных
     /// </summary>
-    public class Entity
+    public class EntityAddress
     {
         /// <summary>
         /// OrponId - орпон айди объекта
@@ -17,6 +17,9 @@ namespace GeoCoding.BDService
         /// Address - адрес объекта
         /// </summary>
         public string Address { get; set; }
+        /// <summary>
+        /// ФИАС адреса
+        /// </summary>
         public Guid FiasGuid { get; set; }
     }
 }
