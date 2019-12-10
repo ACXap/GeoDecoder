@@ -9,6 +9,13 @@ namespace GeoCoding.BDService
 {
     public class BDPostgresql : IBDService
     {
+        #region PrivateField
+
+        private const string ARGUMENT_CANNOT_NULL = "cannot be null";
+        private const string TABLE_HOUSE = "public.ent_as_house";
+
+        #endregion PrivateField
+
         /// <summary>
         /// Метод для выполнения пользовательского запроса к базе данных
         /// </summary>
@@ -16,6 +23,9 @@ namespace GeoCoding.BDService
         /// <param name="query">Пользовательский запрос</param>
         public EntityResult<EntityAddress> ExecuteUserQuery(ConnectionSettingsDb conSettings, string query)
         {
+            if (conSettings == null) return GetEntityResultErrorArrgument<EntityAddress>(nameof(conSettings));
+            if (string.IsNullOrEmpty(query)) return GetEntityResultErrorArrgument<EntityAddress>(nameof(query));
+
             EntityResult<EntityAddress> result = new EntityResult<EntityAddress>();
 
             try
@@ -44,6 +54,9 @@ namespace GeoCoding.BDService
         /// <param name="limitRow">Лимит строк</param>
         public EntityResult<EntityAddress> GetNewAddress(ConnectionSettingsDb conSettings, int limitRow)
         {
+            if (conSettings == null) return GetEntityResultErrorArrgument<EntityAddress>(nameof(conSettings));
+            if (limitRow < 1) return GetEntityResultErrorArrgument<EntityAddress>(nameof(limitRow));
+
             EntityResult<EntityAddress> result = new EntityResult<EntityAddress>();
 
             try
@@ -52,7 +65,7 @@ namespace GeoCoding.BDService
                 con.Open();
 
                 string query = "select eah.orponid as globalid, eah.adr_adm_ter as address, eah.fiasguid as fiasguid" +
-                    " from public.ent_as_house eah" +
+                    $" from {TABLE_HOUSE} eah" +
                     " where 1=1 and eah.livestatus = 1" +
                     " and exists (select 1 from public.ent_id_vs_o_add," +
                     " public.ent_rf_rtk b, public.orpon_sys_rtk_mrb c," +
@@ -84,6 +97,9 @@ namespace GeoCoding.BDService
         /// <param name="limitRow">Лимит строк</param>
         public EntityResult<EntityAddress> GetBadAddress(ConnectionSettingsDb conSettings, int limitRow)
         {
+            if (conSettings == null) return GetEntityResultErrorArrgument<EntityAddress>(nameof(conSettings));
+            if (limitRow < 1) return GetEntityResultErrorArrgument<EntityAddress>(nameof(limitRow));
+
             EntityResult<EntityAddress> result = new EntityResult<EntityAddress>();
 
             try
@@ -92,16 +108,18 @@ namespace GeoCoding.BDService
                 con.Open();
 
                 string query = "select eah.orponid as globalid, eah.adr_adm_ter as address, eah.fiasguid as fiasguid" +
-                    " from public.ent_as_house eah, public.house_coordinates hc" +
+                    $" from {TABLE_HOUSE} eah, public.house_coordinates hc" +
                     " where 1=1 and eah.coordinates_id=hc.id" +
                     " and eah.livestatus=1" +
-                    " and hc.quality_code<>1" +
+                    " and hc.quality_code=2" +
+                    " and hc.source<>'GUI'" +
                     " and eah.adr_adm_ter is not null order by hc.change_date NULLS first limit " + limitRow;
 
                 using NpgsqlCommand com = new NpgsqlCommand(query, con);
                 using NpgsqlDataReader reader = com.ExecuteReader();
 
                 result.Entities = GetData(reader);
+                result.Successfully = true;
             }
             catch (Exception ex)
             {
@@ -117,15 +135,19 @@ namespace GeoCoding.BDService
         /// <param name="conSettings">Свойства подключения</param>
         public EntityResult<bool> ConnectBD(ConnectionSettingsDb conSettings)
         {
+            if (conSettings == null) return GetEntityResultErrorArrgument<bool>(nameof(conSettings));
+
             EntityResult<bool> result = new EntityResult<bool>();
 
             try
             {
                 using NpgsqlConnection con = new NpgsqlConnection(GetConnectionString(conSettings));
                 con.Open();
-                string existsTable = $"SELECT 'public.ent_as_house'::regclass";
+
+                string existsTable = $"SELECT '{TABLE_HOUSE}'::regclass";
                 using NpgsqlCommand cmd = new NpgsqlCommand(existsTable, con);
                 cmd.ExecuteNonQuery();
+
                 result.Successfully = true;
                 result.Entity = true;
             }
@@ -135,6 +157,27 @@ namespace GeoCoding.BDService
             }
 
             return result;
+        }
+
+        #region PrivateMethod
+        /// <summary>
+        /// Метод для получения ошибки отсутсвие аргумента
+        /// </summary>
+        /// <param name="paramName">Имя аргумента</param>
+        /// <returns>Возвращает ошибку</returns>
+        private ArgumentNullException GetArgumentNullException(string paramName)
+        {
+            return new ArgumentNullException(paramName, $"{paramName} {ARGUMENT_CANNOT_NULL}");
+        }
+
+        /// <summary>
+        /// Метод для получения результата с ошибкой отсутвие аргумента
+        /// </summary>
+        /// <param name="paramName">Имя аргумента</param>
+        /// <returns>Возвращает результат с ошибкой</returns>
+        private EntityResult<T> GetEntityResultErrorArrgument<T>(string paramName)
+        {
+            return new EntityResult<T>() { Error = GetArgumentNullException(paramName) };
         }
 
         /// <summary>
@@ -149,12 +192,12 @@ namespace GeoCoding.BDService
                 $"User Id={conSettings.Login};" +
                 $"Password={conSettings.Password};" +
                 $"Database={conSettings.BDName};" +
-                $"Timeout=300;" +
-                $"CommandTimeout=300;";
+                "Timeout=300;" +
+                "CommandTimeout=300;";
         }
 
         /// <summary>
-        /// метод для получения объекта адреса из ридера потока из базы
+        /// Метод для получения объекта адреса из ридера потока из базы
         /// </summary>
         /// <param name="reader">Ридер потока из базы</param>
         /// <returns>Коллекция адресов</returns>
@@ -181,8 +224,11 @@ namespace GeoCoding.BDService
                 }
                 data.Add(entity);
             }
+            reader.Close();
 
             return data;
         }
+
+        #endregion PrivateMethod
     }
 }

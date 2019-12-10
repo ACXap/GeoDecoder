@@ -4,8 +4,10 @@ using GeoCoding.BDService;
 using GeoCoding.Entities;
 using GeoCoding.FileService;
 using GeoCoding.FTPService;
+using GeoCoding.Model.Data;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,6 +35,7 @@ namespace GeoCoding
         private const int _fiasGuidColumnIndexLoadFile = 2;
         private const int _addressColumnIndexLoadFile = 1;
         private const int _maxCountError = 100;
+        private const string _fileLog = "log.txt";
 
         #endregion PrivateConst
 
@@ -753,6 +756,18 @@ namespace GeoCoding
             {
                 callback(er, data);
             }, file, false);
+        }
+
+        public void SaveLog(IEnumerable<LogItemBackGeo> data)
+        {
+            var str = data.Select(x =>
+            {
+                return $"{x.DateTimeLog};{x.TextLog};{x.CountRow}";
+            });
+            _fileService.AppendData(er =>
+            {
+                
+            }, str, Directory.GetCurrentDirectory()+ "\\" + _fileLog);
         }
     }
 }

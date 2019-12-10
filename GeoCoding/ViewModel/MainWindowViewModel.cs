@@ -212,7 +212,7 @@ namespace GeoCoding
         /// <summary>
         /// Поле для хранения ссылки на команду драг-дроп файлов в список файлов
         /// </summary>
-        private RelayCommand<DragEventArgs> _commandDragDropFileForList;
+        //private RelayCommand<DragEventArgs> _commandDragDropFileForList;
 
         /// <summary>
         /// Поле для хранения ссылки на команду сохранение статистики

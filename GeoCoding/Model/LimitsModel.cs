@@ -26,16 +26,10 @@ namespace GeoCoding.Model
         private readonly ILimitsRepository _limitsRepository;
         private readonly IEnumerable<EntityApiKey> _collectionKey;
 
-        #endregion PrivateField
-
-        #region PublicProperties
-        #endregion PublicProperties
-
-        #region PrivateMethod
-        #endregion PrivateMethod
-
         private EntityApiKey _currentApiKey;
         private readonly object _lock = new object();
+
+        #endregion PrivateField
 
         public async Task<EntityResult<int>> GetCurrentLimit(string key)
         {
@@ -54,6 +48,33 @@ namespace GeoCoding.Model
             }
 
             return result;
+        }
+
+        public Task<EntityResult<int>> GetMaxLimit(string key)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                EntityResult<int> result = new EntityResult<int>();
+
+                _currentApiKey = _collectionKey.Single(x => x.ApiKey == key);
+                var lastServ = GetLastUseLimitsServer(_currentApiKey);
+
+                if (!lastServ.Successfully)
+                {
+                    result.Error = lastServ.Error;
+                    _currentApiKey.Error = result.Error.Message;
+                    _currentApiKey.StatusSync = StatusSyncType.Error;
+                    return result;
+                }
+
+                _currentApiKey.Error = string.Empty;
+                _currentApiKey.StatusSync = StatusSyncType.Sync;
+
+                result.Entity = _currentApiKey.MaxLimit - lastServ.Entity.Value;
+                result.Successfully = true;
+
+                return result;
+            });
         }
 
         #region PublicMethod

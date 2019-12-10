@@ -75,6 +75,11 @@ namespace GeoCoding
         private bool _canUseANSI = true;
 
         /// <summary>
+        /// Поле для хранения значения получать ли данные из файла сразу после выбора
+        /// </summary>
+        private bool _canGetDataOnce = false;
+
+        /// <summary>
         /// Имя файла с данными
         /// </summary>
         public string FileInput
@@ -164,7 +169,9 @@ namespace GeoCoding
             set => Set(ref _isFileInputOnFTP, value);
         }
 
-        private bool _canGetDataOnce = false;
+        /// <summary>
+        /// Получать ли данные из файла сразу после выбора
+        /// </summary>
         public bool CanGetDataOnce
         {
             get => _canGetDataOnce;
@@ -189,6 +196,9 @@ namespace GeoCoding
             set => Set(ref _folderErrors, value);
         }
 
+        /// <summary>
+        /// Использовать ли кодировку ANSI
+        /// </summary>
         public bool CanUseANSI
         {
             get => _canUseANSI;

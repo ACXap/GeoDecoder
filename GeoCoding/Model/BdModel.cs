@@ -96,16 +96,35 @@ namespace GeoCoding.Model
                 // Если новые и плохие адреса нужны
                 if (gset.UseGetNewBadAddressBackGeo)
                 {
-                    var newAddress = _bdService.GetNewAddress(GetConnection(bds), gset.CountNewAddress);
-                    var countBad = limitRow - gset.CountNewAddress;
-                    var badAddress = _bdService.GetBadAddress(GetConnection(bds), countBad);
-                    if(newAddress.Successfully && badAddress.Successfully)
+                    data = new EntityResult<EntityAddress>();
+
+                    if(limitRow <= gset.CountNewAddress)
                     {
-                        data.Entities = newAddress.Entities.Concat(badAddress.Entities);
+                        var newAddress = _bdService.GetNewAddress(GetConnection(bds), limitRow);
+                        if (newAddress.Successfully)
+                        {
+                            data.Entities = newAddress.Entities;
+                            data.Successfully = true;
+                        }
+                        else
+                        {
+                            data.Error = newAddress.Error;
+                        }
                     }
                     else
                     {
-                        data.Error = newAddress.Error ?? badAddress.Error;
+                        var countBad = limitRow - gset.CountNewAddress;
+                        var newAddress = _bdService.GetNewAddress(GetConnection(bds), gset.CountNewAddress);
+                        var badAddress = _bdService.GetBadAddress(GetConnection(bds), countBad);
+                        if (newAddress.Successfully && badAddress.Successfully)
+                        {
+                            data.Entities = newAddress.Entities.Concat(badAddress.Entities);
+                            data.Successfully = true;
+                        }
+                        else
+                        {
+                            data.Error = newAddress.Error ?? badAddress.Error;
+                        }
                     }
                 }
 

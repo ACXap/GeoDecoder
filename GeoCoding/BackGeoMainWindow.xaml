@@ -25,9 +25,18 @@
             <cmd:EventToCommand Command="{Binding CommandClosing}" PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
+
+    <!--  Датаконтекст/ViewModel окна  -->
     <Controls:MetroWindow.DataContext>
         <local:BackGeoViewModel />
     </Controls:MetroWindow.DataContext>
+
+    <!--  Иконка приложения с контекст меню  -->
+    <Controls:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Image Margin="2" Source="geo.ico" />
+        </DataTemplate>
+    </Controls:MetroWindow.IconTemplate>
 
     <!--  Панель команд на заголовке окна  -->
     <Controls:MetroWindow.RightWindowCommands>
@@ -51,261 +60,286 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
+    <!--  Отображение процесса геокодирования на панели задач  -->
+    <Controls:MetroWindow.TaskbarItemInfo>
+        <TaskbarItemInfo
+            Description="{Binding Stat.Statistics.Percent, StringFormat=\{0:N\}%}"
+            ProgressState="{Binding IsStartGeo, Converter={StaticResource ConverterStartGeoToProgress}}"
+            ProgressValue="{Binding Stat.Statistics.Percent, Converter={StaticResource ConverterStatToProgress}}" />
+    </Controls:MetroWindow.TaskbarItemInfo>
+
     <Grid>
         <TabControl>
             <TabItem Header="Фоновая работа">
-                    <Grid>
-                        <Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
                         <RowDefinition Height="320" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="5" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <WrapPanel
-                                Grid.Column="0"
-                                Margin="2"
-                                Orientation="Vertical">
-                                <StackPanel Grid.Row="1" Orientation="Vertical">
-                                    <TextBlock
-                                        Margin="5,1,1,1"
-                                        FontWeight="Bold"
-                                        Text="Геокодер:" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <WrapPanel
+                            Grid.Column="0"
+                            Margin="2"
+                            Orientation="Vertical">
+                            <StackPanel Grid.Row="1" Orientation="Vertical">
+                                <TextBlock
+                                    Margin="5,1,1,1"
+                                    FontWeight="Bold"
+                                    Text="Геокодер:" />
 
-                                    <ComboBox
-                                        Margin="5,2"
-                                        ItemsSource="{Binding AppSettings.GeoCodSettings.CollectionGeoCoder}"
-                                        SelectedItem="{Binding AppSettings.GeoCodSettings.CurrentGeoCoder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource ComboBoxGeoService}"
-                                        ToolTip="Выбор геокодера">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding Name}">
-                                                    <TextBlock.ToolTip>
-                                                        <WrapPanel Orientation="Vertical">
-                                                            <TextBlock Text="{Binding Description}" />
-                                                            <TextBlock Text="{Binding GeoCoder}" />
-                                                        </WrapPanel>
-                                                    </TextBlock.ToolTip>
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <TextBlock
-                                        Margin="10,0,0,0"
-                                        FontWeight="Bold"
-                                        Text="Инициализация...">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsGeoCodingModelBusy}" Value="True">
-                                                        <Setter Property="Visibility" Value="Visible" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                                <DataGrid
-                                    AutoGenerateColumns="False"
-                                    CanUserAddRows="False"
-                                    ItemsSource="{Binding AppSettings.GeneralSettings.ListDayWeek}">
-                                    <DataGrid.Columns>
-                                        <DataGridTemplateColumn Header="Дни запуска">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <WrapPanel Orientation="Horizontal">
-                                                        <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
-                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
+                                <ComboBox
+                                    Margin="5,2"
+                                    ItemsSource="{Binding AppSettings.GeoCodSettings.CollectionGeoCoder}"
+                                    SelectedItem="{Binding AppSettings.GeoCodSettings.CurrentGeoCoder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    Style="{StaticResource ComboBoxGeoService}"
+                                    ToolTip="Выбор геокодера">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}">
+                                                <TextBlock.ToolTip>
+                                                    <WrapPanel Orientation="Vertical">
+                                                        <TextBlock Text="{Binding Description}" />
+                                                        <TextBlock Text="{Binding GeoCoder}" />
                                                     </WrapPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Часы запуска">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <Controls:TimePicker Culture="ru-RU" SelectedDateTime="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <Button Command="{Binding AppSettings.CommandSaveGeneralSettings}" Content="Сохранить" />
-                            </WrapPanel>
-                            <Grid Grid.Column="2">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                                 <TextBlock
-                                    Grid.Column="0"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Text="До следующего запуска геокодирования:" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="23"
-                                    Text="{Binding TimeNextStartGeo, FallbackValue=11:11:11}" />
-                                <DataGrid
-                                    Grid.Row="1"
-                                    Grid.ColumnSpan="2"
-                                    Margin="5"
-                                    AutoGenerateColumns="False"
-                                    CanUserAddRows="False"
-                                    IsReadOnly="True"
-                                    ItemsSource="{Binding CollectionLog}">
-                                    <DataGrid.Columns>
-                                        <DataGridTemplateColumn Header="Время">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock Text="{Binding DateTimeLog, StringFormat=\{0:G\}, ConverterCulture=ru}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-
-                                        <DataGridTemplateColumn Width="*" Header="Тест сообщения">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock
-                                                        HorizontalAlignment="Center"
-                                                        Text="{Binding TextLog}"
-                                                        TextWrapping="Wrap" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-
-                                        <DataGridTemplateColumn Header="Кол.">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock HorizontalAlignment="Center" Text="{Binding CountRow}" />
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </Grid>
-
-
-                        </Grid>
-                        <Grid Grid.Row="2" Margin="5">
+                                    Margin="10,0,0,0"
+                                    FontWeight="Bold"
+                                    Text="Инициализация...">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsGeoCodingModelBusy}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                ItemsSource="{Binding AppSettings.GeneralSettings.ListDayWeek}">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Дни запуска">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <WrapPanel Orientation="Horizontal">
+                                                    <CheckBox Margin="5" IsChecked="{Binding Selected, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Day}" />
+                                                </WrapPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Часы запуска">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Controls:TimePicker Culture="ru-RU" SelectedDateTime="{Binding Time, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Button Command="{Binding AppSettings.CommandSaveGeneralSettings}" Content="Сохранить" />
+                        </WrapPanel>
+                        <Grid Grid.Column="2">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="5" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Column="0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="До следующего запуска геокодирования:" />
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="23"
+                                Text="{Binding TimeNextStartGeo, FallbackValue=11:11:11}" />
+                            <DataGrid
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Margin="5"
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                IsReadOnly="True"
+                                ItemsSource="{Binding CollectionLog}">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Время">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding DateTimeLog, StringFormat=\{0:G\}, ConverterCulture=ru}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <DataGridTemplateColumn Width="*" Header="Тест сообщения">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock
+                                                    HorizontalAlignment="Center"
+                                                    Text="{Binding TextLog}"
+                                                    TextWrapping="Wrap" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                    <DataGridTemplateColumn Header="Кол.">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock HorizontalAlignment="Center" Text="{Binding CountRow}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+
+
+                    </Grid>
+                    <Grid Grid.Row="2" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
+                        <WrapPanel
+                            Grid.Column="3"
+                            VerticalAlignment="Top"
+                            Orientation="Vertical">
                             <Controls:MetroProgressBar
-                                Grid.Column="3"
-                                VerticalAlignment="Top"
                                 EllipseDiameter="7"
                                 IsIndeterminate="{Binding IsStartGeo}"
                                 ToolTip="Процесс геокодирования" />
-                            <Button
-                                Grid.Column="3"
-                                Margin="10"
-                                Padding="10,20,10,20"
-                                VerticalAlignment="Center"
-                                Command="{Binding CommandStartBackGeo}"
-                                Content="Запустить" />
-                            <Button
-                                Grid.Column="3"
-                                Margin="10"
-                                Padding="10,20,10,20"
-                                VerticalAlignment="Center"
-                                Command="{Binding CommandStopBackGeo}"
-                                Content="Остановить">
-                                <Button.Style>
-                                    <Style BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}" TargetType="{x:Type Button}">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsStartBackGeo}" Value="True">
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <GroupBox Grid.ColumnSpan="2" Header="Что геокодируем">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition Width="5" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                            <RowDefinition Height="auto" />
-                                        </Grid.RowDefinitions>
-                                        <WrapPanel  Grid.ColumnSpan="3">
-                                            <TextBlock
-                                           
-                                            Margin="10" HorizontalAlignment="Center"
-                                            Text="Количество выбираемых адресов будет зависить от текущего лимита для данного ключа" />
-                                            <TextBlock Text=""/>
-                                        </WrapPanel>
-                                       
-                                        <RadioButton
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            Margin="5"
-                                            Content="Новые адреса"
-                                            IsChecked="{Binding AppSettings.GeneralSettings.UseGetNewAddressBackGeo}" />
-                                        <RadioButton
-                                            Grid.Row="2"
-                                            Grid.Column="0"
-                                            Margin="5"
-                                            Content="Новые адреса и старые некачественные"
-                                            IsChecked="{Binding AppSettings.GeneralSettings.UseGetNewBadAddressBackGeo}" />
-                                        <TextBox
-                                            Grid.Row="2"
-                                            Grid.Column="2"
-                                            Margin="5"
-                                            VerticalAlignment="Center"
-                                            Controls:TextBoxHelper.Watermark="Колличество новых адресов"
-                                            Text="{Binding AppSettings.GeneralSettings.CountNewAddress}" />
-                                        <RadioButton
-                                            Grid.Row="3"
-                                            Grid.Column="0"
-                                            Margin="5"
-                                            Content="Выполнять запрос к базе данных по скрипту пользователя"
-                                            IsChecked="{Binding AppSettings.GeneralSettings.UseScriptBackGeo}" />
+                            <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock Text="Процент выполнения: " />
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Stat.Statistics.Percent, FallbackValue=0, StringFormat=\{0:N\}%}" />
+                                <TextBlock Text="%" />
+                            </WrapPanel>
+                        </WrapPanel>
 
-                                        <!--  Кнопка открытия помощи  -->
-                                        <ToggleButton
-                                            x:Name="tbOpenUserScript"
-                                            Grid.Row="3"
-                                            Grid.Column="2"
+                        <Button
+                            Grid.Column="3"
+                            Margin="10"
+                            Padding="10,20,10,20"
+                            VerticalAlignment="Center"
+                            Command="{Binding CommandStartBackGeo}"
+                            Content="Запустить" />
+                        <Button
+                            Grid.Column="3"
+                            Margin="10"
+                            Padding="10,20,10,20"
+                            VerticalAlignment="Center"
+                            Command="{Binding CommandStopBackGeo}"
+                            Content="Остановить">
+                            <Button.Style>
+                                <Style BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}" TargetType="{x:Type Button}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsStartBackGeo}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+
+                        <Button
+                            Grid.Column="3"
+                            Margin="10"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding CommandStart}"
+                            Content="Test" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <GroupBox Grid.ColumnSpan="2" Header="Что геокодируем">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="5" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
+                                    </Grid.RowDefinitions>
+                                    <WrapPanel Grid.ColumnSpan="3">
+                                        <TextBlock
+                                            Margin="10"
                                             HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Cursor="Hand"
-                                            ToolTip="Пользовательский скрипт">
-                                            <TextBlock Style="{StaticResource TextBlockSettings}" />
-                                        </ToggleButton>
-                                    </Grid>
-                                </GroupBox>
+                                            Text="Количество выбираемых адресов будет зависить от текущего лимита для данного ключа" />
+                                        <TextBlock Text="" />
+                                    </WrapPanel>
 
-                            </Grid>
+                                    <RadioButton
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Margin="5"
+                                        Content="Новые адреса"
+                                        IsChecked="{Binding AppSettings.GeneralSettings.UseGetNewAddressBackGeo}" />
+                                    <RadioButton
+                                        Grid.Row="2"
+                                        Grid.Column="0"
+                                        Margin="5"
+                                        Content="Новые адреса и старые некачественные"
+                                        IsChecked="{Binding AppSettings.GeneralSettings.UseGetNewBadAddressBackGeo}" />
+                                    <TextBox
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        Margin="5"
+                                        VerticalAlignment="Center"
+                                        Controls:TextBoxHelper.Watermark="Колличество новых адресов"
+                                        Text="{Binding AppSettings.GeneralSettings.CountNewAddress}" />
+                                    <RadioButton
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Margin="5"
+                                        Content="Выполнять запрос к базе данных по скрипту пользователя"
+                                        IsChecked="{Binding AppSettings.GeneralSettings.UseScriptBackGeo}" />
+
+                                    <!--  Кнопка открытия помощи  -->
+                                    <ToggleButton
+                                        x:Name="tbOpenUserScript"
+                                        Grid.Row="3"
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Cursor="Hand"
+                                        ToolTip="Пользовательский скрипт">
+                                        <TextBlock Style="{StaticResource TextBlockSettings}" />
+                                    </ToggleButton>
+                                </Grid>
+                            </GroupBox>
+
                         </Grid>
                     </Grid>
+                </Grid>
             </TabItem>
             <TabItem Header="Настройки">
                 <uc:FlyoutSettings DataContext="{Binding AppSettings}" />

@@ -7,10 +7,26 @@ using System.Collections.Generic;
 
 namespace GeoCoding.Model.Data
 {
+    /// <summary>
+    /// Класс для хранения сущности апи-ключа
+    /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class EntityApiKey:ViewModelBase
     {
+        #region PrivateField
         private string _apiKey = string.Empty;
+        private string _apiKeyStat = string.Empty;
+        private string _apiKeyDevelop = string.Empty;
+        private string _description = string.Empty;
+        private int _currentLimit = 0;
+        private int _currentSpent = 0;
+        private int _currentSpentServer = 0;
+        private DateTime _dateCurrentSpent;
+        private int _maxLimit = 0;
+        private List<DayWeek> _collectionDayWeekSettings;
+        private string _error = string.Empty;
+        private StatusSyncType _statusSync = StatusSyncType.NotSync;
+        #endregion PrivateField
 
         /// <summary>
         /// Сам ключ
@@ -22,7 +38,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _apiKey, value);
         }
 
-        private string _apiKeyStat = string.Empty;
         /// <summary>
         /// Ключ для получения статистики
         /// </summary>
@@ -33,7 +48,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _apiKeyStat, value);
         }
 
-        private string _apiKeyDevelop = string.Empty;
         /// <summary>
         /// Ключ разработчика
         /// </summary>
@@ -44,7 +58,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _apiKeyDevelop, value);
         }
 
-        private string _description = string.Empty;
         /// <summary>
         /// Описание ключа
         /// </summary>
@@ -55,7 +68,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _description, value);
         }
 
-        private int _currentLimit = 0;
         /// <summary>
         /// Текущий лимит на сегодня
         /// </summary>
@@ -65,7 +77,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _currentLimit, value);
         }
 
-        private int _currentSpent = 0;
         /// <summary>
         /// Текущий потраченный лимит
         /// </summary>
@@ -75,7 +86,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _currentSpent, value);
         }
 
-        private int _currentSpentServer = 0;
         /// <summary>
         /// Текущий потраченный лимит информация с сервера
         /// </summary>
@@ -85,7 +95,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _currentSpentServer, value);
         }
 
-        private DateTime _dateCurrentSpent;
         /// <summary>
         /// Дата последнего потраченного лимита
         /// </summary>
@@ -95,7 +104,16 @@ namespace GeoCoding.Model.Data
             set => Set(ref _dateCurrentSpent, value);
         }
 
-        private List<DayWeek> _collectionDayWeekSettings;
+        /// <summary>
+        /// Максимально допустимый лимит в сутки
+        /// </summary>
+        [JsonProperty("MaxLimit")]
+        public int MaxLimit
+        {
+            get => _maxLimit;
+            set => Set(ref _maxLimit, value);
+        }
+
         /// <summary>
         /// Настройки по дням недели
         /// </summary>
@@ -106,7 +124,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _collectionDayWeekSettings, value);
         }
 
-        private StatusSyncType _statusSync = StatusSyncType.NotSync;
         /// <summary>
         /// Статус синхронизации апи-ключа с базой данных
         /// </summary>
@@ -116,7 +133,6 @@ namespace GeoCoding.Model.Data
             set => Set(ref _statusSync, value);
         }
 
-        private string _error = string.Empty;
         /// <summary>
         /// Ошибка синхронизации
         /// </summary>

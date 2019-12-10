@@ -26,6 +26,7 @@ namespace GeoCoding
 
         #region PrivateField
 
+        private const string _errorTimeIsOver = "Время вышло";
         private const string _errorGeoCodNotFound = "Адрес не найден";
         private const string _errorGeoCodFoundResultMoreOne = "Количество результатов больше 1. Нужны уточнения";
         private const string _errorLimit = "Ваш лимит исчерпан";
@@ -39,10 +40,31 @@ namespace GeoCoding
         private readonly LimitsModel _limitsModel;
         //private readonly PolygonViewModel _polygon;
         private readonly object _lock = new object();
+        private readonly DateTime _timeStopSpendingAllLimits = new DateTime(1, 1, 1, 3, 59, 0);
+        private bool _isGoodGeoCoder;
+        private bool _isStartSaveLimit;
 
         #endregion PrivateField
 
         #region PrivateMethod
+
+        /// <summary>
+        /// Метод для проверки можно ли геокодировать и не вышли ли за лимит
+        /// </summary>
+        /// <returns></returns>
+        private Exception CheckCanGeo()
+        {
+            var key = _geoCodingService.GetKeyApi();
+            var canGeo = _limitsModel.CanGeo(key);
+
+            if (!canGeo)
+            {
+                var e = new Exception(_errorLimit);
+                return e;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Функция для получения координат для объекта
@@ -51,22 +73,16 @@ namespace GeoCoding
         /// <returns>Возвращает ошибку</returns>
         private Exception SetGeoCod(EntityGeoCod data, ConnectSettings cs)
         {
-            var key = _geoCodingService.GetKeyApi();
-            var canGeo = _limitsModel.CanGeo(key);
-
-            if (!canGeo)
-            {
-                var e = new Exception(_errorLimit);
-                SetError(data, e.Message);
-                data.CountResult = 0;
-                return e;
-            }
-
             Exception error = null;
             string errorMsg = string.Empty;
 
             data.Status = StatusType.Processed;
             data.GeoCoder = _geoCodSettings.CurrentGeoCoder.GeoCoder;
+
+            if (!string.IsNullOrEmpty(cs.ProxyAddress))
+            {
+                data.Proxy = $"{cs.ProxyAddress}:{cs.ProxyPort}";
+            }
 
             _geoCodingService.GetGeoCod((d, e) =>
             {
@@ -120,6 +136,11 @@ namespace GeoCoding
             return error;
         }
 
+        /// <summary>
+        /// Метод для выбора полигона по адресу
+        /// </summary>
+        /// <param name="address">Адрес</param>
+        /// <returns>Координаты полигона</returns>
         private List<double> GetPolygon(string address)
         {
             //if(_geoCodSettings.CanUsePolygon)
@@ -296,15 +317,6 @@ namespace GeoCoding
             return cs;
         }
 
-        public async Task<EntityResult<int>> GetCurrentLimit()
-        {
-            var key = _geoCodingService.GetKeyApi();
-            EntityResult<int> result;
-
-            result = await _limitsModel.GetCurrentLimit(key);
-            return result;
-        }
-
         /// <summary>
         /// Метод для создания настроек подключения с настройками прокси вручную
         /// </summary>
@@ -322,6 +334,21 @@ namespace GeoCoding
             return cs;
         }
 
+        /// <summary>
+        /// Метод для сохранения текущего лимита
+        /// </summary>
+        private void SaveLimit()
+        {
+            if (_isStartSaveLimit) return;
+
+            Task.Factory.StartNew(() =>
+            {
+                _isStartSaveLimit = true;
+                var result = _limitsModel.SetLastUseLimits();
+                _isStartSaveLimit = false;
+            });
+        }
+
         #endregion PrivateMethod
 
         #region PublicMethod
@@ -337,7 +364,7 @@ namespace GeoCoding
         /// <summary>
         /// Метод для получения координат для множества объектов
         /// </summary>
-        /// <param name="callback">Функция обратного вызова, с параметром: завершился ли процесс, на каком номере завершился, ошибка</param>
+        /// <param name="callback">Функция обратного вызова, с параметром: ошибка</param>
         /// <param name="collectionGeoCod">Множество объектов</param>
         public async void GetAllGeoCod(Action<Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
         {
@@ -346,8 +373,9 @@ namespace GeoCoding
                 callback(new Exception("Key is error"));
                 return;
             }
+
             Exception error = null;
-            //await SetGeoService();
+
             var r = await _limitsModel.InitApiKey(_geoCodingService.GetKeyApi());
             if (!r.Successfully)
             {
@@ -372,32 +400,36 @@ namespace GeoCoding
                         var connect = GetConnect();
                         var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
                         {
-                            if (!string.IsNullOrEmpty(connect.ProxyAddress))
-                            {
-                                data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
-                            }
-                            System.Diagnostics.Debug.WriteLine(data.Address);
-                            var e = SetGeoCod(data, connect);
+                            var e = CheckCanGeo();
 
-                            if (e != null)
+                            if (e == null)
                             {
-                                if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
+                                var errorSetGeo = SetGeoCod(data, connect);
+                                if (errorSetGeo != null)
                                 {
-                                    error = e;
-                                    pl.Break();
+                                    if (errorSetGeo.Message == _errorLimit || errorSetGeo.Message == _errorTimeIsUp)
+                                    {
+                                        error = errorSetGeo;
+                                        pl.Break();
+                                    }
+                                    else
+                                    {
+                                        if (++countError >= _geoCodSettings.MaxCountError)
+                                        {
+                                            error = new Exception(_errorLotOfMistakes);
+                                            pl.Break();
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    if (++countError >= _geoCodSettings.MaxCountError)
-                                    {
-                                        error = new Exception(_errorLotOfMistakes);
-                                        pl.Break();
-                                    }
+                                    countError = 0;
                                 }
                             }
                             else
                             {
-                                countError = 0;
+                                error = e;
+                                pl.Break();
                             }
                         });
                     }
@@ -453,7 +485,19 @@ namespace GeoCoding
                                 if (geo != null)
                                 {
                                     geo.Proxy = $"{data.Address}:{data.Port}";
-                                    var e = SetGeoCod(geo, connect);
+
+                                    var e = CheckCanGeo();
+
+                                    if (e == null)
+                                    {
+                                        e = SetGeoCod(geo, connect);
+                                    }
+                                    else
+                                    {
+                                        SetError(geo, e.Message);
+                                        geo.CountResult = 0;
+                                    }
+
                                     if (e != null)
                                     {
                                         if (e.Message == _errorLimit)
@@ -517,12 +561,22 @@ namespace GeoCoding
             Exception error = null;
             data.MainGeoCod = null;
             data.CountResult = 0;
-            //await SetGeoService();
+
             await _limitsModel.InitApiKey(_geoCodingService.GetKeyApi());
 
             await Task.Factory.StartNew(() =>
             {
-                error = SetGeoCod(data, GetConnect());
+                var error = CheckCanGeo();
+
+                if (error == null)
+                {
+                    error = SetGeoCod(data, GetConnect());
+                }
+                else
+                {
+                    SetError(data, error.Message);
+                    data.CountResult = 0;
+                }
             });
 
             SaveLimit();
@@ -574,152 +628,153 @@ namespace GeoCoding
             return result;
         }
 
-        //public Task<Exception> GetAllGeoCod(IEnumerable<EntityGeoCod> collectionGeoCod)
-        //{
-        //    Exception error = null;
-        //    SetGeoService();
+        /// <summary>
+        /// Метод для получения текущего лимита
+        /// </summary>
+        /// <returns>Возвращает задачу с подсчетом текущего лимита</returns>
+        public async Task<EntityResult<int>> GetCurrentLimit()
+        {
+            var key = _geoCodingService.GetKeyApi();
+            EntityResult<int> result;
 
-        //    _cts = new CancellationTokenSource();
+            result = await _limitsModel.GetCurrentLimit(key);
+            return result;
+        }
 
-        //    return Task.Factory.StartNew(() =>
-        //    {
-        //        try
-        //        {
-        //            if (_geoCodSettings.IsMultipleRequests)
-        //            {
-        //                int countError = 0;
-        //                ParallelOptions po = new ParallelOptions
-        //                {
-        //                    CancellationToken = _cts.Token,
-        //                    MaxDegreeOfParallelism = _geoCodSettings.CountRequests
-        //                };
-        //                var connect = GetConnect();
-        //                var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
-        //                {
-        //                    if (!string.IsNullOrEmpty(connect.ProxyAddress))
-        //                    {
-        //                        data.Proxy = $"{connect.ProxyAddress}:{connect.ProxyPort}";
-        //                    }
-        //                    var e = SetGeoCod(data, connect);
+        /// <summary>
+        /// Метод для получения максимально возможного лимита
+        /// </summary>
+        /// <returns>Возвращает задачу с подсчетом максимально возможного лимита</returns>
+        public async Task<EntityResult<int>> GetMaxLimit()
+        {
+            var key = _geoCodingService.GetKeyApi();
+            EntityResult<int> result;
 
-        //                    if (e != null)
-        //                    {
-        //                        if (e.Message == _errorLimit || e.Message == _errorTimeIsUp)
-        //                        {
-        //                            error = e;
-        //                            pl.Break();
-        //                        }
-        //                        else
-        //                        {
-        //                            if (++countError >= _geoCodSettings.MaxCountError)
-        //                            {
-        //                                error = new Exception(_errorLotOfMistakes);
-        //                                pl.Break();
-        //                            }
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        countError = 0;
-        //                    }
-        //                });
-        //            }
-        //            else
-        //            {
-        //                ParallelOptions po = new ParallelOptions
-        //                {
-        //                    CancellationToken = _cts.Token,
-        //                    MaxDegreeOfParallelism = _geoCodSettings.CountProxy
-        //                };
+            result = await _limitsModel.GetMaxLimit(key);
+            return result;
+        }
 
-        //                var parallelResult = Parallel.ForEach(_netSettings.CollectionListProxy, po, (data, pl) =>
-        //                {
-        //                    EntityGeoCod geo = null;
-        //                    var connect = GetConnect(data);
-        //                    int countError = 0;
+        /// <summary>
+        /// Метод для получения координат для множества объектов с максимальным лимитом по ключу
+        /// </summary>
+        /// <param name="callback">Функция обратного вызова, с параметром: ошибка</param>
+        /// <param name="collectionGeoCod">Множество объектов</param>
+        public async void GetAllGeoCodMaxLimit(Action<Exception> callback, IEnumerable<EntityGeoCod> collectionGeoCod)
+        {
+            if (!_isGoodGeoCoder)
+            {
+                callback(new Exception("Key is error"));
+                return;
+            }
 
-        //                    while (data.IsActive)
-        //                    {
-        //                        if (po.CancellationToken.IsCancellationRequested)
-        //                        {
-        //                            break;
-        //                        }
-        //                        lock (_lock)
-        //                        {
-        //                            geo = collectionGeoCod.FirstOrDefault(x => x.Status == StatusType.NotProcessed
-        //                                                              || (x.Status == StatusType.Error && (x.Error != _errorGeoCodFoundResultMoreOne
-        //                                                                                                && x.Error != _errorGeoCodNotFound)));
-        //                            if (geo != null)
-        //                            {
-        //                                geo.Status = StatusType.Processed;
-        //                            }
-        //                        }
+            Exception error = null;
 
-        //                        if (geo != null)
-        //                        {
-        //                            geo.Proxy = $"{data.Address}:{data.Port}";
-        //                            var e = SetGeoCod(geo, connect);
-        //                            if (e != null)
-        //                            {
-        //                                if (e.Message == _errorLimit)
-        //                                {
-        //                                    data.IsActive = false;
-        //                                    data.Error = _errorLimit;
-        //                                }
-        //                                else
-        //                                {
-        //                                    if (++countError >= _geoCodSettings.MaxCountError)
-        //                                    {
-        //                                        data.Error = _errorLotOfMistakes;
-        //                                        data.IsActive = false;
-        //                                    }
-        //                                }
-        //                            }
-        //                            else
-        //                            {
-        //                                countError = 0;
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            break;
-        //                        }
-        //                    }
-        //                });
-        //            }
-        //        }
-        //        catch (OperationCanceledException c)
-        //        {
-        //            error = c;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            error = ex;
-        //        }
-        //        finally
-        //        {
-        //            _cts?.Dispose();
-        //        }
+            var r = await _limitsModel.GetMaxLimit(_geoCodingService.GetKeyApi());
+            if (!r.Successfully)
+            {
+                callback(r.Error);
+                return;
+            }
+            else if (r.Entity < 1)
+            {
+                callback(new Exception(_errorLimit));
+                return;
+            }
 
-        //        return error;
-        //    }, _cts.Token);
-        //}
+            _cts = new CancellationTokenSource();
 
+            int countError = 0;
+            ParallelOptions po = new ParallelOptions
+            {
+                CancellationToken = _cts.Token,
+                MaxDegreeOfParallelism = _geoCodSettings.CountRequests
+            };
+            await Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var connect = GetConnect();
+                    var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
+                    {
+                        var isStop = CheckTimeStop();
+                        if (isStop != null)
+                        {
+                            error = isStop;
+                            pl.Break();
+                        }
+                        else
+                        {
+                            var e = CheckCanGeoMaxLimit();
+
+                            if (e == null)
+                            {
+                                var errorSetGeo = SetGeoCod(data, connect);
+                                if (errorSetGeo != null)
+                                {
+                                    if (errorSetGeo.Message == _errorLimit || errorSetGeo.Message == _errorTimeIsUp)
+                                    {
+                                        error = errorSetGeo;
+                                        pl.Break();
+                                    }
+                                    else
+                                    {
+                                        if (++countError >= _geoCodSettings.MaxCountError)
+                                        {
+                                            error = new Exception(_errorLotOfMistakes);
+                                            pl.Break();
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    countError = 0;
+                                }
+                            }
+                            else
+                            {
+                                error = e;
+                                pl.Break();
+                            }
+                        }
+                    });
+                }
+                catch (OperationCanceledException c)
+                {
+                    error = c;
+                }
+                catch (Exception ex)
+                {
+                    error = ex;
+                }
+                finally
+                {
+                    _cts?.Dispose();
+                }
+            }, _cts.Token);
+
+            callback(error);
+        }
+        
         #endregion PublicMethod
 
-        private bool _isGoodGeoCoder;
-
-        private bool _isStartSaveLimit;
-        private void SaveLimit()
+        /// <summary>
+        /// Метод проверки времени останова
+        /// </summary>
+        /// <returns>Возвращает ошибку если нужно остановится</returns>
+        private Exception CheckTimeStop()
         {
-            if (_isStartSaveLimit) return;
-
-            Task.Factory.StartNew(() =>
+            var dateTimeNow = DateTime.Now.TimeOfDay;
+            if (dateTimeNow > _timeStopSpendingAllLimits.TimeOfDay)
             {
-                _isStartSaveLimit = true;
-                var result = _limitsModel.SetLastUseLimits();
-                _isStartSaveLimit = false;
-            });
+                return new Exception(_errorTimeIsOver);
+            }
+
+            return null;
+        }
+
+        private Exception CheckCanGeoMaxLimit()
+        {
+            throw new NotImplementedException();
         }
     }
 }

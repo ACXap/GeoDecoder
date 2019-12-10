@@ -2,7 +2,6 @@
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace GeoCoding.GeoCodingService
 {
@@ -11,15 +10,17 @@ namespace GeoCoding.GeoCodingService
         /// <summary>
         /// Поле для хранения коллекции геосервисов
         /// </summary>
-        private static ReadOnlyCollection<IGeoCodingService> _allService;
+        private static ReadOnlyCollection<string> _allService;
         /// <summary>
         /// Свойство для получения коллекции всех геокодеров
         /// </summary>
-        public static ReadOnlyCollection<IGeoCodingService> AllService =>
-            _allService ?? (_allService = new ReadOnlyCollection<IGeoCodingService>(new List<IGeoCodingService>()
+        public static ReadOnlyCollection<string> AllNameService =>
+            _allService ?? (_allService = new ReadOnlyCollection<string>(new List<string>()
             {
-              new YandexPayGeoCodingService(),
-              new HereGeoCodingService(),
+              "YANDEXPAY",
+                "Here"
+                //new YandexPayGeoCodingService(),
+              //new HereGeoCodingService(),
                 //  new YandexGeoCodingService(),
                // new YandexRusGisGeoCodingService(),
                 //new SputnikGeoCodingService(),
@@ -29,10 +30,12 @@ namespace GeoCoding.GeoCodingService
              //   new HereRusGisGeoCodingService(),
               //  new Test.GeoCodingTest()
             }));
+
         /// <summary>
         /// Свойство для получения коллекции всех имен геосервисов
         /// </summary>
-        public static ReadOnlyCollection<string> AllNameService => new ReadOnlyCollection<string>(AllService.Select(x => x.Name).ToList());
+        //public static ReadOnlyCollection<string> AllNameService => new ReadOnlyCollection<string>(AllService.Select(x => x.Name).ToList());
+
         /// <summary>
         /// Метод получения геокодера по имени
         /// </summary>
@@ -41,8 +44,18 @@ namespace GeoCoding.GeoCodingService
         /// <returns>Геосервис</returns>
         public static IGeoCodingService GetServiceByName(string name, string key)
         {
-            var g = AllService.FirstOrDefault(x => x.Name == name);
-            g.SetKeyApi(key);
+            IGeoCodingService g = null;
+            if (name == "YANDEXPAY")
+            {
+                g = new YandexPayGeoCodingService();
+            }
+            if (name == "Here")
+            {
+                g = new HereGeoCodingService();
+            }
+
+            //var g = AllService.FirstOrDefault(x => x.Name == name);
+            g?.SetKeyApi(key);
 
             return g;
         }

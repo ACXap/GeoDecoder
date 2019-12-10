@@ -3,6 +3,7 @@
 using GalaSoft.MvvmLight.Threading;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Windows;
 
 namespace GeoCoding
@@ -11,6 +12,7 @@ namespace GeoCoding
     {
         static App()
         {
+            ServicePointManager.DefaultConnectionLimit = 10;
             DispatcherHelper.Initialize();
         }
 
