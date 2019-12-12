@@ -1,9 +1,9 @@
-﻿using GeoCoding.BDService;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GeoCoding.BDService;
 using GeoCoding.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GeoCoding.Model
@@ -115,15 +115,22 @@ namespace GeoCoding.Model
                     {
                         var countBad = limitRow - gset.CountNewAddress;
                         var newAddress = _bdService.GetNewAddress(GetConnection(bds), gset.CountNewAddress);
-                        var badAddress = _bdService.GetBadAddress(GetConnection(bds), countBad);
-                        if (newAddress.Successfully && badAddress.Successfully)
+                        if (newAddress.Successfully)
                         {
-                            data.Entities = newAddress.Entities.Concat(badAddress.Entities);
-                            data.Successfully = true;
+                            var badAddress = _bdService.GetBadAddress(GetConnection(bds), countBad);
+                            if (badAddress.Successfully)
+                            {
+                                data.Entities = newAddress.Entities.Concat(badAddress.Entities);
+                                data.Successfully = true;
+                            }
+                            else
+                            {
+                                data.Error = badAddress.Error;
+                            }
                         }
                         else
                         {
-                            data.Error = newAddress.Error ?? badAddress.Error;
+                            data.Error = newAddress.Error;
                         }
                     }
                 }

@@ -25,8 +25,7 @@ namespace GeoCodingLocalBD
         {
             List<EntityAddress> _data = null;
             var com = "SELECT Id, Name, OrponId, ParentId FROM AddressOrpon";
-            try
-            {
+
                 var connection = new SQLiteConnection(_connectionString);
                 connection.Open();
 
@@ -42,11 +41,6 @@ namespace GeoCodingLocalBD
                 }).OrderBy(x => x.Address).ToList();
 
                 connection.Close();
-            }
-            catch (Exception ex)
-            {
-
-            }
 
             return _data;
         }
@@ -58,19 +52,13 @@ namespace GeoCodingLocalBD
             var com = "SELECT Bbox FROM Address Where OrponId=@OrponId";
             var param = new DynamicParameters();
             param.Add("@OrponId", orponId);
-            try
-            {
+
                 var connection = new SQLiteConnection(_connectionString);
                 connection.Open();
 
                 _data = connection.Query<string>(com, param).FirstOrDefault();
 
                 connection.Close();
-            }
-            catch (Exception ex)
-            {
-
-            }
 
             return StringTolist(_data);
         }

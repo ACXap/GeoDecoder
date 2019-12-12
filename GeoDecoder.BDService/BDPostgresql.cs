@@ -64,18 +64,26 @@ namespace GeoCoding.BDService
                 using NpgsqlConnection con = new NpgsqlConnection(GetConnectionString(conSettings));
                 con.Open();
 
-                string query = "select eah.orponid as globalid, eah.adr_adm_ter as address, eah.fiasguid as fiasguid" +
-                    $" from {TABLE_HOUSE} eah" +
-                    " where 1=1 and eah.livestatus = 1" +
-                    " and exists (select 1 from public.ent_id_vs_o_add," +
-                    " public.ent_rf_rtk b, public.orpon_sys_rtk_mrb c," +
-                    " public.ent_sp_sys_rtk d" +
-                    " where house_id = eah.id" +
-                    " and c.mrb_id = eah.mrf_id" +
-                    " and d.id = c.rtk_sys_id" +
-                    " and d.is_master_system" +
-                    " and system_id = d.id)" +
-                    " and eah.coordinates_id is null and eah.adr_adm_ter is not null limit " + limitRow;
+                string query = "with sys as (select s.house_id from public.ent_sp_sys_rtk d, public.ent_id_vs_o_add s Where d.is_master_system and s.system_id= d.id)" +
+                            " select eah.orponid as globalid, eah.adr_adm_ter as address, eah.fiasguid as fiasguid" +
+                            $" from {TABLE_HOUSE} eah, sys s1" +
+                            $" where eah.livestatus = 1" +
+                            $" and eah.coordinates_id is null" +
+                            $" and eah.adr_adm_ter is not null" +
+                            $" and eah.id = s1.house_id limit " + limitRow;
+
+                //string query = "select eah.orponid as globalid, eah.adr_adm_ter as address, eah.fiasguid as fiasguid" +
+                //    $" from {TABLE_HOUSE} eah" +
+                //    " where eah.livestatus=1" +
+                //    " and exists (select 1 from public.ent_id_vs_o_add," +
+                //    " public.ent_rf_rtk b, public.orpon_sys_rtk_mrb c," +
+                //    " public.ent_sp_sys_rtk d" +
+                //    " where house_id = eah.id" +
+                //    " and c.mrb_id = eah.mrf_id" +
+                //    " and d.id = c.rtk_sys_id" +
+                //    " and d.is_master_system" +
+                //    " and system_id = d.id)" +
+                //    " and eah.coordinates_id is null and eah.adr_adm_ter is not null limit " + limitRow;
                 using NpgsqlCommand com = new NpgsqlCommand(query, con);
                 using NpgsqlDataReader reader = com.ExecuteReader();
 
@@ -109,10 +117,10 @@ namespace GeoCoding.BDService
 
                 string query = "select eah.orponid as globalid, eah.adr_adm_ter as address, eah.fiasguid as fiasguid" +
                     $" from {TABLE_HOUSE} eah, public.house_coordinates hc" +
-                    " where 1=1 and eah.coordinates_id=hc.id" +
+                    " where eah.coordinates_id=hc.id" +
                     " and eah.livestatus=1" +
                     " and hc.quality_code=2" +
-                    " and hc.source<>'GUI'" +
+                    " and (hc.source<>'GUI' or hc.source is null)" +
                     " and eah.adr_adm_ter is not null order by hc.change_date NULLS first limit " + limitRow;
 
                 using NpgsqlCommand com = new NpgsqlCommand(query, con);
@@ -193,7 +201,7 @@ namespace GeoCoding.BDService
                 $"Password={conSettings.Password};" +
                 $"Database={conSettings.BDName};" +
                 "Timeout=300;" +
-                "CommandTimeout=300;";
+                "CommandTimeout=600;";
         }
 
         /// <summary>

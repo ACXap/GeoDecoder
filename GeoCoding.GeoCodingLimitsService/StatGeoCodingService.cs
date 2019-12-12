@@ -21,19 +21,13 @@ namespace GeoCoding.GeoCodingLimitsService
                 request.Host = @"api-developer.tech.yandex.net";
                 request.Headers.Add($"X-Auth-Key:{keyDevelop}");
                 request.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                {
-                    using (Stream dataStream = response.GetResponseStream())
-                    {
-                        using (StreamReader reader = new StreamReader(dataStream))
-                        {
-                            var json = reader.ReadToEnd();
-                            var lim = JsonConvert.DeserializeObject<RootObject>(json);
-                            result.Entity = lim.limits.apimaps_total_daily.value;
-                            result.Successfully = true;
-                        }
-                    }
-                }
+                using HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                using Stream dataStream = response.GetResponseStream();
+                using StreamReader reader = new StreamReader(dataStream);
+                var json = reader.ReadToEnd();
+                var lim = JsonConvert.DeserializeObject<RootObject>(json);
+                result.Entity = lim.limits.apimaps_total_daily.value;
+                result.Successfully = true;
             }
             catch (Exception ex)
             {

@@ -694,6 +694,8 @@ namespace GeoCoding
                 try
                 {
                     var connect = GetConnect();
+                    _limitsModel.StartGetLimit(_geoCodingService.GetKeyApi());
+
                     var parallelResult = Parallel.ForEach(collectionGeoCod, po, (data, pl) =>
                     {
                         var isStop = CheckTimeStop();
@@ -749,6 +751,7 @@ namespace GeoCoding
                 finally
                 {
                     _cts?.Dispose();
+                    _limitsModel.StopGetLimit();
                 }
             }, _cts.Token);
 
@@ -774,7 +777,16 @@ namespace GeoCoding
 
         private Exception CheckCanGeoMaxLimit()
         {
-            throw new NotImplementedException();
+            var key = _geoCodingService.GetKeyApi();
+            var canGeo = _limitsModel.CanGeoMaxLimit(key);
+
+            if (!canGeo)
+            {
+                var e = new Exception(_errorLimit);
+                return e;
+            }
+
+            return null;
         }
     }
 }

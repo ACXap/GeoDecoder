@@ -182,7 +182,7 @@
                                 IsReadOnly="True"
                                 ItemsSource="{Binding CollectionLog}">
                                 <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="Время">
+                                    <DataGridTemplateColumn Header="Время" SortMemberPath="DateTimeLog">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <TextBlock Text="{Binding DateTimeLog, StringFormat=\{0:G\}, ConverterCulture=ru}" />
@@ -219,7 +219,6 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="5" />
-                            <ColumnDefinition Width="auto" />
                             <ColumnDefinition Width="150" />
                         </Grid.ColumnDefinitions>
                         <WrapPanel
@@ -233,7 +232,6 @@
                             <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock Text="Процент выполнения: " />
                                 <TextBlock VerticalAlignment="Center" Text="{Binding Stat.Statistics.Percent, FallbackValue=0, StringFormat=\{0:N\}%}" />
-                                <TextBlock Text="%" />
                             </WrapPanel>
                         </WrapPanel>
 
@@ -265,11 +263,19 @@
 
                         <Button
                             Grid.Column="3"
-                            Margin="10"
+                            Margin="5"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding CommandStart}"
-                            Content="Test" />
+                            Content="Проверка лимита" />
+
+                        <Button
+                            Grid.Column="3"
+                            Margin="0,0,5,35"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding CommandStartMaxLimit}"
+                            Content="Выбор лимита" />
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />

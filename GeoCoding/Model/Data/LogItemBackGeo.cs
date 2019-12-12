@@ -1,18 +1,23 @@
-﻿using GalaSoft.MvvmLight;
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GalaSoft.MvvmLight;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GeoCoding.Model.Data
 {
     public class LogItemBackGeo:ViewModelBase
     {
 
+        #region PrivateField
+        
         private string _textLog = string.Empty;
+        private DateTime _dateTimeLog;
+        private string _countRow = string.Empty;
+        
+        #endregion PrivateField
+
         /// <summary>
-        /// 
+        /// Текст сообщения
         /// </summary>
         public string TextLog
         {
@@ -20,9 +25,8 @@ namespace GeoCoding.Model.Data
             set => Set(ref _textLog, value);
         }
 
-        private DateTime _dateTimeLog;
         /// <summary>
-        /// 
+        /// Время сообщения
         /// </summary>
         public DateTime DateTimeLog
         {
@@ -30,9 +34,8 @@ namespace GeoCoding.Model.Data
             set => Set(ref _dateTimeLog, value);
         }
 
-        private string _countRow = string.Empty;
         /// <summary>
-        /// 
+        /// Количество записей
         /// </summary>
         public string CountRow
         {

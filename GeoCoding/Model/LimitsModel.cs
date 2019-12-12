@@ -9,6 +9,7 @@ using GeoCoding.Model.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace GeoCoding.Model
@@ -34,9 +35,9 @@ namespace GeoCoding.Model
         public async Task<EntityResult<int>> GetCurrentLimit(string key)
         {
             EntityResult<int> result = new EntityResult<int>();
-            
+
             var r = await InitApiKey(key);
-            
+
             if (r.Successfully)
             {
                 result.Successfully = true;
@@ -71,10 +72,75 @@ namespace GeoCoding.Model
                 _currentApiKey.StatusSync = StatusSyncType.Sync;
 
                 result.Entity = _currentApiKey.MaxLimit - lastServ.Entity.Value;
+                _countSpentFirst = lastServ.Entity.Value;
+                _countLimit = result.Entity;
                 result.Successfully = true;
 
                 return result;
             });
+        }
+
+        private int _countLimit;
+        private int _countSpentFirst;
+
+        public bool CanGeoMaxLimit(string key)
+        {
+            var result = false;
+            var apiKey = _collectionKey.Single(x => x.ApiKey == key);
+            if (apiKey != _currentApiKey) throw new Exception("Key Error");
+            if (apiKey.StatusSync != StatusSyncType.Sync) throw new Exception("Key Not Sync with BD");
+
+            lock (_lock)
+            {
+                if (_countLimit > 0)
+                {
+                    _countLimit -= 1;
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        private bool _isStartGetLimit;
+
+        public void StartGetLimit(string key)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                _currentApiKey = _collectionKey.Single(x => x.ApiKey == key);
+                while (_isStartGetLimit)
+                {
+                    var countLimit = _countLimit;
+
+                    var lastServ = GetLastUseLimitsServer(_currentApiKey);
+
+                    if (lastServ.Successfully)
+                    {
+                        lock (_lock)
+                        {
+                            if (lastServ.Entity.Value > _currentApiKey.MaxLimit)
+                            {
+                                _countLimit = 0;
+                            }
+                            else
+                            {
+                                if (lastServ.Entity.Value > _countSpentFirst)
+                                {
+                                    var a = lastServ.Entity.Value - _countSpentFirst - countLimit;
+                                    _countLimit -= a;
+                                }
+                            }
+                        }
+                    }
+                    Thread.Sleep(60000);
+                }
+            });
+        }
+
+        public void StopGetLimit()
+        {
+            _isStartGetLimit = false;
         }
 
         #region PublicMethod
