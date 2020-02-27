@@ -302,7 +302,7 @@ namespace GeoCoding
                     Customers = new CollectionViewSource { Source = _collectionGeoCod }.View;
                     DispatcherHelper.CheckBeginInvokeOnUI(() => Customers.GroupDescriptions.Add(new PropertyGroupDescription("Error")));
                     _customerView.Filter = CustomerFilter;
-                    _ver.SetCollection(value);
+                    //_ver.SetCollection(value);
                 });
             }
         }
@@ -809,10 +809,6 @@ namespace GeoCoding
             {
                 str = Environment.CurrentDirectory;
             }
-            if (str == "StatFolder")
-            {
-                str = _appSettings.FilesSettings.FolderStatistics;
-            }
             _model.OpenFolder(e =>
             {
                 _notifications.Notification(NotificationType.Error, e);
@@ -945,15 +941,6 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Метод для получения имени файла статистики по умолчанию
-        /// </summary>
-        /// <returns>Имя файла</returns>
-        private string SetDefNameFileStatistics()
-        {
-            return $"{_appSettings.FilesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
-        }
-
-        /// <summary>
         /// Метод для сохранения файла с ошибками
         /// </summary>
         private void SaveErrors()
@@ -988,7 +975,6 @@ namespace GeoCoding
                 return;
             }
 
-            var nameFile = SetDefNameFileStatistics();
             _model.SaveStatistics(e =>
             {
                 _notifications.Notification(NotificationType.Error, e);
@@ -996,7 +982,7 @@ namespace GeoCoding
                 {
                     _stat.IsSave = true;
                 }
-            }, _stat.Statistics, _appSettings.FilesSettings, nameFile);
+            }, _stat.Statistics, _appSettings.FilesSettings);
         }
 
         /// <summary>
@@ -1025,7 +1011,7 @@ namespace GeoCoding
                     // Отображаем индикацию работы процесса
                     IsStartGeoCoding = true;
                     //_stat.Start(_appSettings.GeoCodSettings.GeoService);
-                    _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder);
+                    _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder, _geoCodingModel.GetKeyShort());
 
                     _geoCodingModel.GetAllGeoCod(e =>
                     {
@@ -1482,6 +1468,7 @@ namespace GeoCoding
                         }
 
                         _customerView.Refresh();
+                        _stat.UpdateStatisticsCollection();
                     }, () => _copiedGeoCod != null));
 
         private RelayCommand _commandSetFirstGeoCod;
@@ -1501,6 +1488,9 @@ namespace GeoCoding
                                     item.DateTimeGeoCod = DateTime.Now;
                                 }
                             }
+
+                            _customerView.Refresh();
+                            _stat.UpdateStatisticsCollection();
                         }
                     }));
 
@@ -1526,5 +1516,37 @@ namespace GeoCoding
             }
             IsGeoCodingModelBusy = false;
         }
+
+        private RelayCommand _commandGetSqlTemplateNewAddress;
+        public RelayCommand CommandGetSqlTemplateNewAddress =>
+        _commandGetSqlTemplateNewAddress ?? (_commandGetSqlTemplateNewAddress = new RelayCommand(
+                    async () =>
+                    {
+                        var result = await _geoCodingModel.GetCurrentLimit();
+                        if (result.Successfully)
+                        {
+                            AppSettings.BDSettings.SQLQuery = _modelBd.GetSqlTemplateNewAddress(result.Entity);
+                        }
+                        else
+                        {
+                            AppSettings.BDSettings.SQLQuery = _modelBd.GetSqlTemplateNewAddress(10000);
+                        }
+                    }));
+
+        private RelayCommand _commandGetSqlTemplateOldBadAddress;
+        public RelayCommand CommandGetSqlTemplateOldBadAddress =>
+        _commandGetSqlTemplateOldBadAddress ?? (_commandGetSqlTemplateOldBadAddress = new RelayCommand(
+                    async () =>
+                    {
+                        var result = await _geoCodingModel.GetCurrentLimit();
+                        if (result.Successfully)
+                        {
+                            AppSettings.BDSettings.SQLQuery = _modelBd.GetSqlTempleteOldBadAddresss(result.Entity);
+                        }
+                        else
+                        {
+                            AppSettings.BDSettings.SQLQuery = _modelBd.GetSqlTempleteOldBadAddresss(10000);
+                        }
+                    }));
     }
 }

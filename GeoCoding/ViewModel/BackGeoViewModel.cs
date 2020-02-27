@@ -29,7 +29,11 @@ namespace GeoCoding
             Stat = new StatisticsViewModel();
 
             _geoCodingModel = new GeoCodingModel(_appSettings.NetSettings, _appSettings.GeoCodSettings, _appSettings.GetLimitsModel());
+            _mailModel = new MailModel(_appSettings.NotificationSettings);
+
             SetGeoService();
+
+            _modelVerification = new VerificationModel(_appSettings.VerificationSettings.VerificationServer);
 
             Messenger.Default.Register<PropertyChangedMessage<EntityGeoCoder>>(this, data =>
             {
@@ -44,7 +48,12 @@ namespace GeoCoding
 
         #region PrivateField
 
-        private readonly DateTime _timeStartSpendingAllLimits = new DateTime(1, 1, 1, 3, 32, 0);
+        private readonly MailModel _mailModel;
+
+        private readonly DateTime _timeStartSpendingAllLimits = new DateTime(1, 1, 1, 3, 12, 0);
+
+        private CancellationTokenSource _ctsTimerAllLimits;
+        private CancellationTokenSource _ctsTimerLimits;
 
         /// <summary>
         /// Поле для хранения статистики
@@ -70,6 +79,11 @@ namespace GeoCoding
         /// Поле для хранения ссылки на модельгеокодирования
         /// </summary>
         private readonly GeoCodingModel _geoCodingModel;
+
+        /// <summary>
+        /// Поле для хранения ссылки на модельпроверки координат
+        /// </summary>
+        private readonly VerificationModel _modelVerification;
 
         /// <summary>
         /// Поле для хранения ссылки на модель информирования
@@ -183,6 +197,7 @@ namespace GeoCoding
             get => _isStartGeo;
             set => Set(ref _isStartGeo, value);
         }
+
         #endregion PublicProperties
 
         #region Command
@@ -229,7 +244,7 @@ namespace GeoCoding
                    {
                        IsStartBackGeo = true;
                        StartTimers();
-                   }, () => !_isGeoCodingModelBusy && !_isStartBackGeo && !_isStartGeo));
+                   }, () => !_isGeoCodingModelBusy && !_isStartBackGeo && !_isStartGeo && _ctsTimerAllLimits == null && _ctsTimerLimits == null));
 
         /// <summary>
         /// Команда для остановки фоновой работы
@@ -239,11 +254,179 @@ namespace GeoCoding
                     () =>
                     {
                         IsStartBackGeo = false;
+                        //_isStartTimer = false;
+
+                        _ctsTimerAllLimits?.Cancel();
+                        _ctsTimerLimits?.Cancel();
                     }));
 
         #endregion Command
 
         #region PrivateMethod
+
+        /// <summary>
+        /// Метод для запуска таймеров 
+        /// </summary>
+        private void StartTimers()
+        {
+            _ctsTimerAllLimits = new CancellationTokenSource();
+            _ctsTimerLimits = new CancellationTokenSource();
+
+            // Таймер геокодирования по графику
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    while (!_ctsTimerLimits.IsCancellationRequested)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Таймер геокодинга по графику - 1 цикл");
+                        var dataNow = DateTime.Now;
+
+                        var dateTimeStart = _appSettings.GeneralSettings.ListDayWeek.FirstOrDefault(x => x.Day == dataNow.DayOfWeek && x.Selected);
+                        if (dateTimeStart != null && dataNow.TimeOfDay < dateTimeStart.Time.TimeOfDay)
+                        {
+                            while (!_ctsTimerLimits.IsCancellationRequested)
+                            {
+                                System.Diagnostics.Debug.WriteLine("Таймер геокодинга по графику - 2 цикл");
+                                TimeNextStartGeo = (dateTimeStart.Time.TimeOfDay - dataNow.TimeOfDay).ToString(@"hh\:mm\:ss");
+                                dataNow = DateTime.Now;
+                                if (dataNow.TimeOfDay > dateTimeStart.Time.TimeOfDay && dataNow.TimeOfDay < dateTimeStart.Time.AddMinutes(1).TimeOfDay)
+                                {
+                                    StartGeo();
+                                }
+                                await Task.Delay(1000, _ctsTimerLimits.Token);
+                            }
+                        }
+                        else
+                        {
+                            TimeNextStartGeo = "Не сегодня";
+                            await Task.Delay(60000, _ctsTimerLimits.Token);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AddLog(ex.Message);
+                }
+
+                _ctsTimerLimits.Dispose();
+                _ctsTimerLimits = null;
+
+            }, _ctsTimerLimits.Token);
+
+            //Таймер использование остатков лимита
+            Task.Factory.StartNew(async () =>
+            {
+                try
+                {
+                    while (!_ctsTimerAllLimits.IsCancellationRequested)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Таймер геокодинга по ночам - 1 цикл");
+                        var dataNow = DateTime.Now;
+
+                        if (dataNow.TimeOfDay < _timeStartSpendingAllLimits.TimeOfDay)
+                        {
+                            while (!_ctsTimerAllLimits.IsCancellationRequested)
+                            {
+                                System.Diagnostics.Debug.WriteLine("Таймер геокодинга по ночам - 2 цикл");
+                                dataNow = DateTime.Now;
+                                if (dataNow.TimeOfDay > _timeStartSpendingAllLimits.TimeOfDay && dataNow.TimeOfDay < _timeStartSpendingAllLimits.AddMinutes(1).TimeOfDay)
+                                {
+                                    StartSpendingAllLimits();
+                                }
+                                await Task.Delay(1000, _ctsTimerAllLimits.Token);
+                            }
+                        }
+                        else
+                        {
+                            await Task.Delay(60000, _ctsTimerAllLimits.Token);
+                        }
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    AddLog(ex.Message);
+                }
+
+                _ctsTimerAllLimits.Dispose();
+                _ctsTimerAllLimits = null;
+
+            }, _ctsTimerAllLimits.Token);
+        }
+
+        /// <summary>
+        /// Метод для запуска подсчета статистики
+        /// </summary>
+        /// <param name="data">Коллекция для статистики</param>
+        private void StartStat(IEnumerable<EntityGeoCod> data)
+        {
+            DispatcherHelper.CheckBeginInvokeOnUI(() =>
+            {
+                _stat.Init(data);
+                _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder, _geoCodingModel.GetKeyShort());
+            });
+        }
+
+        /// <summary>
+        /// Метод для формирования почтового сообщения 
+        /// </summary>
+        /// <param name="entities">Коллекция результатов</param>
+        /// <returns></returns>
+        private string GetMessageFinish(IEnumerable<EntityGeoCod> entities)
+        {
+            var result = string.Empty;
+
+            if (entities != null && entities.Any())
+            {
+                result = "Добрый день!";
+
+                result += $"<br>Было обработано адресов: {entities.Count()}";
+                result += $"<br>Хороших координат: {entities.Count(x => x.MainGeoCod?.Qcode == 1)}";
+
+                var er = entities.Where(x => x.MainGeoCod == null);
+                if (er.Any())
+                {
+                    result += $"<br>Требуется ручная обработка: {er.Count()}<br>";
+                    foreach (var a in er)
+                    {
+                        result += $"<br>{a.GlobalID}";
+                    }
+                }
+
+                result += "<br><br><b>Это сообщение сформировано автоматически. Отвечать на него не надо.</b>";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Метод для сохранения статистики
+        /// </summary>
+        private void SaveStatistics()
+        {
+            if (_stat.IsSave)
+            {
+                return;
+            }
+
+            _model.SaveStatistics(e =>
+            {
+                _notifications.Notification(NotificationType.Error, e);
+                if (e == null)
+                {
+                    _stat.IsSave = true;
+                }
+            }, _stat.Statistics, _appSettings.FilesSettings);
+        }
+
+        /// <summary>
+        /// Метод для сохранения логов
+        /// </summary>
+        private void SaveLog()
+        {
+            _model.SaveLog(_collectionLog);
+        }
 
         /// <summary>
         /// Установка геокодера
@@ -263,7 +446,7 @@ namespace GeoCoding
         /// Выбор первого варианта из предложенных
         /// </summary>
         /// <param name="d">Коллекция данных</param>
-        private static void SetFirstItemGeoCod(IEnumerable<EntityGeoCod> d)
+        private void SetFirstItemGeoCod(IEnumerable<EntityGeoCod> d)
         {
             foreach (var item in d)
             {
@@ -275,6 +458,8 @@ namespace GeoCoding
                     item.DateTimeGeoCod = DateTime.Now;
                 }
             }
+
+            _stat.UpdateStatisticsCollection();
         }
 
         /// <summary>
@@ -306,7 +491,7 @@ namespace GeoCoding
         /// Метод для сохранения файла с ошибками
         /// </summary>
         /// <param name="d">Коллекция данных</param>
-        private void SaveError(IEnumerable<EntityGeoCod> d)
+        private string SaveError(IEnumerable<EntityGeoCod> d)
         {
             var errorCount = d.Count(x => x.Status == StatusType.Error);
 
@@ -325,7 +510,11 @@ namespace GeoCoding
                         AddLog(er.Message);
                     }
                 }, d, fileError);
+
+                return fileError;
             }
+
+            return null;
         }
 
         /// <summary>
@@ -349,108 +538,53 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Метод для получения имени файла статистики по умолчанию
-        /// </summary>
-        /// <returns>Имя файла</returns>
-        private string GetFileStatisticsName()
-        {
-            return $"{_appSettings.FilesSettings.FolderStatistics}\\{DateTime.Now.ToString("yyyy_MM_dd")}_Statistics.csv";
-        }
-
-        /// <summary>
         /// Метод для добавлнеия лога в коллекцию
         /// </summary>
         /// <param name="text">Текст сообщения</param>
         /// <param name="countRow">количество обрабатываемых элементов</param>
-        private void AddLog(string text, string countRow = "")
+        private void AddLog(string text, int? countRow = null)
         {
             CollectionLog.Add(new LogItemBackGeo() { DateTimeLog = DateTime.Now, TextLog = text, CountRow = countRow });
         }
 
         #endregion PrivateMethod
 
-        private bool _isStartTimer = false;
-
-        private void StartTimers()
-        {
-            if (_isStartTimer) return;
-
-            _isStartTimer = true;
-
-            // Таймер геокодирования по графику
-            Task.Factory.StartNew(() =>
-            {
-                while (_isStartTimer)
-                {
-                    var dataNow = DateTime.Now;
-
-                    var dateTimeStart = _appSettings.GeneralSettings.ListDayWeek.First(x => x.Day == dataNow.DayOfWeek && x.Selected);
-                    if (dateTimeStart != null && dataNow.TimeOfDay < dateTimeStart.Time.TimeOfDay)
-                    {
-                        while (_isStartTimer)
-                        {
-                            TimeNextStartGeo = (dateTimeStart.Time.TimeOfDay - dataNow.TimeOfDay).ToString(@"hh\:mm\:ss");
-                            dataNow = DateTime.Now;
-                            if (dataNow.TimeOfDay > dateTimeStart.Time.TimeOfDay && dataNow.TimeOfDay < dateTimeStart.Time.AddMinutes(1).TimeOfDay)
-                            {
-                                StartGeo();
-                                _isStartTimer = false;
-                            }
-                            Thread.Sleep(1000);
-                        }
-                    }
-                    else
-                    {
-                        TimeNextStartGeo = "Не сегодня";
-                        Thread.Sleep(10000);
-                    }
-                }
-            });
-
-            //Таймер использование остатков лимита
-            Task.Factory.StartNew(() =>
-            {
-                while (_isStartTimer)
-                {
-                    var dataNow = DateTime.Now;
-
-                    if (dataNow.TimeOfDay < _timeStartSpendingAllLimits.TimeOfDay)
-                    {
-                        while (_isStartTimer)
-                        {
-                            dataNow = DateTime.Now;
-                            if (dataNow.TimeOfDay > _timeStartSpendingAllLimits.TimeOfDay && dataNow.TimeOfDay < _timeStartSpendingAllLimits.AddMinutes(1).TimeOfDay)
-                            {
-                                StartSpendingAllLimits();
-                                _isStartTimer = false;
-                            }
-                            Thread.Sleep(1000);
-                        }
-                    }
-                    else
-                    {
-                        Thread.Sleep(10000);
-                    }
-                }
-            });
-        }
-
         private void StartSpendingAllLimits()
         {
-            _isStartTimer = false;
+            _ctsTimerAllLimits?.Cancel();
 
             AddLog("Старт выбора оставшегося лимита");
+            TimeNextStartGeo = "В процессе...";
+
             Task.Factory.StartNew(async () =>
             {
-                AddLog("Получение данных из базы");
-
+                AddLog("Запрос остатков лимита");
                 var limit = await _geoCodingModel.GetMaxLimit();
+
+                if (!limit.Successfully)
+                {
+                    await Task.Delay(10000);
+                    AddLog("Повторная попытка получения лимита");
+                    limit = await _geoCodingModel.GetMaxLimit();
+                }
+
                 if (limit.Successfully && limit.Entity > 0)
                 {
+                    AddLog("Оставшийся лимит", limit.Entity);
+
+                    AddLog("Получение данных из базы");
                     var resultGetDataDb = await _modelBd.GetDataFromBDAsync(_appSettings.BDSettings, _appSettings.GeneralSettings, limit.Entity);
+
+                    // Если не получилось 1 раз попробовать еще раз
+                    if (!resultGetDataDb.Successfully)
+                    {
+                        AddLog("Повторная попытка получения данных из базы");
+                        resultGetDataDb = await _modelBd.GetDataFromBDAsync(_appSettings.BDSettings, _appSettings.GeneralSettings, limit.Entity);
+                    }
+
                     if (resultGetDataDb.Successfully)
                     {
-                        AddLog("Данные получены", resultGetDataDb.Entities.Count().ToString());
+                        AddLog("Данные получены", resultGetDataDb.Entities.Count());
                         AddLog("Старт получения геокодов");
                         IsStartGeo = true;
 
@@ -473,11 +607,39 @@ namespace GeoCoding
 
                                 SetFirstItemGeoCod(resultGetDataDb.Entities);
 
-                                SaveData(resultGetDataDb.Entities);
+                                AddLog("Всего хороших координат", resultGetDataDb.Entities.Count(x => x.MainGeoCod != null && x.MainGeoCod.Qcode == 1));
 
-                                SaveError(resultGetDataDb.Entities);
+                                AddLog("Проверка координат");
 
-                                SaveStatistics();
+                                _modelVerification.Check((e) =>
+                                {
+                                    if (e == null)
+                                    {
+                                        AddLog("Проверка координат успешна");
+                                    }
+                                    else
+                                    {
+                                        AddLog("Проверка координат завершено с ошибкой: " + e.Message);
+                                    }
+
+                                    AddLog("Всего хороших координат после проверки", resultGetDataDb.Entities.Count(x => x.MainGeoCod != null && x.MainGeoCod.Qcode == 1));
+
+                                    SaveData(resultGetDataDb.Entities);
+
+                                    _model.SaveTemp((er) =>
+                                    {
+
+                                    }, resultGetDataDb.Entities, _appSettings.FilesSettings.FolderTemp + $"\\{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_afterCheck.csv");
+
+                                    var fileError = SaveError(resultGetDataDb.Entities);
+
+                                    SaveStatistics();
+
+                                    _mailModel.SendEmailGeoFinish((m) =>
+                                    {
+                                        AddLog(m);
+                                    }, GetMessageFinish(resultGetDataDb.Entities), new string[] { fileError });
+                                }, resultGetDataDb.Entities);
 
                                 StartTimers();
                             }, resultGetDataDb.Entities);
@@ -494,7 +656,7 @@ namespace GeoCoding
                         StartTimers();
                     }
                 }
-                else if (limit.Entity == 0)
+                else if (limit.Entity < 1 && limit.Error == null)
                 {
                     AddLog("Лимита нет");
                     StartTimers();
@@ -507,23 +669,46 @@ namespace GeoCoding
             });
         }
 
+
+
+
         private void StartGeo()
         {
-            _isStartTimer = false;
+            _ctsTimerLimits?.Cancel();
 
-            AddLog("Старт геокодирования");
+            AddLog("Старт геокодирования по графику");
             TimeNextStartGeo = "В процессе...";
+            
             Task.Factory.StartNew(async () =>
             {
-                AddLog("Получение данных из базы");
-
+                AddLog("Запрос остатков лимита");
                 var limit = await _geoCodingModel.GetCurrentLimit();
+
+                if (!limit.Successfully)
+                {
+                    await Task.Delay(10000);
+                    AddLog("Повторная попытка получения лимита");
+                    limit = await _geoCodingModel.GetMaxLimit();
+                }
+
                 if (limit.Successfully && limit.Entity > 0)
                 {
+                    AddLog("Оставшийся лимит", limit.Entity);
+
+                    AddLog("Получение данных из базы");
                     var resultGetDataDb = await _modelBd.GetDataFromBDAsync(_appSettings.BDSettings, _appSettings.GeneralSettings, limit.Entity);
+
+                    // Если не получилось 1 раз попробовать еще раз
+                    if (!resultGetDataDb.Successfully)
+                    {
+                        AddLog(resultGetDataDb.Error.Message);
+                        AddLog("Повторная попытка получения данных из базы");
+                        resultGetDataDb = await _modelBd.GetDataFromBDAsync(_appSettings.BDSettings, _appSettings.GeneralSettings, limit.Entity);
+                    }
+
                     if (resultGetDataDb.Successfully)
                     {
-                        AddLog("Данные получены", resultGetDataDb.Entities.Count().ToString());
+                        AddLog("Данные получены", resultGetDataDb.Entities.Count());
                         AddLog("Старт получения геокодов");
                         IsStartGeo = true;
 
@@ -546,11 +731,40 @@ namespace GeoCoding
 
                                 SetFirstItemGeoCod(resultGetDataDb.Entities);
 
-                                SaveData(resultGetDataDb.Entities);
+                                AddLog("Всего хороших координат", resultGetDataDb.Entities.Count(x => x.MainGeoCod != null && x.MainGeoCod.Qcode == 1));
 
-                                SaveError(resultGetDataDb.Entities);
+                                AddLog("Проверка координат");
 
-                                SaveStatistics();
+                                _modelVerification.Check((e) =>
+                                {
+                                    if (e == null)
+                                    {
+                                        AddLog("Проверка координат успешна");
+                                    }
+                                    else
+                                    {
+                                        AddLog("Проверка координат завершено с ошибкой: " + e.Message);
+                                    }
+
+                                    AddLog("Всего хороших координат после проверки", resultGetDataDb.Entities.Count(x => x.MainGeoCod != null && x.MainGeoCod.Qcode == 1));
+
+                                    SaveData(resultGetDataDb.Entities);
+
+                                    _model.SaveTemp((er) =>
+                                    {
+
+                                    }, resultGetDataDb.Entities, _appSettings.FilesSettings.FolderTemp + $"\\{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_afterCheck.csv");
+
+                                    var fileError = SaveError(resultGetDataDb.Entities);
+
+                                    SaveStatistics();
+
+                                    _mailModel.SendEmailGeoFinish((m) =>
+                                    {
+                                        AddLog(m);
+                                    }, GetMessageFinish(resultGetDataDb.Entities), new string[] { fileError });
+
+                                }, resultGetDataDb.Entities);
 
                                 StartTimers();
                             }, resultGetDataDb.Entities);
@@ -567,7 +781,7 @@ namespace GeoCoding
                         StartTimers();
                     }
                 }
-                else if (limit.Entity == 0)
+                else if (limit.Entity < 1 && limit.Error == null)
                 {
                     AddLog("Лимита нет");
                     StartTimers();
@@ -578,57 +792,6 @@ namespace GeoCoding
                     StartTimers();
                 }
             });
-        }
-
-        private RelayCommand _commandStart;
-        public RelayCommand CommandStart =>
-        _commandStart ?? (_commandStart = new RelayCommand(
-                    () =>
-                    {
-                        StartGeo();
-                    }));
-
-        private RelayCommand _commandStartMaxLimit;
-        public RelayCommand CommandStartMaxLimit =>
-        _commandStartMaxLimit ?? (_commandStartMaxLimit = new RelayCommand(
-                    () =>
-                    {
-                        StartSpendingAllLimits();
-                    }));
-
-        private void StartStat(IEnumerable<EntityGeoCod> data)
-        {
-            DispatcherHelper.CheckBeginInvokeOnUI(() => 
-            {
-                _stat.Init(data);
-                _stat.Start(_appSettings.GeoCodSettings.CurrentGeoCoder.GeoCoder);
-            });
-        }
-
-        /// <summary>
-        /// Метод для сохранения статистики
-        /// </summary>
-        private void SaveStatistics()
-        {
-            if (_stat.IsSave)
-            {
-                return;
-            }
-
-            var nameFile = GetFileStatisticsName();
-            _model.SaveStatistics(e =>
-            {
-                _notifications.Notification(NotificationType.Error, e);
-                if (e == null)
-                {
-                    _stat.IsSave = true;
-                }
-            }, _stat.Statistics, _appSettings.FilesSettings, nameFile);
-        }
-
-        private void SaveLog()
-        {
-            _model.SaveLog(_collectionLog);
         }
     }
 }

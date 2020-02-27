@@ -17,13 +17,13 @@ namespace GeoCoding.GeoCodingService
         /// Название геосервиса
         /// </summary>
         public override string Name => "Here";
-
-      //  public override bool CanUsePolygon => true;
+        //https://geocoder.ls.hereapi.com/6.2/geocode.json?searchtext=%D0%9D%D0%BE%D0%B2%D0%BE%D1%81%D0%B8%D0%B1%D0%B8%D1%80%D1%81%D0%BA%20&gen=9&apiKey=EXVYrj22JGZG2NN5OO9G9kwfLyyoWrywEEHtJn_8eEw%20%20
+        //  public override bool CanUsePolygon => true;
 
         /// <summary>
         /// Ссылка на геокодер яндекса
         /// </summary>
-        protected override string _url => @"https://geocoder.api.here.com/6.2/geocode.json?";
+        protected override string _url => @"https://geocoder.ls.hereapi.com/6.2/geocode.json?searchtext=";
 
         protected override void ParserJson(Action<IEnumerable<GeoCod>, Exception> callback, string json)
         {
@@ -79,7 +79,7 @@ namespace GeoCoding.GeoCodingService
         /// <returns>Урл для вебзапроса</returns>
         public override string GetUrlRequest(string address, List<double> polygon)
         {
-            var str = _key.Split(' ');
+           // var str = _key.Split(' ');
             var box = string.Empty;
 
             if (polygon != null && polygon.Count == 4)
@@ -89,7 +89,7 @@ namespace GeoCoding.GeoCodingService
                 _distance = Distance.DistanceBetweenPlaces(polygon[0], polygon[1], polygon[2], polygon[3])/2;
             }
 
-            return $"{_url}app_id={str[0]}&app_code={str[1]}&searchtext={address}{box}";
+            return $"{_url}{address}{box}&apiKey={_key}";
         }
 
         public override void SetKeyApi(string keyApi)

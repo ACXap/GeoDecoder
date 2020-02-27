@@ -852,12 +852,12 @@
                             <Button Command="{Binding MyCommand}" Content="Проверить файлы" />
                         </StackPanel>
 
-                        <DataGrid
+                        <!--<DataGrid
                             Grid.Row="1"
                             Grid.ColumnSpan="3"
                             AutoGenerateColumns="False"
                             CanUserAddRows="False"
-                            IsReadOnly="True"
+                            IsReadOnly="True" Style="{StaticResource DataGridMainAll}"
                             ItemsSource="{Binding Ver.CustomerView}"
                             ScrollViewer.CanContentScroll="True">
                             <DataGrid.Columns>
@@ -911,7 +911,7 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
-                        </DataGrid>
+                        </DataGrid>-->
                     </Grid>
                 </TabItem>
             </TabControl>

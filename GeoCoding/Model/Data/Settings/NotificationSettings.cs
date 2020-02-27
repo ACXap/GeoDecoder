@@ -142,5 +142,36 @@ namespace GeoCoding
             get => _canNotificationExit;
             set => Set(ref _canNotificationExit, value);
         }
+
+
+        private string _recipientsResultFile = string.Empty;
+        /// <summary>
+        /// Список получателей итоговых файлов
+        /// </summary>
+        public string RecipientsResultFile
+        {
+            get => _recipientsResultFile;
+            set => Set(ref _recipientsResultFile, value);
+        }
+
+        private bool _canSendFileOnMail = false;
+        /// <summary>
+        /// Присылать ли результаты на почту
+        /// </summary>
+        public bool CanSendFileOnMail
+        {
+            get => _canSendFileOnMail;
+            set => Set(ref _canSendFileOnMail, value);
+        }
+
+        private string _mailSender = string.Empty;
+        /// <summary>
+        /// Почта отправителя
+        /// </summary>
+        public string MailSender
+        {
+            get => _mailSender;
+            set => Set(ref _mailSender, value);
+        }
     }
 }

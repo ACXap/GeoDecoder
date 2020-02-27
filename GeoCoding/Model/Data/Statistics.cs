@@ -121,6 +121,8 @@ namespace GeoCoding
         }
 
         private string _geoServiceName = string.Empty;
+        
+
         /// <summary>
         /// Название геосервиса
         /// </summary>
@@ -128,6 +130,16 @@ namespace GeoCoding
         {
             get => _geoServiceName;
             set => Set(ref _geoServiceName, value);
+        }
+
+        private string _keyShort = string.Empty;
+        /// <summary>
+        /// Короткое обозначение ключа
+        /// </summary>
+        public string KeyShort
+        {
+            get => _keyShort;
+            set => Set(ref _keyShort, value);
         }
     }
 }

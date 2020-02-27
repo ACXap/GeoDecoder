@@ -8,6 +8,7 @@ namespace GeoCoding.GeoCodingLimitsService.Data
     {
         public string Key { get; set; }
         public int Value { get; set; }
+        public string User { get; set; }
         public DateTime DateTime { get; set; }
     }
 }

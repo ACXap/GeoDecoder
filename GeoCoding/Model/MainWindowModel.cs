@@ -36,6 +36,7 @@ namespace GeoCoding
         private const int _addressColumnIndexLoadFile = 1;
         private const int _maxCountError = 100;
         private const string _fileLog = "log.txt";
+        private const string _fileStat = "Statistics.csv";
 
         #endregion PrivateConst
 
@@ -55,7 +56,8 @@ namespace GeoCoding
 
         private readonly string _nameColumnStatisticsFile = $"DateTime{_charSplit}User{_charSplit}System{_charSplit}FileInput{_charSplit}FileOutput{_charSplit}FileError{_charSplit}AllEntity" +
                                                              $"{_charSplit}OK{_charSplit}Error{_charSplit}NotGeoCoding{_charSplit}GeoCodingNow{_charSplit}House" +
-                                                                $"{_charSplit}Exact{_charSplit}NotFound{_charSplit}TimeGeoCod";
+                                                                $"{_charSplit}Exact{_charSplit}NotFound{_charSplit}TimeGeoCod{_charSplit}Key";
+
 
         /// <summary>
         /// Конструктор по умолчанию
@@ -71,7 +73,7 @@ namespace GeoCoding
         private void CreateFolderStructure()
         {
             var p = Properties.Settings.Default;
-            string[] nameFolders = new string[] { p.FolderTemp, p.FolderInput, p.FolderOutput, p.FolderErrors, p.FolderStatistics };
+            string[] nameFolders = new string[] { p.FolderTemp, p.FolderInput, p.FolderOutput, p.FolderErrors };
             string path = Environment.CurrentDirectory;
             foreach (var item in nameFolders)
             {
@@ -261,9 +263,9 @@ namespace GeoCoding
                 {
                     foreach (var item in a)
                     {
-                        string nameFile = System.IO.Path.GetFileNameWithoutExtension(file);
-                        string nameFolder = System.IO.Path.GetDirectoryName(file);
-                        string ex = System.IO.Path.GetExtension(file);
+                        string nameFile = Path.GetFileNameWithoutExtension(file);
+                        string nameFolder = Path.GetDirectoryName(file);
+                        string ex = Path.GetExtension(file);
                         string newNameFile = $"{nameFolder}\\{nameFile}_{i}{ex}";
 
                         list = new List<string>()
@@ -393,14 +395,13 @@ namespace GeoCoding
         /// <param name="callback">Функция обратного вызова, с параметром ошибка</param>
         /// <param name="stat">Статистика</param>
         /// <param name="files">Настройки файлов</param>
-        /// <param name="file">Имя файла со статистикой</param>
-        public void SaveStatistics(Action<Exception> callback, Statistics stat, FilesSettings files, string file)
+        public void SaveStatistics(Action<Exception> callback, Statistics stat, FilesSettings files)
         {
             Exception error = null;
             string[] data = null;
             string row = $"{DateTime.Now}{_charSplit}{Environment.UserName}{_charSplit}{stat.GeoServiceName}{_charSplit}{files.FileInput}{_charSplit}{files.FileOutput}{_charSplit}{files.FileError}{_charSplit}{stat.AllEntity}" +
                 $"{_charSplit}{stat.OK}{_charSplit}{stat.Error}{_charSplit}{stat.NotGeoCoding}{_charSplit}{stat.GeoCodingNow}" +
-                $"{_charSplit}{stat.House}{_charSplit}{stat.Exact}{_charSplit}{stat.NotFound}{_charSplit}{stat.TimeGeoCod}";
+                $"{_charSplit}{stat.House}{_charSplit}{stat.Exact}{_charSplit}{stat.NotFound}{_charSplit}{stat.TimeGeoCod}{_charSplit}{stat.KeyShort}";
 
             _fileService.FileExists((exists, er) =>
            {
@@ -428,13 +429,13 @@ namespace GeoCoding
                        {
                            error = e;
                        }
-                   }, data, file);
+                   }, data, Directory.GetCurrentDirectory() + "\\" + _fileStat);
                }
                else
                {
                    error = er;
                }
-           }, file);
+           }, Directory.GetCurrentDirectory() + "\\" + _fileStat);
 
             callback(error);
         }
@@ -674,7 +675,7 @@ namespace GeoCoding
         /// <returns></returns>
         private bool IsFirstStringNameColumnTempFile(string fs)
         {
-            return fs.ToLower() == _nameColumnTempFile.ToLower() + ";District|City|Street|HouseNumber".ToLower();
+            return fs.ToLower() == _nameColumnTempFile.ToLower();
         }
 
         /// <summary>

@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.28902.138
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding", "GeoCoding\GeoCoding.csproj", "{081BEFF6-09AA-429D-A864-45E1F37CE9B5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93455B5B-9516-4946-9C03-9945A029AE62} = {93455B5B-9516-4946-9C03-9945A029AE62}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.FileService", "GeoCoding.FileService\GeoCoding.FileService.csproj", "{88E8217A-88BB-4123-95A1-8323F1F99478}"
 EndProject
@@ -24,6 +27,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.Entities", "GeoCoding.Entities\GeoCoding.Entities.csproj", "{8D32D6EB-FE92-4293-BE78-21309E2797E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.Test", "GeoCoding.Test\GeoCoding.Test.csproj", "{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.MailService", "GeoCoding.MailService\GeoCoding.MailService.csproj", "{93455B5B-9516-4946-9C03-9945A029AE62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +80,10 @@ Global
 		{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93455B5B-9516-4946-9C03-9945A029AE62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93455B5B-9516-4946-9C03-9945A029AE62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93455B5B-9516-4946-9C03-9945A029AE62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93455B5B-9516-4946-9C03-9945A029AE62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

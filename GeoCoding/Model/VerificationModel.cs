@@ -11,22 +11,37 @@ namespace GeoCoding
 {
     public class VerificationModel
     {
+        public VerificationModel(string connectionSettings)
+        {
+            _verification = new Verification(connectionSettings);
+        }
+
+
+        #region PrivateField
         private readonly IVerificationService _verification;
 
         private CancellationTokenSource cts;
+        #endregion PrivateField
 
+        #region PublicProperties
+        #endregion PublicProperties
+
+        #region PrivateMethod
+        #endregion PrivateMethod
+
+        #region PublicMethod
         public async void CheckServerAsync(Action<Exception> callback)
         {
             Exception error = null;
             await Task.Factory.StartNew(() =>
             {
                 _verification.CheckServiceVerification(e =>
-               {
-                   if (e != null)
-                   {
-                       error = e;
-                   }
-               });
+                {
+                    if (e != null)
+                    {
+                        error = e;
+                    }
+                });
 
                 callback(error);
             });
@@ -114,11 +129,6 @@ namespace GeoCoding
             cts?.Cancel();
         }
 
-        public VerificationModel(string connectionSettings)
-        {
-            _verification = new Verification(connectionSettings);
-        }
-
         public Exception CheckGeo(List<EntityForCompare> data)
         {
             Exception error = null;
@@ -128,11 +138,11 @@ namespace GeoCoding
 
             ParallelOptions po = new ParallelOptions()
             {
-                MaxDegreeOfParallelism = 4,
+                MaxDegreeOfParallelism = 3,
                 CancellationToken = t
             };
 
-            var list = data.Partition(400);
+            var list = data.Partition(300);
 
             try
             {
@@ -183,6 +193,37 @@ namespace GeoCoding
             }
 
             return error;
+        }
+        #endregion PublicMethod
+
+
+        public void Check(Action<Exception> callback, IEnumerable<EntityGeoCod> data)
+        {
+            var list = new List<EntityForCompare>(data.Where(x => x.MainGeoCod != null && x.MainGeoCod.Qcode == 1).Select(x =>
+            {
+                return new EntityForCompare() { GeoCode = x };
+            }).ToList());
+
+            CompareAsync((e) =>
+            {
+                if (e == null)
+                {
+                    var d = list.Where(x => x.IsChanges);
+                    foreach (var item in d)
+                    {
+                        if (item.Qcode != 0)
+                        {
+                            item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                        }
+                    }
+                    callback(e);
+                }
+                else
+                {
+                    callback(e);
+                }
+
+            }, list);
         }
     }
 }

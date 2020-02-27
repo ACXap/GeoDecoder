@@ -261,7 +261,7 @@
                             </Button.Style>
                         </Button>
 
-                        <Button
+                        <!--<Button
                             Grid.Column="3"
                             Margin="5"
                             HorizontalAlignment="Right"
@@ -275,7 +275,7 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Command="{Binding CommandStartMaxLimit}"
-                            Content="Выбор лимита" />
+                            Content="Выбор лимита" />-->
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />

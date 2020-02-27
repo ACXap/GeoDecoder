@@ -27,6 +27,8 @@ namespace GeoCoding.Model
             _notifications.SetSettings(_notificationSettings);
             _modelVer = new VerificationModel(_verificationSettings.VerificationServer);
 
+            _mailModel = new MailModel(_notificationSettings);
+
             GetApiKey();
 
             _limitsModel = GetLimitsModel();
@@ -46,6 +48,7 @@ namespace GeoCoding.Model
 
         #region PrivateField
         private readonly MainWindowModel _model;
+        private readonly MailModel _mailModel;
         private readonly BdModel _modelBd;
         private readonly VerificationModel _modelVer;
         private readonly INotifications _notifications;
@@ -173,6 +176,28 @@ namespace GeoCoding.Model
                     {
                         SaveSettings();
                     }));
+
+        private RelayCommand _commandCheckEmail;
+        public RelayCommand CommandCheckEmail =>
+        _commandCheckEmail ?? (_commandCheckEmail = new RelayCommand(
+                    () =>
+                    {
+                        _mailModel.TestEmail((m)=>
+                        {
+                            TextStatusEmail = m;
+                        });
+                    }));
+
+
+        private string _textStatusEmail = string.Empty;
+        /// <summary>
+        /// 
+        /// </summary>
+        public string TextStatusEmail
+        {
+            get => _textStatusEmail;
+            set => Set(ref _textStatusEmail, value);
+        }
 
         /// <summary>
         /// Поле для хранения ссылки на команду проверки соединения с базой
@@ -551,7 +576,6 @@ namespace GeoCoding.Model
                 FolderInput = $"{curDir}\\{p.FolderInput}",
                 FolderOutput = $"{curDir}\\{p.FolderOutput}",
                 FolderTemp = $"{curDir}\\{p.FolderTemp}",
-                FolderStatistics = $"{curDir}\\{p.FolderStatistics}",
                 FolderErrors = $"{curDir}\\{p.FolderErrors}",
                 IsFileInputOnFTP = p.IsFileInputOnFTP,
                 MaxSizePart = p.MaxSizePart,
@@ -629,7 +653,10 @@ namespace GeoCoding.Model
                 CanNotificationSaveData = p.CanNotificationSaveData,
                 CanNotificationSaveSettings = p.CanNotificationSaveSettings,
                 CanNotificationStatAlreadySave = p.CanNotificationStatAlreadySave,
-                CanNotificationExit = p.CanNotificationExit
+                CanNotificationExit = p.CanNotificationExit,
+                CanSendFileOnMail = p.CanSendFileOnMail,
+                RecipientsResultFile = p.RecipientsResultFile,
+                MailSender = p.MailSender
             };
 
             NetSettings = new NetSettings()
@@ -904,6 +931,9 @@ namespace GeoCoding.Model
                 p.CanNotificationStatAlreadySave = _notificationSettings.CanNotificationStatAlreadySave;
                 p.CanNotificationOnlyError = _notificationSettings.CanNotificationOnlyError;
                 p.CanNotificationExit = _notificationSettings.CanNotificationExit;
+                p.RecipientsResultFile = _notificationSettings.RecipientsResultFile;
+                p.CanSendFileOnMail = _notificationSettings.CanSendFileOnMail;
+                p.MailSender = _notificationSettings.MailSender;
             }
 
             p.Save();
@@ -966,10 +996,6 @@ namespace GeoCoding.Model
             if (str == "AppFolder")
             {
                 str = Environment.CurrentDirectory;
-            }
-            if (str == "StatFolder")
-            {
-                str = _filesSettings.FolderStatistics;
             }
             _model.OpenFolder(e =>
             {

@@ -25,8 +25,8 @@ namespace GeoCoding.GeoCodingLimitsService
         }
 
         #region PrivateField
-        private const string TABLE_KEY = "public.t_000148_ent_spr_geokey";
-        private const string TABLE_LIMITS = "public.t_000148_ent_geokey_limits";
+        private const string TABLE_KEY = "edw_sb_nsi.t_000148_ent_spr_geokey";
+        private const string TABLE_LIMITS = "edw_sb_nsi.t_000148_ent_geokey_limits";
         private const string KEY_NOT_FOUND = "Key not found";
         private const string ARGUMENT_CANNOT_NULL = "cannot be null";
 
@@ -149,11 +149,12 @@ namespace GeoCoding.GeoCodingLimitsService
                 using NpgsqlConnection conn = new NpgsqlConnection(_connectString);
                 conn.Open();
 
-                string insertUseLimits = $"INSERT INTO {TABLE_LIMITS} (id_key, value, date_time) " +
-                    $"VALUES((Select id from {TABLE_KEY} where key=@key), @value, @date)";
+                string insertUseLimits = $"INSERT INTO {TABLE_LIMITS} (id_key, value, name_user, date_time) " +
+                    $"VALUES((Select id from {TABLE_KEY} where key=@key), @value, @name_user, @date)";
                 using NpgsqlCommand cmd = new NpgsqlCommand(insertUseLimits, conn);
                 cmd.Parameters.AddWithValue("key", useLimits.Key);
                 cmd.Parameters.AddWithValue("value", useLimits.Value);
+                cmd.Parameters.AddWithValue("name_user", useLimits.User);
                 cmd.Parameters.AddWithValue("date", useLimits.DateTime);
                 result.Entity = cmd.ExecuteNonQuery();
                 result.Successfully = true;
@@ -259,7 +260,6 @@ namespace GeoCoding.GeoCodingLimitsService
 
             return result;
         }
-
 
         public EntityResult<bool> CheckRepository()
         {

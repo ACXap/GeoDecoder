@@ -12,7 +12,7 @@ namespace GeoCoding.Model.Data
         
         private string _textLog = string.Empty;
         private DateTime _dateTimeLog;
-        private string _countRow = string.Empty;
+        private int? _countRow;
         
         #endregion PrivateField
 
@@ -37,7 +37,7 @@ namespace GeoCoding.Model.Data
         /// <summary>
         /// Количество записей
         /// </summary>
-        public string CountRow
+        public int? CountRow
         {
             get => _countRow;
             set => Set(ref _countRow, value);

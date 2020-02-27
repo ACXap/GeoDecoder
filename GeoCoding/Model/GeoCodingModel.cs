@@ -788,5 +788,11 @@ namespace GeoCoding
 
             return null;
         }
+
+        public string GetKeyShort()
+        {
+            var key = _geoCodingService.GetKeyApi();
+            return new string(key.Take(5).ToArray());
+        }
     }
 }

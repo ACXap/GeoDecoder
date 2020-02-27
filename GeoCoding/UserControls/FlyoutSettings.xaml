@@ -114,16 +114,6 @@
                                     Style="{StaticResource TextBoxFolderOpen}"
                                     Text="{Binding FilesSettings.FolderTemp}" />
                                 <TextBlock
-                                    Grid.Row="3"
-                                    Grid.Column="0"
-                                    VerticalAlignment="Center"
-                                    Text="Папка для статистики" />
-                                <TextBox
-                                    Grid.Row="3"
-                                    Grid.Column="2"
-                                    Style="{StaticResource TextBoxFolderOpen}"
-                                    Text="{Binding FilesSettings.FolderStatistics}" />
-                                <TextBlock
                                     Grid.Row="4"
                                     Grid.Column="0"
                                     VerticalAlignment="Center"
@@ -1094,40 +1084,83 @@
             </TabItem>
             <TabItem Header="Оповещения">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <WrapPanel Margin="5" Orientation="Vertical">
-                        <CheckBox
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <GroupBox Header="Оповещать по почте">
+                            <WrapPanel Margin="5" Orientation="Vertical">
+                                <CheckBox
+                                    Content="Присылать итоговые файлы на почту"
+                                    IsChecked="{Binding NotificationSettings.CanSendFileOnMail}"
+                                    ToolTip="Файл результатов и ошибки" />
+                                <WrapPanel Margin="2" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="Отправитель:" />
+                                    <TextBox
+                                        MinWidth="200"
+                                        Margin="2"
+                                        Text="{Binding NotificationSettings.MailSender}"
+                                        ToolTip="Ваша почта" />
+
+                                    <Button
+                                        Margin="5"
+                                        Command="{Binding CommandCheckEmail}"
+                                        Content="Проверка" />
+
+                                    <TextBlock
+                                        Margin="2"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding TextStatusEmail}" />
+                                </WrapPanel>
+                                <WrapPanel Margin="2" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="Получатели:" />
+                                    <TextBox
+                                        MinWidth="400"
+                                        Margin="2"
+                                        Text="{Binding NotificationSettings.RecipientsResultFile}"
+                                        ToolTip="Получатели через пробел" />
+                                </WrapPanel>
+                            </WrapPanel>
+                        </GroupBox>
+                        <WrapPanel
+                            Grid.Row="1"
                             Margin="5"
-                            Content="Оповещать только об ошибках"
-                            IsChecked="{Binding NotificationSettings.CanNotificationOnlyError}" />
-                        <CheckBox
-                            Margin="5"
-                            Content="Оповещать о сохранении данных"
-                            IsChecked="{Binding NotificationSettings.CanNotificationSaveData}" />
-                        <CheckBox
-                            Margin="5"
-                            Content="Оповещать о окончании процесса"
-                            IsChecked="{Binding NotificationSettings.CanNotificationDataProcessed}" />
-                        <CheckBox
-                            Margin="5"
-                            Content="Оповещать об отмене процесса пользователем"
-                            IsChecked="{Binding NotificationSettings.CanNotificationProcessCancel}" />
-                        <CheckBox
-                            Margin="5"
-                            Content="Оповещать об отсутствии данных для обработки"
-                            IsChecked="{Binding NotificationSettings.CanNotificationDataEmpty}" />
-                        <CheckBox
-                            Margin="5"
-                            Content="Оповещать о уже сохраненной статистики"
-                            IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}" />
-                        <CheckBox
-                            Margin="5"
-                            Content="Оповещать об успехе сохранения настроек"
-                            IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}" />
-                        <CheckBox
-                            Margin="5"
-                            Content="Оповещать о закрытии программы"
-                            IsChecked="{Binding NotificationSettings.CanNotificationExit}" />
-                    </WrapPanel>
+                            Orientation="Vertical">
+                            <CheckBox
+                                Margin="5"
+                                Content="Оповещать только об ошибках"
+                                IsChecked="{Binding NotificationSettings.CanNotificationOnlyError}" />
+                            <CheckBox
+                                Margin="5"
+                                Content="Оповещать о сохранении данных"
+                                IsChecked="{Binding NotificationSettings.CanNotificationSaveData}" />
+                            <CheckBox
+                                Margin="5"
+                                Content="Оповещать о окончании процесса"
+                                IsChecked="{Binding NotificationSettings.CanNotificationDataProcessed}" />
+                            <CheckBox
+                                Margin="5"
+                                Content="Оповещать об отмене процесса пользователем"
+                                IsChecked="{Binding NotificationSettings.CanNotificationProcessCancel}" />
+                            <CheckBox
+                                Margin="5"
+                                Content="Оповещать об отсутствии данных для обработки"
+                                IsChecked="{Binding NotificationSettings.CanNotificationDataEmpty}" />
+                            <CheckBox
+                                Margin="5"
+                                Content="Оповещать о уже сохраненной статистики"
+                                IsChecked="{Binding NotificationSettings.CanNotificationStatAlreadySave}" />
+                            <CheckBox
+                                Margin="5"
+                                Content="Оповещать об успехе сохранения настроек"
+                                IsChecked="{Binding NotificationSettings.CanNotificationSaveSettings}" />
+                            <CheckBox
+                                Margin="5"
+                                Content="Оповещать о закрытии программы"
+                                IsChecked="{Binding NotificationSettings.CanNotificationExit}" />
+                        </WrapPanel>
+                    </Grid>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="API ключи">

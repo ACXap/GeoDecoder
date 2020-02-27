@@ -59,7 +59,7 @@ namespace GeoCoding.Model
                 EntityResult<EntityGeoCod> result = new EntityResult<EntityGeoCod>();
                 EntityResult<EntityAddress> data = null;
 
-                data = _bdService.ExecuteUserQuery(GetConnection(bds), bds.SQLQuery);
+                data = _bdService.ExecuteUserQuery(GetConnection(bds), bds.SQLQuery, 0);
 
                 if (data.Error == null)
                 {
@@ -114,13 +114,33 @@ namespace GeoCoding.Model
                     else
                     {
                         var countBad = limitRow - gset.CountNewAddress;
-                        var newAddress = _bdService.GetNewAddress(GetConnection(bds), gset.CountNewAddress);
-                        if (newAddress.Successfully)
+                        if (gset.CountNewAddress > 0)
+                        {
+                            var newAddress = _bdService.GetNewAddress(GetConnection(bds), gset.CountNewAddress);
+                            if (newAddress.Successfully)
+                            {
+                                var badAddress = _bdService.GetBadAddress(GetConnection(bds), countBad);
+                                if (badAddress.Successfully)
+                                {
+                                    data.Entities = newAddress.Entities.Concat(badAddress.Entities);
+                                    data.Successfully = true;
+                                }
+                                else
+                                {
+                                    data.Error = badAddress.Error;
+                                }
+                            }
+                            else
+                            {
+                                data.Error = newAddress.Error;
+                            }
+                        }
+                        else
                         {
                             var badAddress = _bdService.GetBadAddress(GetConnection(bds), countBad);
                             if (badAddress.Successfully)
                             {
-                                data.Entities = newAddress.Entities.Concat(badAddress.Entities);
+                                data.Entities = badAddress.Entities;
                                 data.Successfully = true;
                             }
                             else
@@ -128,17 +148,13 @@ namespace GeoCoding.Model
                                 data.Error = badAddress.Error;
                             }
                         }
-                        else
-                        {
-                            data.Error = newAddress.Error;
-                        }
                     }
                 }
 
                 // Если нужен пользовательский скрипт
                 if (gset.UseScriptBackGeo)
                 {
-                    data = _bdService.ExecuteUserQuery(GetConnection(bds), gset.ScpriptBackgroundGeo);
+                    data = _bdService.ExecuteUserQuery(GetConnection(bds), gset.ScpriptBackgroundGeo, limitRow);
                 }
 
                 if (data.Error == null)
@@ -186,6 +202,17 @@ namespace GeoCoding.Model
             }
 
             return list;
+        }
+
+
+        public string GetSqlTemplateNewAddress(int limitRow)
+        {
+            return _bdService.GetSqlTempleteNewAddress(limitRow);
+        }
+
+        public string GetSqlTempleteOldBadAddresss(int limitRow)
+        {
+            return _bdService.GetSqlTempleteOldBadAddresss(limitRow);
         }
 
         private void SetError(EntityGeoCod geocod, string mes)

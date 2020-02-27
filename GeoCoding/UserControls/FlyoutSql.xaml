@@ -54,6 +54,20 @@
                     IsReadOnly="True"
                     Text="SELECT H.orponid, H.adr_adm_ter FROM orpon_rf.public.ent_as_house H LIMIT 100" />
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock
+                    Margin="0,0,5,0"
+                    VerticalAlignment="Center"
+                    Text="Шаблоны:" />
+                <Button
+                    Margin="5"
+                    Command="{Binding CommandGetSqlTemplateNewAddress}"
+                    Content="Новые адреса" />
+                <Button
+                    Margin="5"
+                    Command="{Binding CommandGetSqlTemplateOldBadAddress}"
+                    Content="Старые некачественные адреса" />
+            </StackPanel>
         </StackPanel>
         <StackPanel
             Grid.Row="2"

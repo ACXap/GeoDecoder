@@ -156,6 +156,7 @@
     <Compile Include="Model\GeoCodingModel.cs" />
     <Compile Include="Model\Interfaces\INotifications.cs" />
     <Compile Include="Model\LimitsModel.cs" />
+    <Compile Include="Model\MailModel.cs" />
     <Compile Include="Model\MainWindowModel.cs" />
     <Compile Include="Model\NetProxyModel.cs" />
     <Compile Include="Model\NotificationsModel.cs" />
@@ -332,6 +333,10 @@
     <ProjectReference Include="..\GeoCoding.GeoCodingService\GeoCoding.GeoCodingService.csproj">
       <Project>{88082673-6130-433c-8fe3-e613182a80e6}</Project>
       <Name>GeoCoding.GeoCodingService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeoCoding.MailService\GeoCoding.MailService.csproj">
+      <Project>{93455B5B-9516-4946-9C03-9945A029AE62}</Project>
+      <Name>GeoCoding.MailService</Name>
     </ProjectReference>
     <ProjectReference Include="..\GeoCoding.Resources\GeoCoding.Resources.csproj">
       <Project>{fed4d728-e13c-482c-8795-12484e8d377b}</Project>

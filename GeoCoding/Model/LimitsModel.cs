@@ -59,6 +59,7 @@ namespace GeoCoding.Model
 
                 _currentApiKey = _collectionKey.Single(x => x.ApiKey == key);
                 var lastServ = GetLastUseLimitsServer(_currentApiKey);
+                System.Diagnostics.Debug.WriteLine(lastServ.Entity);
 
                 if (!lastServ.Successfully)
                 {
@@ -154,16 +155,18 @@ namespace GeoCoding.Model
                 _currentApiKey = _collectionKey.Single(x => x.ApiKey == key);
 
                 var lastDb = GetLastUseLimits(_currentApiKey.ApiKey);
-                var lastServ = GetLastUseLimitsServer(_currentApiKey);
+               // var lastServ = GetLastUseLimitsServer(_currentApiKey);
 
-                if (!lastDb.Successfully || !lastServ.Successfully)
+                if (!lastDb.Successfully)// || !lastServ.Successfully)
                 {
                     result.Successfully = false;
-                    result.Error = lastDb.Error ?? lastServ.Error;
+                    result.Error = lastDb.Error;// ?? lastServ.Error;
                     _currentApiKey.Error = result.Error.Message;
                     _currentApiKey.StatusSync = StatusSyncType.Error;
                     return result;
                 }
+
+
 
                 _currentApiKey.Error = string.Empty;
                 _currentApiKey.StatusSync = StatusSyncType.Sync;
@@ -305,6 +308,12 @@ namespace GeoCoding.Model
             });
         }
 
+
+        private string GetNameUser()
+        {
+            return Environment.UserName;
+        }
+
         public EntityResult<bool> SetLastUseLimits(UseLimits useLimits)
         {
             EntityResult<bool> result = new EntityResult<bool>();
@@ -326,7 +335,8 @@ namespace GeoCoding.Model
             {
                 Key = HashHelper.HashString(_currentApiKey.ApiKey),
                 DateTime = _currentApiKey.DateCurrentSpent,
-                Value = _currentApiKey.CurrentSpent
+                Value = _currentApiKey.CurrentSpent,
+                User = GetNameUser()
             };
 
             return SetLastUseLimits(useLimits);
@@ -357,6 +367,8 @@ namespace GeoCoding.Model
             {
                 result.Error = a.Error;
             }
+
+            System.Diagnostics.Debug.WriteLine(a);
 
             return result;
         }

@@ -14,7 +14,8 @@ namespace GeoCoding.BDService
         /// </summary>
         /// <param name="conSettings">Свойства подключения</param>
         /// <param name="query">Пользовательский запрос</param>
-        EntityResult<EntityAddress> ExecuteUserQuery(ConnectionSettingsDb conSettings, string query);
+        /// <param name="limitRow">Ограничение выборки устанавливается, если её нет в самом скрипте</param>
+        EntityResult<EntityAddress> ExecuteUserQuery(ConnectionSettingsDb conSettings, string query, int limitRow);
         /// <summary>
         /// Метод для проверки соединения с базой данных 
         /// </summary>
@@ -34,5 +35,18 @@ namespace GeoCoding.BDService
         /// <param name="conSettings">Свойства подключения</param>
         /// <param name="limitRow">Лимит строк</param>
         EntityResult<EntityAddress> GetBadAddress(ConnectionSettingsDb conSettings, int limitRow);
+
+        /// <summary>
+        /// Метод для получения скрипта в текстовом виде по новым адресам
+        /// </summary>
+        /// <param name="limitRow">Лимит выгружаемых строк</param>
+        /// <returns>Текст скрипта</returns>
+        string GetSqlTempleteNewAddress(int limitRow);
+        /// <summary>
+        /// Метод для получения скрипта в текстовом виде по старым некачественным адресам
+        /// </summary>
+        /// <param name="limitRow">Лимит выгружаемых строк</param>
+        /// <returns>Текст скрипта</returns>
+        string GetSqlTempleteOldBadAddresss(int limitRow);
     }
 }

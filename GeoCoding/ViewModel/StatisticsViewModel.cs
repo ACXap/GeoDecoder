@@ -14,6 +14,7 @@ namespace GeoCoding
     public class StatisticsViewModel : ViewModelBase
     {
         #region PrivateFields
+        
         /// <summary>
         /// Поле для хранения статистики
         /// </summary>
@@ -76,12 +77,13 @@ namespace GeoCoding
         /// <summary>
         /// Метод запуска таймера
         /// </summary>
-        public void Start(string nameGeoService)
+        public void Start(string nameGeoService, string keyShort)
         {
             _timer.Start();
             _timeStart = DateTime.Now;
             GetStat(null, null);
             _statistics.GeoServiceName = nameGeoService;
+            _statistics.KeyShort = keyShort;
         }
         /// <summary>
         /// Метод остановки таймера
