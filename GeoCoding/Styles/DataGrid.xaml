@@ -43,7 +43,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ComboBox.Style>
-                    <Style BasedOn="{StaticResource MetroComboBox}" TargetType="{x:Type ComboBox}">
+                    <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="{x:Type ComboBox}">
                         <Setter Property="Visibility" Value="Visible" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ListGeoCod}" Value="{x:Null}">
@@ -131,7 +131,7 @@
     <!--  Стиль основной для строк  -->
     <Style
         x:Key="DataGridMainRow"
-        BasedOn="{StaticResource MetroDataGridRow}"
+        BasedOn="{StaticResource MahApps.Styles.DataGridRow}"
         TargetType="{x:Type DataGridRow}">
         <Setter Property="ContextMenu" Value="{StaticResource ContextMenuRow}" />
         <Setter Property="ToolTip">
@@ -144,7 +144,7 @@
     <!--  Стиль основной для строк  -->
     <Style
         x:Key="DataGridRowFilesList"
-        BasedOn="{StaticResource MetroDataGridRow}"
+        BasedOn="{StaticResource MahApps.Styles.DataGridRow}"
         TargetType="{x:Type DataGridRow}">
         <Setter Property="ContextMenu" Value="{StaticResource ContextMenuRowFilesList}" />
         <!--<Setter Property="ToolTip">
@@ -169,7 +169,7 @@
     <!--  Стиль основной для таблиц  -->
     <Style
         x:Key="DataGridMain"
-        BasedOn="{StaticResource MetroDataGrid}"
+        BasedOn="{StaticResource MahApps.Styles.DataGrid}"
         TargetType="{x:Type DataGrid}">
         <Setter Property="SelectionMode" Value="Extended" />
         <Setter Property="AutoGenerateColumns" Value="False" />

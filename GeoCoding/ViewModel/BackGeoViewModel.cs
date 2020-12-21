@@ -230,7 +230,6 @@ namespace GeoCoding
                             if (obj != null)
                             {
                                 obj.Cancel = !_notifications.NotificationWithConfirmation(NotificationType.Close, "Вы уверены?");
-                                SaveLog();
                             }
                         }
                     }));
@@ -306,7 +305,7 @@ namespace GeoCoding
                 }
                 catch (Exception ex)
                 {
-                    AddLog(ex.Message);
+                    AddLog("Таймер геокодинга по расписанию " + ex.Message);
                 }
 
                 _ctsTimerLimits.Dispose();
@@ -346,7 +345,7 @@ namespace GeoCoding
                 }
                 catch (Exception ex)
                 {
-                    AddLog(ex.Message);
+                    AddLog("Таймер геокодинга по ночам " + ex.Message);
                 }
 
                 _ctsTimerAllLimits.Dispose();
@@ -421,14 +420,6 @@ namespace GeoCoding
         }
 
         /// <summary>
-        /// Метод для сохранения логов
-        /// </summary>
-        private void SaveLog()
-        {
-            _model.SaveLog(_collectionLog);
-        }
-
-        /// <summary>
         /// Установка геокодера
         /// </summary>
         private async void SetGeoService()
@@ -484,7 +475,20 @@ namespace GeoCoding
                         AddLog(er.Message);
                     }
                 }, d, file, okCount > 20000 ? 20000 : 0, true, _appSettings.FTPSettings);
-            }
+
+                try
+                {
+                    _modelBd.SaveData(_appSettings.BDSettings, d);
+                } catch(Exception ex)
+                {
+                    string message = "Не удалось записать данные в базу. Ошибка: " + ex.Message;
+                    AddLog(message);
+                    _mailModel.SendEmailGeoFinish((m) =>
+                    {
+                        AddLog(m);
+                    }, message, Array.Empty<string>());
+                }
+             }
         }
 
         /// <summary>
@@ -544,14 +548,29 @@ namespace GeoCoding
         /// <param name="countRow">количество обрабатываемых элементов</param>
         private void AddLog(string text, int? countRow = null)
         {
-            CollectionLog.Add(new LogItemBackGeo() { DateTimeLog = DateTime.Now, TextLog = text, CountRow = countRow });
+            lock (_lockLog)
+            {
+                try
+                {
+                    var l = new LogItemBackGeo() { DateTimeLog = DateTime.Now, TextLog = text, CountRow = countRow };
+                    CollectionLog.Add(l);
+                    _model.SaveLog(l);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
         }
+
+        private object _lockLog = new object();
 
         #endregion PrivateMethod
 
         private void StartSpendingAllLimits()
         {
             _ctsTimerAllLimits?.Cancel();
+            _ctsTimerLimits?.Cancel();
 
             AddLog("Старт выбора оставшегося лимита");
             TimeNextStartGeo = "В процессе...";
@@ -594,7 +613,7 @@ namespace GeoCoding
 
                             _geoCodingModel.GetAllGeoCodMaxLimit((error) =>
                             {
-                                _stat.Stop();
+                                
                                 IsStartGeo = false;
                                 if (error == null)
                                 {
@@ -624,6 +643,7 @@ namespace GeoCoding
 
                                     AddLog("Всего хороших координат после проверки", resultGetDataDb.Entities.Count(x => x.MainGeoCod != null && x.MainGeoCod.Qcode == 1));
 
+                                    _stat.Stop();
                                     SaveData(resultGetDataDb.Entities);
 
                                     _model.SaveTemp((er) =>
@@ -669,11 +689,9 @@ namespace GeoCoding
             });
         }
 
-
-
-
         private void StartGeo()
         {
+            _ctsTimerAllLimits?.Cancel();
             _ctsTimerLimits?.Cancel();
 
             AddLog("Старт геокодирования по графику");
@@ -718,7 +736,7 @@ namespace GeoCoding
 
                             _geoCodingModel.GetAllGeoCod((error) =>
                             {
-                                _stat.Stop();
+                                
                                 IsStartGeo = false;
                                 if (error == null)
                                 {
@@ -748,6 +766,7 @@ namespace GeoCoding
 
                                     AddLog("Всего хороших координат после проверки", resultGetDataDb.Entities.Count(x => x.MainGeoCod != null && x.MainGeoCod.Qcode == 1));
 
+                                    _stat.Stop();
                                     SaveData(resultGetDataDb.Entities);
 
                                     _model.SaveTemp((er) =>

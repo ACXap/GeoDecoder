@@ -1,6 +1,9 @@
 ﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GeoCoding.BDService.Data;
 using GeoCoding.Entities;
+using System.Collections.Generic;
+
 
 namespace GeoCoding.BDService
 {
@@ -48,5 +51,11 @@ namespace GeoCoding.BDService
         /// <param name="limitRow">Лимит выгружаемых строк</param>
         /// <returns>Текст скрипта</returns>
         string GetSqlTempleteOldBadAddresss(int limitRow);
+
+        /// <summary>
+        /// Метод сохранения координат в базу
+        /// </summary>
+        /// <param name="entityCoordinates">Коллекция координат</param>
+        void SaveData(ConnectionSettingsDb connectionSettingsDb, IEnumerable<EntityCoordinate> entityCoordinates);
     }
 }

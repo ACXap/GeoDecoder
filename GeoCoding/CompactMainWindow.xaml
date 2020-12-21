@@ -15,7 +15,7 @@
     Width="590"
     Height="430"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
-    BorderBrush="{DynamicResource AccentColorBrush}"
+    BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
     BorderThickness="1"
     ResizeMode="CanMinimize"
     SizeToContent="WidthAndHeight"
@@ -583,7 +583,7 @@
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>
                                                 <ComboBox.Style>
-                                                    <Style BasedOn="{StaticResource MetroComboBox}" TargetType="{x:Type ComboBox}">
+                                                    <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="{x:Type ComboBox}">
                                                         <Setter Property="Visibility" Value="Visible" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding ListGeoCod}" Value="{x:Null}">

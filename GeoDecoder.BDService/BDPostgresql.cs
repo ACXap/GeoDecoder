@@ -1,7 +1,9 @@
 ﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
+using GeoCoding.BDService.Data;
 using GeoCoding.Entities;
 using Npgsql;
+using NpgsqlTypes;
 using System;
 using System.Collections.Generic;
 
@@ -33,7 +35,7 @@ namespace GeoCoding.BDService
                 using NpgsqlConnection con = new NpgsqlConnection(GetConnectionString(conSettings));
                 con.Open();
 
-                if (!query.ToLower().Contains("limit ") && limitRow>0)
+                if (!query.ToLower().Contains("limit ") && limitRow > 0)
                 {
                     query += $" limit {limitRow}";
                 }
@@ -84,7 +86,7 @@ namespace GeoCoding.BDService
 
             return result;
         }
-        
+
         /// <summary>
         /// Метод для получения адресов с плохими координатами
         /// </summary>
@@ -146,6 +148,23 @@ namespace GeoCoding.BDService
             }
 
             return result;
+        }
+
+        public void SaveData(ConnectionSettingsDb conSettings, IEnumerable<EntityCoordinate> entityCoordinates)
+        {
+            using NpgsqlConnection con = new NpgsqlConnection(GetConnectionString(conSettings));
+            con.Open();
+
+            using var writer = con.BeginBinaryImport($"COPY public.new_coordinates (orpon_id,latitude,longitude,quality_code) FROM STDIN BINARY");
+            foreach (var coordinate in entityCoordinates)
+            {
+                writer.StartRow();
+                writer.Write(coordinate.OrponId, NpgsqlDbType.Bigint);
+                writer.Write(coordinate.Latitude, NpgsqlDbType.Double);
+                writer.Write(coordinate.Longitude, NpgsqlDbType.Double);
+                writer.Write(coordinate.Qcode, NpgsqlDbType.Integer);
+            }
+            writer.Complete();
         }
 
         public string GetSqlTempleteNewAddress(int limitRow)

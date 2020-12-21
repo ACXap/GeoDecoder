@@ -759,16 +759,14 @@ namespace GeoCoding
             }, file, false);
         }
 
-        public void SaveLog(IEnumerable<LogItemBackGeo> data)
+        public void SaveLog(LogItemBackGeo x)
         {
-            var str = data.Select(x =>
-            {
-                return $"{x.DateTimeLog};{x.TextLog};{x.CountRow}";
-            });
+            var str =  $"{x.DateTimeLog};{x.TextLog};{x.CountRow}";
+
             _fileService.AppendData(er =>
             {
                 
-            }, str, Directory.GetCurrentDirectory()+ "\\" + _fileLog);
+            }, new string[] { str }, Directory.GetCurrentDirectory()+ "\\" + _fileLog);
         }
     }
 }

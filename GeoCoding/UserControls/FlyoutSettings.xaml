@@ -1258,7 +1258,7 @@
                                 Grid.Column="1"
                                 Margin="3"
                                 Padding="3"
-                                BorderBrush="{StaticResource AccentColorBrush}"
+                                BorderBrush="{StaticResource MahApps.Brushes.Accent}"
                                 BorderThickness="1">
                                 <Grid>
                                     <Grid.RowDefinitions>

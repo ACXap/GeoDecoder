@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="BDPostgresql.cs" />
     <Compile Include="Data\EntityAddress.cs" />
+    <Compile Include="Data\EntityCoordinate.cs" />
     <Compile Include="IBDService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

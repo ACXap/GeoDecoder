@@ -6,6 +6,6 @@
         <Setter Property="Padding" Value="2"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Height" Value="90"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource MahApps.Brushes.Accent}"/>
     </Style>
 </ResourceDictionary>

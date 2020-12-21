@@ -5,7 +5,7 @@
 
     <Style
         x:Key="ComboBoxGeoService"
-        BasedOn="{StaticResource MetroComboBox}"
+        BasedOn="{StaticResource MahApps.Styles.ComboBox}"
         TargetType="{x:Type ComboBox}">
         <Setter Property="IsEnabled" Value="True" />
         <Setter Property="ItemTemplate">

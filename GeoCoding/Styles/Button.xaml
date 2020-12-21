@@ -6,7 +6,7 @@
 
     <Style
         x:Key="ButtonMainStyle"
-        BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}"
+        BasedOn="{StaticResource MahApps.Styles.Button}"
         TargetType="{x:Type Button}">
         <Setter Property="Margin" Value="2" />
         <Setter Property="Padding" Value="2" />
@@ -26,7 +26,7 @@
 
     <Style
         x:Key="ButtonStopStart"
-        BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}"
+        BasedOn="{StaticResource MahApps.Styles.Button}"
         TargetType="{x:Type Button}">
         <Setter Property="Command" Value="{Binding CommandGetAllGeoCod}" />
         <Setter Property="Height" Value="80" />
@@ -115,7 +115,7 @@
 
     <Style
         x:Key="ButtonStopStartCompare"
-        BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}"
+        BasedOn="{StaticResource MahApps.Styles.Button}"
         TargetType="{x:Type Button}">
         <Setter Property="Command" Value="{Binding Ver.CommandCompare}" />
         <Setter Property="Height" Value="80" />

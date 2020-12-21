@@ -1,6 +1,7 @@
 ﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: http://www.viva64.com
 using GeoCoding.BDService;
+using GeoCoding.BDService.Data;
 using GeoCoding.Entities;
 using System.Collections.Generic;
 using System.Linq;
@@ -219,6 +220,12 @@ namespace GeoCoding.Model
         {
             geocod.Error = mes;
             geocod.Status = StatusType.Error;
+        }
+
+        public void SaveData(BDSettings bDSettings, IEnumerable<EntityGeoCod> d)
+        {
+            List<EntityCoordinate> list = d.Select(c => new EntityCoordinate(c.GlobalID, c.MainGeoCod.Latitude, c.MainGeoCod.Longitude, c.MainGeoCod.Qcode)).ToList();
+            _bdService.SaveData(GetConnection(bDSettings), list);
         }
     }
 }

@@ -15,7 +15,7 @@
     Width="800"
     Height="600"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
-    BorderBrush="{DynamicResource AccentColorBrush}"
+    BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
     BorderThickness="1"
     WindowButtonCommandsOverlayBehavior="Always"
     WindowStartupLocation="CenterScreen"
@@ -250,7 +250,7 @@
                             Command="{Binding CommandStopBackGeo}"
                             Content="Остановить">
                             <Button.Style>
-                                <Style BasedOn="{StaticResource MahApps.Metro.Styles.MetroButton}" TargetType="{x:Type Button}">
+                                <Style BasedOn="{StaticResource MahApps.Styles.Button}" TargetType="{x:Type Button}">
                                     <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsStartBackGeo}" Value="True">

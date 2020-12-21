@@ -2,7 +2,7 @@
     x:Class="GeoCoding.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
     xmlns:cmd="http://www.galasoft.ch/mvvmlight"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,7 +13,7 @@
     x:Name="metroWindow"
     Title="Геокодирование"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
-    BorderBrush="{DynamicResource AccentColorBrush}"
+    BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
     BorderThickness="1"
     SaveWindowPosition="True"
     TitleTemplate="{StaticResource TitleTemplate}"
@@ -655,7 +655,7 @@
                                                 </i:EventTrigger>
                                             </i:Interaction.Triggers>
                                             <ComboBox.Style>
-                                                <Style BasedOn="{StaticResource MetroComboBox}" TargetType="{x:Type ComboBox}">
+                                                <Style BasedOn="{StaticResource MahApps.Styles.ComboBox}" TargetType="{x:Type ComboBox}">
                                                     <Setter Property="Visibility" Value="Visible" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding ListGeoCod}" Value="{x:Null}">
@@ -713,7 +713,7 @@
                 </TabItem>
                 <TabItem Header="Проверка данных">
                     <TabItem.Style>
-                        <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
+                        <Style BasedOn="{StaticResource MahApps.Styles.TabItem}" TargetType="{x:Type TabItem}">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding AppSettings.GeneralSettings.CanUseVerificationModule}" Value="True">
