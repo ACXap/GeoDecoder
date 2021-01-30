@@ -158,6 +158,11 @@ namespace GeoCoding.Model
                     data = _bdService.ExecuteUserQuery(GetConnection(bds), gset.ScpriptBackgroundGeo, limitRow);
                 }
 
+                if (gset.UseGetNewBadAddressProcedureBackGeo)
+                {
+                    data = _bdService.ExecuteProcedure(GetConnection(bds), gset.ScpriptBackgroundGeo, limitRow);
+                }
+
                 if (data.Error == null)
                 {
                     result.Entities = GetEntityGeoCodByAddress(data.Entities);
@@ -214,6 +219,11 @@ namespace GeoCoding.Model
         public string GetSqlTempleteOldBadAddresss(int limitRow)
         {
             return _bdService.GetSqlTempleteOldBadAddresss(limitRow);
+        }
+
+        public string GetSqlTempleteNewOldAddressProcedure(int limitRow)
+        {
+            return _bdService.GetSqlTempleteNewOldAddressProcedure(limitRow);
         }
 
         private void SetError(EntityGeoCod geocod, string mes)

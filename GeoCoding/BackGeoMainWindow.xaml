@@ -13,7 +13,7 @@
     x:Name="metroWindow"
     Title="Фоновое геокодирование"
     Width="800"
-    Height="600"
+    Height="620"
     Dialog:DialogParticipation.Register="{Binding Notifications}"
     BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
     BorderThickness="1"
@@ -294,6 +294,7 @@
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
                                         <RowDefinition Height="auto" />
+                                        <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
                                     <WrapPanel Grid.ColumnSpan="3">
                                         <TextBlock
@@ -328,6 +329,13 @@
                                         Margin="5"
                                         Content="Выполнять запрос к базе данных по скрипту пользователя"
                                         IsChecked="{Binding AppSettings.GeneralSettings.UseScriptBackGeo}" />
+
+                                    <RadioButton
+                                        Grid.Row="4"
+                                        Grid.Column="0"
+                                        Margin="5"
+                                        Content="Выполнять запрос по процедуре пользователя"
+                                        IsChecked="{Binding AppSettings.GeneralSettings.UseGetNewBadAddressProcedureBackGeo}" />
 
                                     <!--  Кнопка открытия помощи  -->
                                     <ToggleButton

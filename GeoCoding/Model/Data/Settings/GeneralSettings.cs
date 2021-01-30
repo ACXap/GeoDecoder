@@ -95,6 +95,16 @@ namespace GeoCoding
             set => Set(ref _useGetNewBadAddressBackGeo, value);
         }
 
+        private bool _useGetNewBadAddressProcedureBackGeo = true;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool UseGetNewBadAddressProcedureBackGeo
+        {
+            get => _useGetNewBadAddressProcedureBackGeo;
+            set => Set(ref _useGetNewBadAddressProcedureBackGeo, value);
+        }
+
         private int _countNewAddress = 1000;
         /// <summary>
         /// Количество новых адресов в выборке новых и старых

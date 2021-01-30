@@ -29,8 +29,8 @@
     <Style x:Key="ProgressRingGetGeo" TargetType="{x:Type Controls:ProgressRing}">
         <Setter Property="IsActive" Value="False" />
         <Setter Property="Visibility" Value="Collapsed" />
-        <Setter Property="Height" Value="10"/>
-        <Setter Property="Width" Value="10"/>
+        <Setter Property="Height" Value="10" />
+        <Setter Property="Width" Value="10" />
         <Style.Triggers>
             <Trigger Property="Tag" Value="{x:Static local:StatusType.Processed}">
                 <Setter Property="IsActive" Value="True" />

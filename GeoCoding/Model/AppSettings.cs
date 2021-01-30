@@ -551,13 +551,22 @@ namespace GeoCoding.Model
         /// <returns></returns>
         public LimitsModel GetLimitsModel()
         {
-            return new LimitsModel(new LimitsRepositoryDb(new Entities.ConnectionSettingsDb()
+            //return new LimitsModel(new LimitsRepositoryDb(new Entities.ConnectionSettingsDb()
+            //{
+            //    BDName = _BDAccessorySettings.BDName,
+            //    Login = _BDAccessorySettings.Login,
+            //    Password = _BDAccessorySettings.Password,
+            //    Port = _BDAccessorySettings.Port,
+            //    Server = _BDAccessorySettings.Server
+            //}), _apiKeySettings.CollectionApiKeys);
+
+            return new LimitsModel(new LimitsRepositoryOrpon(new Entities.ConnectionSettingsDb()
             {
-                BDName = _BDAccessorySettings.BDName,
-                Login = _BDAccessorySettings.Login,
-                Password = _BDAccessorySettings.Password,
-                Port = _BDAccessorySettings.Port,
-                Server = _BDAccessorySettings.Server
+                BDName = _BDSettings.BDName,
+                Login = _BDSettings.Login,
+                Password = _BDSettings.Password,
+                Port = _BDSettings.Port,
+                Server = _BDSettings.Server
             }), _apiKeySettings.CollectionApiKeys);
         }
 
@@ -835,6 +844,7 @@ namespace GeoCoding.Model
                 p.FtpPort = _ftpSettings.Port;
                 p.FtpUser = _ftpSettings.User;
                 p.FtpFolderInput = _ftpSettings.FolderInput;
+                p.FtpFolderOutput = _ftpSettings.FolderOutput;
 
                 var res = ProtectedDataDPAPI.EncryptData(_ftpSettings.Password);
                 if (res.Successfully) p.FtpPassword = res.Entity;

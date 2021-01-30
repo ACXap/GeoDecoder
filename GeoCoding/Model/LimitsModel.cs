@@ -166,8 +166,6 @@ namespace GeoCoding.Model
                     return result;
                 }
 
-
-
                 _currentApiKey.Error = string.Empty;
                 _currentApiKey.StatusSync = StatusSyncType.Sync;
 

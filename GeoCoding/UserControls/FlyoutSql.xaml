@@ -67,6 +67,10 @@
                     Margin="5"
                     Command="{Binding CommandGetSqlTemplateOldBadAddress}"
                     Content="Старые некачественные адреса" />
+                <Button
+                    Margin="5"
+                    Command="{Binding CommandGetSqlTempleteNewOldAddressProcedure}"
+                    Content="Новые и старые некачественные адреса" />
             </StackPanel>
         </StackPanel>
         <StackPanel

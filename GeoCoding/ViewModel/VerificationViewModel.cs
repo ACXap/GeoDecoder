@@ -87,11 +87,11 @@ namespace GeoCoding
         /// <summary>
         /// Представление коллекции
         /// </summary>
-        public ICollectionView CustomerView
-        {
-            get => _customerView;
-            set => Set(ref _customerView, value);
-        }
+        //public ICollectionView CustomerView
+        //{
+        //    get => _customerView;
+        //    set => Set(ref _customerView, value);
+        //}
 
         /// <summary>
         /// Сверять все данные
@@ -185,8 +185,8 @@ namespace GeoCoding
                 return new EntityForCompare() { GeoCode = x };
             }).ToList());
 
-            CustomerView = new CollectionViewSource { Source = Collection }.View;
-            CustomerView.Filter = CustomerFilter;
+            //CustomerView = new CollectionViewSource { Source = Collection }.View;
+            //CustomerView.Filter = CustomerFilter;
 
              CountGood = _collection.Count(x => x.GeoCode?.MainGeoCod?.Qcode == 1);
              CountGoodAfterCompare = _collection.Count(x => x.Qcode == 1);
@@ -268,10 +268,6 @@ namespace GeoCoding
                                 CommandCommitChanges.RaiseCanExecuteChanged();
                                 CommandCommitChanges.Execute(true);
                             }
-                            else
-                            {
-
-                            }
 
                             var l = _collection.Where(x => x.IsChanges);
                             foreach (var item in l)
@@ -279,6 +275,11 @@ namespace GeoCoding
                                 if (item.Qcode != 0)
                                 {
                                     item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                                    if (item.Qcode != 1)
+                                    {
+                                        item.GeoCode.MainGeoCod.Kind = KindType.Other;
+                                        item.GeoCode.MainGeoCod.Precision = PrecisionType.Other;
+                                    }
                                 }
                             }
 

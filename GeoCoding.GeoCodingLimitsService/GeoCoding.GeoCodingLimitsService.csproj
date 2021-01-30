@@ -82,6 +82,7 @@
     <Compile Include="Data\UseLimits.cs" />
     <Compile Include="ILimitsRepository.cs" />
     <Compile Include="LimitsRepositoryDb.cs" />
+    <Compile Include="LimitsRepositoryOrpon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatGeoCodingService.cs" />
   </ItemGroup>

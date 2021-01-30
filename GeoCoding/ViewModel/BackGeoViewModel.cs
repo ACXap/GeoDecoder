@@ -478,7 +478,7 @@ namespace GeoCoding
 
                 try
                 {
-                    _modelBd.SaveData(_appSettings.BDSettings, d);
+                    _modelBd.SaveData(_appSettings.BDSettings, d.Where(c=>c.Status == StatusType.OK));
                 } catch(Exception ex)
                 {
                     string message = "Не удалось записать данные в базу. Ошибка: " + ex.Message;

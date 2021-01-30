@@ -57,5 +57,7 @@ namespace GeoCoding.BDService
         /// </summary>
         /// <param name="entityCoordinates">Коллекция координат</param>
         void SaveData(ConnectionSettingsDb connectionSettingsDb, IEnumerable<EntityCoordinate> entityCoordinates);
+        EntityResult<EntityAddress> ExecuteProcedure(ConnectionSettingsDb conSettings, string scpriptBackgroundGeo, int limitRow);
+        string GetSqlTempleteNewOldAddressProcedure(int limitRow);
     }
 }

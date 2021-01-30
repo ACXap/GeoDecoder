@@ -27,6 +27,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.Entities", "GeoCoding.Entities\GeoCoding.Entities.csproj", "{8D32D6EB-FE92-4293-BE78-21309E2797E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.Test", "GeoCoding.Test\GeoCoding.Test.csproj", "{DC09E367-CD3D-4A3D-989F-DAFA3944D5B3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CE899CEE-C4E1-4CE8-A963-1A4EDE572D50} = {CE899CEE-C4E1-4CE8-A963-1A4EDE572D50}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoCoding.MailService", "GeoCoding.MailService\GeoCoding.MailService.csproj", "{93455B5B-9516-4946-9C03-9945A029AE62}"
 EndProject

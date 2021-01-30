@@ -62,13 +62,14 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\VerificationWebService\GeoCoding.VerificationService.VerificationWebService.AddressElementNameResponse.datasource">
+    <None Include="app.config" />
+    <None Include="Connected Services\VerificationWebService\GeoCoding.VerificationService.VerificationWebService.AddressElementNameResponse2.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Connected Services\VerificationWebService\GeoCoding.VerificationService.VerificationWebService.SearchAddressElementByFullNameResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\VerificationWebService\ws_SearchAddressElementByFullName.wsdl" />
+    <None Include="Connected Services\VerificationWebService\ws_SearchAddressElementByFullName2.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\VerificationWebService\" />

@@ -214,6 +214,11 @@ namespace GeoCoding
                         if (item.Qcode != 0)
                         {
                             item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                            if(item.Qcode != 1)
+                            {
+                                item.GeoCode.MainGeoCod.Kind = KindType.Other;
+                                item.GeoCode.MainGeoCod.Precision = PrecisionType.Other;
+                            }
                         }
                     }
                     callback(e);

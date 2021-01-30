@@ -26,14 +26,18 @@ namespace GeoCoding.VerificationService
 
             try
             {
-                using (var client = new VerificationWebService.wsSearchAddrElByFullNamePortTypeClient(_binding, _address))
+                using (var client = new VerificationWebService.wsSearchAddrElByFullNamePortType2Client(_binding, _address))
                 {
                     var address = new VerificationWebService.AddressElementNameDataAddressElementFullNameGroup[]
                         {
-                                    new VerificationWebService.AddressElementNameDataAddressElementFullNameGroup(){FullAddress = "Россия"}
+                            new VerificationWebService.AddressElementNameDataAddressElementFullNameGroup(){FullAddress = "Российская Федерация, Адыгея Респ., Майкоп г., Привокзальная ул., дом 5"}
                         };
                     var r = client.SearchAddressElementByFullName(new VerificationWebService.AddressElementNameData() { AddressElementFullNameList = address });
 
+                    if(r.AddressElementResponseList2.First().GlobalID!= "34539553")
+                    {
+                        throw new Exception("Test not correct");
+                    }
                 }
             }
             catch (Exception ex)
@@ -50,7 +54,7 @@ namespace GeoCoding.VerificationService
 
             try
             {
-                using (var client = new VerificationWebService.wsSearchAddrElByFullNamePortTypeClient(_binding, _address))
+                using (var client = new VerificationWebService.wsSearchAddrElByFullNamePortType2Client(_binding, _address))
                 {
                     var address = data.Select(x =>
                     {
@@ -67,7 +71,7 @@ namespace GeoCoding.VerificationService
 
                     if (r != null)
                     {
-                        var list = r.AddressElementResponseList;
+                        var list = r.AddressElementResponseList2;
                         if (list != null && list.Length > 0)
                         {
                             int rowIndex = 0;
@@ -79,6 +83,10 @@ namespace GeoCoding.VerificationService
                                 i.Id = id;
                             }
                         }
+                    }
+                    else
+                    {
+                        new Exception("SOAP filed. Null client. Error url");
                     }
 
                 }

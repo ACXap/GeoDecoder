@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="6fc13fdd-8b81-47ce-ae19-397314b7a26d" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="37f354e2-4d2c-4cb5-884f-9082a78375c8" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://10.42.78.144:8081/PONWebServices/WsSearchAddrElByFullNamePortType?WSDL" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://10.42.78.147:8081/PONWebServices/WsSearchAddrElByFullNamePortType2?wsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ws_SearchAddressElementByFullName.wsdl" MetadataType="Wsdl" ID="a4b53dda-bf14-48a1-8ad4-ed910175a9d9" SourceId="1" SourceUrl="http://10.42.78.144:8081/PONWebServices/WsSearchAddrElByFullNamePortType?WSDL" />
+    <MetadataFile FileName="ws_SearchAddressElementByFullName2.wsdl" MetadataType="Wsdl" ID="d4e7829f-4d5a-4591-97d6-3b707755581f" SourceId="1" SourceUrl="http://10.42.78.147:8081/PONWebServices/WsSearchAddrElByFullNamePortType2?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

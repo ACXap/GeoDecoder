@@ -844,12 +844,12 @@
                                 Margin="10"
                                 Padding="10"
                                 Style="{StaticResource ButtonStopStartCompare}" />
-                            <Button
+                            <!--<Button
                                 Margin="2"
                                 Padding="2"
                                 Command="{Binding Ver.CommandCommitChanges}"
                                 Content="Зафиксировать" />
-                            <Button Command="{Binding MyCommand}" Content="Проверить файлы" />
+                            <Button Command="{Binding MyCommand}" Content="Проверить файлы" />-->
                         </StackPanel>
 
                         <!--<DataGrid

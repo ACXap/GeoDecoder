@@ -497,6 +497,7 @@ namespace GeoCoding
                                         {
                                             _customerView?.Refresh();
                                             _stat.UpdateStatisticsCollection();
+                                            _ver.SetCollection(_collectionGeoCod);
                                         }
                                     }, item);
                                 }
@@ -518,6 +519,7 @@ namespace GeoCoding
                                     {
                                         _customerView?.Refresh();
                                         _stat.UpdateStatisticsCollection();
+                                        _ver.SetCollection(_collectionGeoCod);
                                     }
                                 }, geocod);
                             }
@@ -1062,7 +1064,6 @@ namespace GeoCoding
             {
                 _notifications.Notification(NotificationType.DataEmpty);
             }
-
         }
 
         /// <summary>
@@ -1119,6 +1120,7 @@ namespace GeoCoding
                 {
                     // Создаем коллекцию с данными
                     CollectionGeoCod = new ObservableCollection<EntityGeoCod>(data);
+                    _ver.SetCollection(_collectionGeoCod);
                 }
                 else
                 {
@@ -1548,5 +1550,30 @@ namespace GeoCoding
                             AppSettings.BDSettings.SQLQuery = _modelBd.GetSqlTempleteOldBadAddresss(10000);
                         }
                     }));
-    }
+
+
+
+        private RelayCommand _commandGetSqlTempleteNewOldAddressProcedure;
+        public RelayCommand CommandGetSqlTempleteNewOldAddressProcedure =>
+        _commandGetSqlTempleteNewOldAddressProcedure ?? (_commandGetSqlTempleteNewOldAddressProcedure = new RelayCommand(
+        async () =>
+        {
+            if (_isGeoCodingModelBusy)
+            {
+                AppSettings.BDSettings.SQLQuery = _modelBd.GetSqlTempleteNewOldAddressProcedure(10000);
+            }
+            else
+            {
+                var result = await _geoCodingModel.GetCurrentLimit();
+                if (result.Successfully)
+                {
+                    AppSettings.BDSettings.SQLQuery = _modelBd.GetSqlTempleteNewOldAddressProcedure(result.Entity);
+                }
+                else
+                {
+                    AppSettings.BDSettings.SQLQuery = _modelBd.GetSqlTempleteNewOldAddressProcedure(10000);
+                }
+            }
+        }));
+      }
 }

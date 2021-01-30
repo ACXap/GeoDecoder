@@ -120,6 +120,34 @@ namespace GeoCoding.BDService
             return result;
         }
 
+        public EntityResult<EntityAddress> ExecuteProcedure(ConnectionSettingsDb conSettings, string scpriptBackgroundGeo, int limitRow)
+        {
+            if (conSettings == null) return GetEntityResultErrorArrgument<EntityAddress>(nameof(conSettings));
+            if (limitRow < 1) return GetEntityResultErrorArrgument<EntityAddress>(nameof(limitRow));
+
+            EntityResult<EntityAddress> result = new EntityResult<EntityAddress>();
+
+            try
+            {
+                using NpgsqlConnection con = new NpgsqlConnection(GetConnectionString(conSettings));
+                con.Open();
+
+                string query = $"select * from public.nsi_get_new_bad_coordinates({limitRow});";
+
+                using NpgsqlCommand com = new NpgsqlCommand(query, con);
+                using NpgsqlDataReader reader = com.ExecuteReader();
+
+                result.Entities = GetData(reader);
+                result.Successfully = true;
+            }
+            catch (Exception ex)
+            {
+                result.Error = ex;
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Метод для проверки соединения с базой данных 
         /// </summary>
@@ -155,7 +183,7 @@ namespace GeoCoding.BDService
             using NpgsqlConnection con = new NpgsqlConnection(GetConnectionString(conSettings));
             con.Open();
 
-            using var writer = con.BeginBinaryImport($"COPY public.new_coordinates (orpon_id,latitude,longitude,quality_code) FROM STDIN BINARY");
+            using var writer = con.BeginBinaryImport($"COPY public.nsi_new_coordinates (orpon_id,latitude,longitude,quality_code) FROM STDIN BINARY");
             foreach (var coordinate in entityCoordinates)
             {
                 writer.StartRow();
@@ -189,6 +217,11 @@ namespace GeoCoding.BDService
                     //" order by hc.change_date NULLS first"
                     " and hc.change_date is null" +
                     " limit " + limitRow;
+        }
+
+        public string GetSqlTempleteNewOldAddressProcedure(int limitRow)
+        {
+            return $"select * from public.nsi_get_new_bad_coordinates({limitRow});";
         }
 
         #region PrivateMethod
@@ -260,6 +293,8 @@ namespace GeoCoding.BDService
 
             return data;
         }
+
+
 
         #endregion PrivateMethod
     }
