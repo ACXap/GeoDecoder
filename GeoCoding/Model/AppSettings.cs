@@ -551,15 +551,6 @@ namespace GeoCoding.Model
         /// <returns></returns>
         public LimitsModel GetLimitsModel()
         {
-            //return new LimitsModel(new LimitsRepositoryDb(new Entities.ConnectionSettingsDb()
-            //{
-            //    BDName = _BDAccessorySettings.BDName,
-            //    Login = _BDAccessorySettings.Login,
-            //    Password = _BDAccessorySettings.Password,
-            //    Port = _BDAccessorySettings.Port,
-            //    Server = _BDAccessorySettings.Server
-            //}), _apiKeySettings.CollectionApiKeys);
-
             return new LimitsModel(new LimitsRepositoryOrpon(new Entities.ConnectionSettingsDb()
             {
                 BDName = _BDSettings.BDName,
@@ -610,32 +601,25 @@ namespace GeoCoding.Model
                 CanUsePolygon = p.CanUsePolygon
             };
 
-            //var res = ProtectedDataDPAPI.DecryptData(p.CollectionGeocoder);
-            //if (res.Successfully) GeoCodSettings.Key = res.Object;
-
             FTPSettings = new FTPSettings()
             {
                 Port = p.FtpPort,
                 User = p.FtpUser,
                 FolderInput = p.FtpFolderInput,
-                FolderOutput = p.FtpFolderOutput
+                FolderOutput = p.FtpFolderOutput,
+                Server = p.FtpServer
             };
 
-            var res = ProtectedDataDPAPI.DecryptData(p.FtpServer);
-            if (res.Successfully) FTPSettings.Server = res.Entity;
-
-            res = ProtectedDataDPAPI.DecryptData(p.FtpPassword);
+            var res = ProtectedDataDPAPI.DecryptData(p.FtpPassword);
             if (res.Successfully) FTPSettings.Password = res.Entity;
 
             BDSettings = new BDSettings()
             {
                 BDName = p.BDName,
                 Port = p.BDPort,
-                Login = p.BDLogin
+                Login = p.BDLogin,
+                Server = p.BDServer
             };
-
-            res = ProtectedDataDPAPI.DecryptData(p.BDServer);
-            if (res.Successfully) BDSettings.Server = res.Entity;
 
             res = ProtectedDataDPAPI.DecryptData(p.BDPassword);
             if (res.Successfully) BDSettings.Password = res.Entity;
@@ -644,11 +628,9 @@ namespace GeoCoding.Model
             {
                 BDName = p.BDAccessoryName,
                 Port = p.BDAccessoryPort,
-                Login = p.BDAccessoryLogin
+                Login = p.BDAccessoryLogin,
+                Server = p.BDAccessoryServer
             };
-
-            res = ProtectedDataDPAPI.DecryptData(p.BDAccessoryServer);
-            if (res.Successfully) BDAccessorySettings.Server = res.Entity;
 
             res = ProtectedDataDPAPI.DecryptData(p.BDAccessoryPassword);
             if (res.Successfully) BDAccessorySettings.Password = res.Entity;
@@ -710,13 +692,10 @@ namespace GeoCoding.Model
 
             GeneralSettings.ListDayWeek = listDayWeek;
 
-            VerificationSettings = new VerificationSettings();
-
-            res = ProtectedDataDPAPI.DecryptData(p.VerificationServer);
-            if (res.Successfully) VerificationSettings.VerificationServer = res.Entity;
-
-            //res = ProtectedDataDPAPI.DecryptData(p.VerificationServerFactor);
-            //if (res.Successfully) VerificationSettings.VerificationServerFactor = res.Object;
+            VerificationSettings = new VerificationSettings
+            {
+                VerificationServer = p.VerificationServer
+            };
         }
 
         /// <summary>
@@ -845,12 +824,10 @@ namespace GeoCoding.Model
                 p.FtpUser = _ftpSettings.User;
                 p.FtpFolderInput = _ftpSettings.FolderInput;
                 p.FtpFolderOutput = _ftpSettings.FolderOutput;
+                p.FtpServer = _ftpSettings.Server;
 
                 var res = ProtectedDataDPAPI.EncryptData(_ftpSettings.Password);
                 if (res.Successfully) p.FtpPassword = res.Entity;
-
-                res = ProtectedDataDPAPI.EncryptData(_ftpSettings.Server);
-                if (res.Successfully) p.FtpServer = res.Entity;
             }
 
             if (_geoCodSettings != null)
@@ -901,12 +878,10 @@ namespace GeoCoding.Model
                 p.BDPort = _BDSettings.Port;
                 p.BDName = _BDSettings.BDName;
                 p.BDLogin = _BDSettings.Login;
+                p.BDServer = _BDSettings.Server;
 
                 var res = ProtectedDataDPAPI.EncryptData(_BDSettings.Password);
                 if (res.Successfully) p.BDPassword = res.Entity;
-
-                res = ProtectedDataDPAPI.EncryptData(_BDSettings.Server);
-                if (res.Successfully) p.BDServer = res.Entity;
             }
 
             if (_BDAccessorySettings != null)
@@ -914,21 +889,15 @@ namespace GeoCoding.Model
                 p.BDAccessoryPort = _BDAccessorySettings.Port;
                 p.BDAccessoryName = _BDAccessorySettings.BDName;
                 p.BDAccessoryLogin = _BDAccessorySettings.Login;
+                p.BDAccessoryServer = _BDAccessorySettings.Server;
 
                 var res = ProtectedDataDPAPI.EncryptData(_BDAccessorySettings.Password);
                 if (res.Successfully) p.BDAccessoryPassword = res.Entity;
-
-                res = ProtectedDataDPAPI.EncryptData(_BDAccessorySettings.Server);
-                if (res.Successfully) p.BDAccessoryServer = res.Entity;
             }
 
             if (_verificationSettings != null)
             {
-                var res = ProtectedDataDPAPI.EncryptData(_verificationSettings.VerificationServer);
-                if (res.Successfully) p.VerificationServer = res.Entity;
-
-                //res = ProtectedDataDPAPI.EncryptData(_verificationSettings.VerificationServerFactor);
-                //if (res.Successfully) p.VerificationServerFactor = res.Object;
+                p.VerificationServer = _verificationSettings.VerificationServer;
             }
 
             if (_notificationSettings != null)

@@ -119,7 +119,15 @@ namespace GeoCoding.VerificationService
         {
             if (!string.IsNullOrEmpty(connectionSettings))
             {
-                _address = new EndpointAddress(connectionSettings);
+                try
+                {
+                    _address = new EndpointAddress(connectionSettings);
+                } 
+                catch(Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+               
             }
         }
     }

@@ -12,7 +12,7 @@ namespace GeoCoding
     {
         static App()
         {
-            ServicePointManager.DefaultConnectionLimit = 10;
+            ServicePointManager.DefaultConnectionLimit = 100;
             DispatcherHelper.Initialize();
         }
 

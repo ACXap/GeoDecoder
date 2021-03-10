@@ -252,13 +252,20 @@ namespace GeoCoding.BDService
         /// <returns>Строка подключения</returns>
         private string GetConnectionString(ConnectionSettingsDb conSettings)
         {
+            var a = $"Server={conSettings.Server};" +
+                $"Port={conSettings.Port};" +
+                $"User Id={conSettings.Login};" +
+                $"Password={conSettings.Password};" +
+                $"Database={conSettings.BDName};" +
+                "Timeout=1800;" +
+                "CommandTimeout=1800;";
             return $"Server={conSettings.Server};" +
                 $"Port={conSettings.Port};" +
                 $"User Id={conSettings.Login};" +
                 $"Password={conSettings.Password};" +
                 $"Database={conSettings.BDName};" +
-                "Timeout=900;" +
-                "CommandTimeout=900;";
+                "Timeout=600;" +
+                "CommandTimeout=600;";
         }
 
         /// <summary>

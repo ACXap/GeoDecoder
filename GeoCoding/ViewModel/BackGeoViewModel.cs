@@ -772,7 +772,7 @@ namespace GeoCoding
                                     _model.SaveTemp((er) =>
                                     {
 
-                                    }, resultGetDataDb.Entities, _appSettings.FilesSettings.FolderTemp + $"\\{DateTime.Now.ToString("yyyy_MM_dd_HH_mm")}_afterCheck.csv");
+                                    }, resultGetDataDb.Entities, _appSettings.FilesSettings.FolderTemp + $"\\{DateTime.Now:yyyy_MM_dd_HH_mm}_afterCheck.csv");
 
                                     var fileError = SaveError(resultGetDataDb.Entities);
 

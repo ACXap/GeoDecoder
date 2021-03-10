@@ -64,11 +64,11 @@ namespace GeoCoding
 
             ParallelOptions po = new ParallelOptions()
             {
-                MaxDegreeOfParallelism = 4,
+                MaxDegreeOfParallelism = 3,
                 CancellationToken = t
             };
 
-            var list = data.Partition(400);
+            var list = data.Partition(300);
 
             await Task.Factory.StartNew(() =>
             {
@@ -95,8 +95,11 @@ namespace GeoCoding
                                 foreach (var i in geo)
                                 {
                                     var o = item.ElementAt(index++);
-                                    o.Status = StatusType.Error;
+                                    o.Status = StatusType.OK;
                                     o.Error = e.Message;
+                                    o.GlobalIdAfterCompare = 2;
+                                    o.Qcode = 2;
+                                    o.IsChanges = true;
                                 }
                             }
                             else
@@ -106,9 +109,7 @@ namespace GeoCoding
                                     var o = item.ElementAt(index++);
                                     o.Status = StatusType.OK;
                                     o.GlobalIdAfterCompare = i.Id;
-
                                     o.Qcode = o.GlobalIdAfterCompare == o.GeoCode.GlobalID ? (byte)1 : (byte)2;
-
                                     o.IsChanges = o.Qcode != o.GeoCode.MainGeoCod.Qcode;
                                 }
                             }
@@ -196,7 +197,6 @@ namespace GeoCoding
         }
         #endregion PublicMethod
 
-
         public void Check(Action<Exception> callback, IEnumerable<EntityGeoCod> data)
         {
             var list = new List<EntityForCompare>(data.Where(x => x.MainGeoCod != null && x.MainGeoCod.Qcode == 1).Select(x =>
@@ -206,28 +206,20 @@ namespace GeoCoding
 
             CompareAsync((e) =>
             {
-                if (e == null)
+                var d = list.Where(x => x.IsChanges);
+                foreach (var item in d)
                 {
-                    var d = list.Where(x => x.IsChanges);
-                    foreach (var item in d)
+                    if (item.Qcode != 0)
                     {
-                        if (item.Qcode != 0)
+                        item.GeoCode.MainGeoCod.Qcode = item.Qcode;
+                        if (item.Qcode != 1)
                         {
-                            item.GeoCode.MainGeoCod.Qcode = item.Qcode;
-                            if(item.Qcode != 1)
-                            {
-                                item.GeoCode.MainGeoCod.Kind = KindType.Other;
-                                item.GeoCode.MainGeoCod.Precision = PrecisionType.Other;
-                            }
+                            item.GeoCode.MainGeoCod.Kind = KindType.Other;
+                            item.GeoCode.MainGeoCod.Precision = PrecisionType.Other;
                         }
                     }
-                    callback(e);
                 }
-                else
-                {
-                    callback(e);
-                }
-
+                callback(e);
             }, list);
         }
     }
